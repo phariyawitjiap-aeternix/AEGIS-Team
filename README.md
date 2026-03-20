@@ -67,6 +67,112 @@ claude
 
 ---
 
+## :movie_camera: After `/aegis-start` — What Can You Do?
+
+### Example 1: Code Review (Solo Agent)
+
+```
+You:    รีวิวโค้ดให้หน่อย ดู src/ ทั้งหมด
+
+🧭 Navi:  Trigger "รีวิวโค้ด" → dispatching 🛡️ Vigil (sonnet)
+
+🛡️ Vigil: Running 5-pass review...
+          Pass 1 Correctness ✅
+          Pass 2 Security    🔴 No input validation (CRITICAL)
+          Pass 3 Performance 🟡 No caching configured
+          Pass 4 Maintainability 🟡 All routes in one file
+          Pass 5 SDD Compliance  🔵 No OpenAPI spec
+
+          Gate: ❌ FAIL — 1 critical must be resolved
+          Report: _aegis-output/reviews/2026-03-20.md
+```
+
+### Example 2: Build Feature (Team — tmux)
+
+```
+You:    ทีมสร้าง — เพิ่ม user authentication
+
+🧭 Navi:  Trigger "ทีมสร้าง" → spawning tmux team
+          📐 Sage + ⚡ Bolt + 🛡️ Vigil
+
+┌─── tmux ──────────────────────────────────────────┐
+│ ┌─ 📐 Sage ──────────┐ ┌─ ⚡ Bolt ──────────────┐ │
+│ │ Writing auth spec   │ │ Waiting for spec...    │ │
+│ │ → PlanProposal sent │ │ → Implementing JWT...  │ │
+│ └─────────────────────┘ └────────────────────────┘ │
+│ ┌─ 🛡️ Vigil ────────────────────────────────────┐  │
+│ │ Reviewing... → QualityGate: ✅ PASS            │  │
+│ └────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────┘
+
+Result: 📐 Spec written → ⚡ 4 files created → 🛡️ Review PASS
+```
+
+### Example 3: Architecture Debate (Team — tmux)
+
+```
+You:    ถกเถียง — ควรใช้ SQL หรือ NoSQL สำหรับ project นี้
+
+🧭 Navi:  Spawning debate team...
+          📐 Sage + ⚡ Bolt + 🔴 Havoc
+
+📐 Sage:  "PostgreSQL — relational data, ACID, proven scale"
+⚡ Bolt:  "PostgreSQL is 2x faster to implement with Prisma ORM"
+🔴 Havoc: "What about schema migration pain at scale?
+           What if requirements change to unstructured data?"
+📐 Sage:  "Valid — add JSONB columns for flexible fields"
+🧭 Navi:  Consensus: PostgreSQL + JSONB hybrid approach
+          → Saved to _aegis-brain/resonance/architecture-decisions.md
+```
+
+### Example 4: Full Pipeline Analysis
+
+```
+You:    /aegis-pipeline
+
+🧭 Navi:  Starting 3-phase pipeline...
+
+Phase 1 — Research (parallel):
+  🔧 Forge: Scanning codebase... 42 files, 3 deps outdated
+  🎨 Muse:  Scanning docs... README outdated, no API docs
+  → GATE 1: ✅ Research complete
+
+Phase 2 — Deep Analysis (parallel):
+  📐 Sage:  Architecture OK, but no error handling layer
+  🛡️ Vigil: 2 critical, 5 warnings found
+  🔴 Havoc: Auth token has no expiry — security risk
+  → GATE 2: ❌ 2 critical findings
+
+Phase 3 — Synthesis:
+  🧭 Navi:  Compiling report...
+  Report: _aegis-output/pipeline/2026-03-20.md
+  Context used: +35K tokens (now at 43%)
+```
+
+### Example 5: End Session
+
+```
+You:    จบ session
+
+🧭 Navi:  Running /aegis-retro...
+          📓 AI Diary: 180 words (honest reflection)
+          🔥 Friction: 3 points logged
+          🎓 Lessons: 2 patterns extracted
+          📁 Saved to _aegis-brain/retrospectives/
+
+You:    ส่งต่อ
+
+🧭 Navi:  ╔═══════════════════════════════════════════╗
+          ║ HANDOFF BRIEF                              ║
+          ║ ✅ Done: auth system, code review          ║
+          ║ 📌 Next: write tests, fix 2 criticals     ║
+          ║ 💡 Tip: upgrade autonomy to L2             ║
+          ╚═══════════════════════════════════════════╝
+          → Next session will auto-load this handoff
+```
+
+---
+
 ## :building_construction: Architecture Overview
 
 ```
