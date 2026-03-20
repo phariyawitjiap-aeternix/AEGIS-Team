@@ -37,6 +37,8 @@ chmod +x install.sh
 
 **Profile options:** `minimal` (7 skills) · `standard` (13 skills) · `full` (21 skills)
 
+> :book: **[Full Getting Started Guide →](GETTING_STARTED.md)** — step-by-step terminal instructions with screenshots
+
 ---
 
 ## :building_construction: Architecture Overview
