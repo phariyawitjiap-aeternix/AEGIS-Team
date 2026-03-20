@@ -1,0 +1,29 @@
+# AEGIS Runtime Output
+_aegis-output/*.tmp
+_aegis-output/.cache/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Logs (keep activity.log, ignore others)
+*.log
+!_aegis-brain/logs/activity.log

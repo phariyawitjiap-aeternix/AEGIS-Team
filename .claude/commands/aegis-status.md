@@ -1,0 +1,89 @@
+---
+name: aegis-status
+description: "Show team status dashboard — agents, tasks, progress, context, recent activity"
+triggers:
+  en: status, team status, what is happening, dashboard
+  th: สถานะ, ตอนนี้ทำอะไรอยู่
+---
+
+# /aegis-status
+
+## Quick Reference
+Team status dashboard showing all active agents/teammates with their current task
+and progress, overall pipeline progress, context budget summary, and last 5 actions
+from activity.log. Formatted as a readable table. Use anytime to get a snapshot
+of what AEGIS is doing.
+
+## Full Instructions
+
+### Step 1: Check Active Agents
+- Determine which agents/teammates are currently active in this session.
+- Check for:
+  - tmux sessions with AEGIS agent names
+  - Subagent tasks in progress
+  - The main orchestrator (Navi) status
+- For each agent, determine:
+  - Name and role emoji
+  - Current task (if any)
+  - Status: idle / working / waiting / blocked / done
+  - Progress percentage (estimate based on task completion)
+
+### Step 2: Display Agent Status Table
+- Format as a table:
+  ```
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  AEGIS Team Status                                             ║
+  ╠══════════════════════════════════════════════════════════════════╣
+  ║                                                                 ║
+  ║  Agent          Task                    Status      Progress    ║
+  ║  ─────────────  ──────────────────────  ──────────  ────────    ║
+  ║  🧭 Navi        Orchestrating session   ✅ Active   —           ║
+  ║  🔨 Forge       Scanning codebase       🔄 Working  60%         ║
+  ║  📖 Sage        (idle)                  💤 Idle     —           ║
+  ║  🛡️ Vigil       (idle)                  💤 Idle     —           ║
+  ║  🎨 Muse        (idle)                  💤 Idle     —           ║
+  ║  ⚡ Bolt        (idle)                  💤 Idle     —           ║
+  ║  💥 Havoc       (idle)                  💤 Idle     —           ║
+  ║                                                                 ║
+  ╚══════════════════════════════════════════════════════════════════╝
+  ```
+- Only show agents relevant to the current session/profile.
+
+### Step 3: Show Pipeline Progress
+- If a pipeline is running (/aegis-pipeline, /aegis-flow, etc.):
+  ```
+  Pipeline: /aegis-pipeline — Phase 2 of 3 (Deep Analysis)
+  ██████████████░░░░░░░░ 65%
+  Gate 1: ✅ Passed | Gate 2: 🔄 Pending | Gate 3: ⬜ Not started
+  ```
+- If no pipeline is active:
+  ```
+  Pipeline: None active
+  ```
+
+### Step 4: Show Context Budget
+- Quick context summary (abbreviated version of /aegis-context):
+  ```
+  Context: 45% used 🟡 | ~55% remaining
+  ```
+
+### Step 5: Show Recent Activity
+- Read last 5 entries from `_aegis-brain/logs/activity.log`.
+- Display:
+  ```
+  Recent Activity:
+  [14:32] Forge scanned 47 files in src/
+  [14:30] Session started at L2 autonomy
+  [14:28] Loaded handoff from previous session
+  [13:45] (previous session) Vigil completed code review
+  [13:30] (previous session) Session ended
+  ```
+- If activity.log doesn't exist or is empty: "No activity recorded yet."
+
+### Step 6: Format Final Output
+- Combine all sections into a single cohesive dashboard.
+- Keep it compact but informative.
+- End with available actions:
+  ```
+  Quick actions: /aegis-context (detailed) | /aegis-pipeline (start) | /aegis-retro (end)
+  ```
