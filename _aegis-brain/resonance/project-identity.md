@@ -1,13 +1,37 @@
 # Project Identity
 
 ## Name
-[Set by /aegis-start or install.sh]
+AEGIS v6.0 — AI Agent Team Framework for Claude Code
 
 ## Stack
-[Auto-detected or manually set]
+- Language: Markdown (skill/command definitions), Bash (installer)
+- Platform: Claude Code (Anthropic)
+- Features: tmux Agent Teams, Persistent Brain, Progressive Disclosure
+- Repo: https://github.com/phariyawitjiap-aeternix/AEGIS-Team
+
+## Profile
+full (21 skills — this is the source framework)
+
+## Autonomy Level
+L1 (Supervised) — default for new session
 
 ## Conventions
-[Accumulated from retrospectives]
+- English code + Thai trigger words
+- Conventional commits
+- Branch + PR workflow (never push to main directly)
+- Progressive disclosure: Quick Reference + Full Instructions
+- All agent outputs ≤2000 tokens
 
 ## Team
 AEGIS v6.0 — 8 AI Agent Personas
+- 🧭 Navi (opus) — Lead
+- 📐 Sage (opus) — Architect
+- ⚡ Bolt (sonnet) — Implementer
+- 🛡️ Vigil (sonnet) — Reviewer
+- 🔴 Havoc (opus) — Devil's Advocate
+- 🔧 Forge (haiku) — Research
+- 🖌️ Pixel (sonnet) — UX
+- 🎨 Muse (haiku) — Content
+
+## Created
+2026-03-20 (Session 1 — Full rebuild from spec v2 + 10 research upgrades)
