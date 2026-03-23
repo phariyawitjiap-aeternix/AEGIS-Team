@@ -10,6 +10,15 @@ VERSION="6.0.0"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # --------------------------------------------------------------------------
+# Verify source files exist
+# --------------------------------------------------------------------------
+if [[ ! -f "$SCRIPT_DIR/CLAUDE.md" ]]; then
+    echo -e "\033[0;31m[ERROR]\033[0m Cannot find AEGIS source files in $SCRIPT_DIR"
+    echo -e "\033[0;31m[ERROR]\033[0m Make sure you're running install.sh from the AEGIS-Team repo"
+    exit 1
+fi
+
+# --------------------------------------------------------------------------
 # Defaults
 # --------------------------------------------------------------------------
 PROFILE="standard"
@@ -153,6 +162,14 @@ if [[ "$UPGRADE" == true ]]; then
             cp "${TARGET_DIR}/${f}" "${BACKUP_DIR}/${f}"
         fi
     done
+    # Back up .claude/ config (settings, agents, commands, etc.)
+    if [[ -d "${TARGET_DIR}/.claude" ]]; then
+        cp -r "${TARGET_DIR}/.claude" "${BACKUP_DIR}/.claude"
+    fi
+    # Back up skills/
+    if [[ -d "${TARGET_DIR}/skills" ]]; then
+        cp -r "${TARGET_DIR}/skills" "${BACKUP_DIR}/skills"
+    fi
     success "Existing files backed up to ${BACKUP_DIR}"
 fi
 
@@ -308,8 +325,8 @@ for f in "${claude_files[@]}"; do
     src="${SCRIPT_DIR}/${f}"
     dst="${TARGET_DIR}/${f}"
     if [[ -f "$src" ]]; then
-        if [[ -f "$dst" && "$UPGRADE" == true ]]; then
-            info "Skipping ${f} (exists, use backup to compare)"
+        if [[ "$UPGRADE" == true && "$f" == "CLAUDE_lessons.md" && -f "$dst" ]]; then
+            info "Preserving ${f} (user patterns — backup has copy)"
         else
             cp "$src" "$dst"
         fi
@@ -335,14 +352,9 @@ copy_dir_contents() {
     fi
 
     local count=0
-    for f in "$src_dir"/*.md; do
+    for f in "$src_dir"/*; do
         [[ -f "$f" ]] || continue
-        local basename=$(basename "$f")
-        local dst="${dst_dir}/${basename}"
-        if [[ -f "$dst" && "$UPGRADE" == true ]]; then
-            continue  # Don't overwrite on upgrade
-        fi
-        cp "$f" "$dst"
+        cp "$f" "$dst_dir/"
         count=$((count + 1))
     done
     success "${count} ${label} installed"
@@ -352,6 +364,14 @@ copy_dir_contents "${SCRIPT_DIR}/.claude/agents"     "${TARGET_DIR}/.claude/agen
 copy_dir_contents "${SCRIPT_DIR}/.claude/commands"    "${TARGET_DIR}/.claude/commands"   "commands"
 copy_dir_contents "${SCRIPT_DIR}/.claude/references"  "${TARGET_DIR}/.claude/references" "reference files"
 copy_dir_contents "${SCRIPT_DIR}/.claude/teams"       "${TARGET_DIR}/.claude/teams"      "team configs"
+
+# Copy settings.json (but not settings.local.json which has user-specific config)
+if [[ -f "${SCRIPT_DIR}/.claude/settings.json" ]]; then
+    cp "${SCRIPT_DIR}/.claude/settings.json" "${TARGET_DIR}/.claude/settings.json"
+    success "settings.json installed"
+else
+    warn "settings.json not found in source — skipping"
+fi
 
 # --------------------------------------------------------------------------
 # Copy skill files based on profile (full files, not stubs)
@@ -367,10 +387,6 @@ copy_skill() {
     local name="$1"
     local src="${SCRIPT_DIR}/skills/${name}.md"
     local dst="${TARGET_DIR}/skills/${name}.md"
-
-    if [[ -f "$dst" && "$UPGRADE" == true ]]; then
-        return  # Don't overwrite existing skills on upgrade
-    fi
 
     if [[ -f "$src" ]]; then
         cp "$src" "$dst"
