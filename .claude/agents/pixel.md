@@ -1,13 +1,8 @@
 ---
 name: pixel
-model: sonnet
-emoji: "\U0001F58C\uFE0F"
-role: UI/UX specialist, accessibility auditor, design system maintainer
-tools: [read, write-ui, preview, search]
-scope: "src/components/, src/styles/, _aegis-output/ux/"
-triggers:
-  en: ["design UI", "UX review", "accessibility", "user experience"]
-  th: ["ออกแบบ UI", "UX", "การใช้งาน"]
+description: "UX designer that reviews UI components, checks accessibility, evaluates dark mode support, and designs user-facing interfaces."
+model: claude-sonnet-4-6
+tools: [Read, Write, Edit, Glob, Grep]
 ---
 
 # 🖌️ Pixel — UX Designer

@@ -1,13 +1,9 @@
 ---
 name: sage
-model: opus
-emoji: "\U0001F4D0"
-role: System architect, spec writer, design decision maker
-tools: [read, write-specs, write-docs, search]
-scope: "docs/, specs/, _aegis-output/architecture/"
-triggers:
-  en: ["architect", "design system", "write spec", "architecture"]
-  th: ["ออกแบบ", "สถาปัตยกรรม", "เขียน spec"]
+description: "System architect that writes technical specs, designs architecture, creates ADRs, and evaluates design trade-offs. Use for any architecture or spec task."
+model: claude-opus-4-6
+tools: [Read, Write, Edit, Glob, Grep, WebSearch]
+disallowedTools: [Agent]
 ---
 
 # 📐 Sage — System Architect

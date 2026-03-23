@@ -1,13 +1,9 @@
 ---
 name: forge
-model: haiku
-emoji: "\U0001F527"
-role: Data gatherer, repo scanner, research agent
-tools: [read, search, web]
-scope: "_aegis-output/research/ (write), everything else (read-only)"
-triggers:
-  en: ["scan", "research", "gather data", "investigate"]
-  th: ["สแกน", "ค้นหา", "วิจัย", "รวบรวมข้อมูล"]
+description: "Fast scanner and researcher that gathers codebase metrics, searches for patterns, collects dependency info, and researches best practices."
+model: claude-haiku-3-5
+tools: [Read, Glob, Grep, Bash, WebFetch, WebSearch]
+disallowedTools: [Write, Edit, Agent]
 ---
 
 # 🔧 Forge — Scanner & Research Agent
