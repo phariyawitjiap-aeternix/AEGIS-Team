@@ -6,69 +6,28 @@ triggers:
   th: ทีมรีวิว, รีวิวแบบทีม
 ---
 
-# /aegis-team-review
+You MUST execute ALL of the following steps NOW. Do not explain — just do it.
 
-Spawn a review team using Claude Code's **TeamCreate + Agent Teams**.
+## Step 1: Get the task
 
-Each agent runs in its own tmux pane. Forge + Havoc work in parallel, then Vigil synthesizes.
+The user's message contains what to review. If empty, use: "$ARGUMENTS"
 
-## Instructions
+## Step 2: Create team NOW
 
-### Step 1: Determine the target
+Call TeamCreate right now:
+- team_name: "aegis-review"
+- description: "Review team for: [TASK]"
 
-Look at the user's message for what to review. If no target, review entire project source code.
+## Step 3: Spawn 3 teammates NOW (all in parallel)
 
-### Step 2: Create the team
+Call Agent tool 3 times in a SINGLE message (parallel):
 
-Use **TeamCreate**:
-```
-team_name: "aegis-review"
-description: "Review team: Forge scans + Havoc challenges → Vigil synthesizes. Target: [TARGET]"
-```
+1. Agent with subagent_type="forge", team_name="aegis-review", name="forge", mode="bypassPermissions", run_in_background=true, prompt="You are 🔧 Forge the scanner. Read .claude/agents/forge.md for your persona. TASK: Scan and gather data for: [TASK]. Count files, detect stack, find TODOs, check deps. Write to _aegis-output/scans/. When done, send findings to vigil via SendMessage."
 
-### Step 3: Spawn teammates
+2. Agent with subagent_type="havoc", team_name="aegis-review", name="havoc", mode="bypassPermissions", run_in_background=true, prompt="You are 🔴 Havoc the devil's advocate. Read .claude/agents/havoc.md for your persona. TASK: Challenge: [TASK]. Find edge cases, question assumptions, stress-test. Write to _aegis-output/challenges/. When done, send findings to vigil via SendMessage."
 
-**Spawn Forge (Scanner):**
-```
-Agent(
-  subagent_type: "forge",
-  team_name: "aegis-review",
-  name: "forge",
-  prompt: "You are Forge, the scanner. Scan the codebase: [TARGET]. Gather file count, dependency health, TODO/FIXME count, test coverage, complexity hotspots. Write scan report to _aegis-output/scans/. When done, mark task complete.",
-  run_in_background: true
-)
-```
+3. Agent with subagent_type="vigil", team_name="aegis-review", name="vigil", mode="bypassPermissions", run_in_background=true, prompt="You are 🛡️ Vigil the reviewer lead. Read .claude/agents/vigil.md for your persona. Wait for forge and havoc findings. Synthesize into 4-pass review. Issue PASS/CONDITIONAL/FAIL. Write to _aegis-output/reviews/. Send verdict to team lead via SendMessage."
 
-**Spawn Havoc (Challenger):**
-```
-Agent(
-  subagent_type: "havoc",
-  team_name: "aegis-review",
-  name: "havoc",
-  prompt: "You are Havoc, the devil's advocate. Adversarial review of: [TARGET]. Challenge architecture assumptions, find security surface, test edge cases, question design decisions. Write challenge report to _aegis-output/challenges/. When done, mark task complete.",
-  run_in_background: true
-)
-```
+## Step 4: Report and cleanup when done
 
-**Spawn Vigil (Lead Reviewer):**
-```
-Agent(
-  subagent_type: "vigil",
-  team_name: "aegis-review",
-  name: "vigil",
-  prompt: "You are Vigil, the lead reviewer. Wait for Forge and Havoc to finish their reports in _aegis-output/scans/ and _aegis-output/challenges/. Synthesize into unified review with critical findings, warnings, suggestions. Issue Quality Gate: PASS/CONDITIONAL/FAIL. Write to _aegis-output/reviews/.",
-  run_in_background: true
-)
-```
-
-### Step 4: Monitor, report, and shutdown
-
-Same as aegis-team-build — monitor via automatic messages, report results, then shutdown + TeamDelete.
-
-## Team Composition
-
-| Agent | Role | Model | tmux Pane |
-|-------|------|-------|-----------|
-| 🔧 Forge | Scanner — gathers data | haiku | Own pane |
-| 🔴 Havoc | Challenger — finds weaknesses | opus | Own pane |
-| 🛡️ Vigil | Lead Reviewer — synthesizes + gates | sonnet | Own pane |
+Summarize, send shutdown_request to each, then TeamDelete.

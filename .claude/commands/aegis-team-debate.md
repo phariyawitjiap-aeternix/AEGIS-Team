@@ -3,86 +3,33 @@ name: aegis-team-debate
 description: "Spawn debate team — multi-perspective architecture decisions"
 triggers:
   en: debate, architecture decision, team debate, decide
-  th: ถกเถียง, ทีมถกเถียง, ตัดสินใจ
+  th: ถกเถียง, ดีเบต, ตัดสินใจสถาปัตยกรรม
 ---
 
-# /aegis-team-debate
+You MUST execute ALL of the following steps NOW. Do not explain — just do it.
 
-Spawn a debate team using Claude Code's **TeamCreate + Agent Teams**.
+## Step 1: Get the topic
 
-Each agent runs in its own tmux pane. All perspectives run in parallel, then Navi synthesizes.
+The user's message contains the debate topic. If empty, use: "$ARGUMENTS"
 
-## Instructions
+## Step 2: Create team NOW
 
-### Step 1: Determine the topic
+Call TeamCreate right now:
+- team_name: "aegis-debate"
+- description: "Architecture debate: [TOPIC]"
 
-Look at the user's message for the debate topic. If no topic, ask: "What architecture decision should we debate?"
+## Step 3: Spawn 4 teammates NOW (all in parallel)
 
-### Step 2: Create the team
+Call Agent tool 4 times in a SINGLE message (parallel):
 
-Use **TeamCreate**:
-```
-team_name: "aegis-debate"
-description: "Debate team: Sage proposes + Bolt evaluates + Havoc challenges → Navi decides. Topic: [TOPIC]"
-```
+1. Agent with subagent_type="sage", team_name="aegis-debate", name="sage", mode="bypassPermissions", run_in_background=true, prompt="You are 📐 Sage the architect. Read .claude/agents/sage.md for your persona. DEBATE TOPIC: [TOPIC]. Present 2-3 architecture options with clear trade-offs for each. Send your proposal to navi via SendMessage when ready."
 
-### Step 3: Spawn teammates
+2. Agent with subagent_type="bolt", team_name="aegis-debate", name="bolt", mode="bypassPermissions", run_in_background=true, prompt="You are ⚡ Bolt the implementer. Read .claude/agents/bolt.md for your persona. DEBATE TOPIC: [TOPIC]. Wait for sage's proposal. Evaluate each option for implementation feasibility — effort, complexity, risk. Send your analysis to navi via SendMessage."
 
-**Spawn Sage (Proposer):**
-```
-Agent(
-  subagent_type: "sage",
-  team_name: "aegis-debate",
-  name: "sage",
-  prompt: "You are Sage in an architecture debate. Topic: [TOPIC]. Present 2-3 options with pros, cons, and your recommendation. Write to _aegis-output/debates/sage-proposal.md. When done, mark task complete.",
-  run_in_background: true
-)
-```
+3. Agent with subagent_type="havoc", team_name="aegis-debate", name="havoc", mode="bypassPermissions", run_in_background=true, prompt="You are 🔴 Havoc the devil's advocate. Read .claude/agents/havoc.md for your persona. DEBATE TOPIC: [TOPIC]. Wait for sage's proposal. Challenge every option — find what could go wrong, identify hidden assumptions, stress-test scalability. Send your challenges to navi via SendMessage."
 
-**Spawn Bolt (Feasibility):**
-```
-Agent(
-  subagent_type: "bolt",
-  team_name: "aegis-debate",
-  name: "bolt",
-  prompt: "You are Bolt in an architecture debate. Topic: [TOPIC]. Evaluate implementation effort, complexity, and migration path for each option. Write to _aegis-output/debates/bolt-feasibility.md. When done, mark task complete.",
-  run_in_background: true
-)
-```
+4. Agent with subagent_type="navi", team_name="aegis-debate", name="navi", mode="bypassPermissions", run_in_background=true, prompt="You are 🧭 Navi the navigator. Read .claude/agents/navi.md for your persona. DEBATE TOPIC: [TOPIC]. Wait for input from sage, bolt, and havoc. Synthesize all perspectives into a consensus decision. Write ADR (Architecture Decision Record) to _aegis-brain/resonance/architecture-decisions.md. Send final decision to team lead via SendMessage."
 
-**Spawn Havoc (Challenger):**
-```
-Agent(
-  subagent_type: "havoc",
-  team_name: "aegis-debate",
-  name: "havoc",
-  prompt: "You are Havoc in an architecture debate. Topic: [TOPIC]. Challenge EVERY option — what breaks at scale? What assumptions are wrong? What hidden costs? Write to _aegis-output/debates/havoc-challenges.md. When done, mark task complete.",
-  run_in_background: true
-)
-```
+## Step 4: Report and cleanup when done
 
-Wait for all 3 to complete.
-
-**Spawn Navi (Synthesizer):**
-```
-Agent(
-  subagent_type: "navi",
-  team_name: "aegis-debate",
-  name: "navi",
-  prompt: "You are Navi, synthesizing a debate. Read _aegis-output/debates/sage-proposal.md, bolt-feasibility.md, havoc-challenges.md. Produce an ADR with decision, context, options, and consequences. Save to _aegis-brain/resonance/architecture-decisions.md (append).",
-  run_in_background: true
-)
-```
-
-### Step 4: Report and shutdown
-
-Report the decision, then shutdown all teammates + TeamDelete.
-
-## Team Composition
-
-| Agent | Role | Model | tmux Pane |
-|-------|------|-------|-----------|
-| 📐 Sage | Proposer — presents options | opus | Own pane |
-| ⚡ Bolt | Feasibility — evaluates effort | sonnet | Own pane |
-| 🔴 Havoc | Challenger — stress tests | opus | Own pane |
-| 🧭 Navi | Synthesizer — makes decision | opus | Own pane |
+Summarize the decision, send shutdown_request to each, then TeamDelete.

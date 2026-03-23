@@ -6,90 +6,42 @@ triggers:
   th: ทีมสร้าง, สร้างแบบทีม
 ---
 
-# /aegis-team-build
+You MUST execute ALL of the following steps NOW. Do not explain — just do it.
 
-Spawn a build team using Claude Code's **TeamCreate + Agent Teams**.
+## Step 1: Get the task
 
-Each agent runs in its own tmux pane. They coordinate via shared task list and messages.
+The user's message contains the task. If empty, use: "$ARGUMENTS"
 
-## Instructions
+## Step 2: Create team NOW
 
-### Step 1: Determine the task
+Call TeamCreate right now:
+- team_name: "aegis-build"
+- description: "Build team for: [TASK]"
 
-Look at the user's message for what they want built. If no task specified, ask: "What should the build team work on?"
+## Step 3: Spawn 3 teammates NOW (all in parallel)
 
-### Step 2: Create the team
+Call Agent tool 3 times in a SINGLE message (parallel):
 
-Use **TeamCreate**:
+1. Agent with subagent_type="sage", team_name="aegis-build", name="sage", mode="bypassPermissions", run_in_background=true, prompt="You are 📐 Sage the architect. Read .claude/agents/sage.md for your full persona. TASK: [TASK]. Write a technical spec to _aegis-output/specs/. When done, send a message to bolt via SendMessage telling them the spec is ready."
+
+2. Agent with subagent_type="bolt", team_name="aegis-build", name="bolt", mode="bypassPermissions", run_in_background=true, prompt="You are ⚡ Bolt the implementer. Read .claude/agents/bolt.md for your full persona. TASK: [TASK]. Wait for a message from sage with the spec. Then implement all files based on the spec. When done, send a message to vigil via SendMessage telling them to review."
+
+3. Agent with subagent_type="vigil", team_name="aegis-build", name="vigil", mode="bypassPermissions", run_in_background=true, prompt="You are 🛡️ Vigil the reviewer. Read .claude/agents/vigil.md for your full persona. Wait for a message from bolt that implementation is done. Then do a 4-pass review (correctness, security, performance, maintainability). Write review to _aegis-output/reviews/. Send quality gate result (PASS/FAIL) to the team lead via SendMessage."
+
+## Step 4: Report to user
+
+Tell the user:
 ```
-team_name: "aegis-build"
-description: "Build team: Sage specs → Bolt implements → Vigil reviews. Task: [TASK]"
-```
+🛡️ AEGIS Build Team Spawned!
 
-### Step 3: Spawn teammates
+📐 Sage (opus) — Writing spec...
+⚡ Bolt (sonnet) — Waiting for spec...
+🛡️ Vigil (sonnet) — Waiting for review...
 
-Use the **Agent tool** to spawn each teammate. Each gets its own tmux pane.
-
-**Spawn Sage (Architect):**
-```
-Agent(
-  subagent_type: "sage",
-  team_name: "aegis-build",
-  name: "sage",
-  prompt: "You are Sage, the architect. Your task: [TASK]. Write a technical spec covering architecture, data model, and file structure. Write output to _aegis-output/specs/. When done, mark your task complete and notify bolt to start implementing.",
-  run_in_background: true
-)
-```
-
-**Spawn Bolt (Implementer):**
-```
-Agent(
-  subagent_type: "bolt",
-  team_name: "aegis-build",
-  name: "bolt",
-  prompt: "You are Bolt, the implementer. Your task: [TASK]. Wait for Sage to finish the spec in _aegis-output/specs/, then implement all files. When done, mark your task complete and notify vigil to review.",
-  run_in_background: true
-)
+Agents are working in their own panes.
+Messages will appear automatically when they complete.
 ```
 
-**Spawn Vigil (Reviewer):**
-```
-Agent(
-  subagent_type: "vigil",
-  team_name: "aegis-build",
-  name: "vigil",
-  prompt: "You are Vigil, the reviewer. Wait for Bolt to finish implementation. Then review all created files with 4-pass review: correctness, security, performance, maintainability. Write review to _aegis-output/reviews/. Issue quality gate: PASS/CONDITIONAL/FAIL.",
-  run_in_background: true
-)
-```
+## Step 5: When all done
 
-### Step 4: Monitor and report
-
-The team lead (you) monitors progress via automatic message delivery from teammates. When all agents report done:
-
-```
-🛡️ Build Team Complete!
-
-📐 Sage: [spec summary]
-⚡ Bolt: [implementation summary]
-🛡️ Vigil: [quality gate result]
-```
-
-### Step 5: Shutdown team
-
-When work is complete, send shutdown to all teammates:
-```
-SendMessage(to: "sage", message: {type: "shutdown_request", reason: "Build complete"})
-SendMessage(to: "bolt", message: {type: "shutdown_request", reason: "Build complete"})
-SendMessage(to: "vigil", message: {type: "shutdown_request", reason: "Build complete"})
-```
-
-Then use **TeamDelete** to clean up.
-
-## Team Composition
-
-| Agent | Role | Model | tmux Pane |
-|-------|------|-------|-----------|
-| 📐 Sage | Architect — writes spec | opus | Own pane |
-| ⚡ Bolt | Implementer — builds from spec | sonnet | Own pane |
-| 🛡️ Vigil | Reviewer — quality gates | sonnet | Own pane |
+After receiving completion messages from all 3 agents, summarize results and send shutdown_request to each, then TeamDelete.
