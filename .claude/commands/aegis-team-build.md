@@ -1,6 +1,6 @@
 ---
 name: aegis-team-build
-description: "Spawn build team via tmux — Sage specs, Bolt implements, Vigil reviews"
+description: "Spawn build team — Sage specs, Bolt implements, Vigil reviews"
 triggers:
   en: team build, build team, spawn builders
   th: ทีมสร้าง, สร้างแบบทีม
@@ -8,67 +8,98 @@ triggers:
 
 # /aegis-team-build
 
-When this command is triggered, you MUST execute the aegis-team.sh script via Bash to spawn real tmux agent sessions. Do NOT just describe what would happen — actually run the command.
+Spawn a build team using Claude Code's **built-in Agent tool**.
 
-## Step 1: Determine the task
+## Instructions
 
-Look at the user's message for what they want built. If the user said something like:
+When this command is triggered:
+
+### Step 1: Determine the task
+
+Look at the user's message for what they want built:
 - "ทีมสร้าง — implement auth system" → task is "implement auth system"
 - "/aegis-team-build add user CRUD" → task is "add user CRUD"
-- Just "/aegis-team-build" with no task → ask the user: "What should the build team work on?"
+- Just "/aegis-team-build" with no task → ask: "What should the build team work on?"
 
-Store the task description in a variable.
+### Step 2: Spawn agents using the Agent tool
 
-## Step 2: Execute aegis-team.sh
+Launch agents in sequence — each phase feeds the next:
 
-Run this Bash command (replace TASK with the actual task):
+**Phase 1: Architecture (📐 Sage)**
 
+Use the Agent tool:
 ```
-~/AEGIS-Team/aegis-team.sh --team build --task "TASK" --project "$(pwd)"
-```
+subagent_type: use the agent defined in .claude/agents/sage.md
+prompt: |
+  You are Sage, the system architect.
+  Task: [TASK]
 
-If aegis-team.sh is not found at ~/AEGIS-Team/, try the SCRIPT_DIR from CLAUDE.md or find it:
-```
-find ~ -name "aegis-team.sh" -maxdepth 3 2>/dev/null | head -1
-```
+  Write a technical spec covering:
+  1. Architecture overview and patterns
+  2. Data model / schema
+  3. File structure with all files to create
+  4. Key implementation decisions
 
-## Step 3: Show the user how to watch
-
-After the script runs successfully, tell the user:
-
-```
-🛡️ Build Team Spawned in tmux!
-
-Agents:
-  📐 Sage — writing spec
-  ⚡ Bolt — implementing
-  🛡️ Vigil — reviewing
-
-Watch agents work:
-  tmux attach -t aegis-team
-
-Controls:
-  Ctrl+B o  → switch pane
-  Ctrl+B z  → zoom pane
-  Ctrl+B d  → detach (agents keep working)
+  Write output to: _aegis-output/specs/
+  When done, summarize what you designed.
 ```
 
-## Step 4: If tmux or aegis-team.sh fails
+Wait for Sage to complete before proceeding.
 
-If the Bash command fails:
-1. Check: `which tmux` — if not found, tell user: `brew install tmux`
-2. Check: `ls ~/AEGIS-Team/aegis-team.sh` — if not found, tell user to clone AEGIS-Team
-3. Check: `which claude` — if not found, tell user: `npm install -g @anthropic-ai/claude-code`
+**Phase 2: Implementation (⚡ Bolt)**
 
-Do NOT fall back to "sequential mode" or "subagent mode" — tmux is required.
+Use the Agent tool:
+```
+subagent_type: use the agent defined in .claude/agents/bolt.md
+prompt: |
+  You are Bolt, the implementer.
+  Task: [TASK]
 
-## Team Composition
+  Read the spec that Sage wrote in _aegis-output/specs/.
+  Implement ALL files described in the spec.
+  Write production-quality code with proper error handling.
+  Run builds/tests if applicable.
 
-| Agent | Role | Model |
-|-------|------|-------|
-| 📐 Sage | Architect — writes spec | opus |
-| ⚡ Bolt | Implementer — builds from spec | sonnet |
-| 🛡️ Vigil | Reviewer — quality gates | sonnet |
+  When done, list all files you created.
+```
+
+Wait for Bolt to complete before proceeding.
+
+**Phase 3: Review (🛡️ Vigil)**
+
+Use the Agent tool:
+```
+subagent_type: use the agent defined in .claude/agents/vigil.md
+prompt: |
+  You are Vigil, the code reviewer.
+  Task: Review all files created by Bolt for [TASK].
+
+  Run 4-pass review:
+  1. Correctness — logic errors, edge cases
+  2. Security — vulnerabilities, input validation
+  3. Performance — bottlenecks, resource usage
+  4. Maintainability — code quality, patterns
+
+  Issue a quality gate: PASS, CONDITIONAL, or FAIL.
+  Write review to: _aegis-output/reviews/
+```
+
+### Step 3: Report results
+
+After all 3 agents complete, show the user:
+
+```
+🛡️ Build Team Complete!
+
+📐 Sage: [summary of spec]
+⚡ Bolt: [summary of implementation, file count]
+🛡️ Vigil: [quality gate result, findings count]
+
+Output:
+  _aegis-output/specs/      ← architecture spec
+  _aegis-output/reviews/    ← review report
+  [project files]           ← implementation
+```
 
 ## Pipeline
 
