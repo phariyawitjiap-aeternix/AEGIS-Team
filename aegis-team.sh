@@ -447,8 +447,10 @@ spawn_team() {
         echo "$prompt" > "$prompt_file"
 
         # Launch claude in the pane
+        # Use -p (print mode) which skips the workspace trust dialog
+        # --dangerously-skip-permissions bypasses tool permission prompts
         tmux send-keys -t "${SESSION_NAME}.${pane_idx}" \
-            "cd '${PROJECT_DIR}' && cat '${prompt_file}' | claude --dangerously-skip-permissions" Enter
+            "cd '${PROJECT_DIR}' && claude -p --dangerously-skip-permissions < '${prompt_file}'" Enter
 
         info "  Launched ${agent_name} (${agent_role}) in pane ${pane_idx}"
         pane_idx=$(( pane_idx + 1 ))
