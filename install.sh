@@ -146,6 +146,44 @@ else
     success "claude CLI found: $(claude --version 2>&1 | head -1)"
 fi
 
+# Check CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS env var
+if [[ "${CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS:-}" != "1" ]]; then
+    warn "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS is NOT set."
+    echo ""
+    echo "  This env var is REQUIRED for AEGIS Agent Teams to work."
+    echo "  Without it, team commands (/aegis-team-*) won't spawn agents."
+    echo ""
+
+    # Detect shell config file
+    SHELL_RC=""
+    if [[ -f "$HOME/.zshrc" ]]; then
+        SHELL_RC="$HOME/.zshrc"
+    elif [[ -f "$HOME/.bashrc" ]]; then
+        SHELL_RC="$HOME/.bashrc"
+    fi
+
+    if [[ -n "$SHELL_RC" ]]; then
+        # Check if already in rc file but not sourced
+        if grep -q 'CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS' "$SHELL_RC" 2>/dev/null; then
+            info "Found in $SHELL_RC but not sourced. Run: source $SHELL_RC"
+        else
+            echo "  Adding to $SHELL_RC..."
+            echo 'export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1' >> "$SHELL_RC"
+            success "Added to $SHELL_RC"
+            echo "  Run 'source $SHELL_RC' or open a new terminal for it to take effect."
+        fi
+    else
+        echo "  Add this to your shell config (~/.zshrc or ~/.bashrc):"
+        echo '    export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1'
+    fi
+
+    # Set for current session
+    export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
+    echo ""
+else
+    success "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1"
+fi
+
 # --------------------------------------------------------------------------
 # Upgrade Check
 # --------------------------------------------------------------------------

@@ -35,7 +35,13 @@ git --version
 
 # 4. tmux (REQUIRED — core of Agent Teams)
 brew install tmux
+
+# 5. Enable Agent Teams (REQUIRED — add to shell config)
+echo 'export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1' >> ~/.zshrc
+source ~/.zshrc
 ```
+
+> :rotating_light: **IMPORTANT:** `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` must be set as a **shell environment variable** (in `~/.zshrc` or `~/.bashrc`). Without it, team commands won't spawn agents. The `install.sh` script will auto-detect and add it if missing.
 
 > :bulb: **Tip:** If `claude` or `node` not found after install, open a **new terminal tab** — your PATH needs to reload.
 
