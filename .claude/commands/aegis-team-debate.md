@@ -8,119 +8,81 @@ triggers:
 
 # /aegis-team-debate
 
-Spawn a debate team using Claude Code's **built-in Agent tool**.
+Spawn a debate team using Claude Code's **TeamCreate + Agent Teams**.
+
+Each agent runs in its own tmux pane. All perspectives run in parallel, then Navi synthesizes.
 
 ## Instructions
 
-When this command is triggered:
-
 ### Step 1: Determine the topic
 
-Look at the user's message for the debate topic:
-- "ถกเถียง — SQL vs NoSQL" → topic is "SQL vs NoSQL"
-- "/aegis-team-debate monolith or microservices" → topic is "monolith or microservices"
-- Just "/aegis-team-debate" → ask: "What architecture decision should we debate?"
+Look at the user's message for the debate topic. If no topic, ask: "What architecture decision should we debate?"
 
-### Step 2: Spawn agents using the Agent tool
+### Step 2: Create the team
 
-Launch all perspectives in **parallel**, then synthesize:
-
-**Perspective 1: Architecture (📐 Sage) — run in background**
-
-Use the Agent tool with `run_in_background: true`:
+Use **TeamCreate**:
 ```
-subagent_type: use the agent defined in .claude/agents/sage.md
-prompt: |
-  You are Sage, the architect, in an architecture debate.
-  Topic: [TOPIC]
-
-  Present 2-3 architecture options with:
-  1. Option name and description
-  2. Pros and cons
-  3. When each option is best suited
-  4. Long-term maintenance implications
-  5. Your recommended option with rationale
-
-  Write to: _aegis-output/debates/sage-proposal.md
+team_name: "aegis-debate"
+description: "Debate team: Sage proposes + Bolt evaluates + Havoc challenges → Navi decides. Topic: [TOPIC]"
 ```
 
-**Perspective 2: Feasibility (⚡ Bolt) — run in background**
+### Step 3: Spawn teammates
 
-Use the Agent tool with `run_in_background: true`:
+**Spawn Sage (Proposer):**
 ```
-subagent_type: use the agent defined in .claude/agents/bolt.md
-prompt: |
-  You are Bolt, the implementer, in an architecture debate.
-  Topic: [TOPIC]
-
-  For each realistic option, evaluate:
-  1. Implementation effort (hours/days/weeks)
-  2. Technical complexity
-  3. Libraries/tools needed
-  4. Team skill requirements
-  5. Migration path from current state
-
-  Write to: _aegis-output/debates/bolt-feasibility.md
+Agent(
+  subagent_type: "sage",
+  team_name: "aegis-debate",
+  name: "sage",
+  prompt: "You are Sage in an architecture debate. Topic: [TOPIC]. Present 2-3 options with pros, cons, and your recommendation. Write to _aegis-output/debates/sage-proposal.md. When done, mark task complete.",
+  run_in_background: true
+)
 ```
 
-**Perspective 3: Challenge (🔴 Havoc) — run in background**
-
-Use the Agent tool with `run_in_background: true`:
+**Spawn Bolt (Feasibility):**
 ```
-subagent_type: use the agent defined in .claude/agents/havoc.md
-prompt: |
-  You are Havoc, the devil's advocate, in an architecture debate.
-  Topic: [TOPIC]
-
-  Challenge EVERY option:
-  1. What breaks at 10x scale?
-  2. What's the worst-case failure mode?
-  3. What assumptions are wrong?
-  4. What hidden costs exist?
-  5. What would make you choose the OTHER option?
-
-  Write to: _aegis-output/debates/havoc-challenges.md
+Agent(
+  subagent_type: "bolt",
+  team_name: "aegis-debate",
+  name: "bolt",
+  prompt: "You are Bolt in an architecture debate. Topic: [TOPIC]. Evaluate implementation effort, complexity, and migration path for each option. Write to _aegis-output/debates/bolt-feasibility.md. When done, mark task complete.",
+  run_in_background: true
+)
 ```
 
-Wait for ALL 3 to complete.
-
-**Synthesis: Decision (🧭 Navi)**
-
-Use the Agent tool:
+**Spawn Havoc (Challenger):**
 ```
-subagent_type: use the agent defined in .claude/agents/navi.md
-prompt: |
-  You are Navi, the navigator, synthesizing a debate.
-  Topic: [TOPIC]
-
-  Read all 3 perspectives:
-  - _aegis-output/debates/sage-proposal.md
-  - _aegis-output/debates/bolt-feasibility.md
-  - _aegis-output/debates/havoc-challenges.md
-
-  Produce an Architecture Decision Record (ADR):
-  1. Decision: [chosen option]
-  2. Status: Accepted
-  3. Context: [why this decision was needed]
-  4. Options considered: [from Sage]
-  5. Feasibility: [from Bolt]
-  6. Risks mitigated: [from Havoc]
-  7. Consequences: [trade-offs accepted]
-
-  Save ADR to: _aegis-brain/resonance/architecture-decisions.md (append)
-  Write debate summary to: _aegis-output/debates/decision.md
+Agent(
+  subagent_type: "havoc",
+  team_name: "aegis-debate",
+  name: "havoc",
+  prompt: "You are Havoc in an architecture debate. Topic: [TOPIC]. Challenge EVERY option — what breaks at scale? What assumptions are wrong? What hidden costs? Write to _aegis-output/debates/havoc-challenges.md. When done, mark task complete.",
+  run_in_background: true
+)
 ```
 
-### Step 3: Report results
+Wait for all 3 to complete.
 
+**Spawn Navi (Synthesizer):**
 ```
-🛡️ Debate Complete!
-
-📐 Sage: [options proposed]
-⚡ Bolt: [feasibility assessment]
-🔴 Havoc: [challenges raised]
-🧭 Navi: Decision → [chosen option]
-         Rationale: [why]
-
-ADR saved to: _aegis-brain/resonance/architecture-decisions.md
+Agent(
+  subagent_type: "navi",
+  team_name: "aegis-debate",
+  name: "navi",
+  prompt: "You are Navi, synthesizing a debate. Read _aegis-output/debates/sage-proposal.md, bolt-feasibility.md, havoc-challenges.md. Produce an ADR with decision, context, options, and consequences. Save to _aegis-brain/resonance/architecture-decisions.md (append).",
+  run_in_background: true
+)
 ```
+
+### Step 4: Report and shutdown
+
+Report the decision, then shutdown all teammates + TeamDelete.
+
+## Team Composition
+
+| Agent | Role | Model | tmux Pane |
+|-------|------|-------|-----------|
+| 📐 Sage | Proposer — presents options | opus | Own pane |
+| ⚡ Bolt | Feasibility — evaluates effort | sonnet | Own pane |
+| 🔴 Havoc | Challenger — stress tests | opus | Own pane |
+| 🧭 Navi | Synthesizer — makes decision | opus | Own pane |

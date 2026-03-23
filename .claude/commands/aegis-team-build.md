@@ -8,104 +8,88 @@ triggers:
 
 # /aegis-team-build
 
-Spawn a build team using Claude Code's **built-in Agent tool**.
+Spawn a build team using Claude Code's **TeamCreate + Agent Teams**.
+
+Each agent runs in its own tmux pane. They coordinate via shared task list and messages.
 
 ## Instructions
 
-When this command is triggered:
-
 ### Step 1: Determine the task
 
-Look at the user's message for what they want built:
-- "ทีมสร้าง — implement auth system" → task is "implement auth system"
-- "/aegis-team-build add user CRUD" → task is "add user CRUD"
-- Just "/aegis-team-build" with no task → ask: "What should the build team work on?"
+Look at the user's message for what they want built. If no task specified, ask: "What should the build team work on?"
 
-### Step 2: Spawn agents using the Agent tool
+### Step 2: Create the team
 
-Launch agents in sequence — each phase feeds the next:
-
-**Phase 1: Architecture (📐 Sage)**
-
-Use the Agent tool:
+Use **TeamCreate**:
 ```
-subagent_type: use the agent defined in .claude/agents/sage.md
-prompt: |
-  You are Sage, the system architect.
-  Task: [TASK]
-
-  Write a technical spec covering:
-  1. Architecture overview and patterns
-  2. Data model / schema
-  3. File structure with all files to create
-  4. Key implementation decisions
-
-  Write output to: _aegis-output/specs/
-  When done, summarize what you designed.
+team_name: "aegis-build"
+description: "Build team: Sage specs → Bolt implements → Vigil reviews. Task: [TASK]"
 ```
 
-Wait for Sage to complete before proceeding.
+### Step 3: Spawn teammates
 
-**Phase 2: Implementation (⚡ Bolt)**
+Use the **Agent tool** to spawn each teammate. Each gets its own tmux pane.
 
-Use the Agent tool:
+**Spawn Sage (Architect):**
 ```
-subagent_type: use the agent defined in .claude/agents/bolt.md
-prompt: |
-  You are Bolt, the implementer.
-  Task: [TASK]
-
-  Read the spec that Sage wrote in _aegis-output/specs/.
-  Implement ALL files described in the spec.
-  Write production-quality code with proper error handling.
-  Run builds/tests if applicable.
-
-  When done, list all files you created.
+Agent(
+  subagent_type: "sage",
+  team_name: "aegis-build",
+  name: "sage",
+  prompt: "You are Sage, the architect. Your task: [TASK]. Write a technical spec covering architecture, data model, and file structure. Write output to _aegis-output/specs/. When done, mark your task complete and notify bolt to start implementing.",
+  run_in_background: true
+)
 ```
 
-Wait for Bolt to complete before proceeding.
-
-**Phase 3: Review (🛡️ Vigil)**
-
-Use the Agent tool:
+**Spawn Bolt (Implementer):**
 ```
-subagent_type: use the agent defined in .claude/agents/vigil.md
-prompt: |
-  You are Vigil, the code reviewer.
-  Task: Review all files created by Bolt for [TASK].
-
-  Run 4-pass review:
-  1. Correctness — logic errors, edge cases
-  2. Security — vulnerabilities, input validation
-  3. Performance — bottlenecks, resource usage
-  4. Maintainability — code quality, patterns
-
-  Issue a quality gate: PASS, CONDITIONAL, or FAIL.
-  Write review to: _aegis-output/reviews/
+Agent(
+  subagent_type: "bolt",
+  team_name: "aegis-build",
+  name: "bolt",
+  prompt: "You are Bolt, the implementer. Your task: [TASK]. Wait for Sage to finish the spec in _aegis-output/specs/, then implement all files. When done, mark your task complete and notify vigil to review.",
+  run_in_background: true
+)
 ```
 
-### Step 3: Report results
+**Spawn Vigil (Reviewer):**
+```
+Agent(
+  subagent_type: "vigil",
+  team_name: "aegis-build",
+  name: "vigil",
+  prompt: "You are Vigil, the reviewer. Wait for Bolt to finish implementation. Then review all created files with 4-pass review: correctness, security, performance, maintainability. Write review to _aegis-output/reviews/. Issue quality gate: PASS/CONDITIONAL/FAIL.",
+  run_in_background: true
+)
+```
 
-After all 3 agents complete, show the user:
+### Step 4: Monitor and report
+
+The team lead (you) monitors progress via automatic message delivery from teammates. When all agents report done:
 
 ```
 🛡️ Build Team Complete!
 
-📐 Sage: [summary of spec]
-⚡ Bolt: [summary of implementation, file count]
-🛡️ Vigil: [quality gate result, findings count]
-
-Output:
-  _aegis-output/specs/      ← architecture spec
-  _aegis-output/reviews/    ← review report
-  [project files]           ← implementation
+📐 Sage: [spec summary]
+⚡ Bolt: [implementation summary]
+🛡️ Vigil: [quality gate result]
 ```
 
-## Pipeline
+### Step 5: Shutdown team
 
+When work is complete, send shutdown to all teammates:
 ```
-Sage (spec) → GATE → Bolt (implement) → GATE → Vigil (review)
-                                                    ↓
-                                              APPROVE → done
-                                              CHANGES → Bolt fixes → Vigil re-reviews
+SendMessage(to: "sage", message: {type: "shutdown_request", reason: "Build complete"})
+SendMessage(to: "bolt", message: {type: "shutdown_request", reason: "Build complete"})
+SendMessage(to: "vigil", message: {type: "shutdown_request", reason: "Build complete"})
 ```
+
+Then use **TeamDelete** to clean up.
+
+## Team Composition
+
+| Agent | Role | Model | tmux Pane |
+|-------|------|-------|-----------|
+| 📐 Sage | Architect — writes spec | opus | Own pane |
+| ⚡ Bolt | Implementer — builds from spec | sonnet | Own pane |
+| 🛡️ Vigil | Reviewer — quality gates | sonnet | Own pane |
