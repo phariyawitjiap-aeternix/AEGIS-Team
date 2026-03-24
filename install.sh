@@ -128,10 +128,9 @@ fi
 success "git found: $(git --version)"
 
 if ! command -v tmux &>/dev/null; then
-    error "tmux is REQUIRED for AEGIS Agent Teams but not found."
-    echo "  Install with: brew install tmux (macOS) or apt install tmux (Linux)"
-    echo "  tmux is core to AEGIS — agents communicate via tmux panes."
-    exit 1
+    warn "tmux not found. Agent team split-pane view won't be available."
+    warn "Teams still work in in-process mode (Shift+Down to see agents)."
+    warn "Install with: brew install tmux (macOS) or apt install tmux (Linux)"
 else
     success "tmux found: $(tmux -V)"
 fi
