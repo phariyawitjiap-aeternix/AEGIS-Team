@@ -27,23 +27,32 @@ Full sprint lifecycle management. Navi (opus) orchestrates all ceremonies.
 
 ### ⚠️ MANDATORY: ISO 29110 Documents Per Sprint
 
-**Every sprint MUST produce/update these documents. No exceptions.**
+**Documents are generated AT ACTIVITY TIME by Scribe, not batch-generated at sprint close.**
+**Sprint close only VERIFIES all required docs exist — it does not generate them.**
 
-| When | Documents Updated | Agent |
-|------|-------------------|-------|
-| **Sprint Plan** | PM.01 (update timeline), PM.04 (planning meeting), SI.01 (new reqs if any) | Scribe |
-| **During Sprint** | PM.02 (progress daily), SI.03 (traceability for new code) | Scribe |
-| **Sprint Close** | PM.02 (final status), PM.03 (any CRs), SI.02 (design changes), SI.04 (test plan updates), SI.05 (test results), SI.06 (acceptance), SI.07 (config/version) | Scribe |
+| Sprint Phase | Activity | Scribe Auto-Generates |
+|-------------|----------|----------------------|
+| Sprint Plan | PM.1 | Project Plan (update), Meeting Record |
+| Daily Work | PM.2 | Progress Status (per standup) |
+| When Scope Changes | PM.2 | Change Request |
+| When Issues Found | PM.3 | Correction Register entry |
+| After /aegis-breakdown | SI.2 | Requirements Spec, Traceability Matrix |
+| After Sage specs | SI.3 | Design Document, Traceability Matrix |
+| After Bolt builds | SI.4 | Test Cases, Traceability Matrix |
+| After /aegis-qa | SI.5 | Test Report, Traceability Matrix (final) |
+| Sprint Close | PM.4 | Acceptance Record, Meeting Record |
+| Release | SI.6 | Software Configuration |
 
-**Sprint close is BLOCKED if ISO docs are not updated:**
+**Sprint close is BLOCKED if ISO docs are not current:**
 ```
 /aegis-sprint close
-  → Check: doc-registry.json last_updated >= sprint start date?
-  → If ANY doc is stale: ❌ "Cannot close sprint. Run /aegis-compliance generate first."
-  → If all docs current: ✅ Proceed with close
+  → Runs: /aegis-compliance check
+  → If ANY required doc is missing/stale: "Cannot close sprint. Docs missing: [list]"
+    → Team identifies WHICH ACTIVITY was skipped and completes it
+  → If all docs current: Proceed with close
 ```
 
-**First sprint = more work (11 new docs). Subsequent sprints = incremental updates only.**
+**First sprint = more work (up to 14 work products). Subsequent sprints = incremental updates only.**
 
 ---
 

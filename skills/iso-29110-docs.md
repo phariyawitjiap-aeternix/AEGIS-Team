@@ -7,17 +7,16 @@
 Generate and maintain ISO/IEC 29110 Basic profile compliant work products from AEGIS agent outputs. Covers both Project Management (PM) and Software Implementation (SI) processes.
 
 ## When to Use
-- After sprint planning to generate/update Project Plan (PM.01)
-- After daily standups or sprint reviews to update Progress Status (PM.02)
-- When scope changes to log Change Requests (PM.03)
-- After any sprint ceremony to record Meeting Minutes (PM.04)
-- After work breakdown to generate Requirements Specification (SI.01)
-- After architecture design to generate Design Document (SI.02)
-- After any document update to refresh Traceability Matrix (SI.03)
-- After QA planning to generate Test Plan (SI.04)
-- After QA execution to generate Test Report (SI.05)
-- After QA gate pass to generate Acceptance Record (SI.06)
-- At release time to generate Software Configuration (SI.07)
+- After sprint planning to generate/update Project Plan (PM.1) and Meeting Record
+- After daily standups to update Progress Status Record (PM.2)
+- When scope changes to log Change Requests (PM.2)
+- When issues or defects found to update Correction Register (PM.3)
+- After /aegis-breakdown to generate Requirements Specification + Traceability Matrix initial (SI.2)
+- After Sage architecture spec to generate Design Document + Traceability Matrix design links (SI.3)
+- After Bolt implementation to generate Test Cases document + Traceability Matrix code+test links (SI.4)
+- After /aegis-qa to generate Test Report + Traceability Matrix final verification (SI.5)
+- After QA gate pass and customer sign-off to generate Acceptance Record (PM.4)
+- At release time to generate Software Configuration (SI.6)
 - When auditing compliance gaps via /aegis-compliance check
 
 ---
@@ -32,78 +31,175 @@ Generate and maintain ISO/IEC 29110 Basic profile compliant work products from A
 
 ---
 
-## ISO 29110 Basic Profile -- Full Document Catalog
+## ISO 29110 Basic Profile — Work Products
+
+### PM Process (runs throughout project)
+
+| Activity | Work Product | When Created | When Updated |
+|----------|-------------|-------------|-------------|
+| PM.1 Project Planning | Project Plan | Project start | Each sprint/iteration start |
+| PM.1 Project Planning | Project Repository | Project start | Continuously |
+| PM.2 Execution | Progress Status Record | Each standup/status | Throughout sprint |
+| PM.2 Execution | Change Requests | When scope changes | As needed |
+| PM.2 Execution | Meeting Records | Every formal review | Every ceremony |
+| PM.3 Assessment | Correction Register | When issues found | Throughout project |
+| PM.4 Closure | Acceptance Record | Sprint/project end | Customer sign-off |
+
+### SI Process (technical lifecycle — maps to sprint activities)
+
+| Activity | Work Product | When Created | Sprint Phase |
+|----------|-------------|-------------|-------------|
+| SI.1 Initiation | (uses Project Plan) | Sprint start | Planning |
+| SI.2 Requirements | Requirements Specification | When reqs defined | /aegis-breakdown, /super-spec |
+| SI.2 Requirements | Traceability Matrix (start) | With reqs | /aegis-breakdown |
+| SI.3 Design | Software Design Document | Before coding | /aegis-team-build (Sage phase) |
+| SI.3 Design | Traceability Matrix (update) | With design | /aegis-team-build (Sage phase) |
+| SI.4 Construction | Software Components | During coding | /aegis-team-build (Bolt phase) |
+| SI.4 Construction | Test Cases & Procedures | During coding | /aegis-team-build (Bolt phase) |
+| SI.4 Construction | Traceability Matrix (update) | With code+tests | /aegis-team-build (Bolt phase) |
+| SI.5 Integration & Test | Test Report | After testing | /aegis-qa |
+| SI.5 Integration & Test | Traceability Matrix (final) | After testing | /aegis-qa |
+| SI.6 Delivery | Software Configuration | Release | /aegis-launch |
+| SI.6 Delivery | User Manual (if required) | Release | /aegis-launch |
+
+### KEY PRINCIPLE: Documents at activity time, NOT retroactively
+
+```
+## Auto-Generation Triggers (REAL-TIME, not batch)
+
+When /aegis-breakdown runs (SI.2):
+  → Scribe auto-generates: Requirements Specification + Traceability Matrix (initial)
+
+When /aegis-team-build runs — Sage phase (SI.3):
+  → Scribe auto-generates: Software Design Document + Traceability Matrix (design links)
+
+When /aegis-team-build runs — Bolt phase (SI.4):
+  → Scribe auto-generates: Test Cases document + Traceability Matrix (code+test links)
+
+When /aegis-qa runs (SI.5):
+  → Scribe auto-generates: Test Report + Traceability Matrix (final verification)
+
+When /aegis-sprint plan runs (PM.1):
+  → Scribe auto-generates: Project Plan update + Meeting Record (planning)
+
+When /aegis-sprint standup runs (PM.2):
+  → Scribe auto-generates: Progress Status Record entry
+
+When /aegis-kanban move ... --force or bug found (PM.3):
+  → Scribe auto-generates: Correction Register entry
+
+When /aegis-sprint close runs (PM.4):
+  → Scribe auto-generates: Acceptance Record + Meeting Record (review+retro)
+
+When /aegis-launch runs (SI.6):
+  → Scribe auto-generates: Software Configuration + User Manual (if needed)
+```
+
+---
+
+## ISO 29110 Basic Profile — Full Document Catalog
 
 ### Project Management (PM) Process
 
-#### PM.01 -- Project Plan
-- **Content**: Task descriptions, effort estimates, schedule, milestones, resource assignments, risk identification, version control strategy
+#### PM.1 — Project Plan
+- **Content**: Task descriptions, effort estimates, schedule, milestones, resource assignments, risk identification, version control strategy, lifecycle selection
 - **Source data**: Sprint plan (_aegis-brain/sprints/), backlog (_aegis-brain/backlog.md), kanban assignments, Havoc risk analysis
-- **Auto-trigger**: Generated at sprint planning, updated each sprint
-- **Location**: _aegis-output/iso-docs/project-plan.md
+- **Auto-trigger**: Generated at project start (PM.1), updated each sprint planning (PM.2)
+- **Location**: _aegis-output/iso-docs/PM-01-project-plan/
 
-#### PM.02 -- Progress Status Record
-- **Content**: Actual vs planned progress, identified problems, deviations, corrective actions
+#### PM.2 — Progress Status Record
+- **Content**: Actual vs planned progress, identified problems, deviations from plan
 - **Source data**: Kanban board state, burndown data, agent StatusUpdate messages, blocker tracking
-- **Auto-trigger**: Updated at daily standups and sprint reviews
-- **Location**: _aegis-output/iso-docs/progress-status.md
+- **Auto-trigger**: Updated at daily standups (PM.2 ongoing throughout project)
+- **Location**: _aegis-output/iso-docs/PM-02-progress-status/
+- **NOTE**: PM.2 is ONGOING — runs concurrently with all SI activities
 
-#### PM.03 -- Change Request Log
+#### PM.2 — Change Requests
 - **Content**: Requested changes, impact analysis, approval status, implementation status
 - **Source data**: Scope changes tracked by Navi, EscalationAlert messages
-- **Auto-trigger**: When scope changes are detected or requested
-- **Location**: _aegis-output/iso-docs/change-requests.md
+- **Auto-trigger**: When any scope or requirement change is detected or requested
+- **Location**: _aegis-output/iso-docs/PM-03-change-requests/
+- **NOTE**: Every change, no matter how small, requires a documented Change Request with impact evaluation
 
-#### PM.04 -- Meeting Records
+#### PM.2 — Meeting Records
 - **Content**: Date, attendees (agents), agenda, decisions, action items
-- **Source data**: Sprint ceremony outputs (planning, standup, review, retro)
-- **Auto-trigger**: After each sprint ceremony completes
-- **Location**: _aegis-output/iso-docs/meeting-minutes/YYYY-MM-DD-<type>.md
+- **Source data**: Sprint ceremony outputs (planning, standup, review, retro), design reviews, code reviews
+- **Auto-trigger**: After each sprint ceremony and formal review
+- **Location**: _aegis-output/iso-docs/PM-04-meeting-records/YYYY-MM-DD-<type>.md
+- **NOTE**: Every formal meeting/review must generate a Meeting Record. Informal reviews are not sufficient.
+
+#### PM.3 — Correction Register
+- **Content**: Issue ID, description, severity, root cause, corrective action, resolution status
+- **Source data**: QA failures, Vigil findings, audit gaps, retrospective action items
+- **Auto-trigger**: When any defect, issue, or deviation is identified (PM.3 ongoing)
+- **Location**: _aegis-output/iso-docs/PM-05-correction-register/
+- **NOTE**: PM.3 runs periodically throughout the project, not just at closure. Auditors check this.
+
+#### PM.4 — Acceptance Record
+- **Content**: Acceptance criteria checklist, sign-off record, delivery confirmation
+- **Source data**: QA gate pass + formal customer/stakeholder sign-off
+- **Auto-trigger**: At sprint/project closure after delivery is accepted
+- **Location**: _aegis-output/iso-docs/PM-06-acceptance-record/
+- **NOTE**: Must have formal written sign-off. Verbal approval is an audit failure.
 
 ### Software Implementation (SI) Process
 
-#### SI.01 -- Requirements Specification
+#### SI.2 — Requirements Specification
 - **Content**: Functional requirements, non-functional requirements, constraints, acceptance criteria
 - **Source data**: Work breakdown outputs from Sage (/aegis-breakdown)
-- **Auto-trigger**: When /aegis-breakdown completes
-- **Location**: _aegis-output/iso-docs/requirements-spec.md
+- **Auto-trigger**: When /aegis-breakdown completes (SI.2 activity)
+- **Location**: _aegis-output/iso-docs/SI-01-requirements-spec/
+- **NOTE**: Must be customer-approved and baselined before SI.3 (design) begins
 
-#### SI.02 -- Software Design Document
-- **Content**: Architecture overview, component design, interfaces, data model, design decisions
-- **Source data**: Sage architecture specs, ADRs (docs/decisions/)
-- **Auto-trigger**: When Sage completes architecture spec
-- **Location**: _aegis-output/iso-docs/design-doc.md
-
-#### SI.03 -- Traceability Record
+#### SI.2 / SI.3 / SI.4 / SI.5 — Requirements Traceability Matrix
 - **Content**: Matrix linking Requirement -> Design section -> Code file -> Test case -> Test result
 - **Source data**: Cross-reference of all above documents + Bolt commit refs + Probe test results
-- **Auto-trigger**: Updated whenever any linked document changes
-- **Location**: _aegis-output/iso-docs/traceability-matrix.md
-- **Computation**: Scribe auto-generates by scanning requirements IDs, design section anchors, code references from commits, test case IDs, and test results
+- **Auto-trigger**: Created at SI.2, updated at SI.3, SI.4, SI.5 — ONE living document
+- **Location**: _aegis-output/iso-docs/SI-02-traceability-matrix/
+- **NOTE**: This is a SINGLE document updated across all SI activities. Not four separate docs.
+- **Computation**: Scribe auto-generates by scanning requirement IDs, design section anchors, code references from commits, test case IDs, and test results
 
-#### SI.04 -- Test Plan
+#### SI.3 — Software Design Document
+- **Content**: Architecture overview, component design, interfaces, data model, design decisions
+- **Source data**: Sage architecture specs, ADRs (docs/decisions/)
+- **Auto-trigger**: When Sage completes architecture spec (SI.3 activity)
+- **Location**: _aegis-output/iso-docs/SI-03-design-doc/
+- **NOTE**: Must cover both architectural design AND detailed design per the standard
+
+#### SI.4 — Software Components
+- **Content**: Source code files, unit test results, code review records
+- **Source data**: Bolt implementation commits, Vigil code review results
+- **Auto-trigger**: When Bolt completes implementation (SI.4 activity)
+- **Location**: src/ (tracked via git), referenced in traceability matrix
+- **NOTE**: Software Components = the actual code. Referenced in registry but stored in src/.
+
+#### SI.4 — Test Cases and Test Procedures
 - **Content**: Test strategy, test cases, test data, pass/fail criteria, environment requirements
 - **Source data**: Sentinel test plan (_aegis-output/qa/)
-- **Auto-trigger**: When /aegis-qa plan completes
-- **Location**: _aegis-output/iso-docs/test-plan.md
+- **Auto-trigger**: When /aegis-team-build Bolt phase completes (SI.4 activity)
+- **Location**: _aegis-output/iso-docs/SI-04-test-cases/
+- **NOTE**: Test Cases are created IN SI.4 (during construction), NOT just before testing. They validate the design.
 
-#### SI.05 -- Test Report
-- **Content**: Test execution summary, pass/fail counts, defects found, QA verdict
+#### SI.5 — Test Report
+- **Content**: Test execution summary, pass/fail counts, defects found, QA verdict, verification results, validation results
 - **Source data**: Probe execution results + Sentinel verdict (_aegis-output/qa/)
-- **Auto-trigger**: When /aegis-qa run completes
-- **Location**: _aegis-output/iso-docs/test-report.md
+- **Auto-trigger**: When /aegis-qa run completes (SI.5 activity)
+- **Location**: _aegis-output/iso-docs/SI-05-test-report/
+- **NOTE**: Test Report includes verification results (does it match design?) and validation results (does it meet customer needs?).
 
-#### SI.06 -- Acceptance Record
-- **Content**: Acceptance criteria checklist, QA verdict reference, sign-off record
-- **Source data**: QA gate pass + human sign-off (via Navi)
-- **Auto-trigger**: When QA gate passes and human approves
-- **Location**: _aegis-output/iso-docs/acceptance-record.md
-
-#### SI.07 -- Software Configuration
+#### SI.6 — Software Configuration
 - **Content**: Release version, included components, build instructions, deployment notes, known issues
 - **Source data**: Release artifacts from Bolt, git tags, CHANGELOG
-- **Auto-trigger**: At release preparation
-- **Location**: _aegis-output/iso-docs/release/release-<version>.md
+- **Auto-trigger**: At release preparation (/aegis-launch)
+- **Location**: _aegis-output/iso-docs/SI-06-delivery/release-<version>.md
+- **NOTE**: This is the deliverable set — what was packaged and delivered to the customer.
+
+#### SI.6 — User Manual (if required)
+- **Content**: Installation guide, user guide, operational procedures
+- **Source data**: Product specs, Muse documentation outputs
+- **Auto-trigger**: At release if contractually required
+- **Location**: _aegis-output/iso-docs/SI-06-delivery/user-manual.md
+- **NOTE**: Required "if contractually required" by the standard. Check Statement of Work.
 
 ---
 
@@ -121,8 +217,8 @@ Every ISO 29110 document follows this lifecycle:
 Status is tracked in a header block at the top of each document:
 ```markdown
 ---
-document_id: PM.01
-title: Project Plan
+document_id: SI.2
+title: Requirements Specification
 version: 1.2
 status: Approved
 last_updated: 2026-03-24
@@ -146,11 +242,13 @@ approver: navi
 ```
 
 **Computation method**: Scribe scans and cross-references:
-1. Requirement IDs from _aegis-output/breakdown/ and iso-docs/requirements-spec.md
-2. Design section anchors from iso-docs/design-doc.md
+1. Requirement IDs from _aegis-output/breakdown/ and iso-docs/SI-01-requirements-spec/current.md
+2. Design section anchors from iso-docs/SI-03-design-doc/current.md
 3. Code file references from Bolt implementation commits
 4. Test case IDs from _aegis-output/qa/ test plans
 5. Test results from _aegis-output/qa/results/
+
+**Lifecycle**: Matrix starts at SI.2 (requirements only), gains design links at SI.3, gains code+test links at SI.4, gains test results at SI.5. The SAME matrix file is updated — not recreated.
 
 ---
 
@@ -160,7 +258,7 @@ approver: navi
 2. Scribe reads source data from _aegis-output/ and _aegis-brain/
 3. Scribe generates or updates the target ISO document
 4. Scribe stamps document with version, date, and status=Draft
-5. If traceability matrix is affected, Scribe regenerates it
+5. If traceability matrix is affected, Scribe updates it (not regenerates — updates)
 6. Scribe sends StatusUpdate to Navi confirming document generation
 7. Vigil reviews document for completeness (Gate 3: Compliance)
 8. Navi approves or escalates to human
@@ -172,7 +270,7 @@ approver: navi
 
 ## Outputs
 - ISO 29110 documents in _aegis-output/iso-docs/
-- Traceability matrix in _aegis-output/iso-docs/traceability-matrix.md
+- Traceability matrix in _aegis-output/iso-docs/SI-02-traceability-matrix/current.md
 
 ## Agent Routing
 - **Primary**: Scribe (document generation)
@@ -187,8 +285,8 @@ approver: navi
 
 # Check compliance gaps
 /aegis-compliance check
-> Missing: PM.02 (Progress Status), SI.05 (Test Report)
-> Outdated: PM.01 (Project Plan -- last updated 3 sprints ago)
+> Missing: PM.2 Progress Status, PM.3 Correction Register
+> Outdated: PM.1 Project Plan (last updated 3 sprints ago)
 
 # Update traceability matrix
 /aegis-compliance matrix

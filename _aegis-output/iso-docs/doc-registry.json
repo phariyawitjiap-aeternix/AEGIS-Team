@@ -1,8 +1,10 @@
 {
   "project_key": "PROJ",
+  "_note": "ISO 29110 Basic Profile work products. Updated 2026-03-24 to reflect correct activity numbering (PM.1-PM.4, SI.2-SI.6). SI.07 removed (does not exist in standard — delivery is SI.6). Correction Register (PM.3) added.",
   "documents": [
     {
       "id": "PM.01",
+      "activity": "PM.1",
       "title": "Project Plan — AEGIS AI Agent Team Framework",
       "slug": "PM-01-project-plan",
       "path": "_aegis-output/iso-docs/PM-01-project-plan/current.md",
@@ -13,6 +15,7 @@
     },
     {
       "id": "PM.02",
+      "activity": "PM.2",
       "title": "Progress Status Report — AEGIS v7.1",
       "slug": "PM-02-progress-status",
       "path": "_aegis-output/iso-docs/PM-02-progress-status/current.md",
@@ -23,6 +26,7 @@
     },
     {
       "id": "PM.03",
+      "activity": "PM.2",
       "title": "Change Requests Log — AEGIS v7.1",
       "slug": "PM-03-change-requests",
       "path": "_aegis-output/iso-docs/PM-03-change-requests/current.md",
@@ -33,6 +37,7 @@
     },
     {
       "id": "PM.04",
+      "activity": "PM.2",
       "title": "Meeting Records — AEGIS Key Decisions",
       "slug": "PM-04-meeting-records",
       "path": "_aegis-output/iso-docs/PM-04-meeting-records/current.md",
@@ -42,7 +47,32 @@
       "author": "Scribe (AEGIS v7.1)"
     },
     {
+      "id": "PM.05",
+      "activity": "PM.3",
+      "title": "Correction Register — AEGIS v7.1",
+      "slug": "PM-05-correction-register",
+      "path": "_aegis-output/iso-docs/PM-05-correction-register/current.md",
+      "version": null,
+      "status": "Not Created",
+      "created": null,
+      "author": null,
+      "_note": "Required by PM.3 (Project Assessment and Control). Must be created when first issue/defect is found. Mandatory for audit."
+    },
+    {
+      "id": "PM.06",
+      "activity": "PM.4",
+      "title": "Acceptance Record — AEGIS Version History",
+      "slug": "PM-06-acceptance-record",
+      "path": "_aegis-output/iso-docs/PM-06-acceptance-record/current.md",
+      "version": 1,
+      "status": "Approved",
+      "created": "2026-03-24",
+      "author": "Scribe (AEGIS v7.1)",
+      "_migrated_from": "SI.06 (incorrect activity classification in v7.0)"
+    },
+    {
       "id": "SI.01",
+      "activity": "SI.2",
       "title": "Requirements Specification — AEGIS AI Agent Team Framework",
       "slug": "SI-01-requirements-spec",
       "path": "_aegis-output/iso-docs/SI-01-requirements-spec/current.md",
@@ -53,36 +83,44 @@
     },
     {
       "id": "SI.02",
-      "title": "Design Document — AEGIS Architecture",
-      "slug": "SI-02-design-doc",
-      "path": "_aegis-output/iso-docs/SI-02-design-doc/current.md",
+      "activity": "SI.2-SI.5",
+      "title": "Requirements Traceability Matrix — AEGIS (living document)",
+      "slug": "SI-02-traceability-matrix",
+      "path": "_aegis-output/iso-docs/SI-02-traceability-matrix/current.md",
       "version": 1,
       "status": "Approved",
       "created": "2026-03-24",
-      "author": "Scribe (AEGIS v7.1)"
+      "author": "Scribe (AEGIS v7.1)",
+      "_migrated_from": "SI.03 (wrong slug); one living document updated across SI.2-SI.5",
+      "_note": "Single document. Created at SI.2, updated at SI.3, SI.4, SI.5. Links REQ -> Design -> Code -> Test."
     },
     {
       "id": "SI.03",
-      "title": "Traceability Matrix — Requirements to Design to Files to Tests",
-      "slug": "SI-03-traceability",
-      "path": "_aegis-output/iso-docs/SI-03-traceability/current.md",
+      "activity": "SI.3",
+      "title": "Design Document — AEGIS Architecture",
+      "slug": "SI-03-design-doc",
+      "path": "_aegis-output/iso-docs/SI-03-design-doc/current.md",
       "version": 1,
       "status": "Approved",
       "created": "2026-03-24",
-      "author": "Scribe (AEGIS v7.1)"
+      "author": "Scribe (AEGIS v7.1)",
+      "_migrated_from": "SI.02 (renumbered to match activity order)"
     },
     {
       "id": "SI.04",
-      "title": "Test Plan — AEGIS v7.1",
-      "slug": "SI-04-test-plan",
-      "path": "_aegis-output/iso-docs/SI-04-test-plan/current.md",
+      "activity": "SI.4",
+      "title": "Test Cases and Procedures — AEGIS v7.1",
+      "slug": "SI-04-test-cases",
+      "path": "_aegis-output/iso-docs/SI-04-test-cases/current.md",
       "version": 1,
       "status": "Approved",
       "created": "2026-03-24",
-      "author": "Scribe (AEGIS v7.1)"
+      "author": "Scribe (AEGIS v7.1)",
+      "_migrated_from": "SI.04 (renamed from Test Plan — standard calls this Test Cases and Procedures, created in SI.4 Construction)"
     },
     {
       "id": "SI.05",
+      "activity": "SI.5",
       "title": "Test Report — AEGIS v7.1 Session 2026-03-24",
       "slug": "SI-05-test-report",
       "path": "_aegis-output/iso-docs/SI-05-test-report/current.md",
@@ -93,23 +131,22 @@
     },
     {
       "id": "SI.06",
-      "title": "Acceptance Record — AEGIS Version History",
-      "slug": "SI-06-acceptance",
-      "path": "_aegis-output/iso-docs/SI-06-acceptance/current.md",
+      "activity": "SI.6",
+      "title": "Software Configuration (Delivery) — AEGIS Version History and Dependencies",
+      "slug": "SI-06-delivery",
+      "path": "_aegis-output/iso-docs/SI-06-delivery/current.md",
       "version": 1,
       "status": "Approved",
       "created": "2026-03-24",
-      "author": "Scribe (AEGIS v7.1)"
-    },
+      "author": "Scribe (AEGIS v7.1)",
+      "_migrated_from": "SI.07 (SI.07 does not exist in standard; delivery is SI.6 Product Delivery)"
+    }
+  ],
+  "removed": [
     {
       "id": "SI.07",
-      "title": "Configuration Management — AEGIS Version History and Dependencies",
-      "slug": "SI-07-configuration",
-      "path": "_aegis-output/iso-docs/SI-07-configuration/current.md",
-      "version": 1,
-      "status": "Approved",
-      "created": "2026-03-24",
-      "author": "Scribe (AEGIS v7.1)"
+      "reason": "SI.07 does not exist in ISO 29110 Basic Profile. The standard has exactly 6 SI activities (SI.1-SI.6). Software Configuration is an output of SI.6 Product Delivery. Entry migrated to SI.06 slug.",
+      "removed_date": "2026-03-24"
     }
   ],
   "last_updated": "2026-03-24T00:00:00"
