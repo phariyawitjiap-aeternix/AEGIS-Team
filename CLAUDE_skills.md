@@ -1,4 +1,4 @@
-# AEGIS v6.0 -- Skill Catalog
+# AEGIS v7.0 -- Skill Catalog
 
 > Skills are loaded on-demand based on the active profile. Never load all skills at once.
 
@@ -9,8 +9,8 @@
 | Profile | Skill Count | Context Cost | Use When |
 |---------|-------------|--------------|----------|
 | minimal | 7 | ~3K tokens | Quick tasks, small projects, limited context |
-| standard | 13 | ~6K tokens | Normal development, team projects |
-| full | 21+ | ~12K tokens | Complex analysis, full pipeline, enterprise |
+| standard | 15 | ~7K tokens | Normal development, team projects |
+| full | 26 | ~14K tokens | Complex analysis, full pipeline, enterprise |
 
 ---
 
@@ -67,7 +67,7 @@
 
 ---
 
-## Standard Profile (13 skills = minimal + 6)
+## Standard Profile (15 skills = minimal + 8)
 
 ### 8. super-spec
 - **Description**: Generate comprehensive feature specifications from requirements
@@ -97,14 +97,28 @@
 - **Triggers TH**: "หนี้เทคนิค", "ปรับปรุง", "ทำความสะอาด"
 - **File**: skills/tech-debt-tracker.md
 
-### 12. sprint-tracker
-- **Description**: Sprint planning, velocity tracking, standup summaries
+### 12. sprint-manager (upgrades sprint-tracker)
+- **Description**: Full scrum ceremony management -- sprint planning, daily standup, sprint review, sprint retrospective, velocity tracking, carry-over
 - **Profile**: standard
-- **Triggers EN**: "sprint", "velocity", "standup", "backlog", "kanban"
-- **Triggers TH**: "สปรินต์", "ความเร็ว", "แบคล็อก", "งานค้าง"
-- **File**: skills/sprint-tracker.md
+- **Triggers EN**: "sprint", "scrum", "ceremony", "standup", "sprint planning", "sprint review", "sprint retro", "velocity"
+- **Triggers TH**: "สปรินต์", "สครัม", "พิธี", "สแตนอัพ", "ความเร็ว"
+- **File**: skills/sprint-manager.md
 
-### 13. api-docs
+### 13. kanban-board
+- **Description**: Markdown-based kanban board with column transitions, WIP limits, and task tracking
+- **Profile**: standard
+- **Triggers EN**: "kanban", "board", "task board", "move task", "task status", "WIP"
+- **Triggers TH**: "คันบัง", "บอร์ด", "สถานะงาน"
+- **File**: skills/kanban-board.md
+
+### 14. work-breakdown
+- **Description**: Decompose user stories into journeys, epics, tasks, and subtasks with estimation
+- **Profile**: standard
+- **Triggers EN**: "breakdown", "user story", "epic", "decompose", "hierarchy", "user journey"
+- **Triggers TH**: "แตกงาน", "ยูสเซอร์สตอรี่", "เอพิค", "แยกย่อย"
+- **File**: skills/work-breakdown.md
+
+### 15. api-docs
 - **Description**: Generate API documentation from code, OpenAPI/Swagger specs
 - **Profile**: standard
 - **Triggers EN**: "API", "docs", "swagger", "OpenAPI", "endpoint"
@@ -113,63 +127,84 @@
 
 ---
 
-## Full Profile (21+ skills = standard + 8)
+## Full Profile (26 skills = standard + 11)
 
-### 14. aegis-distill
+### 16. aegis-distill
 - **Description**: Compress conversation context into essential summaries
 - **Profile**: full
 - **Triggers EN**: "distill", "compress", "summarize context", "reduce tokens"
 - **Triggers TH**: "กลั่น", "บีบอัด", "สรุปบริบท"
 - **File**: skills/aegis-distill.md
 
-### 15. aegis-observe
+### 17. aegis-observe
 - **Description**: Monitor agent performance, token usage, and pipeline health
 - **Profile**: full
 - **Triggers EN**: "observe", "monitor", "health", "metrics", "dashboard"
 - **Triggers TH**: "สังเกต", "ตรวจสอบ", "สุขภาพระบบ", "เมตริก"
 - **File**: skills/aegis-observe.md
 
-### 16. adversarial-review
+### 18. adversarial-review
 - **Description**: Red-team analysis, adversarial testing, assumption challenging
 - **Profile**: full
 - **Triggers EN**: "adversarial", "red team", "challenge", "devil's advocate"
 - **Triggers TH**: "ท้าทาย", "ตั้งคำถาม", "ทดสอบสมมติฐาน"
 - **File**: skills/adversarial-review.md
 
-### 17. code-coverage
+### 19. code-coverage
 - **Description**: Analyze test coverage, identify untested paths, coverage goals
 - **Profile**: full
 - **Triggers EN**: "coverage", "untested", "coverage report", "gaps"
 - **Triggers TH**: "ครอบคลุม", "ไม่ได้ทดสอบ", "รายงานครอบคลุม"
 - **File**: skills/code-coverage.md
 
-### 18. retrospective
+### 20. retrospective
 - **Description**: Structured session retrospectives with actionable insights
 - **Profile**: full
 - **Triggers EN**: "retro", "retrospective", "lessons", "what went well"
 - **Triggers TH**: "ย้อนมอง", "บทเรียน", "สิ่งที่ดี", "สิ่งที่ต้องปรับ"
 - **File**: skills/retrospective.md
 
-### 19. course-correction
+### 21. course-correction
 - **Description**: Detect pipeline drift, suggest corrections, realign with goals
 - **Profile**: full
 - **Triggers EN**: "drift", "off track", "correction", "realign", "pivot"
 - **Triggers TH**: "เบี่ยงเบน", "ออกนอกเส้น", "แก้ไขทิศทาง"
 - **File**: skills/course-correction.md
 
-### 20. skill-marketplace
+### 22. skill-marketplace
 - **Description**: Discover, install, and manage community-contributed skills
 - **Profile**: full
 - **Triggers EN**: "marketplace", "install skill", "new skill", "community"
 - **Triggers TH**: "ตลาดทักษะ", "ติดตั้งทักษะ", "ชุมชน"
 - **File**: skills/skill-marketplace.md
 
-### 21. aegis-builder
+### 23. aegis-builder
 - **Description**: Meta-skill to create new AEGIS skills from templates
 - **Profile**: full
 - **Triggers EN**: "build skill", "create skill", "skill template", "meta"
 - **Triggers TH**: "สร้างทักษะ", "เทมเพลตทักษะ", "สร้างใหม่"
 - **File**: skills/aegis-builder.md
+
+### 24. qa-pipeline
+- **Description**: QA test planning, execution, and reporting pipeline using Sentinel and Probe agents
+- **Profile**: full
+- **Triggers EN**: "QA", "quality assurance", "test pipeline", "acceptance test", "QA gate"
+- **Triggers TH**: "คิวเอ", "ทดสอบคุณภาพ", "ตรวจสอบคุณภาพ"
+- **File**: skills/qa-pipeline.md
+
+### 25. iso-29110-docs
+- **Description**: ISO/IEC 29110 Basic profile document generator -- PM.01-PM.04, SI.01-SI.07
+- **Profile**: full
+- **Triggers EN**: "ISO", "29110", "compliance", "audit docs", "work products", "traceability"
+- **Triggers TH**: "ไอเอสโอ", "เอกสารมาตรฐาน", "ตรวจสอบ"
+- **File**: skills/iso-29110-docs.md
+
+### 26. sprint-tracker (legacy -- superseded by sprint-manager)
+- **Description**: Basic sprint planning and velocity tracking. Use sprint-manager for full scrum ceremonies.
+- **Profile**: full
+- **Triggers EN**: "sprint tracker legacy"
+- **Triggers TH**: "สปรินต์เก่า"
+- **File**: skills/sprint-tracker.md
 
 ---
 
