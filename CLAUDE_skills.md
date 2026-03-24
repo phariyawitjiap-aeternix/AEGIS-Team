@@ -10,7 +10,7 @@
 |---------|-------------|--------------|----------|
 | minimal | 7 | ~3K tokens | Quick tasks, small projects, limited context |
 | standard | 15 | ~7K tokens | Normal development, team projects |
-| full | 26 | ~14K tokens | Complex analysis, full pipeline, enterprise |
+| full | 27 | ~14K tokens | Complex analysis, full pipeline, enterprise |
 
 ---
 
@@ -127,7 +127,7 @@
 
 ---
 
-## Full Profile (26 skills = standard + 11)
+## Full Profile (27 skills = standard + 12)
 
 ### 16. aegis-distill
 - **Description**: Compress conversation context into essential summaries
@@ -205,6 +205,14 @@
 - **Triggers EN**: "sprint tracker legacy"
 - **Triggers TH**: "สปรินต์เก่า"
 - **File**: skills/sprint-tracker.md
+
+### 27. aegis-dashboard
+- **Description**: Sprint dashboard with ASCII burndown chart, task distribution, agent workload bars, blocked tasks, and recent activity. Read-only computed view from PM state system JSON files.
+- **Profile**: full
+- **Triggers EN**: "dashboard", "status", "overview", "metrics"
+- **Triggers TH**: "แดชบอร์ด", "สถานะ", "ภาพรวม"
+- **File**: .claude/commands/aegis-dashboard.md
+- **Subcommands**: (default) full dashboard, burndown, agents, tasks, recent
 
 ---
 
