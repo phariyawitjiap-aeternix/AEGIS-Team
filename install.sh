@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # ============================================================================
-# AEGIS v6.0 Installer
-# Creates the full AEGIS framework directory structure and configuration
+# AEGIS v8.2.1 Installer
+# Creates/updates the AEGIS framework. See .claude/references/update-protocol.md
 # ============================================================================
 
 set -euo pipefail
 
-VERSION="6.0.0"
+VERSION="8.2.1"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # --------------------------------------------------------------------------
