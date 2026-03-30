@@ -1,18 +1,16 @@
 # Sprint 1 Kanban Board
 
-> Updated: 2026-03-30 12:45 | Source of truth: `_aegis-brain/tasks/*/meta.json`
+> Updated: 2026-03-30 17:30 | Source of truth: `_aegis-brain/tasks/*/meta.json`
 
-## TODO (1 task, 5 pts)
-
-| ID | Title | Pts | Assignee | Priority |
-|----|-------|-----|----------|----------|
-| PROJ-T-003 | Post-install verification command (/aegis-doctor) | 5 | @bolt | high |
-
-## IN_PROGRESS (1 task, 3 pts)
+## TODO (0 tasks, 0 pts)
 
 | ID | Title | Pts | Assignee | Priority |
 |----|-------|-----|----------|----------|
-| PROJ-T-011 | Task history is append-only and consistent | 3 | @bolt | high |
+
+## IN_PROGRESS (0 tasks, 0 pts)
+
+| ID | Title | Pts | Assignee | Priority |
+|----|-------|-----|----------|----------|
 
 ## IN_REVIEW (0 tasks, 0 pts)
 
@@ -24,7 +22,7 @@
 | ID | Title | Pts | Assignee | Priority |
 |----|-------|-----|----------|----------|
 
-## DONE (6 tasks, 19 pts)
+## DONE (8 tasks, 27 pts)
 
 | ID | Title | Pts | Assignee | Priority |
 |----|-------|-----|----------|----------|
@@ -34,3 +32,19 @@
 | PROJ-T-007 | Gate enforcement blocks kanban transitions | 3 | @bolt | high |
 | PROJ-T-013 | Sprint close computes velocity correctly | 3 | @bolt | high |
 | PROJ-T-004 | Mother Brain follows planning-before-build in practice | 5 | @sage | high |
+| PROJ-T-011 | Task history is append-only and consistent | 3 | @bolt | high |
+| PROJ-T-003 | Post-install verification command (/aegis-doctor) | 5 | @bolt | high |
+
+## BLOCKED (0 tasks, 0 pts)
+
+| ID | Title | Pts | Assignee | Priority |
+|----|-------|-----|----------|----------|
+
+---
+
+## Sprint Summary
+- **Goal**: Fix the foundation: installer, PM state, gate enforcement, Mother Brain planning
+- **Committed**: 27 pts (8 tasks)
+- **Completed**: 27 pts (8 tasks) — 100%
+- **Velocity**: 27 pts/sprint
+- **Status**: CLOSED (day 7/12, early finish)
