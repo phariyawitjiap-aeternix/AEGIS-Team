@@ -167,6 +167,5 @@ export interface GateSummary {
 // ---- Sprint List ----
 export interface SprintInfo {
   name: string;
-  path: string;
   isCurrent: boolean;
 }
