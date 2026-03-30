@@ -5,18 +5,25 @@
   "task_type": "test",
   "parent": "PROJ-E-003",
   "children": [],
-  "status": "BACKLOG",
+  "status": "TODO",
   "assignee": "unassigned",
   "points": 5,
   "priority": "high",
-  "labels": ["qa", "sentinel", "probe", "pipeline"],
+  "labels": [
+    "qa",
+    "sentinel",
+    "probe",
+    "pipeline"
+  ],
   "dependencies": {
     "blocks": [],
-    "blocked_by": ["PROJ-T-007"]
+    "blocked_by": [
+      "PROJ-T-007"
+    ]
   },
   "created": "2026-03-24T10:00:00",
-  "updated": "2026-03-24T10:00:00",
-  "sprint": null,
+  "updated": "2026-03-30T17:45:00",
+  "sprint": "sprint-2",
   "time_tracking": {
     "estimated_hours": 4,
     "logged_hours": 0
