@@ -14,7 +14,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # --------------------------------------------------------------------------
 if [[ ! -f "$SCRIPT_DIR/CLAUDE.md" ]]; then
     echo -e "\033[0;31m[ERROR]\033[0m Cannot find AEGIS source files in $SCRIPT_DIR"
-    echo -e "\033[0;31m[ERROR]\033[0m Make sure you're running install.sh from the AEGIS-Team repo"
+    echo -e "\033[0;31m[ERROR]\033[0m Make sure you're running install.sh from the aegis-hq repo"
     exit 1
 fi
 
@@ -549,6 +549,108 @@ if [[ -f "${SCRIPT_DIR}/_aegis-output/iso-docs/doc-registry.json" ]]; then
 fi
 
 success "${iso_count} ISO 29110 document templates installed"
+
+# --------------------------------------------------------------------------
+# Initial Activity Log + Welcome Data (new installs only)
+# --------------------------------------------------------------------------
+if [[ "$UPGRADE" != true ]]; then
+    info "Creating initial activity log and welcome data..."
+
+    # Activity log with install entry
+    cat > "${TARGET_DIR}/_aegis-brain/logs/activity.log" <<ACTLOG
+# AEGIS Activity Log — Append Only
+# Format: [ISO-8601] [AGENT_EMOJI] [STATUS] — [message]
+# ---
+[$(date +%Y-%m-%dT%H:%M:%S)] 🧬 INSTALL | version=${VERSION} | profile=${PROFILE} | project=${PROJECT_NAME:-"unnamed"}
+[$(date +%Y-%m-%dT%H:%M:%S)] 🧬 SESSION_READY | Run /aegis-start to activate Mother Brain
+ACTLOG
+
+    # Heartbeat log so dashboard shows "installed" not "dead"
+    echo "[$(date '+%Y-%m-%d %H:%M')] PULSE | status=installed | agents=0 | context=0%" \
+      > "${TARGET_DIR}/_aegis-brain/logs/heartbeat.log"
+
+    # Create a welcome sprint (sprint-0) with initial kanban
+    mkdir -p "${TARGET_DIR}/_aegis-brain/sprints/sprint-0/daily"
+
+    cat > "${TARGET_DIR}/_aegis-brain/sprints/sprint-0/plan.md" <<PLAN
+# Sprint 0 — Getting Started
+
+## Sprint Goal
+Set up the project and run the first /aegis-start session.
+
+## Tasks
+| ID | Title | Pts | Assignee | Priority |
+|----|-------|-----|----------|----------|
+| SETUP-001 | Run /aegis-start for the first time | 1 | @human | high |
+| SETUP-002 | Describe your project (Mother Brain asks at P10) | 1 | @human | high |
+| SETUP-003 | Run /super-spec to create BRD + SRS | 3 | @sage | medium |
+PLAN
+
+    cat > "${TARGET_DIR}/_aegis-brain/sprints/sprint-0/kanban.md" <<KANBAN
+# Sprint 0 — Getting Started
+
+> Updated: $(date '+%Y-%m-%d %H:%M') | First install
+
+## TODO (3 tasks, 5 pts)
+
+| ID | Title | Pts | Assignee | Priority |
+|----|-------|-----|----------|----------|
+| SETUP-001 | Run /aegis-start for the first time | 1 | @human | high |
+| SETUP-002 | Describe your project (Mother Brain asks at P10) | 1 | @human | high |
+| SETUP-003 | Run /super-spec to create BRD + SRS | 3 | @sage | medium |
+
+## IN_PROGRESS (0 tasks, 0 pts)
+
+| ID | Title | Pts | Assignee | Priority |
+|----|-------|-----|----------|----------|
+
+## DONE (0 tasks, 0 pts)
+
+| ID | Title | Pts | Assignee | Priority |
+|----|-------|-----|----------|----------|
+KANBAN
+
+    cat > "${TARGET_DIR}/_aegis-brain/sprints/sprint-0/metrics.json" <<METRICS
+{
+  "sprint": "sprint-0",
+  "started": "$(date +%Y-%m-%d)",
+  "planned_end": "$(date +%Y-%m-%d)",
+  "actual_end": null,
+  "goal": "Set up the project and run the first /aegis-start session",
+  "capacity_pts": 5,
+  "committed_pts": 5,
+  "completed_pts": 0,
+  "daily_burndown": [
+    { "date": "$(date +%Y-%m-%d)", "day": 1, "remaining": 5, "completed": 0 }
+  ],
+  "velocity_history": [],
+  "tasks": { "TODO": 3, "IN_PROGRESS": 0, "IN_REVIEW": 0, "QA": 0, "DONE": 0, "BLOCKED": 0 },
+  "carry_over": { "count": 0, "points": 0, "task_ids": [] }
+}
+METRICS
+
+    # Symlink current → sprint-0
+    ln -sfn sprint-0 "${TARGET_DIR}/_aegis-brain/sprints/current"
+
+    # Token usage + benchmarks (empty but valid structure)
+    cat > "${TARGET_DIR}/_aegis-brain/metrics/token-usage.json" <<'TOKENS'
+{
+  "sprints": {},
+  "trend": { "tokens_per_point": [], "improvement_pct": 0 }
+}
+TOKENS
+
+    cat > "${TARGET_DIR}/_aegis-brain/metrics/benchmarks.json" <<'BENCH'
+{
+  "sprints": {},
+  "baseline": null
+}
+BENCH
+
+    success "Welcome data created (sprint-0 kanban + activity log)"
+else
+    info "Upgrade mode: preserving existing brain data"
+fi
 
 # --------------------------------------------------------------------------
 # Summary
