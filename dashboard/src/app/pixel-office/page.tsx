@@ -1,5 +1,15 @@
+"use client";
+
+import dynamic from "next/dynamic";
 import { Header } from "@/components/layout/Header";
-import { PixelOfficeCanvas } from "@/components/pixel-office/PixelOfficeCanvas";
+
+const PixelOfficeCanvas = dynamic(
+  () =>
+    import("@/components/pixel-office/PixelOfficeCanvas").then(
+      (mod) => mod.PixelOfficeCanvas
+    ),
+  { ssr: false, loading: () => <div className="p-6 text-[var(--text-secondary)]">Loading Pixel Office...</div> }
+);
 
 export default function PixelOfficePage() {
   return (

@@ -1,3 +1,4 @@
+"use client";
 import { Header } from "@/components/layout/Header";
 import { ActivityFeed } from "@/components/timeline/ActivityFeed";
 
