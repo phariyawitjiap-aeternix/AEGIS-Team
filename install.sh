@@ -221,15 +221,21 @@ directories=(
     "${TARGET_DIR}/_aegis-brain/learnings"
     "${TARGET_DIR}/_aegis-brain/logs"
     "${TARGET_DIR}/_aegis-brain/retrospectives"
+    "${TARGET_DIR}/_aegis-brain/tasks"
+    "${TARGET_DIR}/_aegis-brain/skill-cache"
+    "${TARGET_DIR}/_aegis-brain/metrics"
+    "${TARGET_DIR}/_aegis-brain/learnings/raw"
     "${TARGET_DIR}/_aegis-output"
     "${TARGET_DIR}/_aegis-output/reviews"
     "${TARGET_DIR}/_aegis-output/adversarial"
     "${TARGET_DIR}/_aegis-output/scans"
     "${TARGET_DIR}/_aegis-output/architecture"
+    "${TARGET_DIR}/_aegis-output/architecture/archive"
     "${TARGET_DIR}/_aegis-output/design"
     "${TARGET_DIR}/_aegis-output/content"
     "${TARGET_DIR}/_aegis-output/specs"
     "${TARGET_DIR}/_aegis-output/breakdown"
+    "${TARGET_DIR}/_aegis-output/research"
     "${TARGET_DIR}/_aegis-output/qa"
     "${TARGET_DIR}/_aegis-output/qa/results"
     "${TARGET_DIR}/_aegis-output/iso-docs"
@@ -252,6 +258,26 @@ for dir in "${directories[@]}"; do
     mkdir -p "$dir"
 done
 success "Directory structure created"
+
+# --------------------------------------------------------------------------
+# Initialize counters.json (sequential ID system)
+# --------------------------------------------------------------------------
+if [[ ! -f "${TARGET_DIR}/_aegis-brain/counters.json" ]]; then
+    info "Initializing counters.json for sequential IDs..."
+    cat > "${TARGET_DIR}/_aegis-brain/counters.json" << 'COUNTERS'
+{
+  "project_key": "PROJ",
+  "counters": {"US":0,"J":0,"E":0,"T":0,"ST":0,"DOC":0,"ADR":0,"TD":0,"REL":0,"HO":0},
+  "last_updated": "1970-01-01T00:00:00"
+}
+COUNTERS
+    success "counters.json initialized"
+else
+    if [[ "$UPGRADE" == true ]]; then
+        info "Preserving existing counters.json (upgrade mode)"
+    fi
+    success "counters.json already exists"
+fi
 
 # --------------------------------------------------------------------------
 # Git Init (if not already a repo)
@@ -471,6 +497,60 @@ skill_count=$(ls -1 "${TARGET_DIR}/skills/"*.md 2>/dev/null | wc -l | tr -d ' ')
 success "${skill_count} skills installed (full definitions, not stubs)"
 
 # --------------------------------------------------------------------------
+# Copy ISO 29110 Document Templates
+# --------------------------------------------------------------------------
+info "Installing ISO 29110 document templates..."
+
+iso_doc_dirs=(
+    "PM-01-project-plan"
+    "PM-02-progress-status"
+    "PM-03-change-requests"
+    "PM-04-meeting-records"
+    "SI-01-requirements-spec"
+    "SI-02-design-doc"
+    "SI-03-traceability"
+    "SI-04-test-plan"
+    "SI-05-test-report"
+    "SI-06-acceptance"
+    "SI-07-configuration"
+)
+
+iso_count=0
+for doc_dir in "${iso_doc_dirs[@]}"; do
+    src_dir="${SCRIPT_DIR}/_aegis-output/iso-docs/${doc_dir}"
+    dst_dir="${TARGET_DIR}/_aegis-output/iso-docs/${doc_dir}"
+
+    if [[ ! -d "$src_dir" ]]; then
+        warn "ISO doc template not found: ${src_dir} -- skipping"
+        continue
+    fi
+
+    # On upgrade, preserve existing ISO docs (user may have customized them)
+    if [[ "$UPGRADE" == true && -d "$dst_dir" ]]; then
+        info "Preserving existing ${doc_dir} (upgrade mode)"
+        continue
+    fi
+
+    mkdir -p "$dst_dir"
+    for f in "$src_dir"/*; do
+        [[ -f "$f" ]] || continue
+        cp "$f" "$dst_dir/"
+    done
+    iso_count=$((iso_count + 1))
+done
+
+# Copy doc-registry.json
+if [[ -f "${SCRIPT_DIR}/_aegis-output/iso-docs/doc-registry.json" ]]; then
+    if [[ "$UPGRADE" == true && -f "${TARGET_DIR}/_aegis-output/iso-docs/doc-registry.json" ]]; then
+        info "Preserving existing doc-registry.json (upgrade mode)"
+    else
+        cp "${SCRIPT_DIR}/_aegis-output/iso-docs/doc-registry.json" "${TARGET_DIR}/_aegis-output/iso-docs/doc-registry.json"
+    fi
+fi
+
+success "${iso_count} ISO 29110 document templates installed"
+
+# --------------------------------------------------------------------------
 # Summary
 # --------------------------------------------------------------------------
 echo ""
@@ -484,6 +564,7 @@ echo -e "${BOLD}Project:${NC}    ${PROJECT_NAME}"
 fi
 echo -e "${BOLD}Location:${NC}   ${TARGET_DIR}"
 echo -e "${BOLD}Skills:${NC}     ${skill_count} loaded"
+echo -e "${BOLD}ISO Docs:${NC}   ${iso_count} templates"
 echo ""
 echo -e "${BOLD}Directory Structure:${NC}"
 echo "  ${TARGET_DIR}/"
@@ -496,8 +577,11 @@ echo "  ├── _aegis-brain/          # Persistent memory"
 echo "  │   ├── resonance/         # Session continuity"
 echo "  │   ├── learnings/         # Accumulated knowledge"
 echo "  │   ├── logs/              # Agent logs"
+echo "  │   ├── tasks/             # Task tracking"
+echo "  │   ├── skill-cache/       # Reusable patterns"
 echo "  │   └── retrospectives/    # Session retros"
 echo "  ├── _aegis-output/         # Pipeline outputs"
+echo "  │   └── iso-docs/          # ISO 29110 templates"
 echo "  ├── skills/                # Skill definitions"
 echo "  └── .claude/               # Claude CLI config"
 echo ""

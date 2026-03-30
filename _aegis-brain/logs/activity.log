@@ -4,3 +4,19 @@
 [2026-03-20T12:24:49Z] 🧭 SESSION_START — AEGIS-Team (self-dogfood) | profile: full | autonomy: L1
 [2026-03-24 10:00] BREAKDOWN | story=PROJ-US-001 | journeys=4 | epics=4 | tasks=13 | subtasks=0 | total_pts=55
 [2026-03-24 10:05] SPRINT_START | sprint=1 | capacity=28 | committed=27 | stories=8 | load=96%
+[2026-03-30 12:00] SESSION_START | autonomy=L3 | profile=full | context=35%
+[2026-03-30 12:00] DECISION | P2.5 | Active sprint day 7, 0% done, picking CRITICAL tasks T-001+T-002
+[2026-03-30 12:05] SPEC_WRITTEN | PROJ-T-001 | install.sh copies all files including ISO doc templates
+[2026-03-30 12:05] SPEC_WRITTEN | PROJ-T-002 | install.sh creates all directories
+[2026-03-30 12:10] TASK_DONE | PROJ-T-002 | Added 6 missing dirs to installer (tasks, skill-cache, metrics, learnings/raw, architecture/archive, research)
+[2026-03-30 12:10] TASK_DONE | PROJ-T-001 | Added ISO 29110 doc template copy (11 dirs + doc-registry.json) with upgrade preservation
+[2026-03-30 12:10] GATE1_PASS | PROJ-T-001, PROJ-T-002 | Code review: syntax OK, consistent patterns, upgrade-safe
+[2026-03-30 12:15] SPEC_WRITTEN | PROJ-T-010 | counters.json initialization in install.sh
+[2026-03-30 12:15] TASK_DONE | PROJ-T-010 | Added counters.json initialization to install.sh (matches install-remote.sh)
+[2026-03-30 12:20] TASK_DONE | PROJ-T-007 | Verified: gate enforcement already implemented in aegis-kanban.md (lines 70-88)
+[2026-03-30 12:20] TASK_DONE | PROJ-T-013 | Verified: velocity computation fully specified in aegis-sprint.md Sprint Close Steps 1-2
+[2026-03-30 12:25] TASK_WIP | PROJ-T-011 | Needs write access to pm-state-protocol.md for explicit append-only rule
+[2026-03-30 12:30] PROGRESS | sprint-1 day 7 | 5 DONE (14pts/27pts = 52%) | 1 IN_PROGRESS | 2 TODO (10pts remaining)
+[2026-03-30 12:40] TASK_DONE | PROJ-T-004 | Mother Brain planning-before-build verified working: specs before build, decision matrix, sprint order
+[2026-03-30 12:45] PROGRESS | sprint-1 day 7 | 6 DONE (19pts/27pts = 70%) | 1 IN_PROGRESS (3pts) | 1 TODO (5pts)
+[2026-03-30 12:45] SESSION_WRAP | context=~65% | remaining: T-003 (5pts TODO), T-011 (3pts needs pm-state-protocol.md write access)
