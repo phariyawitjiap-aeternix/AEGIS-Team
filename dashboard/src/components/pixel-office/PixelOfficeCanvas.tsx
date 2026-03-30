@@ -2,6 +2,7 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import { useAgents } from "@/hooks/useAgents";
 import { useHeartbeat } from "@/hooks/useHeartbeat";
+import { useKanban, type KanbanData } from "@/hooks/useKanban";
 import type { AgentState, HeartbeatStatus } from "@/types";
 
 import type { PixelAgent } from "./types";
@@ -30,7 +31,7 @@ import {
   drawMotherBrainOrb,
   drawFloor,
   drawWalls,
-  drawKanbanBoard,
+  drawWallKanban,
   drawClock,
   drawAegisShield,
   drawPostItNotes,
@@ -88,17 +89,20 @@ export function PixelOfficeCanvas() {
   const tickRef   = useRef(0);
   const { agents } = useAgents();
   const { heartbeat } = useHeartbeat();
+  const { kanban } = useKanban();
   const [popup, setPopup] = useState<Popup | null>(null);
   const [hoverName, setHoverName] = useState<string | null>(null);
 
   // Refs to avoid stale closures inside rAF
   const agentsRef    = useRef<AgentState[]>([]);
   const heartbeatRef = useRef<HeartbeatStatus | null>(null);
+  const kanbanRef    = useRef<KanbanData | null>(null);
   const hoverRef     = useRef<string | null>(null);
   const pixelAgentsRef = useRef<PixelAgent[]>(buildInitialPixelAgents());
 
   agentsRef.current    = agents;
   heartbeatRef.current = heartbeat;
+  kanbanRef.current    = kanban;
   hoverRef.current     = hoverName;
 
   // ---- Hit testing ----
@@ -191,7 +195,7 @@ export function PixelOfficeCanvas() {
       drawWalls(ctx, CANVAS_W, tick);
 
       // Wall decorations
-      drawKanbanBoard(ctx);
+      drawWallKanban(ctx, kanbanRef.current, tick);
       drawClock(ctx);
       drawAegisShield(ctx);
       drawPostItNotes(ctx);

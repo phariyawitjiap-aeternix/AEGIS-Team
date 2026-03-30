@@ -578,51 +578,154 @@ export function drawWalls(ctx: CanvasRenderingContext2D, W: number, tick: number
   });
 }
 
-export function drawKanbanBoard(ctx: CanvasRenderingContext2D): void {
-  // Board background
-  ctx.fillStyle = "#F5F5F0";
-  ctx.fillRect(60, 20, 160, 85);
-  ctx.strokeStyle = "#333";
+// Agent colors for kanban cards
+const AGENT_CARD_COLORS: Record<string, string> = {
+  bolt: "#FFD700", sage: "#4B0082", vigil: "#4682B4", havoc: "#DC143C",
+  navi: "#00CED1", forge: "#B87333", pixel: "#E6E6FA", muse: "#B76E79",
+  sentinel: "#355E3B", probe: "#FFBF00", scribe: "#F5DEB3", ops: "#2C3539",
+};
+
+interface WallKanbanData {
+  sprint: string;
+  columns: Array<{
+    name: string;
+    tasks: Array<{ id: string; points: number; assignee: string }>;
+    point_sum: number;
+  }>;
+}
+
+export function drawWallKanban(
+  ctx: CanvasRenderingContext2D,
+  kanban: WallKanbanData | null,
+  tick: number
+): void {
+  const BX = 40, BY = 12, BW = 260, BH = 95;
+
+  // Board background (whiteboard style)
+  ctx.fillStyle = "#F0EDE8";
+  ctx.fillRect(BX, BY, BW, BH);
+  ctx.strokeStyle = "#555";
   ctx.lineWidth = 2;
-  ctx.strokeRect(60, 20, 160, 85);
+  ctx.strokeRect(BX, BY, BW, BH);
 
-  // Column dividers
-  ctx.strokeStyle = "#BBB";
+  // No data yet
+  if (!kanban || !kanban.columns) {
+    ctx.fillStyle = "#999";
+    ctx.font = "bold 9px monospace";
+    ctx.fillText("KANBAN — loading...", BX + 10, BY + 50);
+    return;
+  }
+
+  // Consolidate columns into 4: TODO, WIP (IN_PROGRESS+IN_REVIEW+QA), DONE, BLOCKED
+  const todo: WallKanbanData["columns"][0]["tasks"] = [];
+  const wip: WallKanbanData["columns"][0]["tasks"] = [];
+  const done: WallKanbanData["columns"][0]["tasks"] = [];
+  let totalPts = 0, donePts = 0;
+
+  for (const col of kanban.columns) {
+    const n = col.name.toUpperCase();
+    if (n === "TODO") { todo.push(...col.tasks); }
+    else if (n === "DONE") { done.push(...col.tasks); donePts += col.point_sum; }
+    else if (n !== "BLOCKED") { wip.push(...col.tasks); }
+    totalPts += col.point_sum;
+  }
+
+  // Column layout: 4 columns
+  const cols = [
+    { label: "TODO", tasks: todo, color: "#888" },
+    { label: "WIP",  tasks: wip,  color: "#4488CC" },
+    { label: "DONE", tasks: done, color: "#44AA44" },
+  ];
+  const colW = Math.floor((BW - 8) / 3);
+  const headerH = 14;
+  const cardH = 11;
+  const cardGap = 2;
+  const maxCards = 4; // max visible per column
+
+  // Sprint title + progress bar
+  const pct = totalPts > 0 ? donePts / totalPts : 0;
+  ctx.fillStyle = "#444";
+  ctx.font = "bold 7px monospace";
+  ctx.fillText(kanban.sprint?.toUpperCase() || "SPRINT", BX + 4, BY + 9);
+  // Progress bar
+  const barX = BX + 80, barY = BY + 4, barW = 100, barH = 6;
+  ctx.fillStyle = "#DDD";
+  ctx.fillRect(barX, barY, barW, barH);
+  ctx.fillStyle = "#44AA44";
+  ctx.fillRect(barX, barY, barW * pct, barH);
+  ctx.strokeStyle = "#999";
   ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.moveTo(113, 20); ctx.lineTo(113, 105);
-  ctx.moveTo(166, 20); ctx.lineTo(166, 105);
-  ctx.stroke();
+  ctx.strokeRect(barX, barY, barW, barH);
+  // Percentage text
+  ctx.fillStyle = "#444";
+  ctx.font = "bold 7px monospace";
+  ctx.fillText(`${Math.round(pct * 100)}%`, barX + barW + 4, BY + 10);
+  // Points text
+  ctx.fillText(`${donePts}/${totalPts}`, BX + 220, BY + 10);
 
-  // Headers
-  ctx.fillStyle = "#555";
-  ctx.font = "bold 8px monospace";
-  ctx.fillText("TODO", 70, 33);
-  ctx.fillText("WIP", 122, 33);
-  ctx.fillText("DONE", 174, 33);
+  // Column headers + dividers
+  const colStartY = BY + headerH;
+  cols.forEach((col, ci) => {
+    const cx = BX + 4 + ci * colW;
 
-  // Divider under headers
-  ctx.strokeStyle = "#CCC";
-  ctx.beginPath();
-  ctx.moveTo(60, 36); ctx.lineTo(220, 36);
-  ctx.stroke();
+    // Divider
+    if (ci > 0) {
+      ctx.strokeStyle = "#CCC";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(cx - 1, colStartY);
+      ctx.lineTo(cx - 1, BY + BH - 2);
+      ctx.stroke();
+    }
 
-  // Sticky cards in columns
-  const todoCards = ["#FFD700", "#FF9999", "#99DDFF"];
-  const wipCards = ["#00CED1", "#4B0082"];
-  const doneCards = ["#44CC44", "#88AAFF"];
+    // Header
+    ctx.fillStyle = col.color;
+    ctx.font = "bold 7px monospace";
+    ctx.fillText(col.label, cx + 2, colStartY + 8);
+    // Count
+    ctx.fillStyle = "#999";
+    ctx.font = "6px monospace";
+    ctx.fillText(`${col.tasks.length}`, cx + colW - 12, colStartY + 8);
 
-  todoCards.forEach((c, i) => {
-    ctx.fillStyle = c;
-    ctx.fillRect(65, 40 + i * 20, 42, 14);
-  });
-  wipCards.forEach((c, i) => {
-    ctx.fillStyle = c;
-    ctx.fillRect(118, 40 + i * 20, 42, 14);
-  });
-  doneCards.forEach((c, i) => {
-    ctx.fillStyle = c;
-    ctx.fillRect(171, 40 + i * 20, 42, 14);
+    // Cards
+    const visibleTasks = col.tasks.slice(0, maxCards);
+    visibleTasks.forEach((task, ti) => {
+      const cy = colStartY + 12 + ti * (cardH + cardGap);
+      const assignee = (task.assignee || "").replace(/^@/, "").toLowerCase();
+      const cardColor = AGENT_CARD_COLORS[assignee] || "#AAA";
+
+      // Card background
+      ctx.fillStyle = cardColor;
+      ctx.fillRect(cx + 2, cy, colW - 6, cardH);
+
+      // WIP cards: pulsing border
+      if (col.label === "WIP" && tick % 40 < 20) {
+        ctx.strokeStyle = "#FFF";
+        ctx.lineWidth = 1;
+        ctx.strokeRect(cx + 2, cy, colW - 6, cardH);
+      }
+
+      // DONE cards: checkmark
+      if (col.label === "DONE") {
+        ctx.fillStyle = "#FFF";
+        ctx.font = "bold 7px monospace";
+        ctx.fillText("✓", cx + colW - 14, cy + 8);
+      }
+
+      // Task ID (abbreviated)
+      ctx.fillStyle = col.label === "DONE" ? "#FFF" : "#222";
+      ctx.font = "6px monospace";
+      const shortId = task.id.replace("PROJ-T-", "T");
+      ctx.fillText(`${shortId} ${task.points}p`, cx + 4, cy + 8);
+    });
+
+    // "+N more" indicator
+    if (col.tasks.length > maxCards) {
+      const moreY = colStartY + 12 + maxCards * (cardH + cardGap);
+      ctx.fillStyle = "#999";
+      ctx.font = "6px monospace";
+      ctx.fillText(`+${col.tasks.length - maxCards} more`, cx + 4, moreY + 6);
+    }
   });
 }
 
