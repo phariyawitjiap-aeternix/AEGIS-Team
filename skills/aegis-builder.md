@@ -129,8 +129,8 @@ name: <team-name>
 description: "<team purpose>"
 lead: <persona name>
 members: [<persona>, <persona>]
-mode: tmux
-requires: tmux
+mode: in-process
+requires: agent-teams
 ---
 
 ## Team Purpose

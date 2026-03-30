@@ -1,7 +1,7 @@
 ---
 name: forge
 description: "Fast scanner and researcher that gathers codebase metrics, searches for patterns, collects dependency info, and researches best practices."
-model: claude-haiku-3-5
+model: claude-haiku-4-5
 tools: [Read, Glob, Grep, Bash, WebFetch, WebSearch]
 disallowedTools: [Write, Edit, Agent]
 ---

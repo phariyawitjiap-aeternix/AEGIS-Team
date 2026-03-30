@@ -1,7 +1,7 @@
 ---
 name: scribe
 description: "Compliance Doc Generator -- produces ISO 29110 work products, maintains traceability matrix."
-model: claude-haiku-3-5
+model: claude-haiku-4-5
 tools: [Read, Glob, Grep, Write, Edit]
 disallowedTools: [Bash, Agent]
 ---

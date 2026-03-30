@@ -3,8 +3,8 @@ name: aegis-qa
 description: "QA team: test planning, execution, and verdict"
 lead: sentinel
 members: [probe]
-mode: tmux
-requires: tmux
+mode: in-process
+requires: agent-teams
 ---
 
 ## Team Purpose

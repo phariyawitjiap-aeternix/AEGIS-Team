@@ -33,7 +33,7 @@ a full QA team (Sentinel + Probe) via TeamCreate for multi-target work.
 - Best for: single module, single feature, quick checks
 
 **Team Mode** (2+ targets, complex scope):
-- Spawns full QA team via TeamCreate in tmux
+- Spawns full QA team via TeamCreate (in-process agents)
 - Sentinel as QA Lead, Probe as parallel executor
 - Best for: sprint-wide QA, multi-module changes, release candidates
 
@@ -141,7 +141,7 @@ TeamCreate: aegis-qa-team
 - Sentinel breaks work into parallel test batches for Probe
 - Probe instances run test batches concurrently
 - Sentinel collects and merges results
-- Human monitors via `tmux attach -t aegis-qa-team`
+- Human monitors via Shift+Down to view agent detail
 
 ### Examples
 

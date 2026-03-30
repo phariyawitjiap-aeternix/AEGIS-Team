@@ -3,8 +3,8 @@ name: aegis-debate
 description: "Architecture decision debate team"
 lead: navi
 members: [sage, bolt, havoc]
-mode: tmux
-requires: tmux
+mode: in-process
+requires: agent-teams
 ---
 
 ## Team Purpose

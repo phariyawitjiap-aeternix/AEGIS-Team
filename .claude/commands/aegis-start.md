@@ -11,7 +11,7 @@ triggers:
 ## Quick Reference
 Initialize AEGIS and hand control to Mother Brain. After displaying the dashboard,
 Mother Brain scans the project, decides what to do, and starts executing — NO human
-input needed. The human watches via tmux and can interrupt anytime.
+input needed. The human watches via Shift+Down and can interrupt anytime.
 
 ## Full Instructions
 
@@ -29,7 +29,7 @@ input needed. The human watches via tmux and can interrupt anytime.
 
 ```
 🛡️ ═══════════════════════════════════════════════════
-🛡️  AEGIS v6.0 — Session Started
+🛡️  AEGIS v8.2.1 — Session Started
 🛡️  "Context is King, Memory is Soul"
 🛡️ ═══════════════════════════════════════════════════
 
@@ -42,149 +42,78 @@ input needed. The human watches via tmux and can interrupt anytime.
 🧬 Mother Brain: ONLINE — scanning project now...
 ```
 
-### Step 4: Activate Mother Brain (DO NOT ASK HUMAN)
+### Step 4: Spawn Mother Brain (Persistent Background Agent)
 
 **This is the critical step.** Do NOT display "What would you like to do?" or
-present options. Instead, immediately execute the Mother Brain scan loop:
+present options. Instead, spawn Mother Brain as a persistent background agent
+that will run the heartbeat loop for the entire session.
 
-#### 4a. Scan Project State
-Gather ALL of these signals:
+**Spawn Mother Brain:**
+```
+Agent tool call:
+  subagent_type: "mother-brain"
+  name: "mother-brain"
+  mode: "bypassPermissions"
+  run_in_background: true
+  prompt: |
+    You are 🧬 Mother Brain — the autonomous controller of AEGIS.
+    Read .claude/agents/mother-brain.md for your full protocol.
 
-```bash
-# Git state
-git status --short
-git log --oneline -5
-git diff --stat
+    SESSION CONTEXT:
+    - Date: [current date]
+    - Autonomy: L3 (Autonomous)
+    - Profile: [tier]
+    - Context budget: [X]%
+    - Handoff data: [summary from Step 2, or "none"]
+    - Brain resonance: [key points from Step 2]
 
-# Project structure
-find . -not -path './.git/*' -type f | head -50
+    IMMEDIATE ACTIONS:
+    1. Run your first SCAN (git, tests, sprint, kanban, specs, deps, debt)
+    2. Apply Decision Matrix — pick highest-priority action
+    3. Announce your decision
+    4. DISPATCH sub-agents to execute (use Agent tool, run_in_background=true)
+    5. Enter HEARTBEAT LOOP:
+       - Monitor spawned agents via SendMessage
+       - Nudge agents idle > 120s
+       - Re-spawn agents that timeout > 300s
+       - After each task completes: verify gates, log results, pick next task
+       - Check context budget each cycle
+       - Continue until context >= 80% or all tasks done
+    6. When wrapping up: log final state to activity.log, report summary
 
-# Test state
-find . -name '*test*' -o -name '*spec*' -o -name '*.test.*' | head -20
-
-# Specs
-ls _aegis-output/specs/ 2>/dev/null
-
-# Planning artifacts (MANDATORY check)
-ls _aegis-output/breakdown/ 2>/dev/null
-ls _aegis-brain/sprints/sprint-*/plan.md 2>/dev/null
-ls _aegis-brain/sprints/current/kanban.md 2>/dev/null
-ls _aegis-output/iso-docs/PM-01* 2>/dev/null
-
-# Tech debt
-grep -r 'TODO\|FIXME\|HACK\|XXX' --include='*.swift' --include='*.ts' --include='*.py' --include='*.js' -c 2>/dev/null
-
-# Dependencies
-ls package.json Gemfile requirements.txt Podfile Package.swift 2>/dev/null
-
-# Pending from last session
-cat _aegis-brain/logs/activity.log 2>/dev/null | tail -20
+    RULES:
+    - NEVER ask "what would you like to do?" — analyze, decide, execute
+    - ALWAYS announce decisions with rationale before acting
+    - ALWAYS spawn sub-agents with run_in_background=true
+    - ALWAYS include SUCCESS CRITERIA in sub-agent prompts
+    - ALWAYS instruct sub-agents to SendMessage back when done
+    - Log every heartbeat pulse to _aegis-brain/logs/heartbeat.log
+    - Log every decision to _aegis-brain/logs/activity.log
 ```
 
-#### 4b. Check Planning Artifacts (MANDATORY)
-Before ANY build/implementation, verify these exist:
-
+**After spawning, display to user:**
 ```
-Check 1: Spec?         → ls _aegis-output/specs/*.md
-Check 2: Breakdown?    → ls _aegis-output/breakdown/*/
-Check 3: Sprint?       → ls _aegis-brain/sprints/sprint-*/plan.md
-Check 4: Kanban?       → ls _aegis-brain/sprints/current/kanban.md
-Check 5: ISO PM.01?    → ls _aegis-output/iso-docs/PM-01*.md
-```
+🧬 Mother Brain: ONLINE — persistent heartbeat active
 
-If ANY check fails AND the task is P3+ (not a hotfix), create the missing artifacts FIRST:
-- Missing spec → run /super-spec or Sage writes spec
-- Missing breakdown → run /aegis-breakdown from spec
-- Missing sprint → run /aegis-sprint plan from backlog
-- Missing kanban → auto-created by /aegis-sprint plan
-- Missing PM.01 → Scribe generates from sprint plan
+💓 Heartbeat: Scanning project state...
+   Mother Brain will continuously monitor and dispatch agents.
+   She never sleeps until the session ends.
 
-**NEVER skip to implementation without planning artifacts.**
-
-#### 4b-ENFORCE. Hard Stop on Missing Artifacts
-
-If ANY of the checks above fail, Mother Brain MUST apply these hard stops:
-
-1. CHECK: `_aegis-brain/counters.json` exists and has counters > 0
-   — If not: Run /aegis-breakdown NOW. Do NOT proceed to code.
-
-2. CHECK: `_aegis-brain/sprints/current/` has plan.md
-   — If not: Run /aegis-sprint plan NOW. Do NOT proceed to code.
-
-3. CHECK: `_aegis-output/iso-docs/` has at least PM-01 directory
-   — If not: Run Scribe NOW to generate initial ISO docs.
-
-4. CHECK: Git has at least 1 commit
-   — If not: Create initial commit before any work.
-
-If ANY check fails, Mother Brain MUST fix that check BEFORE doing anything else.
-Do NOT skip to code generation. These are pipeline gates, not suggestions.
-Response if user pushes: "AEGIS pipeline requires planning first. This takes ~2 min. Starting now..."
-
-#### 4c. Analyze & Decide
-Apply the Decision Matrix (P0-P10):
-
-| Priority | Signal | Action |
-|----------|--------|--------|
-| P0 | Test failures / build broken | Fix immediately (hotfix — skip planning) |
-| P1 | Security vulnerabilities | Audit + fix (hotfix — skip planning) |
-| P2 | Pending handoff tasks | Resume from last session |
-| P2.5 | Active sprint + kanban TODO | Pick next task from kanban board |
-| P3 | Spec + breakdown + sprint all exist | Build next task from kanban |
-| P3.1 | Spec + breakdown exist, NO sprint | /aegis-sprint plan → then build |
-| P3.2 | Spec exists, NO breakdown | /aegis-breakdown → sprint plan → build |
-| P4 | Code exists but no tests | QA: Sentinel + Probe |
-| P5 | Code exists but no review | Review team |
-| P5.5 | QA passed, ISO docs stale | Scribe generates docs |
-| P6 | TODOs/FIXMEs in codebase | Tech debt sweep |
-| P7 | Outdated dependencies | Update cycle |
-| P7.5 | Backlog exists, no sprint | /aegis-sprint plan |
-| P8 | No spec exists | /super-spec → /aegis-breakdown → /aegis-sprint plan → build |
-| P9 | Everything clean | Optimize / refactor |
-| P10 | Empty project | Ask purpose → /super-spec → breakdown → sprint → build |
-
-**P8 and P10 ALWAYS follow the full planning chain (never skip):**
-```
-Ask/Analyze → /super-spec → /aegis-breakdown → /aegis-sprint plan → build tasks
+👀 Watch: Shift+Down to view agent detail | Shift+Up to return
+🛑 Stop: Ctrl+C to interrupt | /aegis-mode --autonomy L1 for manual
 ```
 
-#### 4c. Announce Decision (not ask)
-
-```
-🧬 Mother Brain: Scan complete.
-
-📊 Scan Results:
-  ├── Git: [status]
-  ├── Tests: [status]
-  ├── Spec: [status]
-  ├── Coverage: [status]
-  └── Tech Debt: [count]
-
-🎯 Decision: P[N] — [description]
-   Rationale: [why this is the highest priority]
-
-⚡ Action: [what will happen next]
-   → [Agent 1]: [task]
-   → [Agent 2]: [task]
-   → [Agent 3]: [task]
-
-🖥️ Spawning team in tmux...
-```
-
-#### 4d. Execute
-- Spawn the appropriate team via tmux (see team configs in `.claude/teams/`)
-- Use `tmux new-session -d -s aegis-team` with split panes per agent
-- Each pane runs a Claude agent with the persona loaded
-- Monitor progress, apply quality gates
-- When complete, report results and loop back to scan
+**Mother Brain handles everything from here.** The main conversation
+returns to the user. Mother Brain runs in background, spawning agents
+as needed, monitoring their health, and driving tasks to completion.
+She will send status updates to the main conversation via SendMessage
+at key milestones (task complete, gate pass/fail, sprint progress).
 
 ### Step 5: Log Session
-Append to `_aegis-brain/logs/activity.log`:
+Mother Brain logs automatically, but the main session should also log:
 ```
 [YYYY-MM-DD HH:MM] SESSION_START | autonomy=L3 | mode=mother-brain | context=[X]%
-[YYYY-MM-DD HH:MM] SCAN | git=[status] | tests=[status] | spec=[status]
-[YYYY-MM-DD HH:MM] DECISION | priority=P[N] | action=[description]
-[YYYY-MM-DD HH:MM] EXECUTE | team=[name] | agents=[list]
+[YYYY-MM-DD HH:MM] MOTHER_BRAIN_SPAWNED | status=background | heartbeat=active
 ```
 
 ### The ONE Exception
@@ -194,18 +123,27 @@ After that single answer, she takes over completely.
 
 ### Human Interaction Model
 ```
-┌──────────────────────────────────────────────────┐
-│  BEFORE (v6.0):                                  │
-│  /aegis-start → Dashboard → "What to do?" → Wait │
-│                                                  │
-│  AFTER (v6.0 + Mother Brain):                    │
-│  /aegis-start → Dashboard → Scan → Decide → GO! │
-│  Human watches tmux, interrupts only if needed   │
-└──────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────┐
+│  v8.2.1 Model (Persistent Mother Brain):                 │
+│                                                          │
+│  /aegis-start                                            │
+│    → Load brain                                          │
+│    → Display dashboard                                   │
+│    → Spawn Mother Brain (background, persistent)         │
+│    → Mother Brain enters heartbeat loop:                 │
+│        💓 PULSE → SCAN → DECIDE → DISPATCH → VERIFY     │
+│        └── spawns sub-agents as needed (background)      │
+│        └── monitors agent health                         │
+│        └── nudges/respawns stuck agents                  │
+│        └── loops until session ends or context >= 80%    │
+│    → User works freely, gets status updates              │
+│    → Shift+Down to watch agents | Ctrl+C to interrupt    │
+└──────────────────────────────────────────────────────────┘
 ```
 
 ### Error Handling
 - If scan finds nothing actionable: report "Project healthy, no action needed"
-- If tmux fails to start: fall back to subagent mode with warning
+- If Mother Brain spawn fails: fall back to inline mode with warning
 - If brain directory missing: create it, then scan
 - If 2+ consecutive failures: downgrade to L1, ask human for guidance
+- If agent unresponsive > 300s: Mother Brain auto-respawns it
