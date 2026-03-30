@@ -92,9 +92,24 @@ const MB_REPORT: Record<string, string[]> = {
   Ops:      ["Deployed OK", "Health green", "Gate 4 pass"],
 };
 
-// ---- Coffee / rest ----
-const REST_BUBBLES = ["☕", "Break time", "Ahh...", "Refueling", "*sip*", "Nice coffee"];
-const IDLE_ACTIONS = ["*stretch*", "*yawn*", "📱", "...", "*look around*", "*tap tap*"];
+// ---- Leisure / rest (ONLY when idle — no work, just life) ----
+const COFFEE_BUBBLES = ["☕", "Ahh...", "*sip*", "Nice coffee", "Refueling", "Mmm", "Hot!"];
+const IDLE_DESK = ["*stretch*", "*yawn*", "📱", "*look around*", "*tap tap*", "🎵", "*hum*", "😴"];
+const CASUAL_CHAT: Record<string, string[]> = {
+  Navi:     ["What a day", "Any plans?", "Lunch?", "Nice weather"],
+  Sage:     ["Read this?", "Cool article", "New pattern", "Interesting..."],
+  Bolt:     ["Games later?", "LFG!", "Weekend?", "So tired lol"],
+  Vigil:    ["Stay sharp", "Good job", "Clean code", "Not bad"],
+  Havoc:    ["Haha!", "No way!", "Crazy!", "LOL"],
+  Forge:    ["Did you see", "Numbers!", "Cool stats", "Data nerd"],
+  Pixel:    ["Love this!", "Colors!", "So pretty", "Nice design"],
+  Muse:     ["Great read", "Typo!", "Docs done", "Creative!"],
+  Sentinel: ["All quiet", "No bugs", "Peaceful", "Boring day"],
+  Probe:    ["Tests pass", "Clean!", "No issues", "Easy day"],
+  Scribe:   ["Filed it", "All good", "Organized", "Neat"],
+  Ops:      ["Servers up", "All green", "Quiet day", "Smooth"],
+};
+const WALK_THOUGHTS = ["🎵", "...", "💭", "🚶"];
 
 function randomFrom<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
@@ -333,16 +348,18 @@ function onArrived(pa: PixelAgent, allAgents: PixelAgent[], tick: number): void 
     return;
   }
 
-  // Arrived at Mother Brain
+  // Arrived at Mother Brain — ONLY for real work reporting
   if (distToOrb < 40) {
     if (pa.behavior === "reporting_to_mb") {
-      const msgs = MB_REPORT[pa.name] || ["Reporting..."];
+      // Real report: agent just finished a task
+      const msgs = MB_REPORT[pa.name] || ["Done!"];
       pa.bubble = makeBubble(randomFrom(msgs), "purple", tick, 200);
       pa.waitTicks = randomInt(120, 200);
       pa.behavior = "at_orb";
     } else {
-      pa.bubble = makeBubble("Checking in", "blue", tick, 150);
-      pa.waitTicks = randomInt(80, 150);
+      // Just wandered near the orb — look at it briefly, then leave
+      pa.bubble = makeBubble("🧬", "white", tick, 60);
+      pa.waitTicks = randomInt(30, 60);
       pa.behavior = "at_orb";
     }
     return;
@@ -351,25 +368,17 @@ function onArrived(pa: PixelAgent, allAgents: PixelAgent[], tick: number): void 
   // Arrived at water cooler / coffee
   if (distToCooler < 35 || distToCoffee < 35) {
     pa.behavior = "coffee_break";
-    pa.bubble = makeBubble(randomFrom(REST_BUBBLES), "white", tick, 160);
+    pa.bubble = makeBubble(randomFrom(COFFEE_BUBBLES), "white", tick, 160);
     pa.waitTicks = randomInt(150, 300);
     return;
   }
 
-  // Arrived at meeting room
+  // Arrived at meeting room — only real meetings when work status demands it
+  // Otherwise just passing through or hanging out
   if (distToMeeting < 50) {
     pa.behavior = "at_meeting";
-    pa.waitTicks = randomInt(200, 500);
-    // Check who else is in the meeting
-    const inMeeting = allAgents.filter(a =>
-      a.name !== pa.name && a.behavior === "at_meeting" && dist(a, MEETING_ROOM_CENTER) < 60
-    );
-    if (inMeeting.length > 0) {
-      const topic = randomFrom(["Sprint plan", "Design review", "Retrospective", "Architecture", "QA strategy"]);
-      pa.bubble = makeBubble(topic, "yellow", tick, 200);
-    } else {
-      pa.bubble = makeBubble("Waiting for team", "yellow", tick, 150);
-    }
+    pa.waitTicks = randomInt(100, 200);
+    pa.bubble = makeBubble("Just passing by", "white", tick, 100);
     return;
   }
 
@@ -388,13 +397,13 @@ function onArrived(pa: PixelAgent, allAgents: PixelAgent[], tick: number): void 
       pa.waitTicks = randomInt(80, 140);
       pa.behavior = "at_friend";
     } else {
-      // Social chat
+      // Casual chat — NOT work, just friends hanging out
       pa.behavior = "chatting";
-      const msgs = SOCIAL_CHAT[pa.name] || ["Hey!"];
+      const msgs = CASUAL_CHAT[pa.name] || ["Hey!"];
       pa.bubble = makeBubble(randomFrom(msgs), "white", tick, 150);
-      // Friend responds with their own personality
+      // Friend responds with their own casual personality
       if (friend && !friend.bubble) {
-        const friendMsgs = SOCIAL_CHAT[friend.name] || ["Hey!"];
+        const friendMsgs = CASUAL_CHAT[friend.name] || ["Hey!"];
         friend.bubble = makeBubble(randomFrom(friendMsgs), "white", tick + 40, 140);
       }
       pa.waitTicks = randomInt(120, 250);
@@ -408,57 +417,62 @@ function onArrived(pa: PixelAgent, allAgents: PixelAgent[], tick: number): void 
 }
 
 // ============================================
-// IDLE SOCIAL BEHAVIORS
+// IDLE BEHAVIORS — pure leisure, NO fake work
+// Only triggers when API status is "idle" (no task assigned)
 // ============================================
 function triggerIdleBehavior(
   pa: PixelAgent,
   allAgents: PixelAgent[],
   tick: number
 ): void {
-  // Find who else is idle (potential social targets)
+  // Only chat with friends who are ALSO idle (don't bother workers)
   const idleFriends = allAgents.filter(a =>
     a.name !== pa.name &&
-    (a.behavior === "at_desk" || a.behavior === "idle_anim" || a.behavior === "coffee_break")
+    (a.behavior === "at_desk" || a.behavior === "idle_anim" ||
+     a.behavior === "coffee_break" || a.behavior === "chatting")
   );
 
   const roll = Math.random();
 
-  if (roll < 0.25 && idleFriends.length > 0) {
-    // CHAT WITH FRIEND — walk to their desk
+  if (roll < 0.28 && idleFriends.length > 0) {
+    // CHAT WITH A FRIEND — casual conversation, not work
     const friend = randomFrom(idleFriends);
     pa.visitTarget = friend.name;
     const friendPos = DESK_POSITIONS[friend.name];
     if (friendPos) {
       startWalking(pa, friendPos.x + 20, friendPos.y);
     }
-  } else if (roll < 0.40) {
-    // COFFEE BREAK — walk to coffee machine or water cooler
+  } else if (roll < 0.45) {
+    // COFFEE / WATER BREAK — take a breather
     const target = Math.random() < 0.5 ? COFFEE_MACHINE_POS : WATER_COOLER_POS;
     startWalking(pa, target.x + randomInt(-5, 10), target.y);
-  } else if (roll < 0.50) {
-    // CHECK IN WITH MOTHER BRAIN — report or just visit
-    startWalking(pa, ORB_POS.x + randomInt(-15, 15), ORB_POS.y + 10);
   } else if (roll < 0.58) {
-    // MEETING — walk to meeting room (might find others there)
-    const seat = randomFrom(MEETING_SEATS);
-    startWalking(pa, seat.x, seat.y);
-  } else if (roll < 0.68 && idleFriends.length > 0) {
-    // WALK TO NEARBY FRIEND — not for a reason, just passing by
+    // WALK AROUND — just stretching legs, no destination
+    const wanderX = pa.x + randomInt(-100, 100);
+    const wanderY = pa.y + randomInt(-60, 60);
+    // Clamp to office bounds
+    const clampedX = Math.max(80, Math.min(750, wanderX));
+    const clampedY = Math.max(200, Math.min(580, wanderY));
+    startWalking(pa, clampedX, clampedY);
+    if (Math.random() < 0.3) {
+      pa.bubble = makeBubble(randomFrom(WALK_THOUGHTS), "white", tick, 80);
+    }
+  } else if (roll < 0.70 && idleFriends.length >= 2) {
+    // HANG OUT NEAR FRIENDS — go sit near someone, maybe they'll chat
     const friend = randomFrom(idleFriends);
     const friendPos = DESK_POSITIONS[friend.name];
     if (friendPos) {
-      // Walk near but not directly to them
-      startWalking(pa, friendPos.x + randomInt(-30, 30), friendPos.y + randomInt(-10, 10));
+      startWalking(pa, friendPos.x + randomInt(-25, 25), friendPos.y + randomInt(-15, 15));
     }
   } else {
-    // IDLE AT DESK — small action (stretch, yawn, phone)
+    // STAY AT DESK — idle animations (stretch, yawn, phone, hum)
     pa.behavior = "idle_anim";
-    pa.bubble = makeBubble(randomFrom(IDLE_ACTIONS), "white", tick, 100);
-    pa.nextBehaviorTick = tick + randomInt(300, 600);
+    pa.bubble = makeBubble(randomFrom(IDLE_DESK), "white", tick, 100);
+    pa.nextBehaviorTick = tick + randomInt(400, 800);
     return;
   }
 
-  pa.nextBehaviorTick = tick + randomInt(400, 800);
+  pa.nextBehaviorTick = tick + randomInt(500, 1000);
 }
 
 // ---- Bubble alpha fade ----
