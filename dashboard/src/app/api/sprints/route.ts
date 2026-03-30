@@ -28,7 +28,6 @@ export async function GET() {
       )
       .map((e) => ({
         name: e.name,
-        path: path.join(sprintsDir, e.name),
         isCurrent: e.name === currentTarget,
       }))
       .sort((a, b) => b.name.localeCompare(a.name));
@@ -44,7 +43,7 @@ export async function GET() {
     return NextResponse.json({
       ok: false,
       data: [],
-      error: String(err),
+      error: process.env.NODE_ENV === "development" ? String(err) : "Internal error",
       timestamp: new Date().toISOString(),
     });
   }

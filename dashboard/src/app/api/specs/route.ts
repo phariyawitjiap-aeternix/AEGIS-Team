@@ -56,20 +56,16 @@ export async function GET(request: Request) {
 
     // If a file path is provided, return its content
     if (filePath) {
-      if (filePath.includes("..")) {
-        return NextResponse.json(
-          { ok: false, data: null, error: "Path traversal denied", timestamp: new Date().toISOString() },
-          { status: 403 }
-        );
-      }
       const specsDir = path.join(OUTPUT_DIR, "specs");
-      const fullPath = path.resolve(specsDir, filePath);
-      if (!fullPath.startsWith(specsDir)) {
+      const resolved = path.resolve(specsDir, filePath);
+      // Strict path containment: must be inside specsDir (with separator to prevent sibling bypass)
+      if (resolved !== specsDir && !resolved.startsWith(specsDir + path.sep)) {
         return NextResponse.json(
-          { ok: false, data: null, error: "Path outside specs directory", timestamp: new Date().toISOString() },
+          { ok: false, data: null, error: "Access denied", timestamp: new Date().toISOString() },
           { status: 403 }
         );
       }
+      const fullPath = resolved;
       const content = await fs.readFile(fullPath, "utf-8");
       return NextResponse.json({
         ok: true,
@@ -93,7 +89,7 @@ export async function GET(request: Request) {
     return NextResponse.json({
       ok: false,
       data: [],
-      error: String(err),
+      error: process.env.NODE_ENV === "development" ? String(err) : "Internal error",
       timestamp: new Date().toISOString(),
     });
   }

@@ -96,7 +96,7 @@ export async function GET() {
       {
         ok: false,
         data: null,
-        error: String(err),
+        error: process.env.NODE_ENV === "development" ? String(err) : "Internal error",
         timestamp: new Date().toISOString(),
       },
       { status: 500 }

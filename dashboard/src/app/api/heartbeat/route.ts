@@ -138,7 +138,10 @@ export async function GET() {
       last_beat: lastBeat,
       age_seconds: ageSeconds === Infinity ? -1 : Math.round(ageSeconds),
       health,
-      source: processCheck.alive ? processCheck.source : lastBeatSource,
+      // Sanitize source — never expose filesystem paths to client
+      source: processCheck.alive
+        ? (processCheck.source.startsWith("file:") ? "file-activity" : "agent-process")
+        : lastBeatSource,
     };
 
     const response: ApiResponse<HeartbeatStatus> = {
@@ -153,7 +156,7 @@ export async function GET() {
       {
         ok: false,
         data: null,
-        error: String(err),
+        error: process.env.NODE_ENV === "development" ? String(err) : "Internal error",
         timestamp: new Date().toISOString(),
       },
       { status: 500 }

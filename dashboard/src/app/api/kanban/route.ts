@@ -35,7 +35,7 @@ export async function GET() {
     return NextResponse.json({
       ok: false,
       data: emptyBoard,
-      error: String(err),
+      error: process.env.NODE_ENV === "development" ? String(err) : "Internal error",
       timestamp: new Date().toISOString(),
     });
   }

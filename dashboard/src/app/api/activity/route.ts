@@ -27,7 +27,7 @@ export async function GET() {
     return NextResponse.json({
       ok: true,
       data: [],
-      error: String(err),
+      error: process.env.NODE_ENV === "development" ? String(err) : "Internal error",
       timestamp: new Date().toISOString(),
     });
   }
