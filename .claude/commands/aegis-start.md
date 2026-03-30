@@ -15,6 +15,53 @@ input needed. The human watches via Shift+Down and can interrupt anytime.
 
 ## Full Instructions
 
+### Step 0: Start Dashboard Web App (auto, every session)
+
+**ALWAYS run this step.** The dashboard must be running for observability.
+
+```bash
+# 1. Check if dashboard directory exists
+if [ ! -d "dashboard" ]; then
+  echo "⚠️ Dashboard not installed. Skipping web app."
+  # Skip to Step 1
+fi
+
+# 2. Check Node.js is available
+if ! command -v node &>/dev/null; then
+  echo "⚠️ Node.js not found. Installing via brew..."
+  brew install node
+fi
+
+# 3. Check if dependencies installed
+if [ ! -d "dashboard/node_modules" ]; then
+  echo "📦 Installing dashboard dependencies..."
+  cd dashboard && npm install && cd ..
+fi
+
+# 4. Check if dashboard already running on port 4321
+if ! curl -s -o /dev/null -w "%{http_code}" http://localhost:4321 2>/dev/null | grep -q "200"; then
+  echo "🖥️ Starting dashboard on http://localhost:4321 ..."
+  cd dashboard && npx next dev -p 4321 &
+  cd ..
+  # Wait for server ready
+  sleep 5
+fi
+```
+
+**Display to user:**
+```
+🖥️ Dashboard: http://localhost:4321
+   ├── Home:         http://localhost:4321
+   ├── Kanban:       http://localhost:4321/kanban
+   ├── Pixel Office: http://localhost:4321/pixel-office
+   └── Timeline:     http://localhost:4321/timeline
+```
+
+If dashboard is already running, just confirm:
+```
+🖥️ Dashboard: RUNNING on http://localhost:4321 ✅
+```
+
 ### Step 1: Check Context Budget
 - Estimate current context window usage as a percentage.
 - If >20%, display warning and suggest `/compact`.
@@ -29,7 +76,7 @@ input needed. The human watches via Shift+Down and can interrupt anytime.
 
 ```
 🛡️ ═══════════════════════════════════════════════════
-🛡️  AEGIS v8.2.1 — Session Started
+🛡️  AEGIS HQ v8.3 — Session Started
 🛡️  "Context is King, Memory is Soul"
 🛡️ ═══════════════════════════════════════════════════
 
