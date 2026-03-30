@@ -120,7 +120,8 @@ export interface HeartbeatStatus {
   alive: boolean;
   last_beat: string | null;
   age_seconds: number;
-  health: "healthy" | "stale" | "dead" | "unknown";
+  health: "healthy" | "working" | "stale" | "dead" | "unknown";
+  source?: string;
 }
 
 // ---- Kanban ----

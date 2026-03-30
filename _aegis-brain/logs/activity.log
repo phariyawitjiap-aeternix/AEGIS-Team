@@ -31,3 +31,28 @@
 [2026-03-30 17:30] TASK_DONE | PROJ-T-003 | Created /aegis-doctor command — 14-check post-install diagnostic
 [2026-03-30 17:30] SPRINT_COMPLETE | sprint-1 | 8/8 tasks DONE | 27/27 pts (100%) | day 7/12 (early finish)
 [2026-03-30 17:45] SPRINT_START | sprint=2 | capacity=24 | committed=23 | stories=4 | load=96%
+[2026-03-30 19:00] CYCLE_START | cycle=1 | context=~20% | zone=GREEN
+[2026-03-30 19:00] TASK_START | task=PROJ-T-005 | title=Multi-cycle within session (context budget aware) | points=8
+[2026-03-30 19:05] SPEC_WRITTEN | task=PROJ-T-005 | path=_aegis-output/specs/PROJ-T-005-spec.md
+[2026-03-30 19:30] TASK_DONE | task=PROJ-T-005 | duration=30m | gates=self-review-pass
+[2026-03-30 19:30] CYCLE_END | cycle=1 | context=~35% | zone=GREEN | tasks_done=1
+[2026-03-30 19:30] DECISION | action=continue-to-T-006 | rationale=GREEN zone, next highest-priority TODO
+[2026-03-30 19:35] CYCLE_START | cycle=2 | context=~35% | zone=GREEN
+[2026-03-30 19:35] TASK_START | task=PROJ-T-006 | title=Cross-session continuity via handoff | points=5
+[2026-03-30 19:36] SPEC_WRITTEN | task=PROJ-T-006 | path=_aegis-output/specs/PROJ-T-006-spec.md
+[2026-03-30 19:50] TASK_DONE | task=PROJ-T-006 | duration=15m | gates=self-review-pass
+[2026-03-30 19:50] CYCLE_END | cycle=2 | context=~45% | zone=YELLOW | tasks_done=2
+[2026-03-30 19:50] DECISION | action=continue-to-T-008 | rationale=YELLOW zone, can proceed with caution
+[2026-03-30 19:55] CYCLE_START | cycle=3 | context=~45% | zone=YELLOW
+[2026-03-30 19:55] TASK_START | task=PROJ-T-008 | title=Sentinel+Probe QA pipeline produces real reports | points=5
+[2026-03-30 19:56] SPEC_WRITTEN | task=PROJ-T-008 | path=_aegis-output/specs/PROJ-T-008-spec.md
+[2026-03-30 20:05] TASK_DONE | task=PROJ-T-008 | duration=10m | gates=self-review-pass
+[2026-03-30 20:05] CYCLE_END | cycle=3 | context=~55% | zone=YELLOW | tasks_done=3
+[2026-03-30 20:05] DECISION | action=continue-to-T-012 | rationale=YELLOW zone, one task left, 5pts fits budget
+[2026-03-30 20:10] CYCLE_START | cycle=4 | context=~55% | zone=YELLOW
+[2026-03-30 20:10] TASK_START | task=PROJ-T-012 | title=Dashboard shows real computed metrics | points=5
+[2026-03-30 20:11] SPEC_WRITTEN | task=PROJ-T-012 | path=_aegis-output/specs/PROJ-T-012-spec.md
+[2026-03-30 20:20] TASK_DONE | task=PROJ-T-012 | duration=10m | gates=self-review-pass
+[2026-03-30 20:20] CYCLE_END | cycle=4 | context=~65% | zone=ORANGE | tasks_done=4
+[2026-03-30 20:20] SPRINT_COMPLETE | sprint=sprint-2 | committed=23pts | completed=23pts | velocity=23 | sessions=1 | cycles=4
+[2026-03-30 20:20] DECISION | action=session-wrap | rationale=All sprint-2 tasks DONE, ORANGE zone, writing summary

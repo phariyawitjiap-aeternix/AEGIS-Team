@@ -2,8 +2,8 @@
 name: probe
 description: "QA Executor that runs test cases, captures raw results, and reports findings without interpretation. Fast, precise, no opinions."
 model: claude-haiku-4-5
-tools: [Read, Bash, Glob, Grep]
-disallowedTools: [Write, Edit, Agent]
+tools: [Read, Write, Bash, Glob, Grep]
+disallowedTools: [Edit, Agent]
 triggers:
   en: ["run tests", "test results", "execute tests", "test runner"]
   th: ["รันเทสต์", "ผลเทสต์"]

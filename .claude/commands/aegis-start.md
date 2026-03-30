@@ -147,3 +147,46 @@ After that single answer, she takes over completely.
 - If brain directory missing: create it, then scan
 - If 2+ consecutive failures: downgrade to L1, ask human for guidance
 - If agent unresponsive > 300s: Mother Brain auto-respawns it
+
+### Step 2.5: Load Latest Handoff (NEW -- cross-session pickup)
+
+After loading the brain (Step 2), explicitly check for and load the latest handoff:
+
+1. **Find latest handoff:**
+   - List files in `_aegis-brain/handoffs/` (exclude .gitkeep)
+   - Sort by filename (date-based: YYYY-MM-DD_HH-MM.md)
+   - Pick the most recent file
+   - If no handoffs exist: skip to Step 3 (first session or clean start)
+
+2. **Parse handoff frontmatter:**
+   - Read the `mother_brain_state` section from the YAML frontmatter
+   - Extract: sprint, kanban counts, context info, tasks done, last decision
+   - If frontmatter is missing or malformed: fall back to reading the body text
+
+3. **Build handoff summary for Mother Brain:**
+   - Create a structured summary string:
+     ```
+     HANDOFF FROM PREVIOUS SESSION:
+     - Sprint: [sprint-N] (day [N])
+     - Kanban: [TODO/WIP/DONE counts]
+     - Tasks done last session: [list]
+     - Recommended first action: [from handoff body]
+     - Last decision point: [P-level]
+     - Blockers: [from handoff body]
+     ```
+
+4. **Pass to Mother Brain spawn prompt:**
+   - Include the handoff summary in the SESSION CONTEXT section
+   - Set `Handoff data: [summary]` instead of "none"
+   - This allows Mother Brain to skip redundant scans and jump to P2
+     (Pending handoff tasks) in her Decision Matrix
+
+5. **Log:**
+   ```
+   [YYYY-MM-DD HH:MM] HANDOFF_LOADED | file=[filename] | sprint=[sprint-N] | pending=[N]
+   ```
+
+**If handoff is stale (> 7 days old):**
+- Log warning: "Handoff is [N] days old, may be outdated"
+- Still load it but tell Mother Brain to do a full scan anyway
+- Do not auto-delete old handoffs (git preserves history)

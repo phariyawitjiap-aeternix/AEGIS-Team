@@ -18,12 +18,26 @@ export async function GET() {
       // tasks dir may not exist
     }
 
+    // Detect current sprint
+    let currentSprint: string | null = null;
+    try {
+      const sprintLink = await fs.readlink(path.join(BRAIN_DIR, "sprints", "current"));
+      currentSprint = sprintLink;
+    } catch {
+      // no current symlink
+    }
+
     const tasks: TaskMeta[] = [];
     for (const dir of taskDirs) {
       try {
         const metaPath = path.join(tasksDir, dir, "meta.json");
         const content = await fs.readFile(metaPath, "utf-8");
-        tasks.push(JSON.parse(content));
+        const task = JSON.parse(content);
+        // Include tasks from current sprint OR with active status
+        if (!currentSprint || task.sprint === currentSprint ||
+            ["IN_PROGRESS", "IN_REVIEW", "QA", "BLOCKED"].includes(task.status)) {
+          tasks.push(task);
+        }
       } catch {
         // skip invalid tasks
       }
@@ -32,11 +46,14 @@ export async function GET() {
     // Derive agent states
     const agents: AgentState[] = AGENTS.map((def) => {
       const agentName = def.name.toLowerCase();
-      const assignedTasks = tasks.filter(
-        (t) =>
-          t.assignee === agentName ||
-          t.assignee === def.name.toLowerCase().replace(/\s+/g, "")
-      );
+      // Match: "bolt", "@bolt", "Bolt", "@Bolt", "mother-brain", "motherbrain"
+      const normalizeAssignee = (a: string) =>
+        (a || "").replace(/^@/, "").toLowerCase().replace(/[\s-]+/g, "");
+      const normalizedAgent = normalizeAssignee(agentName);
+      const assignedTasks = tasks.filter((t) => {
+        const normalized = normalizeAssignee(t.assignee);
+        return normalized === normalizedAgent;
+      });
       const activeTasks = assignedTasks.filter(
         (t) => t.status === "IN_PROGRESS" || t.status === "IN_REVIEW"
       );

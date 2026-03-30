@@ -5,8 +5,8 @@
   "task_type": "impl",
   "parent": "PROJ-E-002",
   "children": [],
-  "status": "TODO",
-  "assignee": "unassigned",
+  "status": "DONE",
+  "assignee": "@bolt",
   "points": 5,
   "priority": "high",
   "labels": [
@@ -19,10 +19,10 @@
     "blocked_by": []
   },
   "created": "2026-03-24T10:00:00",
-  "updated": "2026-03-30T17:45:00",
+  "updated": "2026-03-30T19:50:00",
   "sprint": "sprint-2",
   "time_tracking": {
     "estimated_hours": 4,
-    "logged_hours": 0
+    "logged_hours": 1
   }
 }

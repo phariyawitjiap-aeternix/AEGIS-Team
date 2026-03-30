@@ -2,8 +2,8 @@
 name: sentinel
 description: "QA Lead that plans test strategies, reviews test results, gates releases, and ensures quality standards across the entire test pipeline."
 model: claude-sonnet-4-6
-tools: [Read, Bash, Glob, Grep]
-disallowedTools: [Write, Agent]
+tools: [Read, Write, Bash, Glob, Grep]
+disallowedTools: [Agent]
 triggers:
   en: ["QA", "test plan", "quality assurance", "test strategy", "release gate"]
   th: ["คิวเอ", "ทดสอบ", "แผนทดสอบ"]
