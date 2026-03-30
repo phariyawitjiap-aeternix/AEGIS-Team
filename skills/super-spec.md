@@ -12,9 +12,30 @@ Generates complete project specifications from minimal input.
 - **BRD**: Business Requirements Document — stakeholder goals, scope, success criteria
 - **SRS**: Software Requirements Specification — functional/non-functional requirements
 - **UX Blueprint**: User flows, wireframe descriptions, interaction patterns
-- **Pipeline**: Brief → Research → BRD → SRS → UX Blueprint
+- **Pipeline**: Brief → **Human Q&A** → Research → BRD → SRS → UX Blueprint
 - **Output**: `_aegis-output/specs/` (BRD.md, SRS.md, UX-Blueprint.md)
 - **Agent**: Sage (opus) — primary author
+
+## CRITICAL: Human-in-the-Loop Rule
+
+**Super-spec is the ONE phase where human input is MANDATORY.**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  AUTONOMY EXCEPTION: Even at L3/L4, super-spec MUST ask    │
+│  the human for input. The spec is the foundation — garbage  │
+│  in = garbage out for the entire pipeline.                  │
+│                                                             │
+│  Mother Brain: PAUSE autonomy during spec creation.         │
+│  After spec is approved: resume full autonomy.              │
+│  Mother Brain becomes "Spec Proxy" — answers all team       │
+│  questions using the approved spec + her own research.      │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Why:** The spec defines WHAT to build. Only the human knows business context,
+user needs, and success criteria. AI can research and draft, but the human
+must validate and fill gaps. Every minute spent here saves hours of rework later.
 
 ## Full Instructions
 
@@ -28,19 +49,74 @@ Generates complete project specifications from minimal input.
 - `ux` — Generate UX Blueprint (requires BRD)
 - `all` — Full pipeline: BRD → SRS → UX Blueprint (default)
 
-### Phase 1: Research & Clarification
+### Phase 1: Human Interview (MANDATORY — never skip)
 
-Before generating any spec, gather context:
+**This phase is interactive. ASK the human. WAIT for answers. Do NOT guess.**
 
+#### Step 1a: Parse & Research First
 1. **Parse brief** — Extract key nouns, verbs, constraints
-2. **Identify gaps** — What information is missing?
-3. **Ask clarifying questions** (max 5):
-   - Target users/audience
-   - Core problem being solved
-   - Key constraints (time, budget, tech)
-   - Integration requirements
-   - Success metrics
-4. **Research** — Analyze similar systems, common patterns
+2. **Research** — Analyze similar systems, common patterns, competitors
+3. **Identify gaps** — What information is the brief missing?
+
+#### Step 1b: Ask the Human (MUST wait for real answers)
+
+Present questions in a structured, easy-to-answer format. Group by category.
+The human's answers become the foundation of the spec — do NOT fabricate them.
+
+```
+I've analyzed your brief and researched similar systems.
+Before I write the spec, I need your input on these areas:
+
+📌 BUSINESS CONTEXT
+1. Who are the primary users? (roles, demographics, tech level)
+2. What specific problem does this solve for them?
+3. How do they solve this problem today? (current alternatives)
+
+📌 SCOPE & PRIORITIES
+4. What are the MUST-HAVE features for v1? (top 3-5)
+5. What is explicitly OUT of scope?
+6. Is there an existing system this replaces or integrates with?
+
+📌 CONSTRAINTS
+7. Tech stack preference? (language, framework, hosting)
+8. Timeline pressure? (deadline, phases)
+9. Budget/team size constraints?
+
+📌 SUCCESS
+10. How will you measure if this project succeeded?
+
+Feel free to answer briefly — even one-liners help.
+Skip any that don't apply with "N/A".
+```
+
+**Rules for this step:**
+- WAIT for the human to respond. Do NOT proceed without answers.
+- If the human says "you decide" or "whatever you think", still ask:
+  "I'll make my best recommendation, but I need at least answers to #1, #2, and #4
+  to avoid building the wrong thing."
+- Minimum required answers: **#1 (users), #2 (problem), #4 (must-haves)**
+- If human provides partial answers, acknowledge what you got and ask
+  follow-ups only for critical gaps.
+- Save all human answers to `_aegis-output/specs/human-input.md` for traceability.
+
+#### Step 1c: Confirm Understanding
+
+After receiving answers, summarize back to the human:
+
+```
+Here's my understanding before I write the spec:
+
+- **Building**: [summary]
+- **For**: [users]
+- **Core problem**: [problem]
+- **Must-haves**: [list]
+- **Tech**: [stack]
+- **Success = **: [metrics]
+
+Does this look right? Any corrections before I proceed?
+```
+
+**Only proceed to Phase 2 after human confirms.** This is a gate.
 
 ### Phase 2: BRD (Business Requirements Document)
 
@@ -230,6 +306,57 @@ _aegis-output/specs/
   UX-Blueprint.md
 ```
 
+### Phase 5: Human Approval Gate (MANDATORY)
+
+After all specs are generated, present a summary to the human:
+
+```
+Spec complete! Here's what I've written:
+
+📄 BRD: [X] objectives, [Y] risks, [Z] stakeholders
+📄 SRS: [N] functional requirements, [M] non-functional
+📄 UX Blueprint: [P] user flows, [Q] screens
+
+Key decisions I made:
+- [decision 1 — and why]
+- [decision 2 — and why]
+- [decision 3 — and why]
+
+Please review the specs in _aegis-output/specs/.
+Say "approved" to proceed, or tell me what to change.
+```
+
+**Rules:**
+- Human MUST say "approved" (or equivalent: "ok", "go", "lgtm", "ดี", "ได้เลย")
+- If human requests changes → revise and re-present
+- Once approved → save approval record to `_aegis-output/specs/approval.md`:
+  ```
+  Approved by: Human
+  Date: YYYY-MM-DD
+  Version: 1.0
+  Notes: [any conditions]
+  ```
+
+### Post-Spec: Mother Brain Takes Over (Spec Proxy Mode)
+
+**After human approves the spec, Mother Brain resumes full autonomy (L3/L4).**
+
+From this point forward:
+- When any agent (Sage, Bolt, Vigil, etc.) has a question about requirements,
+  **Mother Brain answers using the approved spec + her own research**.
+- Mother Brain does NOT ask the human for clarification on spec-covered topics.
+- Mother Brain CAN research (WebSearch, WebFetch) to fill technical gaps.
+- Mother Brain logs all "proxy answers" to `_aegis-brain/logs/spec-proxy.log`:
+  ```
+  [YYYY-MM-DD HH:MM] PROXY_ANSWER | from=bolt | question="should auth use JWT or session?" | answer="JWT per SRS NFR-S01" | source=SRS.md#section-3
+  ```
+
+**When Mother Brain MUST escalate to human (even in proxy mode):**
+1. Question is about BUSINESS DECISIONS not covered in spec (pricing, legal, partnerships)
+2. Question contradicts the approved spec (scope change)
+3. Question requires budget/timeline commitment
+4. Agent finds a critical flaw in the spec itself
+
 ### Quality Gate
 
 Before marking specs complete:
@@ -237,4 +364,6 @@ Before marking specs complete:
 - [ ] Requirements are testable (clear acceptance criteria)
 - [ ] No contradictions between BRD, SRS, and UX Blueprint
 - [ ] Scope is realistic for stated constraints
+- [ ] Human input captured in `human-input.md`
+- [ ] Human approved the final spec
 - [ ] Review by Vigil for completeness (if team mode)

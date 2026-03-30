@@ -1,4 +1,4 @@
-# AEGIS v6.0 -- Safety Rules
+# AEGIS v8.2.1 -- Safety Rules
 
 > Trigger: "safety rules" | Thai trigger: "กฎความปลอดภัย"
 
@@ -46,7 +46,7 @@ hotfix/<short-desc>
 ### Turn Safety
 - **Never end turn before agents finish** (false-ready guard) -- the orchestrator must verify all spawned agents have returned their reports before declaring the pipeline complete
 - **Agent timeout**: if an agent has not responded in 120 seconds, send a status ping. After 300 seconds with no response, escalate to human
-- **Dead agent detection**: if an agent's tmux pane exits unexpectedly, log the failure and notify Navi immediately
+- **Dead agent detection**: if a background agent stops responding to SendMessage, Mother Brain logs the failure and respawns or escalates
 
 ### Agent Communication
 - Agents communicate via structured message types only (see CLAUDE_agents.md)
@@ -184,7 +184,7 @@ node_modules/
 ### Recovery Procedures
 1. **Secret exposure**: Rotate secret -> Remove from git history -> Scan all branches -> Notify human
 2. **Branch corruption**: `git reflog` to find safe point -> `git checkout -b recovery <safe-hash>` -> Notify human
-3. **Agent deadlock**: Kill all tmux sessions -> Log state -> Restart pipeline from last checkpoint
+3. **Agent deadlock**: Mother Brain detects via heartbeat -> Respawn stuck agents -> Log state -> Restart from last checkpoint
 4. **Context overflow**: Write emergency retro -> Archive conversation -> Start fresh session with brain reload
 
 ---

@@ -83,7 +83,4 @@ Never wait indefinitely. If an agent has not responded after its predecessor com
 
 ---
 
-> **Optional tmux mode**: For visual split panes, exit Claude Code and run:
-> `~/AEGIS-Team/aegis-team.sh --team build --task "your task"`
-> Note: tmux mode has known permission bugs (#26479). In-process mode (default) is recommended.
-> Use **Shift+Down** to view agent activity in-process.
+> Use **Shift+Down** to view agent activity in-process. **Shift+Up** to return to main.

@@ -1,8 +1,8 @@
 <p align="center">
   <img src="https://img.shields.io/badge/version-8.2-blue?style=for-the-badge" alt="Version 8.2"/>
   <img src="https://img.shields.io/badge/agents-13-green?style=for-the-badge" alt="13 Agents"/>
-  <img src="https://img.shields.io/badge/skills-29-orange?style=for-the-badge" alt="29 Skills"/>
-  <img src="https://img.shields.io/badge/commands-22-yellow?style=for-the-badge" alt="22 Commands"/>
+  <img src="https://img.shields.io/badge/skills-25-orange?style=for-the-badge" alt="25 Skills"/>
+  <img src="https://img.shields.io/badge/commands-23-yellow?style=for-the-badge" alt="23 Commands"/>
   <img src="https://img.shields.io/badge/gates-5-red?style=for-the-badge" alt="5 Gates"/>
   <img src="https://img.shields.io/badge/ISO--29110-compliant-brightgreen?style=for-the-badge" alt="ISO 29110"/>
   <img src="https://img.shields.io/badge/license-MIT-purple?style=for-the-badge" alt="MIT License"/>
@@ -12,7 +12,7 @@
 
 > **"Context is King, Memory is Soul"**
 >
-> :dna: Mother Brain · 13 AI Agents · 29 Skills · 22 Commands · 5-Gate Quality · Self-Evolving Intelligence
+> :dna: Mother Brain · 13 AI Agents · 25 Skills · 23 Commands · 5-Gate Quality · Self-Evolving Intelligence
 
 ---
 
@@ -73,7 +73,7 @@ claude --dangerously-skip-permissions
 | 1 | :lock: **Backup** `_aegis-brain/`, `iso-docs/`, `CLAUDE_lessons.md` → `_aegis-backup/` |
 | 2 | :wastebasket: **Remove** old agents, commands, references, teams, skills |
 | 3 | :arrow_down: **Download** latest AEGIS from GitHub (to `/tmp/`, auto-cleaned) |
-| 4 | :package: **Install** new 13 agents, 22 commands, 11 references, 7 teams, 29 skills |
+| 4 | :package: **Install** new 13 agents, 23 commands, 11 references, 7 teams, 25 skills |
 | 5 | :mag: **Verify** all files present + migrate old versions (v6→v8, v7→v8) |
 
 **:lock: NEVER touched by upgrade:** `_aegis-brain/` (tasks, sprints, patterns, learnings), `iso-docs/`, `CLAUDE_lessons.md`, project source code
@@ -125,7 +125,7 @@ IDEA → BREAKDOWN → SPRINT → [ SPEC → BUILD → REVIEW(G1) → QA(G2) →
 
 ---
 
-## :keyboard: Commands (22)
+## :keyboard: Commands (23)
 
 | Command | Purpose |
 |:--------|:--------|
@@ -160,7 +160,7 @@ IDEA → BREAKDOWN → SPRINT → [ SPEC → BUILD → REVIEW(G1) → QA(G2) →
 |:--------|:------:|:-------:|:---------|
 | `minimal` | 7 | ~3K tokens | Quick tasks, small projects |
 | `standard` | 15 | ~6K tokens | Normal development (default) |
-| `full` | 29 | ~12K tokens | Enterprise, full SDLC |
+| `full` | 25 | ~10K tokens | Enterprise, full SDLC |
 
 Switch: `/aegis-mode minimal` · `/aegis-mode standard` · `/aegis-mode full`
 
@@ -212,12 +212,12 @@ your-project/
 ├── CLAUDE_safety.md             # Safety rules
 ├── CLAUDE_lessons.md            # Accumulated learnings
 ├── .claude/
-│   ├── commands/                # 22 slash commands
+│   ├── commands/                # 23 slash commands
 │   ├── agents/                  # 13 agent personas
 │   ├── references/              # Protocol files
 │   ├── teams/                   # Team configurations
 │   └── settings.json            # Permissions + env
-├── skills/                      # 29 skill definitions
+├── skills/                      # 25 skill definitions
 └── _aegis-brain/                # Persistent memory (never overwritten)
     ├── resonance/               # Project identity + conventions + ADRs
     ├── learnings/               # Accumulated lessons

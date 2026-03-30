@@ -1,4 +1,4 @@
-# SDLC Pipeline -- AEGIS v8.0 Master Workflow
+# SDLC Pipeline -- AEGIS v8.2.1 Master Workflow
 
 > Reference for: Mother Brain, Navi, all /aegis-* commands
 > This is THE single pipeline connecting all agents from idea to production.

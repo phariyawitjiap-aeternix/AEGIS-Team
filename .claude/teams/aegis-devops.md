@@ -3,8 +3,8 @@ name: aegis-devops
 description: "DevOps team: build verification, deployment, health checks, monitoring, rollback"
 lead: ops
 members: [bolt]
-mode: tmux
-requires: tmux
+mode: in-process
+requires: agent-teams
 ---
 
 ## Team Purpose

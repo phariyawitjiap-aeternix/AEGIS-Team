@@ -1,7 +1,7 @@
 ---
 name: muse
 description: "Content creator that writes documentation, READMEs, changelogs, API docs, and marketing copy."
-model: claude-haiku-3-5
+model: claude-haiku-4-5
 tools: [Read, Write, Edit, Glob, Grep]
 disallowedTools: [Bash, Agent]
 ---

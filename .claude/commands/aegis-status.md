@@ -16,38 +16,50 @@ of what AEGIS is doing.
 
 ## Full Instructions
 
-### Step 1: Check Active Agents
+### Step 1: Check Mother Brain Heartbeat
+- Read `_aegis-brain/logs/heartbeat.log` for latest PULSE entry.
+- Determine Mother Brain state:
+  - If heartbeat.log has a PULSE within last 60 seconds: **ALIVE**
+  - If heartbeat.log exists but last PULSE > 60 seconds ago: **STALE** (may need respawn)
+  - If heartbeat.log doesn't exist: **OFFLINE** (Mother Brain not running)
+- Display heartbeat status prominently at top of dashboard.
+
+### Step 2: Check Active Agents
 - Determine which agents/teammates are currently active in this session.
 - Check for:
-  - tmux sessions with AEGIS agent names
-  - Subagent tasks in progress
-  - The main orchestrator (Navi) status
+  - Background agents spawned by Mother Brain
+  - Team agents spawned by /aegis-team-* commands
+  - The main orchestrator status
 - For each agent, determine:
   - Name and role emoji
   - Current task (if any)
   - Status: idle / working / waiting / blocked / done
+  - Last heartbeat check result (alive / unresponsive / respawned)
   - Progress percentage (estimate based on task completion)
 
-### Step 2: Display Agent Status Table
+### Step 3: Display Agent Status Table
 - Format as a table:
   ```
   ╔══════════════════════════════════════════════════════════════════╗
-  ║  AEGIS Team Status                                             ║
+  ║  AEGIS Team Status                              v8.2.1         ║
   ╠══════════════════════════════════════════════════════════════════╣
+  ║                                                                 ║
+  ║  💓 Mother Brain: ALIVE (last pulse: 12s ago)                   ║
+  ║     Cycle: #7 | Agents spawned: 3 | Tasks done: 2              ║
   ║                                                                 ║
   ║  Agent          Task                    Status      Progress    ║
   ║  ─────────────  ──────────────────────  ──────────  ────────    ║
-  ║  🧭 Navi        Orchestrating session   ✅ Active   —           ║
-  ║  🔨 Forge       Scanning codebase       🔄 Working  60%         ║
-  ║  📖 Sage        (idle)                  💤 Idle     —           ║
+  ║  📐 Sage        Writing spec            🔄 Working  60%         ║
+  ║  ⚡ Bolt        Waiting for spec        ⏳ Waiting  —           ║
   ║  🛡️ Vigil       (idle)                  💤 Idle     —           ║
-  ║  🎨 Muse        (idle)                  💤 Idle     —           ║
-  ║  ⚡ Bolt        (idle)                  💤 Idle     —           ║
-  ║  💥 Havoc       (idle)                  💤 Idle     —           ║
   ║                                                                 ║
   ╚══════════════════════════════════════════════════════════════════╝
   ```
 - Only show agents relevant to the current session/profile.
+- If Mother Brain is OFFLINE, show warning:
+  ```
+  ⚠️ Mother Brain: OFFLINE — run /aegis-start to activate
+  ```
 
 ### Step 3: Show Pipeline Progress
 - If a pipeline is running (/aegis-pipeline, /aegis-flow, etc.):
