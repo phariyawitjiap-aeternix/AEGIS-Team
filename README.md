@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/version-8.2-blue?style=for-the-badge" alt="Version 8.2"/>
+  <img src="https://img.shields.io/badge/version-8.3-blue?style=for-the-badge" alt="Version 8.3"/>
   <img src="https://img.shields.io/badge/agents-13-green?style=for-the-badge" alt="13 Agents"/>
   <img src="https://img.shields.io/badge/skills-25-orange?style=for-the-badge" alt="25 Skills"/>
   <img src="https://img.shields.io/badge/commands-23-yellow?style=for-the-badge" alt="23 Commands"/>
@@ -8,7 +8,7 @@
   <img src="https://img.shields.io/badge/license-MIT-purple?style=for-the-badge" alt="MIT License"/>
 </p>
 
-# :shield: AEGIS v8.2 — AI Agent Team Framework for Claude Code
+# :shield: AEGIS v8.3 — AI Agent Team Framework for Claude Code
 
 > **"Context is King, Memory is Soul"**
 >
@@ -40,7 +40,7 @@ bash <(curl -sL https://raw.githubusercontent.com/phariyawitjiap-aeternix/AEGIS-
 claude --dangerously-skip-permissions
 ```
 
-> :bulb: Profile options: `minimal` (7 skills) · `standard` (15 skills) · `full` (29 skills)
+> :bulb: Profile options: `minimal` (7 skills) · `standard` (15 skills) · `full` (25 skills)
 
 **Permissions (one-time):**
 
@@ -79,6 +79,117 @@ claude --dangerously-skip-permissions
 **:lock: NEVER touched by upgrade:** `_aegis-brain/` (tasks, sprints, patterns, learnings), `iso-docs/`, `CLAUDE_lessons.md`, project source code
 
 > :warning: **Always exit Claude Code before upgrading** — Claude caches files at session start
+
+---
+
+## :movie_camera: See It In Action
+
+### `/aegis-start` — Mother Brain activates with heartbeat
+
+```
+🛡️ ═══════════════════════════════════════════════════
+🛡️  AEGIS v8.3 — Session Started
+🛡️  "Context is King, Memory is Soul"
+🛡️ ═══════════════════════════════════════════════════
+
+📋 Project:    My SaaS App
+📅 Date:       2026-03-30
+🎚️  Profile:    full (25 skills)
+🔐 Autonomy:   L3 — Autonomous (Mother Brain active)
+📊 Context:    8% used
+
+🧬 Mother Brain: ONLINE — persistent heartbeat active
+
+💓 Heartbeat: Scanning project state...
+   Mother Brain will continuously monitor and dispatch agents.
+   She never sleeps until the session ends.
+
+👀 Watch: Shift+Down to view agent detail | Shift+Up to return
+🛑 Stop: Ctrl+C to interrupt | /aegis-mode --autonomy L1 for manual
+```
+
+```
+🧬 Mother Brain: Scan complete.
+
+📊 Scan Results:
+  ├── Git: clean (main, 12 commits)
+  ├── Tests: PASS (28/28)
+  ├── Sprint: sprint-2 active (day 3/5)
+  ├── Kanban: 3 TODO, 1 IN_PROGRESS, 2 DONE
+  ├── QA: pending for PROJ-T-007
+  ├── Compliance: 8/11 ISO docs current
+  └── Tech Debt: 5 TODOs, 2 FIXMEs
+
+🎯 Decision: P2.5 — Active sprint, pick next TODO from kanban
+   Task: PROJ-T-008 "Add payment webhook handler" [5pts]
+   Rationale: Highest priority TODO in sprint-2, spec exists.
+
+⚡ Action: Spawning build team...
+   → 📐 Sage: Validate spec for PROJ-T-008
+   → ⚡ Bolt: Implement webhook handler
+   → 🛡️ Vigil: Code review (Gate 1)
+
+💓 Heartbeat: 3 agents alive | context 15% | next pulse in 30s
+```
+
+### `/aegis-status` — Live dashboard with heartbeat
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  AEGIS Team Status                              v8.3            ║
+╠══════════════════════════════════════════════════════════════════╣
+║                                                                 ║
+║  💓 Mother Brain: ALIVE (last pulse: 8s ago)                    ║
+║     Cycle: #4 | Agents spawned: 3 | Tasks done: 2              ║
+║                                                                 ║
+║  Agent          Task                    Status      Progress    ║
+║  ─────────────  ──────────────────────  ──────────  ────────    ║
+║  📐 Sage        Validating spec         ✅ Done     100%        ║
+║  ⚡ Bolt        Implementing webhook    🔄 Working  60%         ║
+║  🛡️ Vigil       Waiting for Bolt        ⏳ Waiting  —           ║
+║                                                                 ║
+║  Pipeline: Build Team [████████████░░░░░░░░] Step 2/3           ║
+║  Context: 22% used 🟢 | ~78% remaining                         ║
+║                                                                 ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+### `/super-spec` — Human Q&A then full autonomy
+
+```
+📐 Sage: I've analyzed your brief and researched similar systems.
+Before I write the spec, I need your input:
+
+📌 BUSINESS CONTEXT
+1. Who are the primary users?
+2. What specific problem does this solve?
+3. How do they solve this today?
+
+📌 SCOPE & PRIORITIES
+4. What are the MUST-HAVE features for v1? (top 3-5)
+5. What is explicitly OUT of scope?
+
+📌 CONSTRAINTS
+7. Tech stack preference?
+8. Timeline pressure?
+
+📌 SUCCESS
+10. How will you measure success?
+```
+
+> :bulb: After you answer and approve the spec, Mother Brain enters **Spec Proxy mode** — she answers all team questions using your approved spec. No more interruptions.
+
+```
+🧬 Mother Brain: Spec approved. Entering Spec Proxy mode.
+   I now have full context from BRD + SRS + UX Blueprint.
+   I will answer team questions on your behalf.
+   I'll only ask you for business decisions outside the spec.
+
+💓 Resuming full autonomy (L3)...
+   → Running /aegis-breakdown from spec...
+   → Running /aegis-sprint plan...
+   → Spawning build team for first task...
+```
 
 ---
 
@@ -168,6 +279,9 @@ Switch: `/aegis-mode minimal` · `/aegis-mode standard` · `/aegis-mode full`
 
 ## :star2: Key Features
 
+- **:heartbeat: Mother Brain Heartbeat** — persistent background agent that never sleeps: scans, decides, dispatches, monitors agent health, auto-respawns stuck agents
+- **:brain: Two-Phase Autonomy** — human answers questions during spec (L2), then Mother Brain takes over as Spec Proxy and answers all team questions (L3/L4)
+- **:speech_balloon: Spec Proxy Mode** — after spec approval, Mother Brain answers team questions using BRD + SRS + research. Only escalates business decisions to human
 - **Self-Evolving Intelligence** — auto-learn from tasks, shared cache across agents, skill evolution
 - **JIRA-like PM State** — sequential IDs, per-task history, sprint dashboard
 - **ISO 29110 Compliance** — 14 work products, activity-time generation, audit trail
@@ -224,6 +338,20 @@ your-project/
     ├── retrospectives/          # Session retros + AI diaries
     └── logs/                    # Activity tracking
 ```
+
+---
+
+## :sparkles: What's New in v8.3
+
+| Feature | Before (v8.2) | After (v8.3) |
+|:--------|:-------------|:-------------|
+| **Mother Brain** | Inline scan, one-shot | Persistent background agent + heartbeat loop |
+| **Agent Health** | No monitoring | Auto-nudge (>120s), auto-respawn (>300s) |
+| **Spec Phase** | AI guesses requirements | Human Q&A (10 questions) + approval gate |
+| **Post-Spec** | Asks human everything | Spec Proxy — Mother Brain answers for human |
+| **Agent Mode** | tmux panes | In-process background agents (Agent tool) |
+| **Haiku Models** | Mixed (3-5 / 4-5) | All standardized to `claude-haiku-4-5` |
+| **Logging** | activity.log only | + heartbeat.log + spec-proxy.log |
 
 ---
 
