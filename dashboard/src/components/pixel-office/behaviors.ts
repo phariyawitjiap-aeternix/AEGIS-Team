@@ -1,16 +1,22 @@
-// ---- Agent Social Behavior System ----
-// Manages idle/social behaviors for pixel office agents.
-// Only affects agents that are NOT working/blocked in the live data.
+// ---- Agent Behavior System v2 ----
+// Data-driven behaviors from real API state + natural social interactions.
+//
+// WORK behaviors: respond to actual task assignments, pipeline flow, team commands
+// SOCIAL behaviors: idle agents chat, get coffee, rest — like a real office
 
 import type { PixelAgent, SpeechBubble } from "./types";
 import type { AgentState } from "@/types";
 
-// ---- Key positions in canvas space ----
+// ---- Key positions ----
 export const ORB_POS = { x: 640, y: 490 };
 export const WATER_COOLER_POS = { x: 113, y: 555 };
-export const MEETING_ROOM_POS = { x: 625, y: 520 };
+export const COFFEE_MACHINE_POS = { x: 160, y: 555 };
+export const MEETING_ROOM_CENTER = { x: 625, y: 520 };
+export const MEETING_SEATS = [
+  { x: 590, y: 500 }, { x: 660, y: 500 },
+  { x: 590, y: 540 }, { x: 660, y: 540 },
+];
 
-// Desk anchor positions (agent standing position: feet of sprite)
 export const DESK_POSITIONS: Record<string, { x: number; y: number }> = {
   Navi:     { x: 120, y: 295 },
   Sage:     { x: 248, y: 295 },
@@ -26,29 +32,81 @@ export const DESK_POSITIONS: Record<string, { x: number; y: number }> = {
   Ops:      { x: 248, y: 555 },
 };
 
-// ---- Speech bubble text pools ----
-const CHAT_MESSAGES: Record<string, string[]> = {
-  white: ["Hey!", "Sup?", "Lunch?", "Nice!", "LOL", "Brb", "Indeed", "Hmm"],
-  green: ["Done!", "PASS", "Shipped!", "LFG!", "Merged!", "Green!"],
-  red:   ["Bug!", "FAIL", "Broken!", "Yikes", "Revert?", "Ugh"],
-  yellow:["Hmm...", "Thinking", "Maybe?", "IDK", "...", "How?"],
-  blue:  ["Coding...", "Reviewing", "Testing", "Building", "Deploying"],
+// ---- Pipeline chain: who hands off to whom ----
+const PIPELINE_CHAINS: Record<string, string> = {
+  Sage: "Bolt",       // Sage specs → Bolt builds
+  Bolt: "Vigil",      // Bolt builds → Vigil reviews
+  Vigil: "Sentinel",  // Vigil passes → Sentinel QA
+  Sentinel: "Probe",  // Sentinel plans → Probe executes
+  Probe: "Scribe",    // Probe reports → Scribe docs
 };
 
-const VISIT_MESSAGES = ["Hey!", "Nice work!", "Quick Q?", "Coffee?", "Brb"];
-const ORB_MESSAGES   = ["Reporting...", "Status: OK", "Done!", "Syncing"];
-const COOLER_MESSAGES = ["Hydrating", "Coffee?", "Water break", "Sip"];
-const MEETING_MESSAGES = ["In meeting", "Syncing...", "Align?", "10min?"];
+// ---- Work speech bubbles (role-specific) ----
+const WORK_BUBBLES: Record<string, string[]> = {
+  Navi:     ["Planning...", "Routing task", "Sprint check", "Deciding..."],
+  Sage:     ["Writing spec", "Designing...", "Architecture", "Trade-offs..."],
+  Bolt:     ["Coding...", "npm install", "Building...", "git commit"],
+  Vigil:    ["Reviewing...", "Security?", "LGTM!", "Needs fix"],
+  Havoc:    ["What if...?", "Edge case!", "Challenge!", "Hmm, flaw?"],
+  Forge:    ["Scanning...", "Metrics...", "grep -r", "Dependencies"],
+  Pixel:    ["UI wireframe", "Colors...", "Responsive?", "Accessible?"],
+  Muse:     ["Writing docs", "README...", "Changelog", "API docs"],
+  Sentinel: ["Test plan", "Coverage?", "Risk matrix", "P0 tests"],
+  Probe:    ["Running...", "PASS ✅", "Testing...", "npm test"],
+  Scribe:   ["ISO docs", "SI.03...", "Tracing...", "PM.01 update"],
+  Ops:      ["Deploying...", "Health OK", "docker build", "Monitoring"],
+};
+
+// ---- Handoff speech bubbles ----
+const HANDOFF_BUBBLES: Record<string, string[]> = {
+  Sage:     ["Spec ready!", "Here, Bolt", "Design done"],
+  Bolt:     ["Code done!", "PR ready", "Build green"],
+  Vigil:    ["PASS!", "Approved ✅", "Ship it"],
+  Sentinel: ["QA plan done", "Go Probe!", "Tests ready"],
+  Probe:    ["All pass!", "Results in", "73/73 ✅"],
+};
+
+// ---- Social chat (personality-specific) ----
+const SOCIAL_CHAT: Record<string, string[]> = {
+  Navi:     ["Team sync?", "Status?", "On track!", "Sprint OK"],
+  Sage:     ["Interesting...", "Pattern!", "ADR idea", "Hmm design"],
+  Bolt:     ["Shipped!", "LFG!", "Coffee?", "Break time"],
+  Vigil:    ["Good code", "Clean PR", "Watch this", "Security?"],
+  Havoc:    ["But what if", "Devil's Q", "Challenge!", "Red team"],
+  Forge:    ["Data says", "Found it!", "Metrics up", "Stats"],
+  Pixel:    ["Nice UI!", "Dark mode?", "Spacing...", "Pixels!"],
+  Muse:     ["Good read!", "Docs done", "Typo fix", "Changelog"],
+  Sentinel: ["All green", "Coverage!", "Risk low", "QA OK"],
+  Probe:    ["Tests pass", "No bugs!", "Fast run", "Clean!"],
+  Scribe:   ["ISO ready", "Compliant", "Audit OK", "Traced!"],
+  Ops:      ["Healthy!", "Deployed", "No alerts", "Uptime 99%"],
+};
+
+// ---- MB report messages ----
+const MB_REPORT: Record<string, string[]> = {
+  Sage:     ["Spec complete", "Design ready", "ADR filed"],
+  Bolt:     ["Build done", "Code merged", "Tests pass"],
+  Vigil:    ["Review done", "Gate 1 pass", "Clean code"],
+  Sentinel: ["QA complete", "Gate 2 pass", "All tested"],
+  Scribe:   ["ISO updated", "Gate 3 pass", "Docs synced"],
+  Ops:      ["Deployed OK", "Health green", "Gate 4 pass"],
+};
+
+// ---- Coffee / rest ----
+const REST_BUBBLES = ["☕", "Break time", "Ahh...", "Refueling", "*sip*", "Nice coffee"];
+const IDLE_ACTIONS = ["*stretch*", "*yawn*", "📱", "...", "*look around*", "*tap tap*"];
 
 function randomFrom<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
-
 function randomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+function dist(a: { x: number; y: number }, b: { x: number; y: number }): number {
+  return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
+}
 
-// ---- Build initial pixel agent state ----
+// ---- Build initial state ----
 export function buildInitialPixelAgents(): PixelAgent[] {
   return Object.entries(DESK_POSITIONS).map(([name, pos]) => ({
     name,
@@ -64,20 +122,28 @@ export function buildInitialPixelAgents(): PixelAgent[] {
     walkFrameTick: 0,
     nextBehaviorTick: randomInt(100, 400),
     facing: 1,
+    prevLiveStatus: "idle",
+    activeTaskId: null,
+    handoffTarget: null,
   }));
 }
 
-// ---- Create a speech bubble ----
-function makeBubble(
-  text: string,
-  color: SpeechBubble["color"],
-  tick: number,
-  duration = 180
-): SpeechBubble {
+function makeBubble(text: string, color: SpeechBubble["color"], tick: number, duration = 180): SpeechBubble {
   return { text, color, createdAt: tick, duration };
 }
+function startWalking(pa: PixelAgent, tx: number, ty: number): void {
+  pa.targetX = tx;
+  pa.targetY = ty;
+  pa.behavior = "walking";
+}
+function goHome(pa: PixelAgent): void {
+  const home = DESK_POSITIONS[pa.name];
+  if (home) startWalking(pa, home.x, home.y);
+}
 
-// ---- Per-frame behavior tick for a single agent ----
+// ========================================================
+// MAIN BEHAVIOR TICK — called every frame for each agent
+// ========================================================
 export function tickBehavior(
   pa: PixelAgent,
   liveStatus: AgentState | undefined,
@@ -85,169 +151,317 @@ export function tickBehavior(
   tick: number
 ): void {
   const status = liveStatus?.status ?? "idle";
+  const taskId = liveStatus?.active_task?.id ?? null;
 
   // Clear expired bubbles
   if (pa.bubble && tick - pa.bubble.createdAt >= pa.bubble.duration) {
     pa.bubble = null;
   }
 
-  // Working agents: stay at desk, show blue bubble occasionally
+  // ============================================
+  // DETECT STATUS TRANSITIONS (state changes)
+  // ============================================
+  if (status !== pa.prevLiveStatus) {
+    onStatusChange(pa, pa.prevLiveStatus, status, taskId, allPixelAgents, tick);
+    pa.prevLiveStatus = status;
+  }
+
+  // ============================================
+  // STATUS-DRIVEN BEHAVIORS (work)
+  // ============================================
+
+  // WORKING: stay at desk, type, show work bubbles
   if (status === "working") {
-    returnToDesk(pa);
-    pa.behavior = "at_desk";
-    if (tick % 200 === 0 && !pa.bubble) {
-      pa.bubble = makeBubble(randomFrom(CHAT_MESSAGES.blue), "blue", tick, 160);
+    if (pa.behavior !== "working_at_desk" && pa.behavior !== "walking") {
+      pa.behavior = "working_at_desk";
+      goHome(pa);
+    }
+    pa.activeTaskId = taskId;
+    // Periodic work bubbles
+    if (tick % 300 === 0 && !pa.bubble) {
+      const msgs = WORK_BUBBLES[pa.name] || ["Working..."];
+      pa.bubble = makeBubble(randomFrom(msgs), "blue", tick, 160);
     }
     return;
   }
 
-  // Blocked agents: stay at desk, show red "..." bubble
+  // BLOCKED: at desk with red bubbles
   if (status === "blocked") {
-    returnToDesk(pa);
-    pa.behavior = "at_desk";
-    if (!pa.bubble || tick - pa.bubble.createdAt > 240) {
-      pa.bubble = makeBubble("...", "red", tick, 240);
+    if (pa.behavior !== "at_desk") {
+      pa.behavior = "at_desk";
+      goHome(pa);
+    }
+    if (!pa.bubble || tick - pa.bubble.createdAt > 300) {
+      pa.bubble = makeBubble("Blocked...", "red", tick, 300);
     }
     return;
   }
 
-  // Done agents: celebrate then socialize freely
-  if (status === "done" && pa.behavior === "at_desk") {
-    if (!pa.bubble) {
-      pa.bubble = makeBubble(randomFrom(CHAT_MESSAGES.green), "green", tick, 200);
+  // WAITING: stand near desk, look around
+  if (status === "waiting") {
+    if (pa.behavior !== "at_desk") {
+      pa.behavior = "at_desk";
+      goHome(pa);
     }
-    // After the celebration bubble starts, they can start socializing
-    if (tick - (pa.bubble?.createdAt ?? 0) > 80) {
-      triggerRandomBehavior(pa, allPixelAgents, tick);
-    }
-    return;
-  }
-
-  // Handle walking to target
-  if (pa.behavior === "walking") {
-    const dx = pa.targetX - pa.x;
-    const dy = pa.targetY - pa.y;
-    if (Math.sqrt(dx * dx + dy * dy) < 5) {
-      // Arrived — switch to the destination behavior
-      onArrived(pa, tick);
+    if (tick % 400 === 0 && !pa.bubble) {
+      pa.bubble = makeBubble("Waiting...", "yellow", tick, 120);
     }
     return;
   }
 
-  // Waiting at a location
+  // DONE: celebrate, then report to MB, then socialize
+  if (status === "done") {
+    if (pa.behavior === "working_at_desk") {
+      // Just finished! Celebrate first
+      pa.behavior = "celebrating";
+      pa.bubble = makeBubble("Done! 🎉", "green", tick, 200);
+      pa.waitTicks = 120;
+      return;
+    }
+    if (pa.behavior === "celebrating") {
+      pa.waitTicks--;
+      if (pa.waitTicks <= 0) {
+        // Go report to Mother Brain
+        pa.behavior = "reporting_to_mb";
+        startWalking(pa, ORB_POS.x, ORB_POS.y + 10);
+        const msgs = MB_REPORT[pa.name] || ["Done!"];
+        pa.bubble = makeBubble(randomFrom(msgs), "green", tick, 180);
+      }
+      return;
+    }
+    // After reporting, fall through to idle behaviors
+  }
+
+  // ============================================
+  // WALKING — in transit
+  // ============================================
+  if (pa.behavior === "walking" || pa.behavior === "reporting_to_mb" || pa.behavior === "collaborating") {
+    if (dist(pa, { x: pa.targetX, y: pa.targetY }) < 5) {
+      onArrived(pa, allPixelAgents, tick);
+    }
+    return;
+  }
+
+  // ============================================
+  // WAITING AT A LOCATION (timed)
+  // ============================================
   if (pa.waitTicks > 0) {
     pa.waitTicks--;
     if (pa.waitTicks === 0) {
-      returnToDesk(pa);
-      startWalking(pa, DESK_POSITIONS[pa.name].x, DESK_POSITIONS[pa.name].y);
+      // Return home
+      goHome(pa);
     }
     return;
   }
 
-  // Idle at desk — check if it's time for a social behavior
-  if (pa.behavior === "at_desk" && tick >= pa.nextBehaviorTick) {
-    triggerRandomBehavior(pa, allPixelAgents, tick);
+  // ============================================
+  // IDLE — SOCIAL BEHAVIORS (the fun part)
+  // ============================================
+  if ((pa.behavior === "at_desk" || pa.behavior === "idle_anim") && tick >= pa.nextBehaviorTick) {
+    triggerIdleBehavior(pa, allPixelAgents, tick);
   }
 }
 
-function returnToDesk(pa: PixelAgent): void {
-  const home = DESK_POSITIONS[pa.name];
-  if (!home) return;
-  pa.targetX = home.x;
-  pa.targetY = home.y;
-}
+// ============================================
+// STATUS CHANGE HANDLER
+// ============================================
+function onStatusChange(
+  pa: PixelAgent,
+  from: string,
+  to: string,
+  taskId: string | null,
+  allAgents: PixelAgent[],
+  tick: number
+): void {
+  // idle → working: receive task, walk to desk
+  if (to === "working") {
+    pa.bubble = makeBubble("On it!", "blue", tick, 120);
+    pa.behavior = "working_at_desk";
+    goHome(pa);
+    pa.activeTaskId = taskId;
+    // Set up handoff chain
+    pa.handoffTarget = PIPELINE_CHAINS[pa.name] || null;
+  }
 
-function startWalking(pa: PixelAgent, tx: number, ty: number): void {
-  pa.targetX = tx;
-  pa.targetY = ty;
-  pa.behavior = "walking";
-}
+  // working → done: celebrate + handoff to next in chain
+  if (from === "working" && to === "done") {
+    pa.bubble = makeBubble("Done! 🎉", "green", tick, 200);
+    pa.behavior = "celebrating";
+    pa.waitTicks = 100;
 
-function onArrived(pa: PixelAgent, tick: number): void {
-  switch (pa.behavior) {
-    case "walking": {
-      // Determine where we arrived based on distance to key spots
-      const distToDesk = dist(pa, DESK_POSITIONS[pa.name] ?? { x: -999, y: -999 });
-      const distToOrb  = dist(pa, ORB_POS);
-      const distToCooler = dist(pa, WATER_COOLER_POS);
-      const distToMeeting = dist(pa, MEETING_ROOM_POS);
-
-      if (distToDesk < 20) {
-        pa.behavior = "at_desk";
-        pa.visitTarget = null;
-      } else if (distToOrb < 30) {
-        pa.behavior = "at_orb";
-        pa.waitTicks = randomInt(90, 180);
-        pa.bubble = makeBubble(randomFrom(ORB_MESSAGES), "blue", tick, 150);
-      } else if (distToCooler < 30) {
-        pa.behavior = "at_cooler";
-        pa.waitTicks = randomInt(120, 200);
-        pa.bubble = makeBubble(randomFrom(COOLER_MESSAGES), "white", tick, 140);
-      } else if (distToMeeting < 40) {
-        pa.behavior = "at_meeting";
-        pa.waitTicks = randomInt(200, 400);
-        pa.bubble = makeBubble(randomFrom(MEETING_MESSAGES), "yellow", tick, 180);
-      } else if (pa.visitTarget) {
-        pa.behavior = "at_friend";
-        pa.waitTicks = randomInt(100, 180);
-        pa.bubble = makeBubble(randomFrom(VISIT_MESSAGES), "white", tick, 140);
-      } else {
-        pa.behavior = "at_desk";
+    // Trigger handoff: walk to next agent in pipeline
+    if (pa.handoffTarget) {
+      const target = allAgents.find(a => a.name === pa.handoffTarget);
+      if (target) {
+        // After celebrating, will walk to handoff target
+        setTimeout(() => {
+          // This won't work in canvas tick, so we use waitTicks approach
+        }, 0);
       }
-      break;
     }
-    default:
-      pa.behavior = "at_desk";
+  }
+
+  // idle → done: just mark celebrating
+  if (from === "idle" && to === "done") {
+    pa.behavior = "celebrating";
+    pa.bubble = makeBubble("Complete! ✅", "green", tick, 200);
+    pa.waitTicks = 80;
+  }
+
+  // anything → blocked
+  if (to === "blocked") {
+    pa.bubble = makeBubble("Blocked! 🚫", "red", tick, 300);
+    goHome(pa);
   }
 }
 
-function dist(pa: { x: number; y: number }, target: { x: number; y: number }): number {
-  return Math.sqrt((pa.x - target.x) ** 2 + (pa.y - target.y) ** 2);
+// ============================================
+// ARRIVAL HANDLER
+// ============================================
+function onArrived(pa: PixelAgent, allAgents: PixelAgent[], tick: number): void {
+  const distToDesk = dist(pa, DESK_POSITIONS[pa.name] ?? { x: -999, y: -999 });
+  const distToOrb = dist(pa, ORB_POS);
+  const distToCooler = dist(pa, WATER_COOLER_POS);
+  const distToCoffee = dist(pa, COFFEE_MACHINE_POS);
+  const distToMeeting = dist(pa, MEETING_ROOM_CENTER);
+
+  // Arrived at home desk
+  if (distToDesk < 25) {
+    pa.behavior = "at_desk";
+    pa.visitTarget = null;
+    pa.nextBehaviorTick = tick + randomInt(200, 500);
+    return;
+  }
+
+  // Arrived at Mother Brain
+  if (distToOrb < 40) {
+    if (pa.behavior === "reporting_to_mb") {
+      const msgs = MB_REPORT[pa.name] || ["Reporting..."];
+      pa.bubble = makeBubble(randomFrom(msgs), "purple", tick, 200);
+      pa.waitTicks = randomInt(120, 200);
+      pa.behavior = "at_orb";
+    } else {
+      pa.bubble = makeBubble("Checking in", "blue", tick, 150);
+      pa.waitTicks = randomInt(80, 150);
+      pa.behavior = "at_orb";
+    }
+    return;
+  }
+
+  // Arrived at water cooler / coffee
+  if (distToCooler < 35 || distToCoffee < 35) {
+    pa.behavior = "coffee_break";
+    pa.bubble = makeBubble(randomFrom(REST_BUBBLES), "white", tick, 160);
+    pa.waitTicks = randomInt(150, 300);
+    return;
+  }
+
+  // Arrived at meeting room
+  if (distToMeeting < 50) {
+    pa.behavior = "at_meeting";
+    pa.waitTicks = randomInt(200, 500);
+    // Check who else is in the meeting
+    const inMeeting = allAgents.filter(a =>
+      a.name !== pa.name && a.behavior === "at_meeting" && dist(a, MEETING_ROOM_CENTER) < 60
+    );
+    if (inMeeting.length > 0) {
+      const topic = randomFrom(["Sprint plan", "Design review", "Retrospective", "Architecture", "QA strategy"]);
+      pa.bubble = makeBubble(topic, "yellow", tick, 200);
+    } else {
+      pa.bubble = makeBubble("Waiting for team", "yellow", tick, 150);
+    }
+    return;
+  }
+
+  // Arrived at friend's desk (collaborating or chatting)
+  if (pa.visitTarget) {
+    const friend = allAgents.find(a => a.name === pa.visitTarget);
+    if (pa.behavior === "collaborating" && friend) {
+      // Work handoff
+      const msgs = HANDOFF_BUBBLES[pa.name] || ["Here you go!"];
+      pa.bubble = makeBubble(randomFrom(msgs), "green", tick, 180);
+      // Friend responds
+      if (!friend.bubble) {
+        const responses = ["Got it!", "Thanks!", "On it!", "Roger!"];
+        friend.bubble = makeBubble(randomFrom(responses), "blue", tick + 30, 150);
+      }
+      pa.waitTicks = randomInt(80, 140);
+      pa.behavior = "at_friend";
+    } else {
+      // Social chat
+      pa.behavior = "chatting";
+      const msgs = SOCIAL_CHAT[pa.name] || ["Hey!"];
+      pa.bubble = makeBubble(randomFrom(msgs), "white", tick, 150);
+      // Friend responds with their own personality
+      if (friend && !friend.bubble) {
+        const friendMsgs = SOCIAL_CHAT[friend.name] || ["Hey!"];
+        friend.bubble = makeBubble(randomFrom(friendMsgs), "white", tick + 40, 140);
+      }
+      pa.waitTicks = randomInt(120, 250);
+    }
+    return;
+  }
+
+  // Default: go home
+  pa.behavior = "at_desk";
+  pa.nextBehaviorTick = tick + randomInt(200, 400);
 }
 
-function triggerRandomBehavior(
+// ============================================
+// IDLE SOCIAL BEHAVIORS
+// ============================================
+function triggerIdleBehavior(
   pa: PixelAgent,
   allAgents: PixelAgent[],
   tick: number
 ): void {
+  // Find who else is idle (potential social targets)
+  const idleFriends = allAgents.filter(a =>
+    a.name !== pa.name &&
+    (a.behavior === "at_desk" || a.behavior === "idle_anim" || a.behavior === "coffee_break")
+  );
+
   const roll = Math.random();
 
-  if (roll < 0.30) {
-    // Walk to a random friend's desk
-    const others = allAgents.filter((a) => a.name !== pa.name);
-    if (others.length > 0) {
-      const friend = randomFrom(others);
-      pa.visitTarget = friend.name;
-      // Stand slightly to the right of the friend's desk
-      startWalking(pa, friend.x + 18, friend.y);
+  if (roll < 0.25 && idleFriends.length > 0) {
+    // CHAT WITH FRIEND — walk to their desk
+    const friend = randomFrom(idleFriends);
+    pa.visitTarget = friend.name;
+    const friendPos = DESK_POSITIONS[friend.name];
+    if (friendPos) {
+      startWalking(pa, friendPos.x + 20, friendPos.y);
     }
+  } else if (roll < 0.40) {
+    // COFFEE BREAK — walk to coffee machine or water cooler
+    const target = Math.random() < 0.5 ? COFFEE_MACHINE_POS : WATER_COOLER_POS;
+    startWalking(pa, target.x + randomInt(-5, 10), target.y);
   } else if (roll < 0.50) {
-    // Walk to Mother Brain orb
-    startWalking(pa, ORB_POS.x, ORB_POS.y + 10);
-  } else if (roll < 0.65) {
-    // Coffee / water break
-    startWalking(pa, WATER_COOLER_POS.x + 5, WATER_COOLER_POS.y);
-  } else if (roll < 0.72) {
-    // Meeting room
-    const mx = MEETING_ROOM_POS.x + randomInt(-20, 20);
-    const my = MEETING_ROOM_POS.y + randomInt(-10, 10);
-    startWalking(pa, mx, my);
+    // CHECK IN WITH MOTHER BRAIN — report or just visit
+    startWalking(pa, ORB_POS.x + randomInt(-15, 15), ORB_POS.y + 10);
+  } else if (roll < 0.58) {
+    // MEETING — walk to meeting room (might find others there)
+    const seat = randomFrom(MEETING_SEATS);
+    startWalking(pa, seat.x, seat.y);
+  } else if (roll < 0.68 && idleFriends.length > 0) {
+    // WALK TO NEARBY FRIEND — not for a reason, just passing by
+    const friend = randomFrom(idleFriends);
+    const friendPos = DESK_POSITIONS[friend.name];
+    if (friendPos) {
+      // Walk near but not directly to them
+      startWalking(pa, friendPos.x + randomInt(-30, 30), friendPos.y + randomInt(-10, 10));
+    }
   } else {
-    // Random idle animation (stretch/yawn)
-    pa.bubble = makeBubble(
-      randomFrom(["...", "Hmm", "Yawn", "Brb"]),
-      "white",
-      tick,
-      100
-    );
-    pa.nextBehaviorTick = tick + randomInt(200, 500);
+    // IDLE AT DESK — small action (stretch, yawn, phone)
+    pa.behavior = "idle_anim";
+    pa.bubble = makeBubble(randomFrom(IDLE_ACTIONS), "white", tick, 100);
+    pa.nextBehaviorTick = tick + randomInt(300, 600);
+    return;
   }
 
-  // Schedule the next social behavior check
-  pa.nextBehaviorTick = tick + randomInt(300, 700);
+  pa.nextBehaviorTick = tick + randomInt(400, 800);
 }
 
-// ---- Compute bubble alpha (fade out in last 30 ticks) ----
+// ---- Bubble alpha fade ----
 export function bubbleAlpha(bubble: SpeechBubble, tick: number): number {
   const elapsed = tick - bubble.createdAt;
   const remaining = bubble.duration - elapsed;

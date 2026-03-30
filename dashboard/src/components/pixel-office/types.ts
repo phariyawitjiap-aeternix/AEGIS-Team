@@ -7,40 +7,43 @@ export type AgentBehaviorState =
   | "at_orb"
   | "at_cooler"
   | "at_meeting"
-  | "idle_anim";
+  | "idle_anim"
+  | "working_at_desk"     // actively working on a task
+  | "reporting_to_mb"     // walking to Mother Brain to report
+  | "receiving_task"      // at MB orb, getting a new task assignment
+  | "collaborating"       // walking to teammate for handoff (Sage→Bolt→Vigil chain)
+  | "code_reviewing"      // Vigil reviewing at someone's desk
+  | "celebrating"         // task/sprint done celebration
+  | "coffee_break"        // relaxing at water cooler
+  | "chatting";           // casual chat with friend
 
 export interface SpeechBubble {
   text: string;
-  color: "white" | "green" | "red" | "yellow" | "blue";
-  /** tick when the bubble was created */
+  color: "white" | "green" | "red" | "yellow" | "blue" | "purple";
   createdAt: number;
-  /** how many ticks it lives */
   duration: number;
 }
 
 export interface PixelAgent {
   name: string;
-  /** current canvas-space position (feet anchor) */
   x: number;
   y: number;
-  /** walk target (canvas-space) */
   targetX: number;
   targetY: number;
-  /** behavioral state */
   behavior: AgentBehaviorState;
-  /** ticks to stay at a location before returning */
   waitTicks: number;
-  /** which agent this agent is visiting (name) */
   visitTarget: string | null;
   bubble: SpeechBubble | null;
-  /** walk frame 0-3 */
   walkFrame: number;
-  /** tick counter for next walk-frame update */
   walkFrameTick: number;
-  /** next tick when a random social behavior may trigger */
   nextBehaviorTick: number;
-  /** direction: 1=right, -1=left */
   facing: number;
+  /** Track previous live status to detect transitions */
+  prevLiveStatus: string;
+  /** What task this agent is working on (from API) */
+  activeTaskId: string | null;
+  /** Chain: who to hand off to next */
+  handoffTarget: string | null;
 }
 
 export interface Vec2 {

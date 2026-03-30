@@ -989,7 +989,7 @@ export function drawSpeechBubble(
   x: number,
   y: number,
   text: string,
-  color: "white" | "green" | "red" | "yellow" | "blue",
+  color: "white" | "green" | "red" | "yellow" | "blue" | "purple",
   alpha: number
 ): void {
   const bgColors: Record<string, string> = {
@@ -998,6 +998,7 @@ export function drawSpeechBubble(
     red: "#CC4444",
     yellow: "#DDCC00",
     blue: "#4488CC",
+    purple: "#9944CC",
   };
   const textColors: Record<string, string> = {
     white: "#222222",
@@ -1005,6 +1006,7 @@ export function drawSpeechBubble(
     red: "#FFFFFF",
     yellow: "#222222",
     blue: "#FFFFFF",
+    purple: "#FFFFFF",
   };
 
   const padding = 5;

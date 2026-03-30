@@ -239,11 +239,13 @@ export function PixelOfficeCanvas() {
         let spriteOX = Math.round(pa.x) - SPRITE_W / 2;
         let spriteOY = Math.round(pa.y) - SPRITE_H;
 
-        // Status-based vertical offset animations (done/waiting at desk)
-        if (status === "done" && pa.behavior === "at_desk") {
-          spriteOY -= Math.abs(Math.sin(tick * 0.15)) * 8;
+        // Status-based vertical offset animations
+        if (pa.behavior === "celebrating" || (status === "done" && pa.behavior === "at_desk")) {
+          spriteOY -= Math.abs(Math.sin(tick * 0.15)) * 10; // bounce!
         } else if (status === "waiting" && pa.behavior === "at_desk") {
           spriteOY += Math.sin(tick * 0.05) * 1.5;
+        } else if (pa.behavior === "coffee_break" || pa.behavior === "chatting") {
+          spriteOY += Math.sin(tick * 0.03) * 1; // gentle sway
         }
 
         // Flip sprite horizontally when facing left
@@ -258,8 +260,8 @@ export function PixelOfficeCanvas() {
 
         ctx.restore();
 
-        // Sparkles for "done" agents
-        if (status === "done" && tick % 10 < 5) {
+        // Sparkles for celebrating/done agents
+        if ((status === "done" || pa.behavior === "celebrating") && tick % 10 < 5) {
           ctx.fillStyle = "#FFD700";
           ctx.fillRect(spriteOX - 4, spriteOY - 4, 3, 3);
           ctx.fillRect(spriteOX + SPRITE_W + 2, spriteOY - 6, 3, 3);
