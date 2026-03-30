@@ -43,8 +43,9 @@ export async function GET() {
 
       for (const task of tasks) {
         if (task.type !== "task") continue;
-        const result =
-          task.gate_results[def.key as keyof typeof task.gate_results];
+        const gr = task.gate_results;
+        if (!gr) { pending++; continue; }
+        const result = gr[def.key as keyof typeof gr];
         if (result === "PASS") passed++;
         else if (result === "FAIL") failed++;
         else pending++;
@@ -66,7 +67,7 @@ export async function GET() {
         id: t.id,
         title: t.title,
         status: t.status,
-        gates: t.gate_results,
+        gates: t.gate_results || {},
       }));
 
     const data: GateSummary = { gates, tasks: taskGates };
