@@ -362,7 +362,7 @@ STABLE (done)
                          |
                          v
                    +----------+
-                   |   SAGE   |  Read task meta.json + acceptance criteria
+                   |   IRON MAN   |  Read task meta.json + acceptance criteria
                    | (spec)   |  Write: _aegis-output/specs/{TASK-ID}-spec.md
                    +-----+----+
                          |
@@ -370,7 +370,7 @@ STABLE (done)
                          |
                          v
                    +----------+
-                   |   BOLT   |  Read spec, implement code + unit tests
+                   |   SPIDER-MAN   |  Read spec, implement code + unit tests
                    | (build)  |  Write: src/, tests/
                    +-----+----+  Run: lint, build, test
                          |
@@ -378,7 +378,7 @@ STABLE (done)
                          |
                          v
                    +----------+
-                   |  VIGIL   |  4-pass review: correctness, security,
+                   |  BLACK PANTHER   |  4-pass review: correctness, security,
                    | (review) |  performance, maintainability
                    +-----+----+  Write: _aegis-output/reviews/{TASK-ID}-review.md
                          |
@@ -387,7 +387,7 @@ STABLE (done)
                  PASS          FAIL
                    |             |
                    v             v
-             [Gate 1 PASS]  [Back to BOLT with findings]
+             [Gate 1 PASS]  [Back to SPIDER-MAN with findings]
 ```
 
 #### Input Contract
@@ -468,7 +468,7 @@ STABLE (done)
                            |
                            v
                    +---------------+
-                   |    FORGE      |  Scan: complexity, deps, security signatures
+                   |    BEAST      |  Scan: complexity, deps, security signatures
                    |  (scanner)    |  Write: _aegis-brain/logs/scan-{TASK-ID}.md
                    +-------+-------+
                            |
@@ -476,7 +476,7 @@ STABLE (done)
                            |
                            v
                    +---------------+
-                   |    HAVOC      |  Challenge: assumptions, edge cases, threats
+                   |    LOKI      |  Challenge: assumptions, edge cases, threats
                    |  (adversary)  |  Write: _aegis-output/adversarial/{TASK-ID}.md
                    +-------+-------+
                            |
@@ -484,7 +484,7 @@ STABLE (done)
                            |
                            v
                    +---------------+
-                   |    VIGIL      |  Deep review with Beast data + Loki challenges
+                   |    BLACK PANTHER      |  Deep review with Beast data + Loki challenges
                    |  (reviewer)   |  Write: _aegis-output/reviews/{TASK-ID}-deep-review.md
                    +-------+-------+
                            |
@@ -576,7 +576,7 @@ When the Review Team runs, its deep review verdict replaces the standard Gate 1 
                             |
                             v
                    +------------------+
-                   |   SENTINEL       |  Read spec + code; write test plan
+                   |   WAR MACHINE       |  Read spec + code; write test plan
                    |   (plan)         |  Write: _aegis-output/qa/sprint-N/
                    +--------+---------+       test-plan-{TASK-ID}.md
                             |
@@ -584,7 +584,7 @@ When the Review Team runs, its deep review verdict replaces the standard Gate 1 
                             |
                             v
                    +------------------+
-                   |   PROBE          |  Execute test cases from plan
+                   |   VISION          |  Execute test cases from plan
                    |   (execute)      |  Write: _aegis-output/qa/sprint-N/
                    +--------+---------+       raw-results-{TASK-ID}.md
                             |
@@ -592,7 +592,7 @@ When the Review Team runs, its deep review verdict replaces the standard Gate 1 
                             |
                             v
                    +------------------+
-                   |   SENTINEL       |  Analyze results, issue verdict
+                   |   WAR MACHINE       |  Analyze results, issue verdict
                    |   (verdict)      |  Write: _aegis-output/qa/sprint-N/
                    +--------+---------+       qa-report-{TASK-ID}.md
                             |
@@ -700,7 +700,7 @@ as the sole quality gate. This is the existing "small task exception" from v7.0,
                             |
                             v
                    +------------------+
-                   |    SCRIBE        |  Check: which ISO docs need update?
+                   |    COULSON        |  Check: which ISO docs need update?
                    |   (audit)        |  Read: _aegis-output/iso-docs/*/current.md
                    +--------+---------+  Read: _aegis-output/specs/, qa/, reviews/
                             |
@@ -708,7 +708,7 @@ as the sole quality gate. This is the existing "small task exception" from v7.0,
                             |
                             v
                    +------------------+
-                   |    SCRIBE        |  Generate/update ISO docs from artifacts
+                   |    COULSON        |  Generate/update ISO docs from artifacts
                    |   (generate)     |  Write: _aegis-output/iso-docs/
                    +--------+---------+
                             |
@@ -806,7 +806,7 @@ as the sole quality gate. This is the existing "small task exception" from v7.0,
                             |
                             v
                    +------------------+
-                   |      OPS         |  Pre-deploy: clean build from HEAD
+                   |      THOR         |  Pre-deploy: clean build from HEAD
                    |    (build)       |  Verify: artifacts exist, checksums match
                    +--------+---------+
                             |
@@ -814,7 +814,7 @@ as the sole quality gate. This is the existing "small task exception" from v7.0,
                             |
                             v
                    +------------------+
-                   |      OPS         |  Deploy to target environment
+                   |      THOR         |  Deploy to target environment
                    |    (deploy)      |  Strategy: rolling/blue-green/canary
                    +--------+---------+
                             |
@@ -822,7 +822,7 @@ as the sole quality gate. This is the existing "small task exception" from v7.0,
                             |
                             v
                    +------------------+
-                   |      OPS         |  Health check: HTTP, process, log scan
+                   |      THOR         |  Health check: HTTP, process, log scan
                    |   (health)       |  Timeout: 60 seconds
                    +--------+---------+
                             |
@@ -832,7 +832,7 @@ as the sole quality gate. This is the existing "small task exception" from v7.0,
                    |                  |
                    v                  v
           +--------+------+   +------+--------+
-          |      OPS      |   |     OPS       |  Rollback to previous version
+          |      THOR      |   |     THOR       |  Rollback to previous version
           |   (monitor)   |   |  (rollback)   |  Re-check health
           | 5 min watch   |   +------+--------+
           +--------+------+          |
@@ -844,7 +844,7 @@ as the sole quality gate. This is the existing "small task exception" from v7.0,
             v          |   [notify Captain America]   [CRITICAL alert
          [DONE]        v                    to human]
                 +------+------+
-                |    BOLT     |  Write hotfix code
+                |    SPIDER-MAN     |  Write hotfix code
                 |  (hotfix)   |
                 +------+------+
                        |

@@ -1,4 +1,4 @@
-# HAVOC ADVERSARIAL REVIEW: AEGIS v7.0 Stress Test
+# LOKI ADVERSARIAL REVIEW: AEGIS v7.0 Stress Test
 
 **Date**: 2026-03-24
 **Reviewer**: Loki (Devil's Advocate)
