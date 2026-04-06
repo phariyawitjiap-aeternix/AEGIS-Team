@@ -35,10 +35,13 @@
 ## Token Budget Per Agent
 
 - **Max output per report**: 2000 tokens
-- **Max input context per task**: varies by model
-  - Opus agents (Captain America, Iron Man, Loki): up to 8000 tokens input context
-  - Sonnet agents (Spider-Man, Black Panther, Wasp): up to 6000 tokens input context
-  - Haiku agents (Beast, Songbird): up to 4000 tokens input context
+- **Max context window**: varies by model tier (Claude 4.x)
+  - Opus 4.6 agents (Nick Fury, Captain America, Iron Man, Loki): **1M tokens** context
+  - Sonnet 4.6 agents (Spider-Man, Black Panther, Wasp, War Machine, Coulson, Thor): **1M tokens** context
+  - Haiku 4.5 agents (Beast, Songbird, Vision): **200k tokens** context
+- **Max input context per task** (working budget, stay within):
+  - Opus/Sonnet agents: up to 8000 tokens input loaded per task
+  - Haiku agents: up to 4000 tokens input loaded per task
 
 ## Compaction Protocol
 
@@ -75,3 +78,8 @@ If context reaches 80% without planned compaction:
 - Keeping resolved discussion threads in active context
 - Loading all 8 agent prompts simultaneously
 - Repeating information already present in referenced files
+
+## Related References
+
+- @references/adaptive-thinking-guide.md — Effort levels and thinking budget
+- @references/context-editing-protocol.md — Mid-session tool result cleanup

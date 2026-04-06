@@ -81,45 +81,39 @@ ls package.json Gemfile requirements.txt Podfile Package.swift 2>/dev/null
 cat _aegis-brain/logs/activity.log 2>/dev/null | tail -20
 ```
 
-#### 4b. Check Planning Artifacts (MANDATORY)
-Before ANY build/implementation, verify these exist:
+#### 4b. Check Planning Artifacts — BLOCK 0 (MANDATORY)
+
+Before ANY task enters IN_PROGRESS, verify all 5 BLOCK 0 checks pass:
 
 ```
-Check 1: Spec?         → ls _aegis-output/specs/*.md
-Check 2: Breakdown?    → ls _aegis-output/breakdown/*/
-Check 3: Sprint?       → ls _aegis-brain/sprints/sprint-*/plan.md
-Check 4: Kanban?       → ls _aegis-brain/sprints/current/kanban.md
-Check 5: ISO PM.01?    → ls _aegis-output/iso-docs/PM-01*.md
+BLOCK 0A: PM.01 Project Plan    → ls _aegis-output/iso-docs/PM-01-project-plan/plan.md
+BLOCK 0B: SI.01 Requirements    → ls _aegis-output/iso-docs/SI-01-requirements-spec/spec.md
+BLOCK 0C: Epic/Task hierarchy   → ls _aegis-brain/tasks/*.md
+BLOCK 0D: Kanban initialized    → ls _aegis-brain/sprints/current/kanban.md
+BLOCK 0E: SI.02 Traceability    → ls _aegis-output/iso-docs/SI-02-traceability-matrix/matrix.md
 ```
 
-If ANY check fails AND the task is P3+ (not a hotfix), create the missing artifacts FIRST:
-- Missing spec → run /super-spec or Iron Man writes spec
-- Missing breakdown → run /aegis-breakdown from spec
-- Missing sprint → run /aegis-sprint plan from backlog
-- Missing kanban → auto-created by /aegis-sprint plan
-- Missing PM.01 → Coulson generates from sprint plan
+If ANY block check fails AND the task is P3+ (not a hotfix):
+→ **Dispatch Coulson immediately** to generate missing documents BEFORE any other agent acts.
+→ Coulson generates PM.01 skeleton, SI.01 skeleton, task hierarchy, kanban, SI.02 skeleton.
+→ The entire team is BLOCKED until Coulson signals BLOCK 0 COMPLETE.
 
-**NEVER skip to implementation without planning artifacts.**
+**NEVER assign any task to IN_PROGRESS without BLOCK 0 cleared.**
 
-#### 4b-ENFORCE. Hard Stop on Missing Artifacts
+#### 4b-ENFORCE. Hard Stops (Pipeline Gates)
 
-If ANY of the checks above fail, Nick Fury MUST apply these hard stops:
+If ANY BLOCK 0 check fails, Nick Fury MUST apply these hard stops in order:
 
-1. CHECK: `_aegis-brain/counters.json` exists and has counters > 0
-   — If not: Run /aegis-breakdown NOW. Do NOT proceed to code.
+1. BLOCK 0C fails (no tasks/) → Run /aegis-breakdown NOW → Coulson generates hierarchy
+2. BLOCK 0D fails (no kanban) → Run /aegis-sprint plan NOW → Coulson initializes board
+3. BLOCK 0A fails (no PM.01) → Dispatch Coulson → generate PM.01 from spec + backlog
+4. BLOCK 0B fails (no SI.01) → Run /super-spec or Iron Man → Coulson formats as SI.01
+5. BLOCK 0E fails (no SI.02) → Dispatch Coulson → generate SI.02 skeleton from SI.01
 
-2. CHECK: `_aegis-brain/sprints/current/` has plan.md
-   — If not: Run /aegis-sprint plan NOW. Do NOT proceed to code.
+6. Git check: at least 1 commit exists → If not: create initial commit before any work.
 
-3. CHECK: `_aegis-output/iso-docs/` has at least PM-01 directory
-   — If not: Run Coulson NOW to generate initial ISO docs.
-
-4. CHECK: Git has at least 1 commit
-   — If not: Create initial commit before any work.
-
-If ANY check fails, Nick Fury MUST fix that check BEFORE doing anything else.
-Do NOT skip to code generation. These are pipeline gates, not suggestions.
-Response if user pushes: "AEGIS pipeline requires planning first. This takes ~2 min. Starting now..."
+None of these are skippable. These are pipeline gates, not suggestions.
+Response if user pushes: "AEGIS pipeline requires BLOCK 0 docs first. Takes ~2 min. Starting now..."
 
 #### 4c. Analyze & Decide
 Apply the Decision Matrix (P0-P10):

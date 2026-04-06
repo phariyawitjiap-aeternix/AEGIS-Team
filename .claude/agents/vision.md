@@ -1,7 +1,7 @@
 ---
 name: vision
 description: "QA Executor that runs test cases, captures raw results, and reports findings without interpretation. Fast, precise, no opinions."
-model: claude-haiku-4-5
+model: claude-haiku-4-5-20251001
 tools: [Read, Bash, Glob, Grep]
 disallowedTools: [Write, Edit, Agent]
 triggers:

@@ -44,6 +44,22 @@ Consensus: at least 2 agents agree on PASS. Captain America arbitrates disagreem
 
 ---
 
+## Gate 0 — Pre-Work Documentation (Coulson)
+
+**Gate 0 blocks all other gates.** No task enters IN_PROGRESS until Gate 0 passes.
+
+| Check | Document | Gate 0 Criterion |
+|-------|----------|-----------------|
+| 0A | PM.01 Project Plan | File exists at `_aegis-output/iso-docs/PM-01-project-plan/plan.md` |
+| 0B | SI.01 Requirements Spec | File exists at `_aegis-output/iso-docs/SI-01-requirements-spec/spec.md` |
+| 0C | Epic/Task/Sub-task hierarchy | Files exist in `_aegis-brain/tasks/` |
+| 0D | Kanban board with tickets | File exists at `_aegis-brain/sprints/current/kanban.md` |
+| 0E | SI.02 Traceability Matrix | File exists at `_aegis-output/iso-docs/SI-02-traceability-matrix/matrix.md` |
+
+Gate 0 owner: **Coulson**. Nick Fury enforces. Captain America arbitrates if Coulson is blocked.
+
+---
+
 ## Output Format — Standardized Reports
 
 ### Report Header
@@ -123,6 +139,7 @@ Measured per sprint to prove improvement over time.
 | Speed | Time per point | decrease |
 | Speed | Gate pass rate | increase |
 | Speed | Rework rate | decrease |
+| Quality | G0 first-pass rate | increase |
 | Quality | G1 first-pass rate | increase |
 | Quality | G2 first-pass rate | increase |
 | Quality | Critical findings | decrease |
@@ -145,7 +162,8 @@ Every agent phase completion: log agent, task_id, phase (spec/build/review/qa/co
 ### How to Estimate
 
 - Record context % at task start and end.
-- `tokens = (end_pct - start_pct) x 200000`
+- Opus 4.6 / Sonnet 4.6: `tokens = (end_pct - start_pct) x 1000000`
+- Haiku 4.5: `tokens = (end_pct - start_pct) x 200000`
 
 ### Key Metric: Tokens Per Story Point
 
