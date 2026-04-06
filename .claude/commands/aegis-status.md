@@ -21,7 +21,7 @@ of what AEGIS is doing.
 - Check for:
   - tmux sessions with AEGIS agent names
   - Subagent tasks in progress
-  - The main orchestrator (Navi) status
+  - The main orchestrator (Captain America) status
 - For each agent, determine:
   - Name and role emoji
   - Current task (if any)
@@ -37,13 +37,13 @@ of what AEGIS is doing.
   ║                                                                 ║
   ║  Agent          Task                    Status      Progress    ║
   ║  ─────────────  ──────────────────────  ──────────  ────────    ║
-  ║  🧭 Navi        Orchestrating session   ✅ Active   —           ║
-  ║  🔨 Forge       Scanning codebase       🔄 Working  60%         ║
-  ║  📖 Sage        (idle)                  💤 Idle     —           ║
-  ║  🛡️ Vigil       (idle)                  💤 Idle     —           ║
-  ║  🎨 Muse        (idle)                  💤 Idle     —           ║
-  ║  ⚡ Bolt        (idle)                  💤 Idle     —           ║
-  ║  💥 Havoc       (idle)                  💤 Idle     —           ║
+  ║  🧭 Captain America        Orchestrating session   ✅ Active   —           ║
+  ║  🔨 Beast       Scanning codebase       🔄 Working  60%         ║
+  ║  📖 Iron Man        (idle)                  💤 Idle     —           ║
+  ║  🛡️ Black Panther       (idle)                  💤 Idle     —           ║
+  ║  🎨 Songbird        (idle)                  💤 Idle     —           ║
+  ║  ⚡ Spider-Man        (idle)                  💤 Idle     —           ║
+  ║  💥 Loki       (idle)                  💤 Idle     —           ║
   ║                                                                 ║
   ╚══════════════════════════════════════════════════════════════════╝
   ```
@@ -72,10 +72,10 @@ of what AEGIS is doing.
 - Display:
   ```
   Recent Activity:
-  [14:32] Forge scanned 47 files in src/
+  [14:32] Beast scanned 47 files in src/
   [14:30] Session started at L2 autonomy
   [14:28] Loaded handoff from previous session
-  [13:45] (previous session) Vigil completed code review
+  [13:45] (previous session) Black Panther completed code review
   [13:30] (previous session) Session ended
   ```
 - If activity.log doesn't exist or is empty: "No activity recorded yet."

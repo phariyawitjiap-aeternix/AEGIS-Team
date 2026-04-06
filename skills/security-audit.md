@@ -14,7 +14,7 @@ Comprehensive security vulnerability scanning and reporting.
 - **Secrets**: Detect hardcoded credentials, API keys, tokens
 - **Report**: Severity-rated findings with remediation steps
 - **Output**: `_aegis-output/security-audit/`
-- **Agent**: Havoc (opus) — primary scanner; Vigil (sonnet) — report
+- **Agent**: Loki (opus) — primary scanner; Black Panther (sonnet) — report
 
 ## Full Instructions
 
@@ -136,7 +136,7 @@ Patterns:
 ```markdown
 # Security Audit Report
 **Date**: YYYY-MM-DD
-**Auditor**: Havoc (AEGIS)
+**Auditor**: Loki (AEGIS)
 **Target**: <scope>
 **Risk Level**: CRITICAL | HIGH | MEDIUM | LOW
 

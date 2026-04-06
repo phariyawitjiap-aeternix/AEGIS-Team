@@ -2,19 +2,19 @@
 
 | # | Agent | Model | Role |
 |:-:|-------|:-----:|------|
-| 🧬 | Mother Brain | opus | Autonomous Controller |
-| 🧭 | Navi | opus | Navigator/Lead |
-| 📐 | Sage | opus | Architect |
-| ⚡ | Bolt | sonnet | Implementer |
-| 🛡️ | Vigil | sonnet | Reviewer |
-| 🔴 | Havoc | opus | Devil's Advocate |
-| 🔧 | Forge | haiku | Scanner/Research |
-| 🖌️ | Pixel | sonnet | UX Designer |
-| 🎨 | Muse | haiku | Content Creator |
-| 🎯 | Sentinel | sonnet | QA Lead |
-| 🔬 | Probe | haiku | QA Executor |
-| 📜 | Scribe | haiku | Compliance Docs |
-| 🚀 | Ops | sonnet | DevOps |
+| 🧬 | Nick Fury | opus | Autonomous Controller |
+| 🧭 | Captain America | opus | Navigator/Lead |
+| 📐 | Iron Man | opus | Architect |
+| ⚡ | Spider-Man | sonnet | Implementer |
+| 🛡️ | Black Panther | sonnet | Reviewer |
+| 🔴 | Loki | opus | Devil's Advocate |
+| 🔧 | Beast | haiku | Scanner/Research |
+| 🖌️ | Wasp | sonnet | UX Designer |
+| 🎨 | Songbird | haiku | Content Creator |
+| 🎯 | War Machine | sonnet | QA Lead |
+| 🔬 | Vision | haiku | QA Executor |
+| 📜 | Coulson | haiku | Compliance Docs |
+| 🚀 | Thor | sonnet | DevOps |
 
 Model routing: opus=strategy, sonnet=implementation, haiku=scanning
 

@@ -14,7 +14,7 @@ move tasks, add new ones, and check WIP status.
 
 - **Board file**: `_aegis-brain/sprints/current/kanban.md`
 - **Skill**: `kanban-board` (see `skills/kanban-board.md` for full rules)
-- **Single writer**: Only Navi writes to `kanban.md`
+- **Single writer**: Only Captain America writes to `kanban.md`
 
 **Usage**:
 ```
@@ -42,7 +42,7 @@ KANBAN — Sprint <N> | Updated: <timestamp>
 BACKLOG (2)        TODO (1)           IN_PROGRESS (1/3)  IN_REVIEW (0/2)    QA (1)             DONE (1)
 ─────────────────  ─────────────────  ─────────────────  ─────────────────  ─────────────────  ─────────────────
 TASK-005 [3pts]    TASK-004 [2pts]    TASK-003 [5pts]                       TASK-001 [5pts]    TASK-000 [2pts]
-@unassigned        @bolt              @bolt                                  @sentinel          @bolt
+@unassigned        @spider-man              @spider-man                                  @war-machine          @spider-man
 ```
 
 4. Below the board, show summary stats:
@@ -91,7 +91,7 @@ Total: <N> tasks | <pts> points | Done: <pts>/<total> (<pct>%)
    a. Update `meta.json`: set `status` to the target column and `updated` to the current ISO 8601 timestamp. Write the file.
    b. Append to `_aegis-brain/tasks/{TASK-ID}/history.md`:
       ```
-      | {YYYY-MM-DD HH:MM} | navi | MOVED | {from_status} | {to_status} | {optional note} |
+      | {YYYY-MM-DD HH:MM} | captain-america | MOVED | {from_status} | {to_status} | {optional note} |
       ```
    c. Recompute `_aegis-brain/sprints/sprint-N/metrics.json` (see pm-state-protocol.md "Recomputing Sprint Metrics").
    d. Regenerate `_aegis-brain/sprints/sprint-N/kanban.md` from all sprint meta.json files (see pm-state-protocol.md "Regenerating Kanban Board").
@@ -172,9 +172,9 @@ History: PROJ-T-003
 
 | Timestamp        | Agent    | Action  | From        | To          | Note                          |
 |------------------|----------|---------|-------------|-------------|-------------------------------|
-| 2026-03-24 10:00 | navi     | CREATED | -           | BACKLOG     | Created from breakdown        |
-| 2026-03-25 09:15 | navi     | MOVED   | BACKLOG     | TODO        | Sprint 1 planning             |
-| 2026-03-25 14:00 | navi     | MOVED   | TODO        | IN_PROGRESS | bolt started work             |
+| 2026-03-24 10:00 | captain-america     | CREATED | -           | BACKLOG     | Created from breakdown        |
+| 2026-03-25 09:15 | captain-america     | MOVED   | BACKLOG     | TODO        | Sprint 1 planning             |
+| 2026-03-25 14:00 | captain-america     | MOVED   | TODO        | IN_PROGRESS | spider-man started work             |
 ```
 
 No file is written — this is a read-only display.

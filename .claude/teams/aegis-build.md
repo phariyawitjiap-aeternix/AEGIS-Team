@@ -1,14 +1,14 @@
 ---
 name: aegis-build
 description: "Spec-to-implementation build team with explicit input/output contracts"
-lead: bolt
-members: [sage, vigil]
+lead: spider-man
+members: [iron-man, black-panther]
 mode: tmux
 requires: tmux
 ---
 
 ## Team Purpose
-End-to-end build pipeline: Sage designs -> Bolt implements -> Vigil reviews.
+End-to-end build pipeline: Iron Man designs -> Spider-Man implements -> Black Panther reviews.
 
 ## Input Contract
 
@@ -26,34 +26,34 @@ End-to-end build pipeline: Sage designs -> Bolt implements -> Vigil reviews.
 
 ## Task Breakdown
 
-### 1. Sage (opus): Write/refine technical spec
+### 1. Iron Man (opus): Write/refine technical spec
 - Reads: task meta.json, parent story, any existing spec
 - Produces: `_aegis-output/specs/{TASK-ID}-spec.md`
-- ISO trigger: Scribe generates SI.02 (Design Document) and updates SI.03 (Traceability Matrix)
-- Skip condition: If spec exists and task <= 2 story points, Sage validates rather than rewrites
+- ISO trigger: Coulson generates SI.02 (Design Document) and updates SI.03 (Traceability Matrix)
+- Skip condition: If spec exists and task <= 2 story points, Iron Man validates rather than rewrites
 
-### 2. Bolt (sonnet): Implement based on spec
-- Reads: Sage's spec file
+### 2. Spider-Man (sonnet): Implement based on spec
+- Reads: Iron Man's spec file
 - Produces: Source code in src/, unit tests in tests/
 - Validation: Runs `lint + build + test` before reporting done
-- ISO trigger: Scribe generates SI.04 (Test Cases)
-- Escalation: If spec has ambiguity, sends EscalationAlert to Sage (does not guess)
+- ISO trigger: Coulson generates SI.04 (Test Cases)
+- Escalation: If spec has ambiguity, sends EscalationAlert to Iron Man (does not guess)
 
-### 3. Vigil (sonnet): Review implementation against spec
-- Reads: Bolt's code diff, Sage's spec
+### 3. Black Panther (sonnet): Review implementation against spec
+- Reads: Spider-Man's code diff, Iron Man's spec
 - Produces: `_aegis-output/reviews/{TASK-ID}-review.md`
 - Gate 1 checklist: correctness, security, performance, style, test coverage
 - On PASS: task status -> QA, emit HandoffEnvelope to aegis-qa
 - On FAIL: task status -> IN_PROGRESS, findings appended to task comments
 
 ## Communication Flow
-Sage -> PlanProposal -> Bolt
-Bolt -> StatusUpdate -> Vigil
-Vigil -> FindingReport -> Bolt (iterate if needed)
-Bolt -> CompletionReport -> Lead
+Iron Man -> PlanProposal -> Spider-Man
+Spider-Man -> StatusUpdate -> Black Panther
+Black Panther -> FindingReport -> Spider-Man (iterate if needed)
+Spider-Man -> CompletionReport -> Lead
 
 ## Pipeline
-Sage spec -> GATE -> Bolt implement -> GATE -> Vigil review -> GATE -> Done
+Iron Man spec -> GATE -> Spider-Man implement -> GATE -> Black Panther review -> GATE -> Done
 
 ## Output Contract
 
@@ -70,7 +70,7 @@ Sage spec -> GATE -> Bolt implement -> GATE -> Vigil review -> GATE -> Done
   },
   "gate_results": {
     "gate_1": "PASS",
-    "gate_1_reviewer": "vigil",
+    "gate_1_reviewer": "black-panther",
     "gate_1_timestamp": "ISO timestamp"
   }
 }
@@ -78,11 +78,11 @@ Sage spec -> GATE -> Bolt implement -> GATE -> Vigil review -> GATE -> Done
 
 ## Handoff Rules
 - **PASS** -> aegis-qa team receives HandoffEnvelope with all artifacts
-- **FAIL** -> self-fix cycle: Vigil findings go to Bolt, Bolt iterates, Vigil re-reviews
+- **FAIL** -> self-fix cycle: Black Panther findings go to Spider-Man, Spider-Man iterates, Black Panther re-reviews
 
 ## ISO Triggers
-- **SI.02** (Design Document): Generated during Sage phase from spec output
-- **SI.04** (Test Cases): Generated during Bolt phase from unit test mapping
+- **SI.02** (Design Document): Generated during Iron Man phase from spec output
+- **SI.04** (Test Cases): Generated during Spider-Man phase from unit test mapping
 
 ## Output
 _aegis-output/builds/YYYY-MM-DD_build.md

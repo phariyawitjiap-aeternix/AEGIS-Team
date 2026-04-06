@@ -52,6 +52,6 @@ How we'll know this was the right call:
 
 ## Integration with AEGIS
 - `/aegis-team-debate` auto-generates ADR from debate outcome
-- Sage reads all ADRs before designing (avoid contradicting past decisions)
+- Iron Man reads all ADRs before designing (avoid contradicting past decisions)
 - ADR counter in `counters.json` (`ADR: N`)
-- ADRs are searchable by Mother Brain during SCAN
+- ADRs are searchable by Nick Fury during SCAN

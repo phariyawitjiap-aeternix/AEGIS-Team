@@ -52,27 +52,27 @@ throughout, and saves the flow log to _aegis-output/flows/. Predefined flows: de
 #### Flow: `deploy`
 ```
 Step 1: LINT
-  Agent: Vigil
+  Agent: Black Panther
   Action: Run project linter, report errors/warnings
   Gate: Zero errors required (warnings OK)
   
 Step 2: TEST
-  Agent: Vigil
+  Agent: Black Panther
   Action: Run full test suite
   Gate: All tests must pass
   
 Step 3: SECURITY-SCAN
-  Agent: Vigil
+  Agent: Black Panther
   Action: Scan for secrets, vulnerabilities, unsafe patterns
   Gate: No critical or high severity findings
   
 Step 4: BUILD
-  Agent: Bolt
+  Agent: Spider-Man
   Action: Run build command (detect from project config)
   Gate: Build succeeds without errors
   
 Step 5: DEPLOY
-  Agent: Bolt
+  Agent: Spider-Man
   Action: Execute deployment (requires user confirmation at L1/L2)
   Gate: Deployment succeeds, health check passes
 ```
@@ -80,27 +80,27 @@ Step 5: DEPLOY
 #### Flow: `feature`
 ```
 Step 1: SPEC
-  Agent: Sage
+  Agent: Iron Man
   Action: Write or validate feature specification
   Gate: User approves spec (always, regardless of autonomy)
   
 Step 2: IMPLEMENT
-  Agent: Bolt
+  Agent: Spider-Man
   Action: Implement feature per spec
   Gate: Implementation compiles/runs without errors
   
 Step 3: TEST
-  Agent: Bolt + Vigil
+  Agent: Spider-Man + Black Panther
   Action: Write tests, run test suite
   Gate: All new and existing tests pass
   
 Step 4: REVIEW
-  Agent: Vigil + Havoc
+  Agent: Black Panther + Loki
   Action: Code review and adversarial testing
   Gate: Review approved (or iterate back to Step 2)
   
 Step 5: MERGE
-  Agent: Navi
+  Agent: Captain America
   Action: Prepare merge (squash commits, update CHANGELOG)
   Gate: User confirms merge
 ```
@@ -108,27 +108,27 @@ Step 5: MERGE
 #### Flow: `bugfix`
 ```
 Step 1: REPRODUCE
-  Agent: Forge
+  Agent: Beast
   Action: Reproduce the bug, document reproduction steps
   Gate: Bug is reproducible (or confirmed from logs)
   
 Step 2: DIAGNOSE
-  Agent: Sage
+  Agent: Iron Man
   Action: Analyze root cause, identify affected code paths
   Gate: Root cause identified with confidence
   
 Step 3: FIX
-  Agent: Bolt
+  Agent: Spider-Man
   Action: Implement the fix
   Gate: Fix compiles, doesn't break existing functionality
   
 Step 4: TEST
-  Agent: Bolt + Vigil
+  Agent: Spider-Man + Black Panther
   Action: Write regression test, run full suite
   Gate: Regression test passes, no other tests broken
   
 Step 5: REVIEW
-  Agent: Vigil
+  Agent: Black Panther
   Action: Review fix for correctness and side effects
   Gate: Review approved
 ```

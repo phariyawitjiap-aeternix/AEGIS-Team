@@ -14,7 +14,7 @@ Scans codebase for technical debt indicators and produces a health score.
 - **Dependencies**: Outdated packages, deprecated APIs
 - **Debt Score**: 0-100 health rating (higher = healthier)
 - **Output**: `_aegis-output/tech-debt-report.md`
-- **Agent**: Lumen (sonnet) — analysis; Forge (haiku) — data gathering
+- **Agent**: Lumen (sonnet) — analysis; Beast (haiku) — data gathering
 
 ## Full Instructions
 

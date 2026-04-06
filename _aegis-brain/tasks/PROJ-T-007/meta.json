@@ -6,7 +6,7 @@
   "parent": "PROJ-E-003",
   "children": [],
   "status": "TODO",
-  "assignee": "bolt",
+  "assignee": "spider-man",
   "points": 3,
   "priority": "high",
   "labels": ["gates", "enforcement", "H-006"],

@@ -4,7 +4,7 @@ title: Meeting Records — AEGIS Key Decisions
 version: 1
 status: Approved
 created: 2026-03-24
-author: Scribe (AEGIS v7.1)
+author: Coulson (AEGIS v7.1)
 project: AEGIS — AI Agent Team Framework
 ---
 
@@ -21,14 +21,14 @@ Each record captures: trigger, participants, key discussion points, decision, an
 
 **Date**: 2025-Q4 (v6.0 inception)
 **Session Type**: Architecture Review
-**Participants**: Navi (Lead), Sage (Architect), Havoc (Devil's Advocate)
+**Participants**: Captain America (Lead), Iron Man (Architect), Loki (Devil's Advocate)
 **Triggered By**: Initial project scoping
 
 **Discussion**:
 - Option A: Build AEGIS as a plugin/extension to an existing agent framework (LangChain, AutoGen, CrewAI)
 - Option B: Build AEGIS as a standalone CLAUDE.md-native framework with no external dependencies
-- Havoc challenged Option B: "No external framework means reinventing the wheel. What's the unique value proposition?"
-- Sage argued Option B: "CLAUDE.md is the native instruction surface for Claude Code. Building on it means zero runtime dependencies, maximum portability, and instructions that survive model upgrades."
+- Loki challenged Option B: "No external framework means reinventing the wheel. What's the unique value proposition?"
+- Iron Man argued Option B: "CLAUDE.md is the native instruction surface for Claude Code. Building on it means zero runtime dependencies, maximum portability, and instructions that survive model upgrades."
 
 **Decision**: Option B — standalone, CLAUDE.md-native framework.
 
@@ -39,8 +39,8 @@ Each record captures: trigger, participants, key discussion points, decision, an
 4. Avoids external framework API churn and licensing constraints
 
 **Action Items**:
-- Sage: Draft CLAUDE.md v1 with agent roster and skill stubs
-- Navi: Define Golden Rules and session lifecycle
+- Iron Man: Draft CLAUDE.md v1 with agent roster and skill stubs
+- Captain America: Define Golden Rules and session lifecycle
 
 ---
 
@@ -48,7 +48,7 @@ Each record captures: trigger, participants, key discussion points, decision, an
 
 **Date**: 2025-Q4 (v6.0)
 **Session Type**: Stakeholder Alignment
-**Participants**: Navi (Lead), Muse (Content Creator), Human Operator
+**Participants**: Captain America (Lead), Songbird (Content Creator), Human Operator
 **Triggered By**: Operator preference for Thai documentation
 
 **Discussion**:
@@ -64,8 +64,8 @@ Each record captures: trigger, participants, key discussion points, decision, an
 - Thai summaries improve operator comprehension without compromising compliance
 
 **Action Items**:
-- Muse: Add "bilingual output" as optional parameter to content generation skills
-- CLAUDE_agents.md: Note Thai secondary language capability under Muse persona
+- Songbird: Add "bilingual output" as optional parameter to content generation skills
+- CLAUDE_agents.md: Note Thai secondary language capability under Songbird persona
 
 ---
 
@@ -73,22 +73,22 @@ Each record captures: trigger, participants, key discussion points, decision, an
 
 **Date**: 2026-Q1 (v7.0)
 **Session Type**: Architecture Review (CR-001 follow-up)
-**Participants**: Navi (Lead), Sage (Architect), Bolt (Implementer), Vigil (Reviewer)
+**Participants**: Captain America (Lead), Iron Man (Architect), Spider-Man (Implementer), Black Panther (Reviewer)
 **Triggered By**: CR-001 approval — tmux made optional
 
 **Discussion**:
 - After CR-001, two modes exist: tmux mode (true parallel agents) and in-process mode (sequential, same session)
 - Question: Which should be the DEFAULT for new operators?
-- Bolt argued tmux default: "Parallelism is the whole point of a multi-agent team."
-- Vigil argued in-process default: "Most operators start solo. tmux adds setup friction. In-process still enforces all quality gates sequentially."
-- Sage proposed: "Default to in-process. Operators who want parallelism can opt in with `--mode tmux`."
+- Spider-Man argued tmux default: "Parallelism is the whole point of a multi-agent team."
+- Black Panther argued in-process default: "Most operators start solo. tmux adds setup friction. In-process still enforces all quality gates sequentially."
+- Iron Man proposed: "Default to in-process. Operators who want parallelism can opt in with `--mode tmux`."
 
 **Decision**: In-process mode is the default. tmux mode available via `/aegis-mode --profile tmux`.
 
 **Rationale**:
 - Lowers barrier to entry significantly
 - Quality gates (3-gate system) work in both modes
-- Mother Brain can still orchestrate sequentially without tmux
+- Nick Fury can still orchestrate sequentially without tmux
 - Operator can escalate to tmux after validating the framework works for their project
 
 **Action Items**:
@@ -98,31 +98,31 @@ Each record captures: trigger, participants, key discussion points, decision, an
 
 ---
 
-## MR-004: Havoc Review as Mandatory Third Gate
+## MR-004: Loki Review as Mandatory Third Gate
 
 **Date**: 2026-Q1 (v7.0)
 **Session Type**: QA Architecture Review
-**Participants**: Navi (Lead), Sentinel (QA Lead), Havoc (Devil's Advocate), Vigil (Reviewer)
-**Triggered By**: Retrospective finding — quality issues reached production that Vigil's review and Sentinel's QA missed
+**Participants**: Captain America (Lead), War Machine (QA Lead), Loki (Devil's Advocate), Black Panther (Reviewer)
+**Triggered By**: Retrospective finding — quality issues reached production that Black Panther's review and War Machine's QA missed
 
 **Discussion**:
-- v6.0 used a 2-gate system: Vigil review → Sentinel QA
+- v6.0 used a 2-gate system: Black Panther review → War Machine QA
 - Post-v6.0 retrospective identified category of issues that passed both gates: architectural assumptions that were technically correct but strategically wrong (e.g., implemented the right function the wrong way for the use case)
-- Havoc argued: "I exist to find the assumptions nobody else questions. If I'm not a gate, I'm just a commentator."
-- Sentinel supported: "QA finds defects against spec. Havoc finds defects in the spec itself."
+- Loki argued: "I exist to find the assumptions nobody else questions. If I'm not a gate, I'm just a commentator."
+- War Machine supported: "QA finds defects against spec. Loki finds defects in the spec itself."
 
-**Decision**: Havoc added as mandatory third gate. Pipeline: Vigil (code quality) → Sentinel (test coverage + QA) → Havoc (assumptions + strategic risks).
+**Decision**: Loki added as mandatory third gate. Pipeline: Black Panther (code quality) → War Machine (test coverage + QA) → Loki (assumptions + strategic risks).
 
 **Rationale**:
 - Each gate catches different failure modes:
-  - Vigil: implementation errors, style violations, security issues
-  - Sentinel: test coverage gaps, regression risks, QA verdicts
-  - Havoc: wrong abstractions, hidden risks, "what could go wrong in production"
+  - Black Panther: implementation errors, style violations, security issues
+  - War Machine: test coverage gaps, regression risks, QA verdicts
+  - Loki: wrong abstractions, hidden risks, "what could go wrong in production"
 - Three gates increase confidence without requiring human review for every change
 
 **Action Items**:
-- CLAUDE_agents.md: Havoc role updated to "mandatory 3rd gate reviewer"
-- CLAUDE_skills.md: `/aegis-qa-gate` updated to include Havoc verdict step
+- CLAUDE_agents.md: Loki role updated to "mandatory 3rd gate reviewer"
+- CLAUDE_skills.md: `/aegis-qa-gate` updated to include Loki verdict step
 - CLAUDE.md: 3-gate quality system documented in overview
 
 ---
@@ -131,19 +131,19 @@ Each record captures: trigger, participants, key discussion points, decision, an
 
 **Date**: 2026-Q1 (v7.0 → v7.1)
 **Session Type**: Compliance Planning
-**Participants**: Navi (Lead), Scribe (Compliance), Sage (Architect)
+**Participants**: Captain America (Lead), Coulson (Compliance), Iron Man (Architect)
 **Triggered By**: Operator decision to dogfood AEGIS for its own project management
 
 **Discussion**:
 - Operator wants to use AEGIS not just as a tool but as a compliant software development process
 - ISO 29110 Basic Profile selected: designed for Very Small Entities (VSE), matches AEGIS's single-operator + AI-team structure
-- Scribe persona created specifically for ISO work product generation
+- Coulson persona created specifically for ISO work product generation
 - Question: Generate docs once or maintain living documents?
 
 **Decision**: Living documents — each version gets `v1.md`, `current.md` (latest), and `changelog.md`. Stored in `_aegis-output/iso-docs/`.
 
 **Action Items**:
-- Create Scribe agent persona in CLAUDE_agents.md
+- Create Coulson agent persona in CLAUDE_agents.md
 - Scaffold `_aegis-output/iso-docs/` with doc-registry.json
 - Add `/aegis-doc-gen` and `/aegis-doc-update` skills
 - Generate all 11 documents in v7.1 session (this document is a result of that decision)

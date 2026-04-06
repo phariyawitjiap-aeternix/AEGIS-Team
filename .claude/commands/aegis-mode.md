@@ -32,37 +32,37 @@ after any change. Can be combined: `/aegis-mode full --autonomy L3`.
 
 ### Step 2: Profile Change (if requested)
 - **Minimal Profile:**
-  - Active agents: Navi only
+  - Active agents: Captain America only
   - Skills: basic file operations, git, search
   - Context cost: ~5%
   - Use when: simple tasks, low context budget, quick fixes
   - Report:
     ```
     Switched to MINIMAL profile — 1 agent, core skills only
-    Active: 🧭 Navi
+    Active: 🧭 Captain America
     Context saved: ~15-20% vs full profile
     ```
 
 - **Standard Profile:**
-  - Active agents: Navi, Forge, Vigil
+  - Active agents: Captain America, Beast, Black Panther
   - Skills: all minimal + code review, testing, analysis
   - Context cost: ~10%
   - Use when: regular development work, code reviews
   - Report:
     ```
     Switched to STANDARD profile — 3 agents, common skills
-    Active: 🧭 Navi, 🔨 Forge, 🛡️ Vigil
+    Active: 🧭 Captain America, 🔨 Beast, 🛡️ Black Panther
     ```
 
 - **Full Profile:**
-  - Active agents: All (Navi, Forge, Sage, Vigil, Muse, Bolt, Havoc)
+  - Active agents: All (Captain America, Beast, Iron Man, Black Panther, Songbird, Spider-Man, Loki)
   - Skills: everything available
   - Context cost: ~15-20%
   - Use when: major analysis, team operations, full pipeline
   - Report:
     ```
     Switched to FULL profile — 7 agents, all skills
-    Active: 🧭 Navi, 🔨 Forge, 📖 Sage, 🛡️ Vigil, 🎨 Muse, ⚡ Bolt, 💥 Havoc
+    Active: 🧭 Captain America, 🔨 Beast, 📖 Iron Man, 🛡️ Black Panther, 🎨 Songbird, ⚡ Spider-Man, 💥 Loki
     ⚠️ High context cost — monitor with /aegis-context
     ```
 

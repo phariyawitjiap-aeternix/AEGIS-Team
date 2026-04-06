@@ -14,7 +14,7 @@ Structured retrospective analysis for sprints and epics.
 - **Actions**: Generate specific, assignable improvement items
 - **Archive**: Store in `_aegis-brain/retrospectives/`
 - **Output**: `_aegis-output/retrospectives/`
-- **Agent**: Navi (opus) — facilitation; Lumen (sonnet) — analysis
+- **Agent**: Captain America (opus) — facilitation; Lumen (sonnet) — analysis
 
 ## Full Instructions
 
@@ -43,7 +43,7 @@ Use the 4Ls framework:
 ```markdown
 # Retrospective: <Sprint/Epic N>
 **Period**: <start-date> → <end-date>
-**Facilitator**: Navi (AEGIS)
+**Facilitator**: Captain America (AEGIS)
 
 ## Liked (What went well)
 - <positive outcome 1>

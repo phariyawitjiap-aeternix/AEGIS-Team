@@ -1,15 +1,15 @@
 {
   "id": "PROJ-T-004",
-  "title": "Mother Brain follows planning-before-build in practice",
+  "title": "Nick Fury follows planning-before-build in practice",
   "type": "task",
   "task_type": "impl",
   "parent": "PROJ-E-002",
   "children": [],
   "status": "TODO",
-  "assignee": "sage",
+  "assignee": "iron-man",
   "points": 5,
   "priority": "high",
-  "labels": ["mother-brain", "planning", "H-005"],
+  "labels": ["nick-fury", "planning", "H-005"],
   "dependencies": {
     "blocks": ["PROJ-T-005"],
     "blocked_by": []

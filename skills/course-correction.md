@@ -14,7 +14,7 @@ Manages mid-sprint or mid-project scope changes with impact analysis.
 - **Communicate**: Generate stakeholder communication
 - **Risk**: Update risk register with new risks from change
 - **Output**: `_aegis-output/course-corrections/`
-- **Agent**: Navi (opus) — assessment; Sage (opus) — re-planning
+- **Agent**: Captain America (opus) — assessment; Iron Man (opus) — re-planning
 
 ## Full Instructions
 

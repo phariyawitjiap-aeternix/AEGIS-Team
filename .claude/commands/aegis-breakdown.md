@@ -1,6 +1,6 @@
 ---
 name: aegis-breakdown
-description: "Decompose a user story into journeys, epics, tasks, and subtasks using Sage sub-agent"
+description: "Decompose a user story into journeys, epics, tasks, and subtasks using Iron Man sub-agent"
 triggers:
   en: breakdown, decompose
   th: แตกงาน, แยกย่อย
@@ -10,10 +10,10 @@ triggers:
 
 ## Quick Reference
 Break down a user story or feature description into a structured work hierarchy using the
-Sage sub-agent. Produces ready-to-plan task lists that feed into sprint planning and the kanban board.
+Iron Man sub-agent. Produces ready-to-plan task lists that feed into sprint planning and the kanban board.
 
 - **Skill**: `work-breakdown` (see `skills/work-breakdown.md` for full hierarchy rules)
-- **Agent**: Sage (opus) — decomposition lead
+- **Agent**: Iron Man (opus) — decomposition lead
 - **Output**: `_aegis-output/breakdown/<US-NNN>/`
 
 **Usage**:
@@ -29,7 +29,7 @@ Sage sub-agent. Produces ready-to-plan task lists that feed into sprint planning
 Accept the user story text from the command argument.
 
 - If in full "As a... I want... So that..." format, use as-is.
-- If in short format (just a feature description), Sage will infer and write the full user story format.
+- If in short format (just a feature description), Iron Man will infer and write the full user story format.
 - If no argument provided, prompt: `Please provide a user story or feature description to break down.`
 
 ### Step 2: Assign Story ID
@@ -39,12 +39,12 @@ Accept the user story text from the command argument.
 - Derive the user story ID: `PROJ-US-NNN` (zero-padded to 3 digits).
 - Continue to also create the legacy `_aegis-output/breakdown/US-NNN/` output path for backward compatibility.
 
-### Step 3: Spawn Sage for Decomposition
+### Step 3: Spawn Iron Man for Decomposition
 
-Delegate to the Sage sub-agent with the `work-breakdown` skill loaded:
+Delegate to the Iron Man sub-agent with the `work-breakdown` skill loaded:
 
 ```
-Sage, decompose this user story using the work-breakdown skill:
+Iron Man, decompose this user story using the work-breakdown skill:
 
 Story: <full user story text>
 ID: PROJ-US-NNN
@@ -72,7 +72,7 @@ Validate against all rules before finalizing.
 
 ### Step 4: Validate Output
 
-After Sage completes, verify:
+After Iron Man completes, verify:
 
 1. Directory `_aegis-output/breakdown/PROJ-US-NNN/` exists with required files:
    - `summary.md` — overview with stats and hierarchy tree
@@ -85,7 +85,7 @@ After Sage completes, verify:
 4. All IDs are unique and properly formatted.
 5. Dependencies are acyclic.
 
-If validation fails, report the issues and ask Sage to fix them.
+If validation fails, report the issues and ask Iron Man to fix them.
 
 ### Step 5: Display Summary
 
@@ -141,7 +141,7 @@ Verify PM state files were written correctly:
 ### Error Handling
 
 - **Empty input**: Prompt for a user story or feature description.
-- **Sage unavailable**: Fall back to Navi performing the decomposition directly using the `work-breakdown` skill.
+- **Iron Man unavailable**: Fall back to Captain America performing the decomposition directly using the `work-breakdown` skill.
 - **Output directory conflict**: The counter protocol prevents ID collisions. If a task directory already exists (recovery scenario), increment the counter past the conflicting ID.
 - **Validation failure**: Report specific issues, retry decomposition with corrections.
 - **Very large story (> 100 estimated points)**: Suggest splitting into multiple user stories before breakdown.

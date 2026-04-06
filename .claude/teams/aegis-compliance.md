@@ -1,14 +1,14 @@
 ---
 name: aegis-compliance
 description: "Compliance team: ISO 29110 document verification and generation"
-lead: scribe
+lead: coulson
 members: []
 mode: direct
 requires: null
 ---
 
 ## Team Purpose
-Solo compliance gate: Scribe audits existing ISO docs, identifies gaps, generates/updates
+Solo compliance gate: Coulson audits existing ISO docs, identifies gaps, generates/updates
 documents from agent artifacts, and issues Gate 3 verdict.
 
 ## Input Contract
@@ -29,25 +29,25 @@ documents from agent artifacts, and issues Gate 3 verdict.
 
 ## Workflow
 
-### 1. Scribe (haiku): Audit existing ISO docs
+### 1. Coulson (haiku): Audit existing ISO docs
 - Reads: All existing ISO docs in `_aegis-output/iso-docs/`
 - Compares: Against what the current task/sprint requires
 - Produces: Gap analysis (which docs missing or stale)
 
-### 2. Scribe (haiku): Generate/update ISO docs
+### 2. Coulson (haiku): Generate/update ISO docs
 - For each gap, produces the ISO 29110 document from existing agent artifacts:
 
 | ISO Document | Source Artifacts |
 |-------------|-----------------|
 | PM.01 Project Plan | Sprint plan.md, metrics.json |
 | PM.02 Progress Status | Daily standup files |
-| PM.03 Correction Register | Vigil FAIL findings, Ops rollback reports, bug reports |
+| PM.03 Correction Register | Black Panther FAIL findings, Thor rollback reports, bug reports |
 | PM.04 Meeting Record | Sprint plan, review, retro, close ceremonies |
 | SI.01 Requirements Spec | Breakdown output (user stories, acceptance criteria) |
-| SI.02 Design Document | Sage spec files |
+| SI.02 Design Document | Iron Man spec files |
 | SI.03 Traceability Matrix | REQ -> Design -> Code -> Test mapping |
-| SI.04 Test Cases | Sentinel test plans |
-| SI.05 Test Report | Sentinel QA reports |
+| SI.04 Test Cases | War Machine test plans |
+| SI.05 Test Report | War Machine QA reports |
 | SI.06 Acceptance Record | Sprint close with QA verdicts |
 | SI.07 Software Configuration | Release tag, file manifest, deploy config |
 
@@ -66,7 +66,7 @@ documents from agent artifacts, and issues Gate 3 verdict.
 ```json
 {
   "from_team": "compliance",
-  "to_team": "devops OR navi",
+  "to_team": "devops OR captain-america",
   "task_id": "PROJ-T-XXX",
   "status": "COMPLIANT OR NON_COMPLIANT",
   "artifacts": {
@@ -75,7 +75,7 @@ documents from agent artifacts, and issues Gate 3 verdict.
   },
   "gate_results": {
     "gate_3": "PASS or FAIL",
-    "gate_3_reviewer": "scribe",
+    "gate_3_reviewer": "coulson",
     "gate_3_timestamp": "ISO timestamp",
     "docs_checked": "count",
     "docs_updated": "count",
@@ -85,8 +85,8 @@ documents from agent artifacts, and issues Gate 3 verdict.
 ```
 
 ## Handoff Rules
-- **PASS** -> aegis-devops team (Ops deploys on sprint close/release)
-- **INCOMPLETE** -> block sprint close; Scribe retries after source data is provided
+- **PASS** -> aegis-devops team (Thor deploys on sprint close/release)
+- **INCOMPLETE** -> block sprint close; Coulson retries after source data is provided
 
 ## Output
 _aegis-output/iso-docs/

@@ -1,7 +1,7 @@
 # AEGIS Update Protocol — For AI Agents
 
 > When upgrading AEGIS to a new version, follow this protocol EXACTLY.
-> This file is read by Mother Brain and /aegis-start to handle updates.
+> This file is read by Nick Fury and /aegis-start to handle updates.
 
 ## CURRENT VERSION: 8.2.1
 
@@ -9,7 +9,7 @@
 
 This protocol runs when:
 1. `install.sh --upgrade` is executed
-2. Mother Brain detects version mismatch between source and installed files
+2. Nick Fury detects version mismatch between source and installed files
 3. User says "update AEGIS", "upgrade", "อัพเดท"
 
 ## UPDATE FLOW
@@ -155,19 +155,19 @@ MUST EXIST after install:
   CLAUDE_agents.md                    → agent roster (lean)
   CLAUDE_safety.md                    → safety rules
   CLAUDE_skills.md                    → skill catalog (lean)
-  .claude/agents/mother-brain.md      → autonomous controller
-  .claude/agents/navi.md              → navigator
-  .claude/agents/sage.md              → architect
-  .claude/agents/bolt.md              → implementer
-  .claude/agents/vigil.md             → reviewer
-  .claude/agents/havoc.md             → devil's advocate
-  .claude/agents/forge.md             → scanner
-  .claude/agents/pixel.md             → UX designer
-  .claude/agents/muse.md              → content creator
-  .claude/agents/sentinel.md          → QA lead
-  .claude/agents/probe.md             → QA executor
-  .claude/agents/scribe.md            → compliance docs
-  .claude/agents/ops.md               → DevOps
+  .claude/agents/nick-fury.md      → autonomous controller
+  .claude/agents/captain-america.md              → navigator
+  .claude/agents/iron-man.md              → architect
+  .claude/agents/spider-man.md              → implementer
+  .claude/agents/black-panther.md             → reviewer
+  .claude/agents/loki.md             → devil's advocate
+  .claude/agents/beast.md             → scanner
+  .claude/agents/wasp.md             → UX designer
+  .claude/agents/songbird.md              → content creator
+  .claude/agents/war-machine.md          → QA lead
+  .claude/agents/vision.md             → QA executor
+  .claude/agents/coulson.md            → compliance docs
+  .claude/agents/thor.md               → DevOps
   .claude/commands/aegis-start.md     → session start
   .claude/references/sdlc-pipeline.md → master workflow
   .claude/references/update-protocol.md → this file
@@ -196,14 +196,14 @@ If `_aegis-brain/counters.json` doesn't exist (first install), create:
 - DELETE: `.claude/references/knowledge-pipeline.md` (merged into pm-state-protocol.md)
 - DELETE: `.claude/references/performance-benchmark.md` (merged into quality-protocol.md)
 - DELETE: `.claude/references/token-tracking.md` (merged into quality-protocol.md)
-- CREATE: `.claude/agents/sentinel.md` (new in v7.0)
-- CREATE: `.claude/agents/probe.md` (new in v7.0)
-- CREATE: `.claude/agents/scribe.md` (new in v7.0)
-- CREATE: `.claude/agents/ops.md` (new in v8.0)
+- CREATE: `.claude/agents/war-machine.md` (new in v7.0)
+- CREATE: `.claude/agents/vision.md` (new in v7.0)
+- CREATE: `.claude/agents/coulson.md` (new in v7.0)
+- CREATE: `.claude/agents/thor.md` (new in v8.0)
 
 ### From v7.x → v8.2:
 - DELETE: old reference files listed above (if still present)
-- VERIFY: ops.md exists (new in v8.0)
+- VERIFY: thor.md exists (new in v8.0)
 
 ### From v8.0/v8.1 → v8.2:
 - DELETE: merged reference files (if still present)
@@ -212,7 +212,7 @@ If `_aegis-brain/counters.json` doesn't exist (first install), create:
 
 ## POST-UPDATE CHECKLIST
 
-After update, Mother Brain should:
+After update, Nick Fury should:
 1. ✅ Verify all 13 agent files exist
 2. ✅ Verify all 22 command files exist
 3. ✅ Verify counters.json preserved (not reset to 0)
@@ -229,7 +229,7 @@ After update, Mother Brain should:
 | v6.0.0  | 9      | 21     | 15       | 6          | Initial release |
 | v7.0.0  | 12     | 27     | 20       | 6          | +Sprint/QA/ISO |
 | v7.1.0  | 12     | 27     | 21       | 8          | +PM State (JIRA-like) |
-| v8.0.0  | 13     | 28     | 22       | 15         | +Ops/SDLC/Handoff |
+| v8.0.0  | 13     | 28     | 22       | 15         | +Thor/SDLC/Handoff |
 | v8.1.0  | 13     | 29     | 22       | 19         | +Self-evolving |
 | v8.2.0  | 13     | 29     | 22       | 10         | Optimized (-50% context) |
 | v8.2.1  | 13     | 29     | 22       | 11         | +Update protocol |

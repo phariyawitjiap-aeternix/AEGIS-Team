@@ -112,7 +112,7 @@ Generate `_aegis-output/review-report.md`:
 ```markdown
 # Code Review Report
 **Date**: YYYY-MM-DD
-**Reviewer**: Vigil (AEGIS)
+**Reviewer**: Black Panther (AEGIS)
 **Target**: <file/PR/branch>
 **Verdict**: PASS | FAIL | CONDITIONAL
 
@@ -161,8 +161,8 @@ IF critical_count == 0 AND warning_count > 0:
 ### Multi-Agent Review
 
 For high-stakes reviews, invoke the `aegis-review` team:
-1. **Forge** (haiku): Fast scan — gather metrics, identify hotspots
-2. **Havoc** (opus): Adversarial — challenge assumptions, find edge cases
-3. **Vigil** (sonnet): Synthesize — combine findings, enforce gate, write report
+1. **Beast** (haiku): Fast scan — gather metrics, identify hotspots
+2. **Loki** (opus): Adversarial — challenge assumptions, find edge cases
+3. **Black Panther** (sonnet): Synthesize — combine findings, enforce gate, write report
 
 Two-agent consensus required for PASS on critical findings.

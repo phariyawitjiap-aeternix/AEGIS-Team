@@ -12,7 +12,7 @@
 
 > **"Context is King, Memory is Soul"**
 >
-> :dna: Mother Brain · 13 AI Agents · 29 Skills · 22 Commands · 5-Gate Quality · Self-Evolving Intelligence
+> :dna: Nick Fury · 13 AI Agents · 29 Skills · 22 Commands · 5-Gate Quality · Self-Evolving Intelligence
 
 ---
 
@@ -86,19 +86,19 @@ claude --dangerously-skip-permissions
 
 | # | Agent | Model | Role |
 |:-:|:------|:-----:|:-----|
-| :dna: | **Mother Brain** | `opus` | Autonomous Controller — scans, decides, spawns teams |
-| :compass: | **Navi** | `opus` | Navigator/Lead — orchestrates, synthesizes, retros |
-| :triangular_ruler: | **Sage** | `opus` | Architect — specs, system design, ADRs |
-| :zap: | **Bolt** | `sonnet` | Implementer — writes code, builds features |
-| :shield: | **Vigil** | `sonnet` | Reviewer — code review, quality gates |
-| :red_circle: | **Havoc** | `opus` | Devil's Advocate — challenges, finds flaws |
-| :wrench: | **Forge** | `haiku` | Scanner/Research — gathers data, metrics |
-| :art: | **Pixel** | `sonnet` | UX Designer — UI/UX, accessibility |
-| :paintbrush: | **Muse** | `haiku` | Content Creator — docs, changelogs |
-| :dart: | **Sentinel** | `sonnet` | QA Lead — test strategy, release gate |
-| :microscope: | **Probe** | `haiku` | QA Executor — runs tests, reports |
-| :scroll: | **Scribe** | `haiku` | Compliance — ISO 29110, traceability |
-| :rocket: | **Ops** | `sonnet` | DevOps — deploy, health check, rollback |
+| :dna: | **Nick Fury** | `opus` | Autonomous Controller — scans, decides, spawns teams |
+| :compass: | **Captain America** | `opus` | Navigator/Lead — orchestrates, synthesizes, retros |
+| :triangular_ruler: | **Iron Man** | `opus` | Architect — specs, system design, ADRs |
+| :zap: | **Spider-Man** | `sonnet` | Implementer — writes code, builds features |
+| :shield: | **Black Panther** | `sonnet` | Reviewer — code review, quality gates |
+| :red_circle: | **Loki** | `opus` | Devil's Advocate — challenges, finds flaws |
+| :wrench: | **Beast** | `haiku` | Scanner/Research — gathers data, metrics |
+| :art: | **Wasp** | `sonnet` | UX Designer — UI/UX, accessibility |
+| :paintbrush: | **Songbird** | `haiku` | Content Creator — docs, changelogs |
+| :dart: | **War Machine** | `sonnet` | QA Lead — test strategy, release gate |
+| :microscope: | **Vision** | `haiku` | QA Executor — runs tests, reports |
+| :scroll: | **Coulson** | `haiku` | Compliance — ISO 29110, traceability |
+| :rocket: | **Thor** | `sonnet` | DevOps — deploy, health check, rollback |
 
 > **Routing:** Opus thinks, Sonnet builds, Haiku gathers.
 
@@ -117,11 +117,11 @@ IDEA → BREAKDOWN → SPRINT → [ SPEC → BUILD → REVIEW(G1) → QA(G2) →
 
 | Gate | Name | Owner | Checks |
 |:----:|:-----|:------|:-------|
-| G1 | Code Review | Vigil | 5-pass review: correctness, security, performance, maintainability, compliance |
-| G2 | Product QA | Sentinel | Test plan, execution, coverage, verdict |
-| G3 | Compliance | Scribe | ISO 29110 work products, traceability matrix |
-| G4 | Deploy | Ops | Build, deploy, health check, smoke test |
-| G5 | Monitor | Ops | Post-deploy health, metrics, rollback readiness |
+| G1 | Code Review | Black Panther | 5-pass review: correctness, security, performance, maintainability, compliance |
+| G2 | Product QA | War Machine | Test plan, execution, coverage, verdict |
+| G3 | Compliance | Coulson | ISO 29110 work products, traceability matrix |
+| G4 | Deploy | Thor | Build, deploy, health check, smoke test |
+| G5 | Monitor | Thor | Post-deploy health, metrics, rollback readiness |
 
 ---
 
@@ -129,7 +129,7 @@ IDEA → BREAKDOWN → SPRINT → [ SPEC → BUILD → REVIEW(G1) → QA(G2) →
 
 | Command | Purpose |
 |:--------|:--------|
-| `/aegis-start` | Begin session — Mother Brain activates |
+| `/aegis-start` | Begin session — Nick Fury activates |
 | `/aegis-retro` | End session — retrospective + lessons |
 | `/aegis-handoff` | Handoff document for next session |
 | `/aegis-pipeline` | Full analysis pipeline (all agents) |
@@ -141,9 +141,9 @@ IDEA → BREAKDOWN → SPRINT → [ SPEC → BUILD → REVIEW(G1) → QA(G2) →
 | `/aegis-verify` | Verify outputs meet acceptance criteria |
 | `/aegis-launch` | Launch specific agent with task |
 | `/aegis-flow` | Visualize pipeline flow + dependencies |
-| `/aegis-team-build` | Spawn build team (Sage + Bolt + Vigil) |
-| `/aegis-team-review` | Spawn review team (Vigil + Havoc + Forge) |
-| `/aegis-team-debate` | Spawn debate team (Sage + Havoc + Navi) |
+| `/aegis-team-build` | Spawn build team (Iron Man + Spider-Man + Black Panther) |
+| `/aegis-team-review` | Spawn review team (Black Panther + Loki + Beast) |
+| `/aegis-team-debate` | Spawn debate team (Iron Man + Loki + Captain America) |
 | `/aegis-kanban` | Task board with WIP limits |
 | `/aegis-breakdown` | Decompose stories → epics → tasks |
 | `/aegis-sprint` | Sprint ceremonies — plan, standup, review, close |
@@ -186,7 +186,7 @@ Switch: `/aegis-mode minimal` · `/aegis-mode standard` · `/aegis-mode full`
 | พิมพ์ | Triggers |
 |:------|:---------|
 | "เริ่ม session" | `/aegis-start` |
-| "รีวิวโค้ดให้" | code-review + Vigil |
+| "รีวิวโค้ดให้" | code-review + Black Panther |
 | "ทีมสร้าง" | `/aegis-team-build` |
 | "ทีมรีวิว" | `/aegis-team-review` |
 | "ถกเถียง" | `/aegis-team-debate` |
@@ -194,11 +194,11 @@ Switch: `/aegis-mode minimal` · `/aegis-mode standard` · `/aegis-mode full`
 | "สถานะ" | `/aegis-status` |
 | "จบ session" | `/aegis-retro` |
 | "ส่งต่อ" | `/aegis-handoff` |
-| "วางแผน" | orchestrator + Navi |
-| "เขียน spec" | super-spec + Sage |
+| "วางแผน" | orchestrator + Captain America |
+| "เขียน spec" | super-spec + Iron Man |
 | "ตรวจความปลอดภัย" | security-audit |
 | "หนี้เทคนิค" | tech-debt-tracker |
-| "ท้าทายการตัดสินใจ" | adversarial-review + Havoc |
+| "ท้าทายการตัดสินใจ" | adversarial-review + Loki |
 
 ---
 

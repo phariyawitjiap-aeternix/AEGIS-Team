@@ -19,8 +19,8 @@ MAJOR.MINOR.PATCH (semver)
 ## Release Types
 | Type | Branch | Gates | Approval |
 |------|--------|-------|----------|
-| Hotfix | hotfix/xxx | G1 only (speed) | Ops auto |
-| Patch | main | G1+G2 | Sentinel auto |
+| Hotfix | hotfix/xxx | G1 only (speed) | Thor auto |
+| Patch | main | G1+G2 | War Machine auto |
 | Minor | main | G1+G2+G3 | Full pipeline |
 | Major | main | G1+G2+G3+manual | Human required |
 
@@ -42,8 +42,8 @@ Auto-generated from:
 
 ## Rollback Protocol
 If Gate 4 or Gate 5 fails:
-1. Ops auto-rollback to previous version
+1. Thor auto-rollback to previous version
 2. PM.03 Correction Register created
 3. Hotfix task auto-created in backlog (CRITICAL priority)
-4. Bolt assigned immediately
+4. Spider-Man assigned immediately
 5. Hotfix follows abbreviated pipeline (G1 only)

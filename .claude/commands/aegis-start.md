@@ -1,6 +1,6 @@
 ---
 name: aegis-start
-description: "Initialize AEGIS session — load brain, activate Mother Brain, auto-execute"
+description: "Initialize AEGIS session — load brain, activate Nick Fury, auto-execute"
 triggers:
   en: start session, begin, init, start work
   th: เริ่ม session, เริ่มงาน
@@ -9,8 +9,8 @@ triggers:
 # /aegis-start
 
 ## Quick Reference
-Initialize AEGIS and hand control to Mother Brain. After displaying the dashboard,
-Mother Brain scans the project, decides what to do, and starts executing — NO human
+Initialize AEGIS and hand control to Nick Fury. After displaying the dashboard,
+Nick Fury scans the project, decides what to do, and starts executing — NO human
 input needed. The human watches via tmux and can interrupt anytime.
 
 ## Full Instructions
@@ -36,16 +36,16 @@ input needed. The human watches via tmux and can interrupt anytime.
 📋 Project:    [name from resonance]
 📅 Date:       [current date]
 🎚️  Profile:    [tier] ([N] skills)
-🔐 Autonomy:   L3 — Autonomous (Mother Brain active)
+🔐 Autonomy:   L3 — Autonomous (Nick Fury active)
 📊 Context:    [X]% used
 
-🧬 Mother Brain: ONLINE — scanning project now...
+🧬 Nick Fury: ONLINE — scanning project now...
 ```
 
-### Step 4: Activate Mother Brain (DO NOT ASK HUMAN)
+### Step 4: Activate Nick Fury (DO NOT ASK HUMAN)
 
 **This is the critical step.** Do NOT display "What would you like to do?" or
-present options. Instead, immediately execute the Mother Brain scan loop:
+present options. Instead, immediately execute the Nick Fury scan loop:
 
 #### 4a. Scan Project State
 Gather ALL of these signals:
@@ -93,17 +93,17 @@ Check 5: ISO PM.01?    → ls _aegis-output/iso-docs/PM-01*.md
 ```
 
 If ANY check fails AND the task is P3+ (not a hotfix), create the missing artifacts FIRST:
-- Missing spec → run /super-spec or Sage writes spec
+- Missing spec → run /super-spec or Iron Man writes spec
 - Missing breakdown → run /aegis-breakdown from spec
 - Missing sprint → run /aegis-sprint plan from backlog
 - Missing kanban → auto-created by /aegis-sprint plan
-- Missing PM.01 → Scribe generates from sprint plan
+- Missing PM.01 → Coulson generates from sprint plan
 
 **NEVER skip to implementation without planning artifacts.**
 
 #### 4b-ENFORCE. Hard Stop on Missing Artifacts
 
-If ANY of the checks above fail, Mother Brain MUST apply these hard stops:
+If ANY of the checks above fail, Nick Fury MUST apply these hard stops:
 
 1. CHECK: `_aegis-brain/counters.json` exists and has counters > 0
    — If not: Run /aegis-breakdown NOW. Do NOT proceed to code.
@@ -112,12 +112,12 @@ If ANY of the checks above fail, Mother Brain MUST apply these hard stops:
    — If not: Run /aegis-sprint plan NOW. Do NOT proceed to code.
 
 3. CHECK: `_aegis-output/iso-docs/` has at least PM-01 directory
-   — If not: Run Scribe NOW to generate initial ISO docs.
+   — If not: Run Coulson NOW to generate initial ISO docs.
 
 4. CHECK: Git has at least 1 commit
    — If not: Create initial commit before any work.
 
-If ANY check fails, Mother Brain MUST fix that check BEFORE doing anything else.
+If ANY check fails, Nick Fury MUST fix that check BEFORE doing anything else.
 Do NOT skip to code generation. These are pipeline gates, not suggestions.
 Response if user pushes: "AEGIS pipeline requires planning first. This takes ~2 min. Starting now..."
 
@@ -133,9 +133,9 @@ Apply the Decision Matrix (P0-P10):
 | P3 | Spec + breakdown + sprint all exist | Build next task from kanban |
 | P3.1 | Spec + breakdown exist, NO sprint | /aegis-sprint plan → then build |
 | P3.2 | Spec exists, NO breakdown | /aegis-breakdown → sprint plan → build |
-| P4 | Code exists but no tests | QA: Sentinel + Probe |
+| P4 | Code exists but no tests | QA: War Machine + Vision |
 | P5 | Code exists but no review | Review team |
-| P5.5 | QA passed, ISO docs stale | Scribe generates docs |
+| P5.5 | QA passed, ISO docs stale | Coulson generates docs |
 | P6 | TODOs/FIXMEs in codebase | Tech debt sweep |
 | P7 | Outdated dependencies | Update cycle |
 | P7.5 | Backlog exists, no sprint | /aegis-sprint plan |
@@ -151,7 +151,7 @@ Ask/Analyze → /super-spec → /aegis-breakdown → /aegis-sprint plan → buil
 #### 4c. Announce Decision (not ask)
 
 ```
-🧬 Mother Brain: Scan complete.
+🧬 Nick Fury: Scan complete.
 
 📊 Scan Results:
   ├── Git: [status]
@@ -181,14 +181,14 @@ Ask/Analyze → /super-spec → /aegis-breakdown → /aegis-sprint plan → buil
 ### Step 5: Log Session
 Append to `_aegis-brain/logs/activity.log`:
 ```
-[YYYY-MM-DD HH:MM] SESSION_START | autonomy=L3 | mode=mother-brain | context=[X]%
+[YYYY-MM-DD HH:MM] SESSION_START | autonomy=L3 | mode=nick-fury | context=[X]%
 [YYYY-MM-DD HH:MM] SCAN | git=[status] | tests=[status] | spec=[status]
 [YYYY-MM-DD HH:MM] DECISION | priority=P[N] | action=[description]
 [YYYY-MM-DD HH:MM] EXECUTE | team=[name] | agents=[list]
 ```
 
 ### The ONE Exception
-P10 (completely empty project with no identity) — Mother Brain may ask:
+P10 (completely empty project with no identity) — Nick Fury may ask:
 "What is this project? One sentence is enough."
 After that single answer, she takes over completely.
 
@@ -198,7 +198,7 @@ After that single answer, she takes over completely.
 │  BEFORE (v6.0):                                  │
 │  /aegis-start → Dashboard → "What to do?" → Wait │
 │                                                  │
-│  AFTER (v6.0 + Mother Brain):                    │
+│  AFTER (v6.0 + Nick Fury):                    │
 │  /aegis-start → Dashboard → Scan → Decide → GO! │
 │  Human watches tmux, interrupts only if needed   │
 └──────────────────────────────────────────────────┘

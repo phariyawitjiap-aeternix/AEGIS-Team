@@ -9,7 +9,7 @@
   "assignee": "unassigned",
   "points": 8,
   "priority": "high",
-  "labels": ["mother-brain", "context-budget", "H-005", "H-011"],
+  "labels": ["nick-fury", "context-budget", "H-005", "H-011"],
   "dependencies": {
     "blocks": [],
     "blocked_by": ["PROJ-T-004"]

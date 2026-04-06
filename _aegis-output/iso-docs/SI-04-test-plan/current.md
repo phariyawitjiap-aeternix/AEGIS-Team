@@ -4,7 +4,7 @@ title: Test Plan — AEGIS v7.1
 version: 1
 status: Approved
 created: 2026-03-24
-author: Scribe (AEGIS v7.1)
+author: Coulson (AEGIS v7.1)
 project: AEGIS — AI Agent Team Framework
 ---
 
@@ -16,8 +16,8 @@ This test plan defines the strategy, test cases, and acceptance criteria for AEG
 
 **Testing approach**: Functional verification via manual execution in Claude Code session. No automated test harness exists in v7.1 (planned for v7.2).
 
-**Test executor**: Probe (QA Executor, haiku tier)
-**Test approver**: Sentinel (QA Lead, sonnet tier)
+**Test executor**: Vision (QA Executor, haiku tier)
+**Test approver**: War Machine (QA Lead, sonnet tier)
 
 ## 2. Test Environment
 
@@ -85,19 +85,19 @@ This test plan defines the strategy, test cases, and acceptance criteria for AEG
 
 ### Quality Gate Tests
 
-**TC-10: Vigil gate invocation**
-- Procedure: Submit a code change to Vigil via /aegis-review
-- Expected: Vigil produces written verdict (Pass/Fail) with specific comments
+**TC-10: Black Panther gate invocation**
+- Procedure: Submit a code change to Black Panther via /aegis-review
+- Expected: Black Panther produces written verdict (Pass/Fail) with specific comments
 - Pass criteria: Verdict document generated in _aegis-output/; includes specific line-level feedback
 
-**TC-11: Sentinel QA gate**
-- Procedure: After Vigil Pass, invoke /aegis-qa-gate
-- Expected: Sentinel produces QA report with test coverage assessment
+**TC-11: War Machine QA gate**
+- Procedure: After Black Panther Pass, invoke /aegis-qa-gate
+- Expected: War Machine produces QA report with test coverage assessment
 - Pass criteria: QA report generated; includes Pass/Fail verdict
 
-**TC-12: Havoc challenge gate**
-- Procedure: After Sentinel Pass, Havoc reviews assumptions
-- Expected: Havoc produces challenge report; either Accept or Escalate
+**TC-12: Loki challenge gate**
+- Procedure: After War Machine Pass, Loki reviews assumptions
+- Expected: Loki produces challenge report; either Accept or Escalate
 - Pass criteria: Challenge report generated; specific risks identified or explicitly cleared
 
 ### ISO Documentation Tests
@@ -133,9 +133,9 @@ This test plan defines the strategy, test cases, and acceptance criteria for AEG
 
 | Phase | Tests | Executor | Target Date |
 |-------|-------|---------|------------|
-| v7.1 doc completion | TC-13, TC-14, TC-15 | Probe | 2026-03-24 |
-| v7.1 smoke | TC-01–TC-09 | Probe | 2026-03-24 |
-| Full regression | TC-01–TC-17 | Probe + Sentinel | v7.2 cycle |
+| v7.1 doc completion | TC-13, TC-14, TC-15 | Vision | 2026-03-24 |
+| v7.1 smoke | TC-01–TC-09 | Vision | 2026-03-24 |
+| Full regression | TC-01–TC-17 | Vision + War Machine | v7.2 cycle |
 
 ## 5. Exit Criteria
 

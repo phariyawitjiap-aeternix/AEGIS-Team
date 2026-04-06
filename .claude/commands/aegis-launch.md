@@ -118,7 +118,7 @@ of changes. This is the last gate before merging/deploying.
   - [X] Security check clean
   
   ### Checklist
-  - [X] Code reviewed (by Vigil)
+  - [X] Code reviewed (by Black Panther)
   - [X] Documentation updated
   - [X] CHANGELOG entry added
   - [X] Version bumped to [version]

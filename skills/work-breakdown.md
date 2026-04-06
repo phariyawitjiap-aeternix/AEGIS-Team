@@ -14,7 +14,7 @@ Structured decomposition of user-facing requirements into implementable work ite
 - **Hierarchy**: User Story -> User Journey -> Epic -> Task -> Subtask
 - **IDs**: US-NNN, J-NNN, E-NNN, T-NNN, ST-NNN
 - **Output**: `_aegis-output/breakdown/<story-id>/`
-- **Agent**: Sage (opus) — decomposition lead
+- **Agent**: Iron Man (opus) — decomposition lead
 - **Command**: `/aegis-breakdown "user story text"`
 
 ---
@@ -44,7 +44,7 @@ Structured decomposition of user-facing requirements into implementable work ite
 Accept input in one of these formats:
 - Full format: `"As a <persona>, I want <action> so that <benefit>"`
 - Short format: `"<action or feature description>"`
-- If short format, Sage infers the persona and benefit and writes the full format.
+- If short format, Iron Man infers the persona and benefit and writes the full format.
 
 Assign the next available `US-NNN` ID.
 
@@ -77,14 +77,14 @@ For each epic, create the concrete tasks that agents will execute.
 - Tasks > 13 points must be split into smaller tasks.
 - Each task gets a `T-NNN` ID.
 - Tasks are typed for agent assignment:
-  - `arch` — architecture/design (Sage)
-  - `impl` — implementation (Bolt)
-  - `test` — test creation/execution (Sentinel/Probe)
-  - `review` — code review (Vigil)
-  - `ui` — UI/content work (Pixel/Muse)
-  - `doc` — documentation (Scribe)
-  - `research` — investigation/spike (Havoc)
-  - `data` — data/analytics (Forge)
+  - `arch` — architecture/design (Iron Man)
+  - `impl` — implementation (Spider-Man)
+  - `test` — test creation/execution (War Machine/Vision)
+  - `review` — code review (Black Panther)
+  - `ui` — UI/content work (Wasp/Songbird)
+  - `doc` — documentation (Coulson)
+  - `research` — investigation/spike (Loki)
+  - `data` — data/analytics (Beast)
 - Assign story points using the scale from `skills/sprint-tracker.md`.
 
 #### Step 5: Break Tasks into Subtasks (Optional)
@@ -120,7 +120,7 @@ _aegis-output/breakdown/US-001/
 
 **User Story**: As a <persona>, I want <action> so that <benefit>
 **Created**: <YYYY-MM-DD>
-**Decomposed by**: Sage
+**Decomposed by**: Iron Man
 
 ---
 
@@ -169,9 +169,9 @@ Ready to import into `_aegis-brain/backlog.md`.
 
 | ID | Task | Points | Type | Agent | Epic | Dependencies | Priority |
 |----|------|--------|------|-------|------|-------------|----------|
-| T-001 | <description> | <pts> | impl | @bolt | E-001 | none | P3 |
-| T-002 | <description> | <pts> | test | @sentinel | E-001 | T-001 | P4 |
-| T-003 | <description> | <pts> | arch | @sage | E-002 | none | P2 |
+| T-001 | <description> | <pts> | impl | @spider-man | E-001 | none | P3 |
+| T-002 | <description> | <pts> | test | @war-machine | E-001 | T-001 | P4 |
+| T-003 | <description> | <pts> | arch | @iron-man | E-002 | none | P2 |
 ```
 
 ### Tree Template (`tree.md`)

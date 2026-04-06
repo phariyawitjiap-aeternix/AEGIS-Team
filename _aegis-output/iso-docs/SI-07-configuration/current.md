@@ -4,7 +4,7 @@ title: Configuration Management — AEGIS Version History and Dependencies
 version: 1
 status: Approved
 created: 2026-03-24
-author: Scribe (AEGIS v7.1)
+author: Coulson (AEGIS v7.1)
 project: AEGIS — AI Agent Team Framework
 ---
 
@@ -26,16 +26,16 @@ AEGIS uses git as its configuration management system. All framework files are t
 
 | CI ID | Item | Type | Location | Owner |
 |-------|------|------|----------|-------|
-| CI-01 | CLAUDE.md | Framework core | /AEGIS-Team/CLAUDE.md | Navi |
-| CI-02 | CLAUDE_agents.md | Agent definitions | /AEGIS-Team/CLAUDE_agents.md | Sage |
-| CI-03 | CLAUDE_skills.md | Skill commands | /AEGIS-Team/CLAUDE_skills.md | Navi |
-| CI-04 | CLAUDE_safety.md | Permission model | /AEGIS-Team/CLAUDE_safety.md | Vigil |
-| CI-05 | CLAUDE_lessons.md | Retrospective learnings | /AEGIS-Team/CLAUDE_lessons.md | Navi |
-| CI-06 | _aegis-brain/ | Persistent memory (10 JSON) | /AEGIS-Team/_aegis-brain/ | Mother Brain |
-| CI-07 | _aegis-output/ | Artifacts and docs | /AEGIS-Team/_aegis-output/ | Scribe |
-| CI-08 | GETTING_STARTED.md | Operator setup guide | /AEGIS-Team/GETTING_STARTED.md | Muse |
-| CI-09 | .claude/commands/ | Skill command files | /AEGIS-Team/.claude/commands/ | Navi |
-| CI-10 | CLAUDE_upgrades/ | Version upgrade plans | /AEGIS-Team/CLAUDE_upgrades/ | Sage |
+| CI-01 | CLAUDE.md | Framework core | /AEGIS-Team/CLAUDE.md | Captain America |
+| CI-02 | CLAUDE_agents.md | Agent definitions | /AEGIS-Team/CLAUDE_agents.md | Iron Man |
+| CI-03 | CLAUDE_skills.md | Skill commands | /AEGIS-Team/CLAUDE_skills.md | Captain America |
+| CI-04 | CLAUDE_safety.md | Permission model | /AEGIS-Team/CLAUDE_safety.md | Black Panther |
+| CI-05 | CLAUDE_lessons.md | Retrospective learnings | /AEGIS-Team/CLAUDE_lessons.md | Captain America |
+| CI-06 | _aegis-brain/ | Persistent memory (10 JSON) | /AEGIS-Team/_aegis-brain/ | Nick Fury |
+| CI-07 | _aegis-output/ | Artifacts and docs | /AEGIS-Team/_aegis-output/ | Coulson |
+| CI-08 | GETTING_STARTED.md | Operator setup guide | /AEGIS-Team/GETTING_STARTED.md | Songbird |
+| CI-09 | .claude/commands/ | Skill command files | /AEGIS-Team/.claude/commands/ | Captain America |
+| CI-10 | CLAUDE_upgrades/ | Version upgrade plans | /AEGIS-Team/CLAUDE_upgrades/ | Iron Man |
 
 ## 4. Dependency Inventory
 
@@ -81,7 +81,7 @@ AEGIS uses git as its configuration management system. All framework files are t
 **Focus**: Enterprise agents, QA system, PM state, ISO scaffolding
 
 **New in this release**:
-- 4 new agents: Sentinel, Probe, Scribe, Mother Brain (12 total)
+- 4 new agents: War Machine, Vision, Coulson, Nick Fury (12 total)
 - 3-gate quality pipeline
 - PM State Machine (planning/in-process/review/retro)
 - pm-state.json persistence
@@ -102,7 +102,7 @@ AEGIS uses git as its configuration management system. All framework files are t
 **Focus**: Foundation — standalone agent framework for Claude Code
 
 **Delivered**:
-- 8 agents: Navi, Sage, Bolt, Vigil, Havoc, Forge, Pixel, Muse
+- 8 agents: Captain America, Iron Man, Spider-Man, Black Panther, Loki, Beast, Wasp, Songbird
 - ~20 slash command skills
 - _aegis-brain/ directory (10 JSON files)
 - tmux multi-agent orchestration
@@ -120,14 +120,14 @@ AEGIS uses git as its configuration management system. All framework files are t
 **Recent commits (relevant)**:
 - `82b8239` — docs: GETTING_STARTED.md complete v7.0 setup guide
 - `529258b` — feat: AEGIS v7.0 enterprise + QA + ISO 29110
-- `a61a87f` — docs: Sage's team upgrade plan v6.1
-- `3d9ff19` — feat: v6.1 team upgrade — 5 Sage plan changes + in-process mode
+- `a61a87f` — docs: Iron Man's team upgrade plan v6.1
+- `3d9ff19` — feat: v6.1 team upgrade — 5 Iron Man plan changes + in-process mode
 - `f45bf57` — fix: bypassPermissions + expanded allow rules for agent teams
 
 ## 7. Configuration Audit
 
 **Last audit date**: 2026-03-24
-**Auditor**: Scribe (AEGIS v7.1)
+**Auditor**: Coulson (AEGIS v7.1)
 
 | CI | Expected | Actual | Status |
 |----|----------|--------|--------|

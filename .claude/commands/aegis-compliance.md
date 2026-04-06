@@ -4,7 +4,7 @@
 > Triggers TH: ตรวจสอบ, เอกสาร, ไอเอสโอ, ร่องรอย
 
 ## Purpose
-Generate, audit, and maintain ISO/IEC 29110 Basic profile work products using the Scribe sub-agent. Ensures all required compliance documents exist, are current, and maintain full traceability from requirements through to test results.
+Generate, audit, and maintain ISO/IEC 29110 Basic profile work products using the Coulson sub-agent. Ensures all required compliance documents exist, are current, and maintain full traceability from requirements through to test results.
 
 ## Subcommands
 
@@ -29,7 +29,7 @@ Generate all missing or outdated ISO 29110 documents from current project state.
 
         ## v1 (YYYY-MM-DD)
         - Initial version created
-        - Author: scribe
+        - Author: coulson
         ```
      f. Add document entry to `doc-registry.json`:
         ```json
@@ -39,7 +39,7 @@ Generate all missing or outdated ISO 29110 documents from current project state.
           "title": "Document Title",
           "current_version": 1,
           "status": "Draft",
-          "author": "scribe",
+          "author": "coulson",
           "reviewer": null,
           "created": "YYYY-MM-DD",
           "last_updated": "YYYY-MM-DD",
@@ -55,7 +55,7 @@ Generate all missing or outdated ISO 29110 documents from current project state.
         ```
         ## v{N+1} (YYYY-MM-DD)
         - {summary of changes from diff with previous version}
-        - Author: scribe
+        - Author: coulson
         ```
      f. Update registry entry: set `current_version`, `last_updated`, `status`
 7. Update traceability matrix after all documents generated
@@ -131,7 +131,7 @@ Show or update the traceability matrix that links requirements to design, code, 
 **Flow**:
 1. Read requirements from _aegis-output/breakdown/ and iso-docs/SI-01-requirements-spec/current.md
 2. Read design references from iso-docs/SI-03-design-doc/current.md
-3. Read code references from Bolt implementation records
+3. Read code references from Spider-Man implementation records
 4. Read test cases from _aegis-output/qa/
 5. Read test results from _aegis-output/qa/results/
 6. Compute the cross-reference matrix
@@ -159,16 +159,16 @@ Path: _aegis-output/iso-docs/PM-01-project-plan/
 ## v3 (2026-03-24)
 - Updated timeline after sprint-2 planning
 - Added risk mitigation section
-- Author: scribe
+- Author: coulson
 
 ## v2 (2026-03-22)
 - Revised scope after breakdown
-- Reviewed by: vigil
-- Author: scribe
+- Reviewed by: black-panther
+- Author: coulson
 
 ## v1 (2026-03-20)
 - Initial version created from sprint plan
-- Author: scribe
+- Author: coulson
 
 Total versions: 3 | Current: v3
 ```
@@ -210,19 +210,19 @@ Summary: 2 sections changed, 4 lines added, 1 line removed
 ```
 
 ## Agent Routing
-- **Primary**: Scribe (generates all documents)
-- **Assist**: Muse (prose-heavy sections if needed)
-- **Data source**: All other agents' outputs (Sage, Bolt, Vigil, Sentinel, Probe)
+- **Primary**: Coulson (generates all documents)
+- **Assist**: Songbird (prose-heavy sections if needed)
+- **Data source**: All other agents' outputs (Iron Man, Spider-Man, Black Panther, War Machine, Vision)
 
 ## Output Location
 _aegis-output/iso-docs/
 
 ## Quality Gate
 This command feeds into Gate 3 (Compliance) of the 3-gate quality system:
-- Gate 1: Code Quality (Vigil) -- code review, lint, standards
-- Gate 2: Product Quality (Sentinel) -- functional tests, acceptance criteria
-- Gate 3: Compliance (Scribe) -- all required ISO docs exist and are current
+- Gate 1: Code Quality (Black Panther) -- code review, lint, standards
+- Gate 2: Product Quality (War Machine) -- functional tests, acceptance criteria
+- Gate 3: Compliance (Coulson) -- all required ISO docs exist and are current
 
 Sprint close is blocked until Gate 3 passes (/aegis-compliance check shows all required docs current for the current lifecycle stage).
 
-**Important**: Documents are generated AT ACTIVITY TIME by Scribe, not batch-generated at sprint close. Sprint close only VERIFIES all required docs exist -- it does not generate them. If docs are missing at sprint close, the sprint is blocked and the team must identify which activity was not properly documented.
+**Important**: Documents are generated AT ACTIVITY TIME by Coulson, not batch-generated at sprint close. Sprint close only VERIFIES all required docs exist -- it does not generate them. If docs are missing at sprint close, the sprint is blocked and the team must identify which activity was not properly documented.

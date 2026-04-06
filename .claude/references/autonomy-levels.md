@@ -32,12 +32,12 @@ Agent behavior at L1:
 |--------|------|
 | Planning | Human approves the PlanProposal |
 | Execution | Agents execute steps independently within the approved plan |
-| Review | Vigil reviews, human spot-checks |
+| Review | Black Panther reviews, human spot-checks |
 | Deployment | Human approves final output |
 | Best for | Established projects, well-defined tasks, moderate risk |
 
 Agent behavior at L2:
-- Navi presents a PlanProposal for human approval
+- Captain America presents a PlanProposal for human approval
 - Once approved, agents execute without per-step confirmation
 - Agents still report progress via StatusUpdate
 - Deviations from plan require re-approval
@@ -55,7 +55,7 @@ Agent behavior at L2:
 | Best for | Trusted workflows, low-risk tasks, experienced teams |
 
 Agent behavior at L3:
-- Navi assigns tasks without waiting for human plan approval
+- Captain America assigns tasks without waiting for human plan approval
 - Agents execute and review using standard protocols
 - QualityGate consensus is sufficient for internal approvals
 - Only the final deliverable goes to human for review
@@ -85,14 +85,14 @@ Agent behavior at L4:
 /aegis-mode --autonomy L3
 ```
 
-- Default after `/aegis-start`: **L3 (Autonomous) — Mother Brain active**
-- Mother Brain scans project → decides → acts without asking human
+- Default after `/aegis-start`: **L3 (Autonomous) — Nick Fury active**
+- Nick Fury scans project → decides → acts without asking human
 - Human can downgrade: `/aegis-mode --autonomy L1` (manual mode)
-- Navi stores the current level in `_aegis-brain/config/autonomy.json`
+- Captain America stores the current level in `_aegis-brain/config/autonomy.json`
 
-## Mother Brain (L3/L4 Autonomous Controller)
+## Nick Fury (L3/L4 Autonomous Controller)
 
-When autonomy is L3 or L4, Mother Brain (`🧬`) takes control:
+When autonomy is L3 or L4, Nick Fury (`🧬`) takes control:
 - Scans project state automatically (git, tests, specs, deps, debt)
 - Applies Decision Matrix (P0-P10) to pick highest-priority action
 - Spawns the right team via tmux without asking
@@ -100,7 +100,7 @@ When autonomy is L3 or L4, Mother Brain (`🧬`) takes control:
 - Human watches via `tmux attach -t aegis-team` and interrupts if needed
 - Only asks human for P10 (completely empty project with no identity)
 
-See `.claude/agents/mother-brain.md` for full protocol.
+See `.claude/agents/nick-fury.md` for full protocol.
 
 ## Escalation Rules
 
@@ -109,7 +109,7 @@ Any agent can request escalation (moving to a lower level for more oversight):
 ```
 --- EscalationAlert ---
 From: [agent]
-To: 🧭 Navi
+To: 🧭 Captain America
 ...
 Suggested action: Downgrade autonomy to L[N] for [scope]
 ---
@@ -133,7 +133,7 @@ The system automatically drops one autonomy level when:
 | 2+ consecutive task failures | Drop one level |
 | Context emergency (80%+ usage) | Drop to L1 |
 
-**Recovery**: After human confirms the issue is resolved, autonomy returns to its previous level. Navi logs the downgrade and recovery in the session summary.
+**Recovery**: After human confirms the issue is resolved, autonomy returns to its previous level. Captain America logs the downgrade and recovery in the session summary.
 
 ## Level Transitions
 
@@ -145,4 +145,4 @@ L1 ──[human confirms]──▶ L2 ──[human confirms]──▶ L3 ──[
 - Downgrade: automatic, immediate
 - Upgrade: requires explicit human confirmation
 - Level changes are logged in `_aegis-brain/logs/activity.log`
-- Navi announces level changes to all agents via broadcast
+- Captain America announces level changes to all agents via broadcast

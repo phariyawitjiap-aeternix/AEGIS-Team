@@ -48,8 +48,8 @@ Stop here. Do not proceed.
 
 ### Subcommand: /aegis-deploy (Full Pipeline)
 
-**Agent**: Ops (sub-agent, solo mode)
-**Escalation**: If health check fails and hotfix needed, spawn TeamCreate with Bolt.
+**Agent**: Thor (sub-agent, solo mode)
+**Escalation**: If health check fails and hotfix needed, spawn TeamCreate with Spider-Man.
 
 #### Step 1: Build Verification
 - Detect project type from root files (package.json, go.mod, Cargo.toml, etc.)
@@ -143,7 +143,7 @@ Stop here. Do not proceed.
 
 ### Subcommand: /aegis-deploy build
 
-**Agent**: Ops (sub-agent, solo mode)
+**Agent**: Thor (sub-agent, solo mode)
 
 - Run only Step 1 (Build Verification) from the full pipeline.
 - Output build log and report result.
@@ -153,7 +153,7 @@ Stop here. Do not proceed.
 
 ### Subcommand: /aegis-deploy health
 
-**Agent**: Ops (sub-agent, solo mode)
+**Agent**: Thor (sub-agent, solo mode)
 
 - Run health checks on the current deployment.
 - Does NOT require gate verification (diagnostic tool).
@@ -171,7 +171,7 @@ Stop here. Do not proceed.
 
 ### Subcommand: /aegis-deploy rollback
 
-**Agent**: Ops (sub-agent, solo mode). If hotfix needed, TeamCreate with Bolt.
+**Agent**: Thor (sub-agent, solo mode). If hotfix needed, TeamCreate with Spider-Man.
 
 1. Identify previous known-good deployment from `_aegis-output/deployments/`.
 2. Revert to that deployment.
@@ -180,14 +180,14 @@ Stop here. Do not proceed.
    - Create PM.03 Correction Register entry.
    - Report success.
 5. If rollback fails:
-   - CRITICAL alert to Navi + human.
+   - CRITICAL alert to Captain America + human.
    - Create PM.03 Correction Register with CRITICAL severity.
 
 ---
 
 ### Subcommand: /aegis-deploy status
 
-**Agent**: Ops (sub-agent, solo mode)
+**Agent**: Thor (sub-agent, solo mode)
 
 - Read latest deployment report from `_aegis-output/deployments/`.
 - Display:
@@ -206,14 +206,14 @@ Stop here. Do not proceed.
 
 ---
 
-## Hotfix Workflow (Ops + Bolt coordination)
+## Hotfix Workflow (Thor + Spider-Man coordination)
 When health check or monitoring detects a failure requiring code changes:
-1. Ops creates a hotfix task with CRITICAL priority.
-2. Ops spawns Bolt via TeamCreate to write the fix.
-3. Bolt implements the fix in src/ (Ops NEVER touches src/).
-4. Ops runs build verification on the fix.
-5. Ops redeploys with the hotfix.
-6. Ops monitors for stability.
+1. Thor creates a hotfix task with CRITICAL priority.
+2. Thor spawns Spider-Man via TeamCreate to write the fix.
+3. Spider-Man implements the fix in src/ (Thor NEVER touches src/).
+4. Thor runs build verification on the fix.
+5. Thor redeploys with the hotfix.
+6. Thor monitors for stability.
 
 ## PM.03 Correction Register (auto-created on failure)
 On any deploy failure, health check failure, or rollback, automatically generate:

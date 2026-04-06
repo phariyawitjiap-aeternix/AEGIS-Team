@@ -9,10 +9,10 @@ triggers:
 # /aegis-pipeline
 
 ## Quick Reference
-Three-phase analysis pipeline using subagents. Phase 1 (Research): Forge scans codebase
-and dependencies, Muse scans docs — Gate 1 validates completeness. Phase 2 (Analysis):
-Sage does architecture, Vigil does quality, Havoc does adversarial — Gate 2 checks
-contradictions. Phase 3 (Synthesis): Navi synthesizes and formats final report. Context
+Three-phase analysis pipeline using subagents. Phase 1 (Research): Beast scans codebase
+and dependencies, Songbird scans docs — Gate 1 validates completeness. Phase 2 (Analysis):
+Iron Man does architecture, Black Panther does quality, Loki does adversarial — Gate 2 checks
+contradictions. Phase 3 (Synthesis): Captain America synthesizes and formats final report. Context
 budget checks between every phase. Requires sufficient context budget to complete.
 
 ## Full Instructions
@@ -33,19 +33,19 @@ budget checks between every phase. Requires sufficient context budget to complet
 
 ### Phase 1 — Research (Parallel Subagents)
 
-**Forge — Codebase Scan:**
+**Beast — Codebase Scan:**
 - Scan project directory structure and report hierarchy.
 - Identify: languages used, frameworks, key directories.
 - Map: entry points, configuration files, build systems.
 - Output: structured codebase map.
 
-**Forge — Dependency Gathering:**
+**Beast — Dependency Gathering:**
 - Read package.json, requirements.txt, go.mod, Cargo.toml, or equivalent.
 - List all direct dependencies with versions.
 - Note any outdated or deprecated packages (if detectable).
 - Output: dependency inventory.
 
-**Muse — Documentation Scan:**
+**Songbird — Documentation Scan:**
 - Find and read: README, CONTRIBUTING, docs/, wiki/, *.md files.
 - Assess: documentation completeness, accuracy, freshness.
 - Note: gaps, outdated sections, missing docs.
@@ -53,7 +53,7 @@ budget checks between every phase. Requires sufficient context budget to complet
 
 **All research tasks run in parallel where possible.**
 
-#### GATE 1: Research Validation (Navi)
+#### GATE 1: Research Validation (Captain America)
 - Verify all three research outputs are complete.
 - Check for missing data or scan failures.
 - If any research is incomplete, retry that specific task.
@@ -62,41 +62,41 @@ budget checks between every phase. Requires sufficient context budget to complet
 
 ### Phase 2 — Deep Analysis (Parallel/Team)
 
-**Sage — Architecture Analysis:**
+**Iron Man — Architecture Analysis:**
 - Analyze: system architecture, design patterns, module boundaries.
 - Evaluate: coupling, cohesion, separation of concerns.
 - Identify: architectural strengths and weaknesses.
 - Map: data flow, dependency graph, critical paths.
 - Output: architecture assessment with diagrams (text-based).
 
-**Vigil — Code Quality Review:**
+**Black Panther — Code Quality Review:**
 - Review: code style consistency, error handling, edge cases.
 - Check: test coverage, test quality, testing patterns.
 - Identify: code smells, anti-patterns, tech debt.
 - Evaluate: security practices, input validation, auth patterns.
 - Output: quality scorecard with specific findings.
 
-**Havoc — Adversarial Analysis:**
+**Loki — Adversarial Analysis:**
 - Challenge: architectural decisions — what could go wrong?
-- Probe: failure modes, scalability limits, single points of failure.
+- Vision: failure modes, scalability limits, single points of failure.
 - Test: security assumptions — what is assumed but not verified?
 - Question: "What happens when [X] fails?" for each critical component.
 - Output: risk assessment with severity ratings.
 
 **Analysis tasks run in parallel where possible.**
 
-#### GATE 2: Analysis Validation (Vigil)
+#### GATE 2: Analysis Validation (Black Panther)
 - Review all three analysis outputs for completeness.
 - Check for contradictions between analyses.
-  - If Sage says architecture is solid but Havoc found critical flaws → flag.
-  - If Vigil's quality review contradicts Sage's patterns → investigate.
+  - If Iron Man says architecture is solid but Loki found critical flaws → flag.
+  - If Black Panther's quality review contradicts Iron Man's patterns → investigate.
 - Resolve contradictions by noting both perspectives.
 - If analyses are complete: "Gate 2 PASSED — Analysis complete. Proceeding to synthesis."
 - **Context check**: Estimate remaining budget before proceeding.
 
 ### Phase 3 — Synthesis (Sequential)
 
-**Navi — Synthesis:**
+**Captain America — Synthesis:**
 - Combine all research and analysis outputs.
 - Organize by theme, not by agent.
 - Resolve any remaining contradictions with balanced perspective.
@@ -109,19 +109,19 @@ budget checks between every phase. Requires sufficient context budget to complet
   [3-5 sentences: overall assessment]
   
   ## Architecture
-  [Sage's analysis, enriched with Havoc's challenges]
+  [Iron Man's analysis, enriched with Loki's challenges]
   
   ## Code Quality
-  [Vigil's findings, organized by severity]
+  [Black Panther's findings, organized by severity]
   
   ## Risk Assessment
-  [Havoc's findings, with mitigation suggestions]
+  [Loki's findings, with mitigation suggestions]
   
   ## Documentation
-  [Muse's assessment]
+  [Songbird's assessment]
   
   ## Dependencies
-  [Forge's inventory with risk notes]
+  [Beast's inventory with risk notes]
   
   ## Recommendations
   [Prioritized list: what to fix/improve, ordered by impact]

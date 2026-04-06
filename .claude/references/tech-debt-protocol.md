@@ -1,10 +1,10 @@
 # Tech Debt Protocol -- Continuous Tracking
 
 ## How Tech Debt Enters the System
-1. Vigil finds "suggestion" during review -> auto-logged as debt
-2. Havoc finds "nice-to-have" during challenge -> auto-logged
-3. Sentinel finds "non-critical" during QA -> auto-logged
-4. Bolt adds TODO/FIXME in code -> auto-detected and logged
+1. Black Panther finds "suggestion" during review -> auto-logged as debt
+2. Loki finds "nice-to-have" during challenge -> auto-logged
+3. War Machine finds "non-critical" during QA -> auto-logged
+4. Spider-Man adds TODO/FIXME in code -> auto-detected and logged
 5. Sprint retro identifies improvement -> auto-logged
 
 ## Debt Registry
@@ -12,17 +12,17 @@ File: `_aegis-brain/tech-debt/registry.md`
 
 | ID | Source | Severity | Category | Description | Effort | Sprint Found | Sprint Fixed |
 |----|--------|----------|----------|-------------|--------|-------------|-------------|
-| TD-001 | Vigil/T-028 | Low | Performance | Add pagination for 1000+ items | 3pts | sprint-2 | - |
+| TD-001 | Black Panther/T-028 | Low | Performance | Add pagination for 1000+ items | 3pts | sprint-2 | - |
 
 Categories: Performance, Security, Maintainability, Testing, Documentation, Architecture
 
 ## Auto-Detection
-After every Vigil review (Gate 1):
+After every Black Panther review (Gate 1):
 - Severity=suggestion -> create TD entry
 - Severity=warning (non-blocking) -> create TD entry
 - Severity=critical -> this is NOT debt, this is a bug (blocks gate)
 
-After every Havoc review:
+After every Loki review:
 - "nice-to-have" findings -> create TD entry
 
 After every code change:

@@ -4,7 +4,7 @@ title: Progress Status Report — AEGIS v7.1
 version: 1
 status: Approved
 created: 2026-03-24
-author: Scribe (AEGIS v7.1)
+author: Coulson (AEGIS v7.1)
 project: AEGIS — AI Agent Team Framework
 ---
 
@@ -22,10 +22,10 @@ AEGIS has progressed through three major versions since inception. As of 2026-03
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| CLAUDE.md (framework core) | Done | Navigation table, Golden Rules, Mother Brain |
-| CLAUDE_agents.md | Done | 8 agents defined (Navi, Sage, Bolt, Vigil, Havoc, Forge, Pixel, Muse) |
+| CLAUDE.md (framework core) | Done | Navigation table, Golden Rules, Nick Fury |
+| CLAUDE_agents.md | Done | 8 agents defined (Captain America, Iron Man, Spider-Man, Black Panther, Loki, Beast, Wasp, Songbird) |
 | CLAUDE_skills.md | Done | ~20 skills as slash commands |
-| CLAUDE_safety.md | Done | Permission model, blast radius, forbidden ops |
+| CLAUDE_safety.md | Done | Permission model, blast radius, forbidden thor |
 | CLAUDE_lessons.md | Done | Retrospective learnings, decision log |
 | _aegis-brain/ | Done | 10 JSON memory files initialized |
 | tmux orchestration | Done | aegis-team sessions via tmux new-window |
@@ -36,13 +36,13 @@ AEGIS has progressed through three major versions since inception. As of 2026-03
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| 4 new agents | Done | Sentinel (QA Lead), Probe (QA Executor), Scribe (Compliance), Mother Brain |
-| 3-gate quality system | Done | Vigil → Sentinel → Havoc pipeline |
+| 4 new agents | Done | War Machine (QA Lead), Vision (QA Executor), Coulson (Compliance), Nick Fury |
+| 3-gate quality system | Done | Black Panther → War Machine → Loki pipeline |
 | PM state system | Done | planning / in-process / review / retro cycles |
 | ISO 29110 stub | Done | doc-registry.json, counters.json scaffolded |
 | QA skills | Done | aegis-qa-plan, aegis-qa-run, aegis-qa-gate |
-| Scribe persona | Done | haiku-tier, ISO work product generation |
-| Mother Brain autonomy | Done | L1–L3 autonomy levels, Decision Matrix P0–P10 |
+| Coulson persona | Done | haiku-tier, ISO work product generation |
+| Nick Fury autonomy | Done | L1–L3 autonomy levels, Decision Matrix P0–P10 |
 | GETTING_STARTED.md | Done | Complete setup guide for new operators |
 
 ### v7.1 — ISO Documentation Release
@@ -79,7 +79,7 @@ AEGIS has progressed through three major versions since inception. As of 2026-03
 
 **Sprint goal**: Generate all 11 ISO 29110 Basic Profile documents (dogfooding)
 **Start**: 2026-03-24
-**Owner**: Scribe agent (haiku tier)
+**Owner**: Coulson agent (haiku tier)
 **Progress**: 11/11 documents drafted
 
 ## 5. Blockers and Issues

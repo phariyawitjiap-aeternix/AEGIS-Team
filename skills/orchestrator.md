@@ -93,7 +93,7 @@ Gates are checkpoints between phases. A gate evaluates the output of the previou
 
 **Gate Protocol:**
 1. Previous phase agent produces output
-2. Gate evaluator (usually Vigil) reviews output
+2. Gate evaluator (usually Black Panther) reviews output
 3. Result: PASS / FAIL / CONDITIONAL
 4. PASS → proceed to next phase
 5. FAIL → return to previous agent with feedback
@@ -120,12 +120,12 @@ Agents communicate via structured message types:
 
 | Type | From | To | Purpose |
 |------|------|----|---------|
-| TaskAssignment | Navi | Agent | Assign work |
-| StatusUpdate | Agent | Navi | Progress report |
-| FindingReport | Vigil/Havoc | Lead | Quality/security findings |
-| PlanProposal | Sage | Team | Architecture proposal |
+| TaskAssignment | Captain America | Agent | Assign work |
+| StatusUpdate | Agent | Captain America | Progress report |
+| FindingReport | Black Panther/Loki | Lead | Quality/security findings |
+| PlanProposal | Iron Man | Team | Architecture proposal |
 | ApprovalRequest | Agent | Human | Needs human decision |
-| CompletionReport | Agent | Navi | Task done |
+| CompletionReport | Agent | Captain America | Task done |
 
 ### Error Handling
 
@@ -133,7 +133,7 @@ Agents communicate via structured message types:
 2. **Gate failure** (3 consecutive): Escalate to human with summary
 3. **Context overflow**: Archive and restart with summary
 4. **tmux crash**: Fall back to subagent, resume from last gate
-5. **Conflicting outputs**: Invoke Navi for resolution
+5. **Conflicting outputs**: Invoke Captain America for resolution
 
 ### Logging
 

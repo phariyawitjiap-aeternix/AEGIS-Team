@@ -4,7 +4,7 @@ title: Project Plan — AEGIS AI Agent Team Framework
 version: 1
 status: Approved
 created: 2026-03-24
-author: Scribe (AEGIS v7.1)
+author: Coulson (AEGIS v7.1)
 project: AEGIS — AI Agent Team Framework
 ---
 
@@ -23,7 +23,7 @@ Build and maintain AEGIS (Autonomous Engineered General Intelligence System), a 
 - 27 skills as slash commands (CLAUDE_skills.md)
 - Persistent brain directory (`_aegis-brain/`) for cross-session memory
 - PM state system (planning, in-process, review, retro cycles)
-- 3-gate quality system (Vigil review → Sentinel QA → Havoc challenge)
+- 3-gate quality system (Black Panther review → War Machine QA → Loki challenge)
 - ISO 29110 Basic Profile compliance documentation
 - tmux-based multi-agent orchestration (optional; graceful degradation)
 - Bilingual support: English primary, Thai secondary
@@ -37,18 +37,18 @@ Build and maintain AEGIS (Autonomous Engineered General Intelligence System), a 
 ### Agents (12 total)
 | # | Agent | Model Tier | Primary Role |
 |---|-------|-----------|-------------|
-| 1 | Navi | opus | Orchestrator, retro author |
-| 2 | Sage | opus | Architect, system design |
-| 3 | Bolt | sonnet | Implementer, code writer |
-| 4 | Vigil | sonnet | Code reviewer, quality gate |
-| 5 | Havoc | opus | Devil's advocate, risk finder |
-| 6 | Forge | haiku | Scanner, research gatherer |
-| 7 | Pixel | sonnet | UX designer, accessibility |
-| 8 | Muse | haiku | Docs, content, copywriting |
-| 9 | Sentinel | sonnet | QA lead, test strategy |
-| 10 | Probe | haiku | QA executor, test runner |
-| 11 | Scribe | haiku | ISO 29110 compliance docs |
-| 12 | Mother Brain | opus | Autonomous controller |
+| 1 | Captain America | opus | Orchestrator, retro author |
+| 2 | Iron Man | opus | Architect, system design |
+| 3 | Spider-Man | sonnet | Implementer, code writer |
+| 4 | Black Panther | sonnet | Code reviewer, quality gate |
+| 5 | Loki | opus | Devil's advocate, risk finder |
+| 6 | Beast | haiku | Scanner, research gatherer |
+| 7 | Wasp | sonnet | UX designer, accessibility |
+| 8 | Songbird | haiku | Docs, content, copywriting |
+| 9 | War Machine | sonnet | QA lead, test strategy |
+| 10 | Vision | haiku | QA executor, test runner |
+| 11 | Coulson | haiku | ISO 29110 compliance docs |
+| 12 | Nick Fury | opus | Autonomous controller |
 
 ### Skills (27 total)
 Categories: Session (aegis-start, aegis-retro, aegis-status, aegis-mode), Pipeline (aegis-pipeline, aegis-plan, aegis-build, aegis-review, aegis-qa, aegis-retro-deep), Team (aegis-team-build, aegis-team-review, aegis-team-debate), Brain (aegis-brain-scan, aegis-brain-update, aegis-brain-reset), PM (aegis-pm-start, aegis-pm-cycle, aegis-pm-status), QA (aegis-qa-plan, aegis-qa-run, aegis-qa-gate), Docs (aegis-doc-gen, aegis-doc-update), Util (aegis-diff, aegis-checkpoint).
@@ -58,7 +58,7 @@ Categories: Session (aegis-start, aegis-retro, aegis-status, aegis-mode), Pipeli
 | Phase | Version | Date | Deliverables |
 |-------|---------|------|-------------|
 | Foundation | v6.0 | 2025-Q4 | 8 agents, basic skills, brain directory, tmux orchestration |
-| Enterprise | v7.0 | 2026-Q1 | +4 agents (Sentinel, Probe, Scribe, Mother Brain), QA system, ISO 29110, PM state |
+| Enterprise | v7.0 | 2026-Q1 | +4 agents (War Machine, Vision, Coulson, Nick Fury), QA system, ISO 29110, PM state |
 | Stabilization | v7.1 | 2026-03-24 | PM.01–PM.04 + SI.01–SI.07 docs, counters, changelog system |
 | Next | v7.2 | TBD | Automated test harness, skill coverage expansion |
 
@@ -66,13 +66,13 @@ Categories: Session (aegis-start, aegis-retro, aegis-status, aegis-mode), Pipeli
 
 | Role | Agent | Human Equivalent |
 |------|-------|-----------------|
-| Project Lead | Navi | Project Manager |
-| System Architect | Sage | Senior Architect |
-| Developer | Bolt | Senior Engineer |
-| QA Lead | Sentinel | QA Manager |
-| Reviewer | Vigil | Tech Lead |
-| Challenger | Havoc | Risk Manager |
-| Researcher | Forge | Research Analyst |
+| Project Lead | Captain America | Project Manager |
+| System Architect | Iron Man | Senior Architect |
+| Developer | Spider-Man | Senior Engineer |
+| QA Lead | War Machine | QA Manager |
+| Reviewer | Black Panther | Tech Lead |
+| Challenger | Loki | Risk Manager |
+| Researcher | Beast | Research Analyst |
 | Human Sponsor | User/Operator | Product Owner |
 
 ## 5. Milestones

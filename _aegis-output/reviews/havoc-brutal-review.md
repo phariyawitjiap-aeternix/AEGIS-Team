@@ -1,7 +1,7 @@
 # HAVOC ADVERSARIAL REVIEW: AEGIS v7.0 Stress Test
 
 **Date**: 2026-03-24
-**Reviewer**: Havoc (Devil's Advocate)
+**Reviewer**: Loki (Devil's Advocate)
 **Scope**: Full framework audit -- CLAUDE*.md, agents, skills, commands, installer, orchestrator
 **Verdict**: CONDITIONAL -- impressive architecture, significant execution gaps
 
@@ -21,7 +21,7 @@ The framework is NOT smoke and mirrors -- there is real architectural thought he
 - **Severity**: CRITICAL
 - **Category**: Broken Promises
 - **Finding**: The installer's skill lists are stuck at v6.0. The `standard_skills` array contains `("super-spec" "test-architect" "security-audit" "tech-debt-tracker" "sprint-tracker" "api-docs")` and the `full_skills` array contains `("aegis-distill" "aegis-observe" "adversarial-review" "code-coverage" "retrospective" "course-correction" "skill-marketplace" "aegis-builder")`. The five v7.0 skills -- `kanban-board`, `work-breakdown`, `qa-pipeline`, `iso-29110-docs`, and `sprint-manager` (which supersedes `sprint-tracker`) -- are completely absent from the install script. A user running `install.sh --profile full` will get 21 skills, not the advertised 26.
-- **Impact**: The entire v7.0 feature set (kanban, work breakdown, QA pipeline, ISO 29110 compliance, sprint management) will silently fail because the skill files are never copied to the target project. Mother Brain references these skills in its decision flow but they will not exist.
+- **Impact**: The entire v7.0 feature set (kanban, work breakdown, QA pipeline, ISO 29110 compliance, sprint management) will silently fail because the skill files are never copied to the target project. Nick Fury references these skills in its decision flow but they will not exist.
 - **Fix Complexity**: LOW
 - **Suggested Fix**: Add `"sprint-manager" "kanban-board" "work-breakdown" "qa-pipeline" "iso-29110-docs"` to the appropriate skill arrays. `sprint-manager` and `kanban-board` should be in `standard_skills`. `qa-pipeline` and `iso-29110-docs` should be in `full_skills`. Also update `work-breakdown` to `standard_skills`.
 
@@ -30,7 +30,7 @@ The framework is NOT smoke and mirrors -- there is real architectural thought he
 ### H-002: install.sh Does Not Create Required Output Directories
 - **Severity**: CRITICAL
 - **Category**: Broken Promises
-- **Finding**: The installer creates `_aegis-output/reviews`, `_aegis-output/adversarial`, `_aegis-output/scans`, `_aegis-output/architecture`, `_aegis-output/design`, and `_aegis-output/content`. It does NOT create `_aegis-output/specs/`, `_aegis-output/breakdown/`, `_aegis-output/qa/`, or `_aegis-output/iso-docs/` -- all four of which are assumed to exist by Mother Brain's scan protocol (aegis-start Step 4a/4b), the QA pipeline, the compliance command, and the breakdown command. It also does not create `_aegis-brain/sprints/` or `_aegis-brain/handoffs/`.
+- **Finding**: The installer creates `_aegis-output/reviews`, `_aegis-output/adversarial`, `_aegis-output/scans`, `_aegis-output/architecture`, `_aegis-output/design`, and `_aegis-output/content`. It does NOT create `_aegis-output/specs/`, `_aegis-output/breakdown/`, `_aegis-output/qa/`, or `_aegis-output/iso-docs/` -- all four of which are assumed to exist by Nick Fury's scan protocol (aegis-start Step 4a/4b), the QA pipeline, the compliance command, and the breakdown command. It also does not create `_aegis-brain/sprints/` or `_aegis-brain/handoffs/`.
 - **Impact**: First run of `/aegis-start` will attempt `ls _aegis-output/specs/ 2>/dev/null` and similar commands that will fail. While some commands use `2>/dev/null`, this means the scan results will always show "no spec exists" even if the user later manually creates one in a different location. More critically, `/aegis-breakdown` and `/aegis-sprint plan` will need to mkdir before writing, and if they forget, they will error out.
 - **Fix Complexity**: LOW
 - **Suggested Fix**: Add the missing directories to the `directories=()` array: `_aegis-output/specs`, `_aegis-output/breakdown`, `_aegis-output/qa`, `_aegis-output/iso-docs`, `_aegis-brain/sprints`, `_aegis-brain/handoffs`.
@@ -51,26 +51,26 @@ The framework is NOT smoke and mirrors -- there is real architectural thought he
 - **Severity**: HIGH
 - **Category**: Broken Promises
 - **Finding**: There are two entirely separate systems for spawning agent teams: (1) `aegis-team.sh` which uses tmux panes with `claude -p` in print mode, and (2) `/aegis-team-build` command which uses the Agent tool with `TeamCreate`/`SendMessage` in in-process mode. These two systems use different coordination protocols (file-polling via `-done.md` files vs. SendMessage), different permission models (CLI `--dangerously-skip-permissions` vs. `mode="bypassPermissions"`), and different agent discovery mechanisms. There is no documentation explaining when to use which.
-- **Impact**: Users will be confused about which system to use. Mother Brain's documentation references tmux spawning, but the actual commands use in-process Agent tool. If a user starts with aegis-team.sh and then runs /aegis-team-build, they could have two overlapping sets of agents working on the same files.
+- **Impact**: Users will be confused about which system to use. Nick Fury's documentation references tmux spawning, but the actual commands use in-process Agent tool. If a user starts with aegis-team.sh and then runs /aegis-team-build, they could have two overlapping sets of agents working on the same files.
 - **Fix Complexity**: MEDIUM
 - **Suggested Fix**: Pick one as the primary mechanism and deprecate the other. The in-process Agent tool is more reliable (no tmux dependency, no permission inheritance bug). Make aegis-team.sh a legacy/optional tool for users who specifically want the visual tmux experience.
 
 ---
 
-### H-005: Mother Brain's "Continuous Loop" Cannot Actually Loop
+### H-005: Nick Fury's "Continuous Loop" Cannot Actually Loop
 - **Severity**: HIGH
 - **Category**: Broken Promises
-- **Finding**: Mother Brain's documentation describes a continuous loop: `SCAN -> ANALYZE -> DECIDE -> PLAN -> EXECUTE -> VERIFY -> LEARN -> REPEAT`. However, Claude Code sessions do not support infinite loops. Each session has a finite context window. Each subagent spawn consumes context. There is no mechanism to restart the loop after context exhaustion. The "REPEAT -> Back to SCAN with updated state" step has no implementation -- the aegis-start command runs once and completes.
-- **Impact**: Users who expect Mother Brain to autonomously work through multiple tasks in a sprint will be disappointed. In practice, Mother Brain will scan, pick one task, execute it (maybe), and then the session is over. Multi-task autonomous operation requires multiple sessions with manual re-invocation of `/aegis-start`.
+- **Finding**: Nick Fury's documentation describes a continuous loop: `SCAN -> ANALYZE -> DECIDE -> PLAN -> EXECUTE -> VERIFY -> LEARN -> REPEAT`. However, Claude Code sessions do not support infinite loops. Each session has a finite context window. Each subagent spawn consumes context. There is no mechanism to restart the loop after context exhaustion. The "REPEAT -> Back to SCAN with updated state" step has no implementation -- the aegis-start command runs once and completes.
+- **Impact**: Users who expect Nick Fury to autonomously work through multiple tasks in a sprint will be disappointed. In practice, Nick Fury will scan, pick one task, execute it (maybe), and then the session is over. Multi-task autonomous operation requires multiple sessions with manual re-invocation of `/aegis-start`.
 - **Fix Complexity**: HIGH
-- **Suggested Fix**: Be honest in documentation: Mother Brain handles one decision cycle per session, not a continuous loop. Add explicit "after task completes, run `/aegis-start` again" guidance. Consider building a wrapper script that re-invokes Claude Code sessions with handoff state.
+- **Suggested Fix**: Be honest in documentation: Nick Fury handles one decision cycle per session, not a continuous loop. Add explicit "after task completes, run `/aegis-start` again" guidance. Consider building a wrapper script that re-invokes Claude Code sessions with handoff state.
 
 ---
 
 ### H-006: 3-Gate Quality System Has No Enforcement Mechanism
 - **Severity**: HIGH
 - **Category**: Broken Promises
-- **Finding**: The 3-gate system (Gate 1: Vigil code review, Gate 2: Sentinel QA, Gate 3: Scribe compliance) is beautifully documented but has no enforcement. There is no code or tooling that prevents a task from being marked DONE without passing all three gates. The kanban board is a markdown file that any agent can edit (despite the "single writer" rule, which is a behavioral instruction to an LLM, not a filesystem permission). There is no lock, no state machine, no webhook -- just a hope that agents will follow the documented protocol.
+- **Finding**: The 3-gate system (Gate 1: Black Panther code review, Gate 2: War Machine QA, Gate 3: Coulson compliance) is beautifully documented but has no enforcement. There is no code or tooling that prevents a task from being marked DONE without passing all three gates. The kanban board is a markdown file that any agent can edit (despite the "single writer" rule, which is a behavioral instruction to an LLM, not a filesystem permission). There is no lock, no state machine, no webhook -- just a hope that agents will follow the documented protocol.
 - **Impact**: In practice, agents will sometimes skip gates, especially under context pressure. A task could be moved to DONE by any agent at any time simply by editing kanban.md. The quality system is advisory, not mandatory.
 - **Fix Complexity**: HIGH
 - **Suggested Fix**: Implement a gate-check script that validates transitions. Before allowing a task to move to DONE, require the existence of a review file (Gate 1), a QA report with PASS verdict (Gate 2), and updated ISO docs (Gate 3). This script could be invoked by `/aegis-kanban move` before writing the file.
@@ -80,8 +80,8 @@ The framework is NOT smoke and mirrors -- there is real architectural thought he
 ### H-007: Blast Radius Rules Are Unenforceable
 - **Severity**: HIGH
 - **Category**: Broken Promises
-- **Finding**: Each agent has a defined blast radius (read/write scope). For example, Bolt should not write to `CLAUDE*.md` and Vigil should not write to `src/`. However, when agents are spawned with `bypassPermissions` (which is required for them to work -- see H-003), they can write anywhere. The blast radius rules are behavioral instructions in markdown files. An LLM that hallucinates or misunderstands its role will cheerfully violate them.
-- **Impact**: Agent scope violations will occur in practice. A confused Bolt agent could overwrite CLAUDE.md. A Forge agent could accidentally modify source files. There is no runtime guard, file-system permission, or post-hoc validation to catch these violations.
+- **Finding**: Each agent has a defined blast radius (read/write scope). For example, Spider-Man should not write to `CLAUDE*.md` and Black Panther should not write to `src/`. However, when agents are spawned with `bypassPermissions` (which is required for them to work -- see H-003), they can write anywhere. The blast radius rules are behavioral instructions in markdown files. An LLM that hallucinates or misunderstands its role will cheerfully violate them.
+- **Impact**: Agent scope violations will occur in practice. A confused Spider-Man agent could overwrite CLAUDE.md. A Beast agent could accidentally modify source files. There is no runtime guard, file-system permission, or post-hoc validation to catch these violations.
 - **Fix Complexity**: MEDIUM
 - **Suggested Fix**: Add a post-execution validation step that diffs changes against the agent's allowed write paths and flags violations. Alternatively, use filesystem permissions (read-only mounts) if running in containers.
 
@@ -102,7 +102,7 @@ The framework is NOT smoke and mirrors -- there is real architectural thought he
 ### H-009: No Error Recovery When an Agent Crashes Mid-Task
 - **Severity**: CRITICAL
 - **Category**: Missing Features
-- **Finding**: The safety document mentions "Dead agent detection: if an agent's tmux pane exits unexpectedly, log the failure and notify Navi." But there is no implementation. If Bolt crashes halfway through writing three files, the codebase is left in a broken intermediate state. There is no rollback, no checkpoint, no recovery mechanism.
+- **Finding**: The safety document mentions "Dead agent detection: if an agent's tmux pane exits unexpectedly, log the failure and notify Captain America." But there is no implementation. If Spider-Man crashes halfway through writing three files, the codebase is left in a broken intermediate state. There is no rollback, no checkpoint, no recovery mechanism.
 - **Impact**: A crashed agent leaves partial files, broken imports, half-written tests. The only recovery is manual intervention. In an "autonomous" L3/L4 system, this is catastrophic because the user may not be watching.
 - **Fix Complexity**: HIGH
 - **Suggested Fix**: Implement a checkpoint system: git stash or create a temporary branch before each agent starts work. If the agent fails, automatically revert to the checkpoint. Log the failure state for human review.
@@ -113,7 +113,7 @@ The framework is NOT smoke and mirrors -- there is real architectural thought he
 - **Severity**: HIGH
 - **Category**: Missing Features
 - **Finding**: A full AEGIS pipeline with 12 agents, 4 using opus, 4 using sonnet, and 4 using haiku, could easily consume $50-200 in API credits per session. There is no cost tracking, no token counting, no budget limits, and no cost warnings. The `aegis-observe` skill is listed but there is no evidence it tracks actual API costs.
-- **Impact**: Users will be shocked by their API bills. A runaway Mother Brain loop (even one iteration) spawning a full build team + QA team + compliance check could cost $100+ without warning. Enterprise users need cost visibility for budgeting.
+- **Impact**: Users will be shocked by their API bills. A runaway Nick Fury loop (even one iteration) spawning a full build team + QA team + compliance check could cost $100+ without warning. Enterprise users need cost visibility for budgeting.
 - **Fix Complexity**: MEDIUM
 - **Suggested Fix**: Integrate with Claude Code's token reporting. Track cumulative tokens per session in `_aegis-brain/logs/`. Display running cost estimate in the dashboard. Add a configurable budget ceiling that pauses execution when reached.
 
@@ -152,7 +152,7 @@ The framework is NOT smoke and mirrors -- there is real architectural thought he
 ### H-014: No Rollback Mechanism When a Build Breaks
 - **Severity**: HIGH
 - **Category**: Missing Features
-- **Finding**: The aegis-team-build command captures a `baseline_commit` in Step 1 (`git rev-parse HEAD`). Step 7 mentions "If FAIL -> list critical issues, do NOT suggest commit." But there is no automatic rollback. If Bolt writes 15 files and Vigil says FAIL, those 15 broken files remain in the working directory. The user must manually `git checkout .` or `git stash` to recover.
+- **Finding**: The aegis-team-build command captures a `baseline_commit` in Step 1 (`git rev-parse HEAD`). Step 7 mentions "If FAIL -> list critical issues, do NOT suggest commit." But there is no automatic rollback. If Spider-Man writes 15 files and Black Panther says FAIL, those 15 broken files remain in the working directory. The user must manually `git checkout .` or `git stash` to recover.
 - **Impact**: Failed builds leave the codebase in a dirty state. If the user does not notice the FAIL verdict (possible in autonomous mode), subsequent work builds on a broken foundation.
 - **Fix Complexity**: LOW
 - **Suggested Fix**: On FAIL verdict, automatically `git checkout -- .` the changed files or `git stash` the changes with a descriptive message. On CONDITIONAL, keep the files but warn prominently.
@@ -174,10 +174,10 @@ The framework is NOT smoke and mirrors -- there is real architectural thought he
 ### H-016: No Rate Limiting on Agent Spawning
 - **Severity**: HIGH
 - **Category**: Security
-- **Finding**: There is no limit on how many agents can be spawned. Mother Brain could theoretically spawn a build team, then a QA team, then another build team, all in one session. Each TeamCreate or Agent call consumes tokens and potentially API rate limits. There is no maximum agent count, no cooldown, and no circuit breaker.
+- **Finding**: There is no limit on how many agents can be spawned. Nick Fury could theoretically spawn a build team, then a QA team, then another build team, all in one session. Each TeamCreate or Agent call consumes tokens and potentially API rate limits. There is no maximum agent count, no cooldown, and no circuit breaker.
 - **Impact**: Runaway agent spawning could exhaust API rate limits, consume massive token budgets, and degrade system performance. Combined with the lack of cost tracking (H-010), this is a recipe for surprise bills.
 - **Fix Complexity**: LOW
-- **Suggested Fix**: Add a configurable max_agents_per_session (default: 10) and max_concurrent_agents (default: 5) to the settings. Mother Brain should check these limits before spawning.
+- **Suggested Fix**: Add a configurable max_agents_per_session (default: 10) and max_concurrent_agents (default: 5) to the settings. Nick Fury should check these limits before spawning.
 
 ---
 
@@ -194,10 +194,10 @@ The framework is NOT smoke and mirrors -- there is real architectural thought he
 ### H-018: No Infinite Loop Detection for Agents
 - **Severity**: MEDIUM
 - **Category**: Security
-- **Finding**: The safety document mentions a 120-second status ping and 300-second escalation timeout. But these are behavioral instructions for Navi, not system-level enforcement. If a Bolt agent enters an infinite compile-fix-compile loop, there is no watchdog to kill it. If Mother Brain re-spawns a failed team repeatedly, there is no circuit breaker.
+- **Finding**: The safety document mentions a 120-second status ping and 300-second escalation timeout. But these are behavioral instructions for Captain America, not system-level enforcement. If a Spider-Man agent enters an infinite compile-fix-compile loop, there is no watchdog to kill it. If Nick Fury re-spawns a failed team repeatedly, there is no circuit breaker.
 - **Impact**: Token waste, API rate limit exhaustion, user frustration. A stuck agent will burn tokens until the session context is exhausted.
 - **Fix Complexity**: MEDIUM
-- **Suggested Fix**: Implement a retry counter. After 2 consecutive failures (as mentioned in Mother Brain's constraints), enforce the L1 downgrade programmatically, not just as a behavioral suggestion.
+- **Suggested Fix**: Implement a retry counter. After 2 consecutive failures (as mentioned in Nick Fury's constraints), enforce the L1 downgrade programmatically, not just as a behavioral suggestion.
 
 ---
 
@@ -261,7 +261,7 @@ The framework is NOT smoke and mirrors -- there is real architectural thought he
 - **Finding**: For a simple bug fix (1-2 files), AEGIS requires: load CLAUDE.md, load brain resonance, scan project state, check planning artifacts, decide priority level, check if sprint exists, check kanban state. Only then does it start working. Direct Claude Code usage: describe the bug, agent fixes it. AEGIS adds 2-5 minutes of ceremony overhead to every task, regardless of size.
 - **Impact**: For small tasks (which are 80% of development work), AEGIS is significantly slower and more expensive than using Claude Code directly. The threshold check in `/aegis-team-build` (solo mode for 1-2 files) is a band-aid that does not address the session startup overhead.
 - **Fix Complexity**: MEDIUM
-- **Suggested Fix**: Add a "quick mode" that skips all ceremony: `/aegis-quick "fix the auth bug"` that goes straight to Bolt without scanning, planning, or gate checks. Mother Brain's P0 (hotfix) path should skip planning artifacts entirely, not just note that they are missing.
+- **Suggested Fix**: Add a "quick mode" that skips all ceremony: `/aegis-quick "fix the auth bug"` that goes straight to Spider-Man without scanning, planning, or gate checks. Nick Fury's P0 (hotfix) path should skip planning artifacts entirely, not just note that they are missing.
 
 ---
 
@@ -278,10 +278,10 @@ The framework is NOT smoke and mirrors -- there is real architectural thought he
 ### H-026: No Codebase Understanding Beyond File Scanning
 - **Severity**: MEDIUM
 - **Category**: Competitive
-- **Finding**: Devin and similar tools build semantic models of codebases (call graphs, dependency trees, type hierarchies). AEGIS relies on `find`, `grep`, and `git diff` for codebase understanding. The Forge agent "gathers data" but produces lists of file paths and grep matches, not semantic understanding.
-- **Impact**: AEGIS agents make worse architectural decisions because they lack deep codebase comprehension. Sage designs architectures based on file listings, not actual code structure.
+- **Finding**: Devin and similar tools build semantic models of codebases (call graphs, dependency trees, type hierarchies). AEGIS relies on `find`, `grep`, and `git diff` for codebase understanding. The Beast agent "gathers data" but produces lists of file paths and grep matches, not semantic understanding.
+- **Impact**: AEGIS agents make worse architectural decisions because they lack deep codebase comprehension. Iron Man designs architectures based on file listings, not actual code structure.
 - **Fix Complexity**: HIGH
-- **Suggested Fix**: Integrate with language servers or AST parsers. Have Forge produce structured dependency graphs, not just file lists. This is a significant investment but would dramatically improve agent quality.
+- **Suggested Fix**: Integrate with language servers or AST parsers. Have Beast produce structured dependency graphs, not just file lists. This is a significant investment but would dramatically improve agent quality.
 
 ---
 
@@ -320,7 +320,7 @@ The framework is NOT smoke and mirrors -- there is real architectural thought he
 ### H-030: SendMessage Protocol Depends on Agent Cooperation
 - **Severity**: MEDIUM
 - **Category**: Broken Promises
-- **Finding**: The build team pipeline (Sage -> Bolt -> Vigil) relies on agents sending messages to each other: "When done, send a message to bolt via SendMessage." This assumes agents will reliably execute SendMessage at the right time. If Sage completes but forgets to send the message (LLM non-determinism), Bolt waits indefinitely.
+- **Finding**: The build team pipeline (Iron Man -> Spider-Man -> Black Panther) relies on agents sending messages to each other: "When done, send a message to spider-man via SendMessage." This assumes agents will reliably execute SendMessage at the right time. If Iron Man completes but forgets to send the message (LLM non-determinism), Spider-Man waits indefinitely.
 - **Impact**: Pipeline stalls with no timeout or fallback. The failure handling in aegis-team-build says "If stuck, send a nudge message" but this nudge depends on the orchestrator noticing the stall.
 - **Fix Complexity**: MEDIUM
 - **Suggested Fix**: Add a timeout mechanism. If agent B has not received a message from agent A within N seconds of A completing, auto-trigger. Use file-based signaling as a fallback (check for output files).
@@ -371,5 +371,5 @@ It is NOT smoke and mirrors. The design thinking is genuine and valuable. But sh
 
 ---
 
-*Report generated by Havoc (Devil's Advocate) on 2026-03-24*
+*Report generated by Loki (Devil's Advocate) on 2026-03-24*
 *Total files reviewed: 35+ across CLAUDE*.md, agents, skills, commands, installer, and orchestrator*

@@ -9,13 +9,13 @@ triggers:
 
 ## Quick Reference
 End-to-end quality assurance pipeline from test planning to release gate.
-- **Plan**: Sentinel analyzes scope and produces a test plan
-- **Execute**: Probe runs all test cases, captures raw results
-- **Review**: Sentinel interprets results, identifies patterns
+- **Plan**: War Machine analyzes scope and produces a test plan
+- **Execute**: Vision runs all test cases, captures raw results
+- **Review**: War Machine interprets results, identifies patterns
 - **Verdict**: PASS / CONDITIONAL / FAIL gate decision
 - **Test Types**: Functional, Integration, Regression, Acceptance
 - **Output**: `_aegis-output/qa/sprint-N/`
-- **Agents**: Sentinel (sonnet) — QA Lead; Probe (haiku) — Executor
+- **Agents**: War Machine (sonnet) — QA Lead; Vision (haiku) — Executor
 
 ## Full Instructions
 
@@ -33,12 +33,12 @@ End-to-end quality assurance pipeline from test planning to release gate.
 ### Pipeline Flow
 
 ```
-Sentinel (Plan) --> Probe (Execute) --> Sentinel (Review) --> Verdict
+War Machine (Plan) --> Vision (Execute) --> War Machine (Review) --> Verdict
 ```
 
-#### Phase 1: Test Planning (Sentinel)
+#### Phase 1: Test Planning (War Machine)
 
-Sentinel analyzes the target scope and produces a test plan:
+War Machine analyzes the target scope and produces a test plan:
 
 1. **Scope Analysis**
    - Identify changed files (git diff against base branch)
@@ -72,9 +72,9 @@ Sentinel analyzes the target scope and produces a test plan:
    - [ ] Coverage does not decrease
    ```
 
-#### Phase 2: Test Execution (Probe)
+#### Phase 2: Test Execution (Vision)
 
-Probe receives the test plan and executes:
+Vision receives the test plan and executes:
 
 1. **Environment Detection**
    - Identify test runner (jest, vitest, pytest, cargo test, go test, etc.)
@@ -90,7 +90,7 @@ Probe receives the test plan and executes:
 3. **Raw Results Output**
    ```markdown
    # Test Results — Raw
-   **Executed by**: Probe
+   **Executed by**: Vision
    **Date**: YYYY-MM-DD HH:MM
    **Runner**: <test runner name>
 
@@ -117,9 +117,9 @@ Probe receives the test plan and executes:
    - **stdout**: <captured output>
    ```
 
-#### Phase 3: Review & Verdict (Sentinel)
+#### Phase 3: Review & Verdict (War Machine)
 
-Sentinel reviews Probe's raw results and issues a verdict:
+War Machine reviews Vision's raw results and issues a verdict:
 
 1. **Result Analysis**
    - Calculate pass rate
@@ -136,7 +136,7 @@ Sentinel reviews Probe's raw results and issues a verdict:
    ```markdown
    # QA Report — Sprint N
    **Date**: YYYY-MM-DD
-   **Reviewer**: Sentinel (AEGIS)
+   **Reviewer**: War Machine (AEGIS)
    **Verdict**: PASS | CONDITIONAL | FAIL
 
    ## Executive Summary
@@ -196,9 +196,9 @@ Sentinel reviews Probe's raw results and issues a verdict:
 
 ```
 _aegis-output/qa/sprint-N/
-  test-plan.md          # Sentinel's test plan
-  raw-results.md        # Probe's raw execution results
-  qa-report.md          # Sentinel's final review and verdict
+  test-plan.md          # War Machine's test plan
+  raw-results.md        # Vision's raw execution results
+  qa-report.md          # War Machine's final review and verdict
   coverage/             # Coverage reports (if available)
 ```
 

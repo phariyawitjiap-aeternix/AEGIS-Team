@@ -1,8 +1,8 @@
 # AEGIS Team Commands Upgrade Plan v6.1
 
-**Author**: Sage (Architect)
+**Author**: Iron Man (Architect)
 **Date**: 2026-03-23
-**Status**: DRAFT -- Requires peer review from Vigil or Havoc
+**Status**: DRAFT -- Requires peer review from Black Panther or Loki
 **Scope**: Upgrade team command files (build, review, debate) by selectively adopting patterns from the reference quick-dev-team implementation.
 
 ---
@@ -28,7 +28,7 @@
 | **Baseline commit capture** | Records `git rev-parse HEAD` before work begins. Enables rollback, diff-based review, and prevents "what changed?" confusion. | **ADOPT** |
 | **Success metrics per step** | Each phase defines what "done" looks like. Prevents agents from declaring victory prematurely. | **ADOPT** (simplified) |
 | **Failure modes per step** | Documents what can go wrong and what to do about it. Makes the system self-healing. | **ADOPT** (simplified) |
-| **Integration step with merge authority** | A team-lead agent merges parallel outputs and resolves conflicts before declaring done. | **ADOPT** (AEGIS already has this implicitly via Vigil/Navi -- make it explicit) |
+| **Integration step with merge authority** | A team-lead agent merges parallel outputs and resolves conflicts before declaring done. | **ADOPT** (AEGIS already has this implicitly via Black Panther/Captain America -- make it explicit) |
 | **State variables across steps** | Persisting `{baseline_commit}`, `{execution_mode}`, etc. across the workflow. | **ADOPT** (minimal set only) |
 
 ### 1.3 Reference Implementation Weaknesses (SKIP)
@@ -106,9 +106,9 @@ If {dirty_files} is non-empty, warn the user before proceeding.
 
 For the build team, the prompts would gain:
 
-- **Sage**: "SUCCESS: Spec file exists in _aegis-output/specs/, contains at least: problem statement, proposed solution, file list, and acceptance criteria."
-- **Bolt**: "SUCCESS: All files listed in spec are created/modified, tests pass (`run test command`), no lint errors."
-- **Vigil**: "SUCCESS: Review file exists in _aegis-output/reviews/, contains PASS/CONDITIONAL/FAIL verdict with specific file:line references for any issues."
+- **Iron Man**: "SUCCESS: Spec file exists in _aegis-output/specs/, contains at least: problem statement, proposed solution, file list, and acceptance criteria."
+- **Spider-Man**: "SUCCESS: All files listed in spec are created/modified, tests pass (`run test command`), no lint errors."
+- **Black Panther**: "SUCCESS: Review file exists in _aegis-output/reviews/, contains PASS/CONDITIONAL/FAIL verdict with specific file:line references for any issues."
 
 **Files changed**:
 - `.claude/commands/aegis-team-build.md`
@@ -157,7 +157,7 @@ For the build team:
 ## Step 5: Integration
 
 After all agents report completion:
-1. Read Vigil's review verdict from _aegis-output/reviews/
+1. Read Black Panther's review verdict from _aegis-output/reviews/
 2. If PASS: summarize what was built, commit with descriptive message
 3. If CONDITIONAL: list the conditions, ask user whether to proceed or fix
 4. If FAIL: list critical issues, do NOT commit, suggest re-running with fixes
@@ -209,7 +209,7 @@ The upgrade is successful when:
 1. A trivial task (e.g., "fix typo in README") triggers solo mode, not a full team
 2. Every build team run captures a baseline commit and uses it in the final diff
 3. No agent declares completion without meeting its success criteria
-4. A simulated agent failure (e.g., Bolt times out) triggers the failure handling path instead of silent hang
+4. A simulated agent failure (e.g., Spider-Man times out) triggers the failure handling path instead of silent hang
 5. The integration step produces a clear PASS/CONDITIONAL/FAIL decision visible to the user
 6. A new user can still read any team command file and understand the full flow in under 5 minutes
 
@@ -223,4 +223,4 @@ The upgrade is successful when:
 
 ---
 
-*This plan requires review from Vigil (for process rigor) or Havoc (for adversarial challenge) before implementation proceeds.*
+*This plan requires review from Black Panther (for process rigor) or Loki (for adversarial challenge) before implementation proceeds.*

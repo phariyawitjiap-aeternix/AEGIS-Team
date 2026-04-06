@@ -14,7 +14,7 @@ Compresses accumulated learnings into reusable knowledge patterns.
 - **Compress**: Summarize each group into concise patterns
 - **Promote**: Patterns with 3+ occurrences → `_aegis-brain/resonance/`
 - **Output**: Updated resonance files, compressed learnings archive
-- **Agent**: Sage (opus) — analysis and synthesis
+- **Agent**: Iron Man (opus) — analysis and synthesis
 
 ## Full Instructions
 

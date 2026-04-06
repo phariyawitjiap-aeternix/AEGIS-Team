@@ -1,8 +1,8 @@
 # AEGIS v7.0 Enterprise Project Management Plan
 
-**Author**: Sage (Architect)
+**Author**: Iron Man (Architect)
 **Date**: 2026-03-24
-**Status**: DRAFT -- Requires peer review from Vigil or Havoc
+**Status**: DRAFT -- Requires peer review from Black Panther or Loki
 **Scope**: Add sprint/scrum framework, kanban board, ISO 29110 document management, work breakdown structure, and QA sub-team to AEGIS.
 
 ---
@@ -19,29 +19,29 @@ This plan upgrades AEGIS from a development-focused agent framework to one that 
 
 | # | Name | Model | Role | Rationale |
 |---|------|-------|------|-----------|
-| 9 | Sentinel | sonnet | QA Lead | Plans test strategy, writes test plans, reviews test results, gates releases |
-| 10 | Probe | haiku | QA Executor | Runs test cases, collects results, generates test reports at volume |
-| 11 | Scribe | haiku | Compliance Doc Generator | Produces ISO 29110 work products from agent outputs, maintains traceability matrix |
+| 9 | War Machine | sonnet | QA Lead | Plans test strategy, writes test plans, reviews test results, gates releases |
+| 10 | Vision | haiku | QA Executor | Runs test cases, collects results, generates test reports at volume |
+| 11 | Coulson | haiku | Compliance Doc Generator | Produces ISO 29110 work products from agent outputs, maintains traceability matrix |
 
-**Why three agents, not one**: QA planning (Sentinel) requires reasoning about risk and coverage -- sonnet tier. Test execution (Probe) is repetitive and high-volume -- haiku tier. Document generation (Scribe) is templated output from structured data -- haiku tier. Combining these into one agent would either overpay for bulk work or under-power the planning step.
+**Why three agents, not one**: QA planning (War Machine) requires reasoning about risk and coverage -- sonnet tier. Test execution (Vision) is repetitive and high-volume -- haiku tier. Document generation (Coulson) is templated output from structured data -- haiku tier. Combining these into one agent would either overpay for bulk work or under-power the planning step.
 
-**Why not promote Vigil**: Vigil reviews code quality. Sentinel reviews product quality against requirements. These are distinct concerns. Vigil answers "is this code well-written?" while Sentinel answers "does this code satisfy the acceptance criteria and pass the test plan?" Keeping them separate prevents role overload and keeps blast radii clean.
+**Why not promote Black Panther**: Black Panther reviews code quality. War Machine reviews product quality against requirements. These are distinct concerns. Black Panther answers "is this code well-written?" while War Machine answers "does this code satisfy the acceptance criteria and pass the test plan?" Keeping them separate prevents role overload and keeps blast radii clean.
 
 ### A.2 Agent Definitions
 
-#### Sentinel -- QA Lead
+#### War Machine -- QA Lead
 
 - **Model**: claude-sonnet
-- **Role**: Quality assurance planning and verdict. Writes test plans, defines test cases from requirements, reviews Probe's test results, and issues QA verdicts (PASS/FAIL/CONDITIONAL).
+- **Role**: Quality assurance planning and verdict. Writes test plans, defines test cases from requirements, reviews Vision's test results, and issues QA verdicts (PASS/FAIL/CONDITIONAL).
 - **Blast Radius**:
   - Read: All project files, _aegis-output/specs/, _aegis-output/architecture/
   - Write: _aegis-output/qa/, _aegis-output/iso-docs/test-plan/, _aegis-output/iso-docs/test-report/
   - Forbidden: src/, CLAUDE*.md, _aegis-brain/ (except logs)
 - **Message Types**:
   - Sends: FindingReport (QA verdict), PlanProposal (test strategy)
-  - Receives: TaskAssignment from Navi, PlanProposal from Sage (requirements to test against)
+  - Receives: TaskAssignment from Captain America, PlanProposal from Iron Man (requirements to test against)
 
-#### Probe -- QA Executor
+#### Vision -- QA Executor
 
 - **Model**: claude-haiku
 - **Role**: Executes test cases, runs test suites, collects pass/fail results, reports raw findings. Does not interpret or decide -- just executes and reports.
@@ -51,9 +51,9 @@ This plan upgrades AEGIS from a development-focused agent framework to one that 
   - Forbidden: src/ (write), CLAUDE*.md, docs/
 - **Message Types**:
   - Sends: StatusUpdate (test progress), FindingReport (raw test results)
-  - Receives: TaskAssignment from Sentinel
+  - Receives: TaskAssignment from War Machine
 
-#### Scribe -- Compliance Document Generator
+#### Coulson -- Compliance Document Generator
 
 - **Model**: claude-haiku
 - **Role**: Generates ISO 29110 compliant documents from structured agent outputs. Maintains the traceability matrix. Does not make decisions -- transforms data into compliant document format.
@@ -63,15 +63,15 @@ This plan upgrades AEGIS from a development-focused agent framework to one that 
   - Forbidden: src/, CLAUDE*.md, _aegis-brain/ (except reading)
 - **Message Types**:
   - Sends: StatusUpdate (document generation progress)
-  - Receives: TaskAssignment from Navi
+  - Receives: TaskAssignment from Captain America
 
 ### A.3 Updated Model Routing
 
 | Model Tier | Existing Agents | New Agents |
 |-----------|-----------------|------------|
-| opus | Navi, Sage, Havoc | (none) |
-| sonnet | Bolt, Vigil, Pixel | Sentinel |
-| haiku | Forge, Muse | Probe, Scribe |
+| opus | Captain America, Iron Man, Loki | (none) |
+| sonnet | Spider-Man, Black Panther, Wasp | War Machine |
+| haiku | Beast, Songbird | Vision, Coulson |
 
 Total agent count: 8 existing + 3 new = 11 agents.
 
@@ -79,9 +79,9 @@ Total agent count: 8 existing + 3 new = 11 agents.
 
 | Team | Agents | Purpose |
 |------|--------|---------|
-| Build Team | Sage, Bolt, Vigil | Design + implement + review (unchanged) |
-| QA Team | Sentinel, Probe | Test planning + execution |
-| Compliance Team | Scribe, (Muse assist) | ISO 29110 document generation |
+| Build Team | Iron Man, Spider-Man, Black Panther | Design + implement + review (unchanged) |
+| QA Team | War Machine, Vision | Test planning + execution |
+| Compliance Team | Coulson, (Songbird assist) | ISO 29110 document generation |
 | Full Pipeline | All relevant agents | End-to-end: design through QA and docs |
 
 ---
@@ -107,7 +107,7 @@ Triggers TH: "สปรินต์", "สครัม", "พิธี", "สแ
 ```
 
 **Extends sprint-tracker with**:
-- Sprint Planning ceremony: Navi facilitates, pulls from prioritized backlog, assigns to agents
+- Sprint Planning ceremony: Captain America facilitates, pulls from prioritized backlog, assigns to agents
 - Daily Standup: Auto-generated from agent StatusUpdate messages in the last 24h
 - Sprint Review: Summarizes completed work, demos (links to outputs)
 - Sprint Retrospective: What went well, what to improve, action items (integrates with existing /aegis-retro)
@@ -142,27 +142,27 @@ Last updated: <timestamp>
 - [ ] TASK-005: <description> [3pts] @unassigned
 
 ## TODO
-- [ ] TASK-004: <description> [2pts] @bolt
+- [ ] TASK-004: <description> [2pts] @spider-man
 
 ## IN_PROGRESS
-- [~] TASK-003: <description> [5pts] @bolt
+- [~] TASK-003: <description> [5pts] @spider-man
 
 ## IN_REVIEW
-- [~] TASK-002: <description> [3pts] @vigil
+- [~] TASK-002: <description> [3pts] @black-panther
 
 ## QA
-- [~] TASK-001: <description> [5pts] @sentinel
+- [~] TASK-001: <description> [5pts] @war-machine
 
 ## DONE
-- [x] TASK-000: <description> [2pts] @bolt
+- [x] TASK-000: <description> [2pts] @spider-man
 ```
 
 **Transition rules**:
 - BACKLOG to TODO: Sprint planning assigns it
 - TODO to IN_PROGRESS: Agent picks it up
 - IN_PROGRESS to IN_REVIEW: Agent completes implementation
-- IN_REVIEW to QA: Vigil approves code review (or back to IN_PROGRESS if rejected)
-- QA to DONE: Sentinel approves QA (or back to IN_PROGRESS if failed)
+- IN_REVIEW to QA: Black Panther approves code review (or back to IN_PROGRESS if rejected)
+- QA to DONE: War Machine approves QA (or back to IN_PROGRESS if failed)
 - Any column can go back to TODO if blocked
 
 **WIP Limits**: IN_PROGRESS max 3 items, IN_REVIEW max 2 items (configurable).
@@ -177,14 +177,14 @@ Triggers TH: "ไอเอสโอ", "เอกสารมาตรฐาน",
 
 **Generates the ISO 29110 Basic profile work products** (see Section F for full mapping).
 
-**Approach**: Scribe agent collects structured outputs from other agents and transforms them into ISO 29110 compliant document templates. Documents are generated incrementally -- not all at once at the end, but as each process activity completes.
+**Approach**: Coulson agent collects structured outputs from other agents and transforms them into ISO 29110 compliant document templates. Documents are generated incrementally -- not all at once at the end, but as each process activity completes.
 
 **Document generation triggers**:
 - Project Plan: Generated at sprint planning, updated each sprint
 - Requirements Specification: Generated when work-breakdown completes
-- Design Document: Generated when Sage completes architecture spec
-- Test Plan: Generated when Sentinel completes test planning
-- Test Report: Generated when Probe completes test execution
+- Design Document: Generated when Iron Man completes architecture spec
+- Test Plan: Generated when War Machine completes test planning
+- Test Report: Generated when Vision completes test execution
 - Traceability Matrix: Updated whenever any of the above changes
 
 ### B.5 Skill: work-breakdown
@@ -206,7 +206,7 @@ User Story (what the user wants)
 
 **Process**:
 1. User provides a user story in natural language
-2. Sage decomposes into user journeys (interaction flows)
+2. Iron Man decomposes into user journeys (interaction flows)
 3. Each journey maps to one or more epics
 4. Each epic breaks into tasks (estimable, assignable)
 5. Complex tasks (8+ points) further break into subtasks
@@ -233,8 +233,8 @@ As a <role>, I want <capability>, so that <benefit>.
 #### Tasks
 | ID | Task | Points | Dependencies | Assignee |
 |----|------|--------|-------------|----------|
-| T-001 | <task> | 3 | none | @bolt |
-| T-002 | <task> | 5 | T-001 | @bolt |
+| T-001 | <task> | 3 | none | @spider-man |
+| T-002 | <task> | 5 | T-001 | @spider-man |
 
 #### Subtasks (for T-002)
 | ID | Subtask | Points | Parent |
@@ -253,14 +253,14 @@ Triggers TH: "คิวเอ", "ทดสอบคุณภาพ", "ตรว�
 ```
 
 **Pipeline stages**:
-1. Sentinel reads requirements spec and design doc
-2. Sentinel produces test plan (test cases, test data, pass criteria)
-3. Probe executes test cases against implementation
-4. Probe reports raw results
-5. Sentinel evaluates results and issues verdict
-6. Scribe generates ISO 29110 Test Report from verdict
+1. War Machine reads requirements spec and design doc
+2. War Machine produces test plan (test cases, test data, pass criteria)
+3. Vision executes test cases against implementation
+4. Vision reports raw results
+5. War Machine evaluates results and issues verdict
+6. Coulson generates ISO 29110 Test Report from verdict
 
-**Test types** (Sentinel selects appropriate ones per task):
+**Test types** (War Machine selects appropriate ones per task):
 - Functional testing (does it do what the spec says)
 - Integration testing (do components work together)
 - Regression testing (did we break anything)
@@ -274,11 +274,11 @@ Triggers TH: "คิวเอ", "ทดสอบคุณภาพ", "ตรว�
 
 | Command | Purpose | Primary Agent |
 |---------|---------|---------------|
-| /aegis-sprint | Sprint ceremony management | Navi |
-| /aegis-kanban | View and update kanban board | Navi (view), Any (update) |
-| /aegis-breakdown | Decompose user stories into task hierarchy | Sage |
-| /aegis-qa | Run QA pipeline on completed work | Sentinel |
-| /aegis-compliance | Generate/update ISO 29110 documents | Scribe |
+| /aegis-sprint | Sprint ceremony management | Captain America |
+| /aegis-kanban | View and update kanban board | Captain America (view), Any (update) |
+| /aegis-breakdown | Decompose user stories into task hierarchy | Iron Man |
+| /aegis-qa | Run QA pipeline on completed work | War Machine |
+| /aegis-compliance | Generate/update ISO 29110 documents | Coulson |
 
 ### C.2 Command: /aegis-sprint
 
@@ -294,10 +294,10 @@ Triggers TH: "คิวเอ", "ทดสอบคุณภาพ", "ตรว�
 **Flow for `/aegis-sprint plan`**:
 1. Read backlog from `_aegis-brain/backlog.md`
 2. Calculate capacity from velocity history
-3. Navi selects stories that fit capacity, ordered by priority
+3. Captain America selects stories that fit capacity, ordered by priority
 4. Create sprint plan at `_aegis-brain/sprints/sprint-<N>/plan.md`
 5. Initialize kanban board at `_aegis-brain/sprints/sprint-<N>/kanban.md`
-6. Trigger Scribe to update Project Plan document
+6. Trigger Coulson to update Project Plan document
 
 ### C.3 Command: /aegis-kanban
 
@@ -317,18 +317,18 @@ Triggers TH: "คิวเอ", "ทดสอบคุณภาพ", "ตรว�
 ```
 
 **Flow**:
-1. Sage receives user story
-2. Sage produces user journeys
-3. Sage decomposes journeys into epics, tasks, subtasks
+1. Iron Man receives user story
+2. Iron Man produces user journeys
+3. Iron Man decomposes journeys into epics, tasks, subtasks
 4. Output written to `_aegis-output/breakdown/<story-id>/`
 5. Tasks auto-added to `_aegis-brain/backlog.md`
-6. Scribe generates/updates Requirements Specification
+6. Coulson generates/updates Requirements Specification
 
 ### C.5 Command: /aegis-qa
 
 ```
-/aegis-qa plan                  -- Sentinel creates test plan for current sprint work
-/aegis-qa run                   -- Probe executes test plan
+/aegis-qa plan                  -- War Machine creates test plan for current sprint work
+/aegis-qa run                   -- Vision executes test plan
 /aegis-qa report                -- Generate QA report
 /aegis-qa full                  -- Plan + run + report in sequence
 /aegis-qa gate                  -- QA quality gate check (pass/fail verdict)
@@ -397,10 +397,10 @@ _aegis-output/
 
 ## E. Workflow Integration
 
-### E.1 Updated Mother Brain Decision Flow
+### E.1 Updated Nick Fury Decision Flow
 
 ```
-Mother Brain activates
+Nick Fury activates
   |
   v
 Scan project state (existing)
@@ -415,29 +415,29 @@ Scan project state (existing)
         |
         v
       [NEW] Check: Does task have a breakdown?
-        |-- No  --> /aegis-breakdown (Sage decomposes)
+        |-- No  --> /aegis-breakdown (Iron Man decomposes)
         |-- Yes --> Proceed
               |
               v
             Move task to IN_PROGRESS on kanban
               |
               v
-            Spawn Build Team (Sage + Bolt + Vigil) -- existing flow
+            Spawn Build Team (Iron Man + Spider-Man + Black Panther) -- existing flow
               |
               v
             Build Team completes --> Move to IN_REVIEW
               |
               v
-            Vigil code review --> PASS: Move to QA
+            Black Panther code review --> PASS: Move to QA
               |                   FAIL: Move back to IN_PROGRESS
               v
-            [NEW] Spawn QA Team (Sentinel + Probe)
+            [NEW] Spawn QA Team (War Machine + Vision)
               |
               v
             QA verdict --> PASS: Move to DONE
               |            FAIL: Move back to IN_PROGRESS with findings
               v
-            [NEW] Scribe generates/updates ISO 29110 docs
+            [NEW] Coulson generates/updates ISO 29110 docs
               |
               v
             Task complete. Pick next TODO.
@@ -445,13 +445,13 @@ Scan project state (existing)
 
 ### E.2 Quality Gate Enhancement
 
-The existing quality gate (Vigil code review) becomes a two-stage gate:
+The existing quality gate (Black Panther code review) becomes a two-stage gate:
 
 | Gate | Agent | Checks | Blocks |
 |------|-------|--------|--------|
-| Gate 1: Code Quality | Vigil | Code review, lint, standards, security | Merge to branch |
-| Gate 2: Product Quality | Sentinel | Functional tests, acceptance criteria, regression | Move to DONE |
-| Gate 3: Compliance | Scribe | All required ISO docs exist and are current | Sprint close |
+| Gate 1: Code Quality | Black Panther | Code review, lint, standards, security | Merge to branch |
+| Gate 2: Product Quality | War Machine | Functional tests, acceptance criteria, regression | Move to DONE |
+| Gate 3: Compliance | Coulson | All required ISO docs exist and are current | Sprint close |
 
 A task is only DONE when all three gates pass.
 
@@ -459,29 +459,29 @@ A task is only DONE when all three gates pass.
 
 ```
 /aegis-sprint plan
-  --> Navi selects from backlog
+  --> Captain America selects from backlog
   --> Kanban initialized
-  --> Scribe updates Project Plan
+  --> Coulson updates Project Plan
 
 For each task in sprint:
   --> /aegis-breakdown (if needed)
   --> Build Team works
   --> QA Team validates
-  --> Scribe generates docs
+  --> Coulson generates docs
   --> Kanban updated
 
 /aegis-sprint review
-  --> Navi summarizes completed work
-  --> Scribe updates Progress Status Record
+  --> Captain America summarizes completed work
+  --> Coulson updates Progress Status Record
 
 /aegis-sprint retro
-  --> Navi runs retrospective (existing /aegis-retro, enhanced)
-  --> Scribe records Meeting Minutes
+  --> Captain America runs retrospective (existing /aegis-retro, enhanced)
+  --> Coulson records Meeting Minutes
 
 /aegis-sprint close
   --> Velocity calculated
   --> Incomplete tasks carried over
-  --> Scribe updates all ISO docs to current state
+  --> Coulson updates all ISO docs to current state
 ```
 
 ---
@@ -494,16 +494,16 @@ ISO/IEC 29110 Basic profile defines two processes: Project Management (PM) and S
 
 | ID | Work Product | AEGIS Producer | When Generated | File Location |
 |----|-------------|----------------|----------------|---------------|
-| PM.01 | Project Plan | Navi + Scribe | Sprint planning | iso-docs/project-plan.md |
-| PM.02 | Progress Status Record | Navi + Scribe | Daily standups, sprint reviews | iso-docs/progress-status.md |
-| PM.03 | Change Request Log | Navi + Scribe | When scope changes occur | iso-docs/change-requests.md |
-| PM.04 | Meeting Records | Scribe | Each ceremony (planning, standup, review, retro) | iso-docs/meeting-minutes/ |
+| PM.01 | Project Plan | Captain America + Coulson | Sprint planning | iso-docs/project-plan.md |
+| PM.02 | Progress Status Record | Captain America + Coulson | Daily standups, sprint reviews | iso-docs/progress-status.md |
+| PM.03 | Change Request Log | Captain America + Coulson | When scope changes occur | iso-docs/change-requests.md |
+| PM.04 | Meeting Records | Coulson | Each ceremony (planning, standup, review, retro) | iso-docs/meeting-minutes/ |
 
 **PM.01 Project Plan** contains:
 - Task descriptions with estimated effort (from work-breakdown)
 - Schedule and milestones (from sprint plan)
 - Resource assignments (from kanban board agent assignments)
-- Risk identification (from Havoc's adversarial analysis)
+- Risk identification (from Loki's adversarial analysis)
 - Version control strategy (from git-workflow skill)
 
 **PM.02 Progress Status Record** contains:
@@ -515,13 +515,13 @@ ISO/IEC 29110 Basic profile defines two processes: Project Management (PM) and S
 
 | ID | Work Product | AEGIS Producer | When Generated | File Location |
 |----|-------------|----------------|----------------|---------------|
-| SI.01 | Requirements Specification | Sage + Scribe | /aegis-breakdown completes | iso-docs/requirements-spec.md |
-| SI.02 | Software Design Document | Sage + Scribe | Sage architecture spec completes | iso-docs/design-doc.md |
-| SI.03 | Traceability Record | Scribe | Updated on every doc change | iso-docs/traceability-matrix.md |
-| SI.04 | Test Plan | Sentinel + Scribe | /aegis-qa plan completes | iso-docs/test-plan.md |
-| SI.05 | Test Report | Sentinel + Scribe | /aegis-qa run completes | iso-docs/test-report.md |
-| SI.06 | Acceptance Record | Navi + Scribe | QA gate passes + human sign-off | iso-docs/acceptance-record.md |
-| SI.07 | Software Configuration | Bolt + Scribe | Release preparation | iso-docs/release/ |
+| SI.01 | Requirements Specification | Iron Man + Coulson | /aegis-breakdown completes | iso-docs/requirements-spec.md |
+| SI.02 | Software Design Document | Iron Man + Coulson | Iron Man architecture spec completes | iso-docs/design-doc.md |
+| SI.03 | Traceability Record | Coulson | Updated on every doc change | iso-docs/traceability-matrix.md |
+| SI.04 | Test Plan | War Machine + Coulson | /aegis-qa plan completes | iso-docs/test-plan.md |
+| SI.05 | Test Report | War Machine + Coulson | /aegis-qa run completes | iso-docs/test-report.md |
+| SI.06 | Acceptance Record | Captain America + Coulson | QA gate passes + human sign-off | iso-docs/acceptance-record.md |
+| SI.07 | Software Configuration | Spider-Man + Coulson | Release preparation | iso-docs/release/ |
 
 ### F.3 Traceability Matrix Structure
 
@@ -536,19 +536,19 @@ The traceability matrix links every requirement to its design, implementation, a
 | REQ-002 | <requirement text> | design-doc#section-3 | src/api.ts | TC-002 | FAIL | Open |
 ```
 
-Scribe auto-generates this by cross-referencing:
+Coulson auto-generates this by cross-referencing:
 - Requirements from breakdown output
-- Design sections from Sage's specs
-- Code references from Bolt's implementation commits
-- Test cases from Sentinel's test plan
-- Test results from Probe's execution results
+- Design sections from Iron Man's specs
+- Code references from Spider-Man's implementation commits
+- Test cases from War Machine's test plan
+- Test results from Vision's execution results
 
 ### F.4 Document Lifecycle
 
 Every ISO 29110 document follows this lifecycle:
-1. **Draft**: Generated by producing agent + Scribe
-2. **Review**: Vigil checks document completeness and consistency
-3. **Approved**: Navi approves (or escalates to human for formal sign-off)
+1. **Draft**: Generated by producing agent + Coulson
+2. **Review**: Black Panther checks document completeness and consistency
+3. **Approved**: Captain America approves (or escalates to human for formal sign-off)
 4. **Baselined**: Version-tagged in git via commit
 
 ---
@@ -562,9 +562,9 @@ Every ISO 29110 document follows this lifecycle:
 | **Phase 1** | Kanban board skill + command | Small (1 session) | High -- immediate visibility into work status | None |
 | **Phase 2** | Work breakdown skill + command | Small (1 session) | High -- enables structured planning | None |
 | **Phase 3** | Sprint manager skill (upgrade sprint-tracker) + command | Medium (1-2 sessions) | High -- full scrum ceremony support | Phases 1-2 |
-| **Phase 4** | QA agents (Sentinel + Probe) + qa-pipeline skill + command | Medium (2 sessions) | High -- automated quality assurance | Phase 2 (needs requirements to test against) |
-| **Phase 5** | Scribe agent + iso-29110-docs skill + compliance command | Medium (2 sessions) | Medium -- compliance documentation | Phases 2-4 (needs all outputs to document) |
-| **Phase 6** | Mother Brain integration (updated decision flow) | Small (1 session) | High -- ties everything together | Phases 1-5 |
+| **Phase 4** | QA agents (War Machine + Vision) + qa-pipeline skill + command | Medium (2 sessions) | High -- automated quality assurance | Phase 2 (needs requirements to test against) |
+| **Phase 5** | Coulson agent + iso-29110-docs skill + compliance command | Medium (2 sessions) | Medium -- compliance documentation | Phases 2-4 (needs all outputs to document) |
+| **Phase 6** | Nick Fury integration (updated decision flow) | Small (1 session) | High -- ties everything together | Phases 1-5 |
 
 ### G.2 Rationale for Ordering
 
@@ -574,11 +574,11 @@ Every ISO 29110 document follows this lifecycle:
 
 3. **Sprint manager third**: Depends on kanban (board state) and breakdown (task pool). Once tasks exist and can be tracked, sprint ceremonies add process structure.
 
-4. **QA agents fourth**: Depends on breakdown for requirements to test against. Adding QA before compliance means test results exist for Scribe to document.
+4. **QA agents fourth**: Depends on breakdown for requirements to test against. Adding QA before compliance means test results exist for Coulson to document.
 
-5. **Scribe and ISO docs fifth**: This is the documentation layer. It needs all other outputs to exist before it can generate compliant documents. Putting it last means Scribe has maximum material to work with.
+5. **Coulson and ISO docs fifth**: This is the documentation layer. It needs all other outputs to exist before it can generate compliant documents. Putting it last means Coulson has maximum material to work with.
 
-6. **Mother Brain integration last**: The orchestration update ties all pieces together. Doing it last means all components are tested individually before being wired into the autonomous flow.
+6. **Nick Fury integration last**: The orchestration update ties all pieces together. Doing it last means all components are tested individually before being wired into the autonomous flow.
 
 ### G.3 Effort Estimates
 
@@ -588,8 +588,8 @@ Every ISO 29110 document follows this lifecycle:
 | Work breakdown skill | 1 skill file, 1 command file | CLAUDE_skills.md | ~1000 |
 | Sprint manager upgrade | 1 skill file (replace), 1 command file | CLAUDE_skills.md, existing sprint-tracker.md | ~1200 |
 | QA agents + skill | 2 agent persona files, 1 skill file, 1 command file | CLAUDE_agents.md, CLAUDE_skills.md | ~2000 |
-| Scribe agent + ISO skill | 1 agent persona file, 1 skill file, 1 command file, ~10 template files | CLAUDE_agents.md, CLAUDE_skills.md | ~3000 |
-| Mother Brain update | 0 new files | CLAUDE.md (decision flow section) | ~500 |
+| Coulson agent + ISO skill | 1 agent persona file, 1 skill file, 1 command file, ~10 template files | CLAUDE_agents.md, CLAUDE_skills.md | ~3000 |
+| Nick Fury update | 0 new files | CLAUDE.md (decision flow section) | ~500 |
 | **Total** | **~20 new files** | **~5 modified files** | **~8500** |
 
 ---
@@ -600,21 +600,21 @@ Every ISO 29110 document follows this lifecycle:
 |------|----------|------------|
 | ISO docs become bureaucratic overhead | High | Templates are pre-filled by agents. Human only reviews, never writes from scratch. Documents auto-generate from existing outputs. |
 | Context budget overrun (11 agents + ISO docs) | High | QA and compliance agents only spawn when needed (not for every trivial task). Threshold check from v6.1 plan applies here too. |
-| Kanban board file conflicts (multiple agents writing) | Medium | Single-writer rule: only the active orchestrator (Navi) writes to kanban.md. Other agents send StatusUpdate messages, Navi updates the board. |
+| Kanban board file conflicts (multiple agents writing) | Medium | Single-writer rule: only the active orchestrator (Captain America) writes to kanban.md. Other agents send StatusUpdate messages, Captain America updates the board. |
 | Sprint ceremonies feel artificial for solo developers | Medium | Ceremonies are optional. /aegis-sprint standup auto-generates from activity -- zero human effort. Solo mode skips ceremonies entirely. |
-| Traceability matrix grows stale | Medium | Scribe regenerates the matrix from source data on every /aegis-compliance generate call. It is computed, not manually maintained. |
+| Traceability matrix grows stale | Medium | Coulson regenerates the matrix from source data on every /aegis-compliance generate call. It is computed, not manually maintained. |
 
 ---
 
 ## I. Open Questions for Peer Review
 
-1. **Scribe vs Muse overlap**: Should Scribe be a new agent, or should Muse gain ISO 29110 templates as a skill? Argument for new agent: blast radius separation (Muse writes user-facing docs, Scribe writes compliance artifacts). Argument for Muse upgrade: fewer agents, simpler routing.
+1. **Coulson vs Songbird overlap**: Should Coulson be a new agent, or should Songbird gain ISO 29110 templates as a skill? Argument for new agent: blast radius separation (Songbird writes user-facing docs, Coulson writes compliance artifacts). Argument for Songbird upgrade: fewer agents, simpler routing.
 
 2. **Sprint duration**: Should AEGIS enforce a default sprint length (e.g., 1 week for AI-speed development), or leave it fully configurable? AI agents work faster than human teams -- traditional 2-week sprints may be too long.
 
 3. **Backlog priority scheme**: The existing Decision Matrix uses P0-P10. Should the backlog use the same scale, or switch to MoSCoW (Must/Should/Could/Won't) for better alignment with ISO 29110 requirements prioritization?
 
-4. **QA depth for small changes**: Should the threshold check (from v6.1 plan) also gate QA? A one-line typo fix should not trigger Sentinel + Probe + Scribe. Proposed rule: tasks under 3 story points skip QA team, Vigil's code review is sufficient.
+4. **QA depth for small changes**: Should the threshold check (from v6.1 plan) also gate QA? A one-line typo fix should not trigger War Machine + Vision + Coulson. Proposed rule: tasks under 3 story points skip QA team, Black Panther's code review is sufficient.
 
 5. **ISO 29110 Entry vs Basic**: The Entry profile requires fewer documents. Should AEGIS default to Entry (lighter) and optionally upgrade to Basic? This would reduce initial overhead.
 
@@ -630,4 +630,4 @@ Every ISO 29110 document follows this lifecycle:
 
 ---
 
-*This plan requires review from Vigil (for process rigor) or Havoc (for adversarial challenge) before implementation proceeds.*
+*This plan requires review from Black Panther (for process rigor) or Loki (for adversarial challenge) before implementation proceeds.*

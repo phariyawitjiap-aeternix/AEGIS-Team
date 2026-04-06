@@ -11,7 +11,7 @@
       "version": 1,
       "status": "Approved",
       "created": "2026-03-24",
-      "author": "Scribe (AEGIS v7.1)"
+      "author": "Coulson (AEGIS v7.1)"
     },
     {
       "id": "PM.02",
@@ -22,7 +22,7 @@
       "version": 1,
       "status": "Approved",
       "created": "2026-03-24",
-      "author": "Scribe (AEGIS v7.1)"
+      "author": "Coulson (AEGIS v7.1)"
     },
     {
       "id": "PM.03",
@@ -33,7 +33,7 @@
       "version": 1,
       "status": "Approved",
       "created": "2026-03-24",
-      "author": "Scribe (AEGIS v7.1)"
+      "author": "Coulson (AEGIS v7.1)"
     },
     {
       "id": "PM.04",
@@ -44,7 +44,7 @@
       "version": 1,
       "status": "Approved",
       "created": "2026-03-24",
-      "author": "Scribe (AEGIS v7.1)"
+      "author": "Coulson (AEGIS v7.1)"
     },
     {
       "id": "PM.05",
@@ -67,7 +67,7 @@
       "version": 1,
       "status": "Approved",
       "created": "2026-03-24",
-      "author": "Scribe (AEGIS v7.1)",
+      "author": "Coulson (AEGIS v7.1)",
       "_migrated_from": "SI.06 (incorrect activity classification in v7.0)"
     },
     {
@@ -79,7 +79,7 @@
       "version": 1,
       "status": "Approved",
       "created": "2026-03-24",
-      "author": "Scribe (AEGIS v7.1)"
+      "author": "Coulson (AEGIS v7.1)"
     },
     {
       "id": "SI.02",
@@ -90,7 +90,7 @@
       "version": 1,
       "status": "Approved",
       "created": "2026-03-24",
-      "author": "Scribe (AEGIS v7.1)",
+      "author": "Coulson (AEGIS v7.1)",
       "_migrated_from": "SI.03 (wrong slug); one living document updated across SI.2-SI.5",
       "_note": "Single document. Created at SI.2, updated at SI.3, SI.4, SI.5. Links REQ -> Design -> Code -> Test."
     },
@@ -103,7 +103,7 @@
       "version": 1,
       "status": "Approved",
       "created": "2026-03-24",
-      "author": "Scribe (AEGIS v7.1)",
+      "author": "Coulson (AEGIS v7.1)",
       "_migrated_from": "SI.02 (renumbered to match activity order)"
     },
     {
@@ -115,7 +115,7 @@
       "version": 1,
       "status": "Approved",
       "created": "2026-03-24",
-      "author": "Scribe (AEGIS v7.1)",
+      "author": "Coulson (AEGIS v7.1)",
       "_migrated_from": "SI.04 (renamed from Test Plan — standard calls this Test Cases and Procedures, created in SI.4 Construction)"
     },
     {
@@ -127,7 +127,7 @@
       "version": 1,
       "status": "Approved",
       "created": "2026-03-24",
-      "author": "Scribe (AEGIS v7.1)"
+      "author": "Coulson (AEGIS v7.1)"
     },
     {
       "id": "SI.06",
@@ -138,7 +138,7 @@
       "version": 1,
       "status": "Approved",
       "created": "2026-03-24",
-      "author": "Scribe (AEGIS v7.1)",
+      "author": "Coulson (AEGIS v7.1)",
       "_migrated_from": "SI.07 (SI.07 does not exist in standard; delivery is SI.6 Product Delivery)"
     }
   ],

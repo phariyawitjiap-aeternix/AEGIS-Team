@@ -6,7 +6,7 @@
 
 ## 5-Pass Review Checklist
 
-Every review MUST execute all 5 passes in order (used by Vigil, any review agent):
+Every review MUST execute all 5 passes in order (used by Black Panther, any review agent):
 
 ### Pass 1: Correctness
 - Does code match spec? Edge cases handled? Return types correct? Loops terminate? Null states handled?
@@ -40,7 +40,7 @@ Recommendation: [what to change]
 | 0 critical + warnings | CONDITIONAL | Approved with follow-up |
 | 1+ critical findings | FAIL | Blocked |
 
-Consensus: at least 2 agents agree on PASS. Navi arbitrates disagreements.
+Consensus: at least 2 agents agree on PASS. Captain America arbitrates disagreements.
 
 ---
 
@@ -103,8 +103,8 @@ Task ID: [reference]
 
 - Report after each significant step (not every tool call).
 - Log destination: `_aegis-brain/logs/activity.log` (append-only).
-- If BLOCKED 2+ cycles -> auto-escalate to Navi.
-- If context budget >60% -> notify Navi.
+- If BLOCKED 2+ cycles -> auto-escalate to Captain America.
+- If context budget >60% -> notify Captain America.
 
 ### Decision Trace
 

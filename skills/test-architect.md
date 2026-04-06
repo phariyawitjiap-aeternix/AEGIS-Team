@@ -14,7 +14,7 @@ Designs comprehensive test strategies and automation frameworks.
 - **Framework selection**: Based on detected tech stack
 - **Deliverables**: Test plan, framework config, sample tests
 - **Output**: `_aegis-output/test-strategy/`
-- **Agent**: Vigil (sonnet) — primary; Sage (opus) for strategy
+- **Agent**: Black Panther (sonnet) — primary; Iron Man (opus) for strategy
 
 ## Full Instructions
 

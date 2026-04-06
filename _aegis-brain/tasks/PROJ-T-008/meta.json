@@ -1,6 +1,6 @@
 {
   "id": "PROJ-T-008",
-  "title": "Sentinel+Probe QA pipeline produces real reports",
+  "title": "War Machine+Vision QA pipeline produces real reports",
   "type": "task",
   "task_type": "test",
   "parent": "PROJ-E-003",
@@ -9,7 +9,7 @@
   "assignee": "unassigned",
   "points": 5,
   "priority": "high",
-  "labels": ["qa", "sentinel", "probe", "pipeline"],
+  "labels": ["qa", "war-machine", "vision", "pipeline"],
   "dependencies": {
     "blocks": [],
     "blocked_by": ["PROJ-T-007"]

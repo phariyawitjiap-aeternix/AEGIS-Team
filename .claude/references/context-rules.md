@@ -9,8 +9,8 @@
 | **0-20%** | Session start zone. Load only essential agent prompts and task context. |
 | **20-40%** | Normal working zone. Full agent operation with standard references. |
 | **40-60%** | Caution zone. Avoid loading new large files. Summarize instead of quoting. |
-| **60%** | **Auto-compact warning.** Notify Navi. Begin condensing working memory. |
-| **80%** | **Emergency compact.** Navi triggers immediate compaction protocol. |
+| **60%** | **Auto-compact warning.** Notify Captain America. Begin condensing working memory. |
+| **80%** | **Emergency compact.** Captain America triggers immediate compaction protocol. |
 | **83.5%** | **Hard ceiling.** Reserve remaining 16.5% for response generation. |
 
 ## Progressive Disclosure Rules
@@ -36,13 +36,13 @@
 
 - **Max output per report**: 2000 tokens
 - **Max input context per task**: varies by model
-  - Opus agents (Navi, Sage, Havoc): up to 8000 tokens input context
-  - Sonnet agents (Bolt, Vigil, Pixel): up to 6000 tokens input context
-  - Haiku agents (Forge, Muse): up to 4000 tokens input context
+  - Opus agents (Captain America, Iron Man, Loki): up to 8000 tokens input context
+  - Sonnet agents (Spider-Man, Black Panther, Wasp): up to 6000 tokens input context
+  - Haiku agents (Beast, Songbird): up to 4000 tokens input context
 
 ## Compaction Protocol
 
-When Navi triggers compaction:
+When Captain America triggers compaction:
 
 1. **Preserve**: Active task state, pending blockers, critical findings
 2. **Summarize**: Completed task results into 1-2 sentence summaries
@@ -62,9 +62,9 @@ When Navi triggers compaction:
 
 If context reaches 80% without planned compaction:
 
-1. Navi immediately pauses all non-critical agent tasks
+1. Captain America immediately pauses all non-critical agent tasks
 2. All agents dump current state to `_aegis-brain/logs/emergency-dump.md`
-3. Navi produces a session checkpoint
+3. Captain America produces a session checkpoint
 4. Context is aggressively compacted
 5. Only the highest-priority task resumes
 

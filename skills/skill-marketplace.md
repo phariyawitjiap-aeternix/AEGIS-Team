@@ -14,7 +14,7 @@ Community marketplace for discovering, sharing, and installing AEGIS skills.
 - **Share**: Package and publish custom skills to the registry
 - **Rate**: Review and rate installed skills
 - **Output**: Installed skills in `skills/`, registry in `_aegis-brain/`
-- **Agent**: Navi (opus) — curation; Echo (sonnet) — documentation
+- **Agent**: Captain America (opus) — curation; Echo (sonnet) — documentation
 
 ## Full Instructions
 

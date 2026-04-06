@@ -8,7 +8,7 @@
 > Spec Version: 3.0
 > Framework Version: 6.0
 > Date: 2026-03-20
-> Authors: Navi (Lead), Sage (Architecture), Havoc (Adversarial Review)
+> Authors: Captain America (Lead), Iron Man (Architecture), Loki (Adversarial Review)
 
 ---
 
@@ -58,7 +58,7 @@ AEGIS v6 is a multi-agent orchestration framework for Claude Code that enables t
 |--------|--------|-----|
 | Context efficiency | ≤20% at start | Progressive disclosure |
 | Cost optimization | 60% reduction vs all-opus | Tiered model routing |
-| Defect escape rate | <5% | Review gates + Havoc analysis |
+| Defect escape rate | <5% | Review gates + Loki analysis |
 | Session continuity | <30s to productive | Brain resonance files |
 | Agent coordination overhead | <10% of total tokens | Structured messages |
 
@@ -94,10 +94,10 @@ AEGIS v6 is a multi-agent orchestration framework for Claude Code that enables t
 
 Throughout this spec, design decisions are attributed to the agent persona that championed them:
 
-- **[Navi]** — Orchestration, pipeline design, team coordination
-- **[Sage]** — Architecture decisions, system design, trade-off analysis
-- **[Havoc]** — Adversarial challenges, risk identification, failure modes
-- **[Vigil]** — Quality standards, compliance rules, review processes
+- **[Captain America]** — Orchestration, pipeline design, team coordination
+- **[Iron Man]** — Architecture decisions, system design, trade-off analysis
+- **[Loki]** — Adversarial challenges, risk identification, failure modes
+- **[Black Panther]** — Quality standards, compliance rules, review processes
 
 ---
 
@@ -111,12 +111,12 @@ Throughout this spec, design decisions are attributed to the agent persona that 
 ├─────────────────────────────────────────────────┤
 │              Autonomy Gateway (L1-L4)           │
 ├─────────────────────────────────────────────────┤
-│     Navi (Orchestrator / Navigator / Lead)       │
+│     Captain America (Orchestrator / Navigator / Lead)       │
 ├──────────┬──────────┬───────────┬───────────────┤
-│  Sage    │  Bolt    │  Vigil    │  Havoc        │
+│  Iron Man    │  Spider-Man    │  Black Panther    │  Loki        │
 │  (opus)  │ (sonnet) │ (sonnet)  │  (opus)       │
 ├──────────┼──────────┼───────────┼───────────────┤
-│  Forge   │  Pixel   │  Muse     │  [Extensions] │
+│  Beast   │  Wasp   │  Songbird     │  [Extensions] │
 │  (haiku) │ (sonnet) │  (haiku)  │               │
 ├──────────┴──────────┴───────────┴───────────────┤
 │              Tool Layer (scoped per agent)        │
@@ -132,7 +132,7 @@ Throughout this spec, design decisions are attributed to the agent persona that 
 ```
 project-root/
 ├── CLAUDE.md                    # Hub — loaded every session (~500 tokens)
-├── CLAUDE_safety.md             # Safety rules — loaded before ops
+├── CLAUDE_safety.md             # Safety rules — loaded before thor
 ├── CLAUDE_agents.md             # Agent personas — loaded before spawning
 ├── CLAUDE_skills.md             # Skill catalog — loaded when choosing skills
 ├── CLAUDE_lessons.md            # Patterns/anti-patterns — reference
@@ -144,12 +144,12 @@ project-root/
 │   ├── logs/                    # Decision traces, agent logs
 │   └── retrospectives/          # Session retrospectives
 ├── _aegis-output/               # Pipeline outputs (gitignored)
-│   ├── reviews/                 # Vigil review reports
-│   ├── adversarial/             # Havoc adversarial reports
-│   ├── scans/                   # Forge scan results
-│   ├── architecture/            # Sage architecture documents
-│   ├── design/                  # Pixel design artifacts
-│   └── content/                 # Muse content drafts
+│   ├── reviews/                 # Black Panther review reports
+│   ├── adversarial/             # Loki adversarial reports
+│   ├── scans/                   # Beast scan results
+│   ├── architecture/            # Iron Man architecture documents
+│   ├── design/                  # Wasp design artifacts
+│   └── content/                 # Songbird content drafts
 ├── skills/                      # Skill definition files
 ├── .claude/                     # Claude CLI configuration
 │   ├── agents/                  # Agent profile configs
@@ -169,7 +169,7 @@ Human Request
 [/aegis-start] ─── Load CLAUDE.md ─── Check brain resonance
     │
     ▼
-Navi (Orchestrator)
+Captain America (Orchestrator)
     │
     ├── Analyze request
     ├── Select Flow or Crew pattern
@@ -178,20 +178,20 @@ Navi (Orchestrator)
     ▼
 Agents Execute (parallel where possible)
     │
-    ├── Forge scans (haiku, parallel instances)
-    ├── Sage designs (opus, sequential reasoning)
-    ├── Bolt implements (sonnet, fast execution)
-    ├── Pixel designs UI (sonnet)
-    ├── Muse writes docs (haiku)
+    ├── Beast scans (haiku, parallel instances)
+    ├── Iron Man designs (opus, sequential reasoning)
+    ├── Spider-Man implements (sonnet, fast execution)
+    ├── Wasp designs UI (sonnet)
+    ├── Songbird writes docs (haiku)
     │
     ▼
-Quality Gates (Vigil + Havoc)
+Quality Gates (Black Panther + Loki)
     │
-    ├── Vigil reviews (sonnet, structured checklist)
-    ├── Havoc challenges (opus, adversarial analysis)
+    ├── Black Panther reviews (sonnet, structured checklist)
+    ├── Loki challenges (opus, adversarial analysis)
     │
     ▼
-Navi Synthesizes
+Captain America Synthesizes
     │
     ├── Merge agent outputs
     ├── Write synthesis (opus-quality)
@@ -212,18 +212,18 @@ Human Review (based on autonomy level)
 
 | Agent | Model | Cost Tier | Parallelizable | Primary Function |
 |-------|-------|-----------|----------------|------------------|
-| Navi | opus | $$$ | No (singleton) | Orchestration, synthesis, retros |
-| Sage | opus | $$$ | No | Architecture, specs, design |
-| Bolt | sonnet | $$ | Yes (per feature) | Code implementation, tests |
-| Vigil | sonnet | $$ | Yes (per review) | Code review, quality gates |
-| Havoc | opus | $$$ | No | Adversarial analysis, challenges |
-| Forge | haiku | $ | Yes (high fan-out) | Scanning, research, data collection |
-| Pixel | sonnet | $$ | Yes (per component) | UI/UX design, frontend |
-| Muse | haiku | $ | Yes (per doc) | Documentation, content |
+| Captain America | opus | $$$ | No (singleton) | Orchestration, synthesis, retros |
+| Iron Man | opus | $$$ | No | Architecture, specs, design |
+| Spider-Man | sonnet | $$ | Yes (per feature) | Code implementation, tests |
+| Black Panther | sonnet | $$ | Yes (per review) | Code review, quality gates |
+| Loki | opus | $$$ | No | Adversarial analysis, challenges |
+| Beast | haiku | $ | Yes (high fan-out) | Scanning, research, data collection |
+| Wasp | sonnet | $$ | Yes (per component) | UI/UX design, frontend |
+| Songbird | haiku | $ | Yes (per doc) | Documentation, content |
 
 ### 4.2 Model Routing Rules
 
-**[Sage]** designed these routing rules based on the cognitive demands of each task type:
+**[Iron Man]** designed these routing rules based on the cognitive demands of each task type:
 
 1. **Opus tasks** require deep reasoning, multi-step synthesis, or adversarial thinking:
    - Architecture decisions with trade-offs
@@ -250,7 +250,7 @@ Human Review (based on autonomy level)
 │  Spawn  │───▶│  Init    │───▶│ Execute │───▶│ Report │───▶│ Terminate │
 └─────────┘    └──────────┘    └─────────┘    └────────┘    └───────────┘
      │              │               │              │               │
-  tmux session  Load context   Work within     Send typed      Navi verifies
+  tmux session  Load context   Work within     Send typed      Captain America verifies
   created       (progressive)  blast radius    message         completion
 ```
 
@@ -259,8 +259,8 @@ Human Review (based on autonomy level)
 Each agent is configured via a profile in `.claude/agents/`:
 
 ```yaml
-# .claude/agents/bolt.yaml
-name: bolt
+# .claude/agents/spider-man.yaml
+name: spider-man
 emoji: "⚡"
 model: sonnet
 role: implementer
@@ -282,18 +282,18 @@ message_types:
 
 ## 5. Structured Message Types
 
-**[Navi]** championed structured messages after observing that free-form agent communication caused 40% of coordination failures in v5.
+**[Captain America]** championed structured messages after observing that free-form agent communication caused 40% of coordination failures in v5.
 
 ### 5.1 Message Type Catalog
 
 | Type | Sender | Receiver | Purpose |
 |------|--------|----------|---------|
-| TaskAssignment | Navi | Any agent | Assign work with acceptance criteria |
-| StatusUpdate | Any agent | Navi | Report progress, completion, or blockers |
-| FindingReport | Any agent | Navi | Report findings (bugs, scan results, review items) |
-| PlanProposal | Sage, Navi | Navi, Human | Propose a plan with options and trade-offs |
-| ApprovalRequest | Navi | Human | Request human approval for gated actions |
-| EscalationAlert | Any agent | Navi | Escalate issues outside scope or competence |
+| TaskAssignment | Captain America | Any agent | Assign work with acceptance criteria |
+| StatusUpdate | Any agent | Captain America | Report progress, completion, or blockers |
+| FindingReport | Any agent | Captain America | Report findings (bugs, scan results, review items) |
+| PlanProposal | Iron Man, Captain America | Captain America, Human | Propose a plan with options and trade-offs |
+| ApprovalRequest | Captain America | Human | Request human approval for gated actions |
+| EscalationAlert | Any agent | Captain America | Escalate issues outside scope or competence |
 
 ### 5.2 Message Schema
 
@@ -312,7 +312,7 @@ Every message includes:
 
 ### 5.3 Message Validation Rules
 
-**[Vigil]** defined these validation rules:
+**[Black Panther]** defined these validation rules:
 
 1. Every message must have a valid `type` from the catalog
 2. `from` must match the agent's registered name
@@ -330,7 +330,7 @@ Every message includes:
         EscalationAlert
              │
              ▼
-    ┌────── Navi ──────┐
+    ┌────── Captain America ──────┐
     │    (hub & spoke)  │
     │                   │
     ▼                   ▼
@@ -341,7 +341,7 @@ Every message includes:
   Agents ──────────────▶│
 ```
 
-All communication is hub-and-spoke through Navi. No direct agent-to-agent messaging. This ensures:
+All communication is hub-and-spoke through Captain America. No direct agent-to-agent messaging. This ensures:
 - Single point of coordination
 - Complete decision trace
 - No circular dependencies
@@ -351,7 +351,7 @@ All communication is hub-and-spoke through Navi. No direct agent-to-agent messag
 
 ## 6. Graduated Autonomy
 
-**[Havoc]** insisted on graduated autonomy after identifying that unchecked agent autonomy was the #1 risk in multi-agent systems.
+**[Loki]** insisted on graduated autonomy after identifying that unchecked agent autonomy was the #1 risk in multi-agent systems.
 
 ### 6.1 Autonomy Levels
 
@@ -409,7 +409,7 @@ Autonomy state is stored in `_aegis-brain/resonance/autonomy-state.md`:
 
 ## 7. Reflexion Loop
 
-**[Sage]** introduced the Reflexion pattern based on Shinn et al. (2023) to reduce retry waste.
+**[Iron Man]** introduced the Reflexion pattern based on Shinn et al. (2023) to reduce retry waste.
 
 ### 7.1 Concept
 
@@ -444,7 +444,7 @@ Agent produces output
          ┌────┴────┐
          │ Pass    │ Fail
          ▼         ▼
-       Accept    Escalate to Navi
+       Accept    Escalate to Captain America
                  (max 2 retries)
 ```
 
@@ -469,15 +469,15 @@ Agent produces output
 ### 7.4 Retry Limits
 
 - Maximum 2 retry attempts per agent per task
-- If both retries fail, escalate to Navi
-- Navi may reassign to a different agent or escalate to human
+- If both retries fail, escalate to Captain America
+- Captain America may reassign to a different agent or escalate to human
 - All reflections are logged to `_aegis-brain/logs/` for pattern analysis
 
 ---
 
 ## 8. Tool Loading Profiles
 
-**[Sage]** designed tool profiles to minimize the attack surface and context cost of each agent.
+**[Iron Man]** designed tool profiles to minimize the attack surface and context cost of each agent.
 
 ### 8.1 Principle
 
@@ -489,7 +489,7 @@ Each agent receives only the tools they need for their role. This:
 
 ### 8.2 Tool Profiles
 
-| Tool | Navi | Sage | Bolt | Vigil | Havoc | Forge | Pixel | Muse |
+| Tool | Captain America | Iron Man | Spider-Man | Black Panther | Loki | Beast | Wasp | Songbird |
 |------|------|------|------|-------|-------|-------|-------|------|
 | file_read | Y | Y | Y | Y | Y | Y | Y | Y |
 | file_write | Y* | Y* | Y* | Y* | Y* | Y* | Y* | Y* |
@@ -514,7 +514,7 @@ Tools are loaded when an agent is spawned. The orchestrator reads the agent prof
 
 ## 9. Decision Trace Logging
 
-**[Vigil]** required decision trace logging for auditability and post-session analysis.
+**[Black Panther]** required decision trace logging for auditability and post-session analysis.
 
 ### 9.1 What Gets Logged
 
@@ -533,7 +533,7 @@ Every significant agent action is logged with:
 ```json
 {
   "timestamp": "2026-03-20T10:15:30Z",
-  "agent": "sage",
+  "agent": "iron-man",
   "action": "architecture_decision",
   "task_id": "TASK-003",
   "input": "Design auth system for microservices",
@@ -555,7 +555,7 @@ Every significant agent action is logged with:
 ### 9.4 Querying
 
 Traces can be queried by:
-- Agent name: "Show me all Sage decisions today"
+- Agent name: "Show me all Iron Man decisions today"
 - Task ID: "Show me the full trace for TASK-003"
 - Action type: "Show me all escalations"
 - Confidence: "Show me low-confidence decisions"
@@ -564,18 +564,18 @@ Traces can be queried by:
 
 ## 10. Hook-based Quality Gates
 
-**[Vigil]** designed the quality gate system to prevent defects from propagating through the pipeline.
+**[Black Panther]** designed the quality gate system to prevent defects from propagating through the pipeline.
 
 ### 10.1 Gate Types
 
 | Gate | Trigger | Validator | Fail Action |
 |------|---------|-----------|-------------|
-| PostSpec | Sage completes spec | Vigil + Havoc | Reflexion → Sage retry |
-| PostImplement | Bolt completes code | Vigil | Reflexion → Bolt retry |
-| PostReview | Vigil completes review | Navi | Human escalation if critical |
-| PostChallenge | Havoc completes challenge | Navi | Route to affected agent |
-| PreMerge | PR ready for merge | Vigil + test suite | Block merge on failure |
-| PreDeploy | Deploy requested | Navi + Human | Always requires human confirm |
+| PostSpec | Iron Man completes spec | Black Panther + Loki | Reflexion → Iron Man retry |
+| PostImplement | Spider-Man completes code | Black Panther | Reflexion → Spider-Man retry |
+| PostReview | Black Panther completes review | Captain America | Human escalation if critical |
+| PostChallenge | Loki completes challenge | Captain America | Route to affected agent |
+| PreMerge | PR ready for merge | Black Panther + test suite | Block merge on failure |
+| PreDeploy | Deploy requested | Captain America + Human | Always requires human confirm |
 
 ### 10.2 Gate Execution
 
@@ -607,31 +607,31 @@ Gates are configured in `_aegis-brain/resonance/gate-config.md`:
 # Quality Gate Configuration
 
 ## PostSpec Gate
-- Validators: [vigil, havoc]
+- Validators: [black-panther, loki]
 - Acceptance Criteria:
   - All requirements addressed
   - No ambiguous language
   - Test strategy defined
   - Security considerations documented
 - On Fail: reflexion + retry (max 2)
-- On Pass: notify Navi, assign Bolt
+- On Pass: notify Captain America, assign Spider-Man
 
 ## PostImplement Gate
-- Validators: [vigil]
+- Validators: [black-panther]
 - Acceptance Criteria:
   - All tests pass
   - No lint errors
   - No security warnings
   - Code matches spec
 - On Fail: reflexion + retry (max 2)
-- On Pass: notify Navi, create PR
+- On Pass: notify Captain America, create PR
 ```
 
 ---
 
 ## 11. Tiered Memory System
 
-**[Navi]** designed the memory system to solve the "amnesia problem" — every new session forgetting everything from the last.
+**[Captain America]** designed the memory system to solve the "amnesia problem" — every new session forgetting everything from the last.
 
 ### 11.1 Memory Tiers
 
@@ -685,7 +685,7 @@ Working memory is the conversation context itself:
 
 ## 12. Flow + Crew Architecture
 
-**[Sage]** designed the dual execution model after analyzing that some tasks need deterministic steps while others need dynamic collaboration.
+**[Iron Man]** designed the dual execution model after analyzing that some tasks need deterministic steps while others need dynamic collaboration.
 
 ### 12.1 Flows (Deterministic Pipelines)
 
@@ -694,7 +694,7 @@ Flows are predefined sequences of agent actions. They are predictable, repeatabl
 ```
 Flow: code-review-pipeline
 ┌────────┐    ┌────────┐    ┌────────┐    ┌────────┐
-│ Forge  │───▶│ Vigil  │───▶│ Havoc  │───▶│ Navi   │
+│ Beast  │───▶│ Black Panther  │───▶│ Loki  │───▶│ Captain America   │
 │ (scan) │    │(review)│    │(challenge)│  │(synth) │
 └────────┘    └────────┘    └────────┘    └────────┘
 ```
@@ -703,22 +703,22 @@ Flow: code-review-pipeline
 
 | Flow Name | Stages | Purpose |
 |-----------|--------|---------|
-| code-review | Forge → Vigil → Havoc → Navi | Full code review with adversarial |
-| feature-build | Sage → Bolt → Vigil → Navi | Spec → implement → review |
-| security-audit | Forge → Vigil → Havoc → Navi | Security-focused analysis |
-| doc-generation | Forge → Muse → Vigil → Navi | Auto-generate documentation |
-| bug-fix | Forge → Bolt → Vigil → Navi | Diagnose → fix → verify |
+| code-review | Beast → Black Panther → Loki → Captain America | Full code review with adversarial |
+| feature-build | Iron Man → Spider-Man → Black Panther → Captain America | Spec → implement → review |
+| security-audit | Beast → Black Panther → Loki → Captain America | Security-focused analysis |
+| doc-generation | Beast → Songbird → Black Panther → Captain America | Auto-generate documentation |
+| bug-fix | Beast → Spider-Man → Black Panther → Captain America | Diagnose → fix → verify |
 
 ### 12.2 Crews (Dynamic Teams)
 
-Crews are ad-hoc teams assembled by Navi for complex, non-linear tasks that require collaboration.
+Crews are ad-hoc teams assembled by Captain America for complex, non-linear tasks that require collaboration.
 
 ```
 Crew: architecture-redesign
 ┌──────────────────────────────┐
-│  Navi (coordinator)          │
+│  Captain America (coordinator)          │
 │  ┌──────┐ ┌──────┐ ┌──────┐ │
-│  │ Sage │ │Havoc │ │Forge │ │
+│  │ Iron Man │ │Loki │ │Beast │ │
 │  │      │◀▶│      │◀▶│      │ │
 │  └──────┘ └──────┘ └──────┘ │
 │        Dynamic collaboration  │
@@ -742,33 +742,33 @@ Flows are defined in `.claude/commands/`:
 ```markdown
 # Flow: feature-build
 ## Stages
-1. [sage] Analyze requirements and produce spec
+1. [iron-man] Analyze requirements and produce spec
    - Gate: PostSpec
-2. [bolt] Implement feature from spec
+2. [spider-man] Implement feature from spec
    - Gate: PostImplement
-3. [vigil] Review implementation
+3. [black-panther] Review implementation
    - Gate: PostReview
-4. [navi] Synthesize results and create PR
+4. [captain-america] Synthesize results and create PR
 ```
 
 ### 12.4 Defining Crews
 
-Crews are assembled dynamically by Navi:
+Crews are assembled dynamically by Captain America:
 
 ```markdown
 # Crew: architecture-redesign
-## Members: sage, havoc, forge
-## Coordination: navi
+## Members: iron-man, loki, beast
+## Coordination: captain-america
 ## Goal: Redesign the authentication system
 ## Max Rounds: 5
-## Termination: sage and havoc agree on design OR max rounds reached
+## Termination: iron-man and loki agree on design OR max rounds reached
 ```
 
 ---
 
 ## 13. Blast Radius Containment
 
-**[Havoc]** insisted on strict blast radius rules after identifying that the #1 cause of multi-agent failures is scope creep.
+**[Loki]** insisted on strict blast radius rules after identifying that the #1 cause of multi-agent failures is scope creep.
 
 ### 13.1 Scope Definition
 
@@ -785,22 +785,22 @@ Blast radius is enforced at three levels:
 
 1. **Profile level**: Agent profile lists allowed tools and scopes
 2. **Runtime level**: File write operations check against the scope before executing
-3. **Review level**: Vigil verifies no out-of-scope modifications in review gates
+3. **Review level**: Black Panther verifies no out-of-scope modifications in review gates
 
 ### 13.3 Scope Violations
 
 When an agent attempts an out-of-scope operation:
 1. Operation is blocked (not executed)
 2. Agent receives an error: "SCOPE_VIOLATION: {path} is outside your write scope"
-3. EscalationAlert is sent to Navi
-4. Navi routes the work to the correct agent
+3. EscalationAlert is sent to Captain America
+4. Captain America routes the work to the correct agent
 5. Violation is logged to the decision trace
 
 ### 13.4 Scope Expansion
 
 In rare cases, an agent may need temporary scope expansion:
-1. Agent sends EscalationAlert to Navi explaining the need
-2. Navi evaluates and may send ApprovalRequest to human (at L1/L2) or approve directly (at L3/L4)
+1. Agent sends EscalationAlert to Captain America explaining the need
+2. Captain America evaluates and may send ApprovalRequest to human (at L1/L2) or approve directly (at L3/L4)
 3. If approved, temporary scope grant is logged with expiration
 4. Scope reverts after task completion
 
@@ -808,7 +808,7 @@ In rare cases, an agent may need temporary scope expansion:
 
 ## 14. Session Templates
 
-**[Navi]** created session templates for common workflows to reduce setup time.
+**[Captain America]** created session templates for common workflows to reduce setup time.
 
 ### 14.1 Built-in Templates
 
@@ -816,7 +816,7 @@ In rare cases, an agent may need temporary scope expansion:
 ```
 /aegis-start --template quick-review
 - Load: minimal profile
-- Agents: Forge + Vigil
+- Agents: Beast + Black Panther
 - Flow: code-review (simplified)
 - Duration: ~10 minutes
 ```
@@ -825,7 +825,7 @@ In rare cases, an agent may need temporary scope expansion:
 ```
 /aegis-start --template feature-sprint
 - Load: standard profile
-- Agents: Sage + Bolt + Vigil + Forge
+- Agents: Iron Man + Spider-Man + Black Panther + Beast
 - Flow: feature-build
 - Duration: ~60 minutes
 ```
@@ -834,7 +834,7 @@ In rare cases, an agent may need temporary scope expansion:
 ```
 /aegis-start --template architecture
 - Load: full profile
-- Agents: Sage + Havoc + Forge + Navi
+- Agents: Iron Man + Loki + Beast + Captain America
 - Mode: Crew (dynamic)
 - Duration: ~45 minutes
 ```
@@ -843,7 +843,7 @@ In rare cases, an agent may need temporary scope expansion:
 ```
 /aegis-start --template security-audit
 - Load: standard profile + security-audit skill
-- Agents: Forge + Vigil + Havoc
+- Agents: Beast + Black Panther + Loki
 - Flow: security-audit
 - Duration: ~30 minutes
 ```
@@ -852,7 +852,7 @@ In rare cases, an agent may need temporary scope expansion:
 ```
 /aegis-start --template doc-sprint
 - Load: standard profile + api-docs skill
-- Agents: Forge + Muse + Vigil
+- Agents: Beast + Songbird + Black Panther
 - Flow: doc-generation
 - Duration: ~30 minutes
 ```
@@ -865,13 +865,13 @@ Users can create custom templates in `.claude/teams/`:
 # .claude/teams/my-template.yaml
 name: my-custom-pipeline
 profile: standard
-agents: [sage, bolt, vigil, forge]
+agents: [iron-man, spider-man, black-panther, beast]
 flow: feature-build
 autonomy: L2
 skills: [code-review, test-architect, security-audit]
 gates:
-  - PostSpec: [vigil]
-  - PostImplement: [vigil, havoc]
+  - PostSpec: [black-panther]
+  - PostImplement: [black-panther, loki]
 ```
 
 ---
@@ -902,7 +902,7 @@ Skills can be composed for complex workflows:
 ```
 /aegis-pipeline security
   → Loads: security-audit + code-review + adversarial-review
-  → Flow: Forge(scan) → Vigil(audit) → Havoc(challenge) → Navi(synthesis)
+  → Flow: Beast(scan) → Black Panther(audit) → Loki(challenge) → Captain America(synthesis)
 ```
 
 ### 15.4 Custom Skills
@@ -934,7 +934,7 @@ New skills follow the template in CLAUDE_skills.md and are placed in `skills/`. 
 ### 16.3 Distillation Process
 
 When context reaches 60%:
-1. Navi identifies completed subtasks in the conversation
+1. Captain America identifies completed subtasks in the conversation
 2. For each completed subtask, generate a ≤200 token summary
 3. Archive full details to `_aegis-brain/logs/distill-<timestamp>.md`
 4. Replace verbose conversation segments with summaries
@@ -966,7 +966,7 @@ See CLAUDE_safety.md for the complete safety rules. This section provides the ar
 
 ### 17.2 Threat Model
 
-**[Havoc]** produced this threat model:
+**[Loki]** produced this threat model:
 
 | Threat | Likelihood | Impact | Mitigation |
 |--------|-----------|--------|------------|
@@ -1042,8 +1042,8 @@ This backs up existing files and adds new framework features while preserving br
 | /aegis-start | Initialize session, load brain, verify context | Every session start |
 | /aegis-retro | Run retrospective, update lessons, write resonance | Every session end |
 | /aegis-pipeline [type] | Run a full analysis pipeline | Major tasks |
-| /aegis-team-build | Spawn build team (Sage + Bolt + Vigil) in tmux | Feature development |
-| /aegis-team-review | Spawn review team (Forge + Vigil + Havoc) in tmux | Code review |
+| /aegis-team-build | Spawn build team (Iron Man + Spider-Man + Black Panther) in tmux | Feature development |
+| /aegis-team-review | Spawn review team (Beast + Black Panther + Loki) in tmux | Code review |
 | /aegis-status | Check progress of all active agents | During pipelines |
 | /aegis-mode [profile] | Switch skill profile (minimal/standard/full) | When needs change |
 | /aegis-distill | Manually trigger context distillation | Context getting large |
@@ -1117,10 +1117,10 @@ This backs up existing files and adds new framework features while preserving br
 
 ```
 Human: /aegis-start
-Navi:  Loading CLAUDE.md... ✓
+Captain America:  Loading CLAUDE.md... ✓
        Loading resonance files... ✓
        Current autonomy: L1
        Profile: standard (13 skills available)
        Last session: #5 (2 days ago)
-       Key context: Working on auth feature, Sage approved JWT design
+       Key context: Working on auth feature, Iron Man approved JWT design
        Ready. What would you like to work on?

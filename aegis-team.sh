@@ -31,28 +31,28 @@ error()   { echo -e "${RED}[ERROR]${NC} $*"; exit 1; }
 # --------------------------------------------------------------------------
 get_emoji() {
     case "$1" in
-        navi)  echo "🧭" ;;
-        sage)  echo "📐" ;;
-        bolt)  echo "⚡" ;;
-        vigil) echo "🛡️" ;;
-        havoc) echo "🔴" ;;
-        forge) echo "🔧" ;;
-        pixel) echo "🖌️" ;;
-        muse)  echo "🎨" ;;
+        captain-america)  echo "🧭" ;;
+        iron-man)  echo "📐" ;;
+        spider-man)  echo "⚡" ;;
+        black-panther) echo "🛡️" ;;
+        loki) echo "🔴" ;;
+        beast) echo "🔧" ;;
+        wasp) echo "🖌️" ;;
+        songbird)  echo "🎨" ;;
         *)     echo "🤖" ;;
     esac
 }
 
 get_role() {
     case "$1" in
-        navi)  echo "Session Orchestrator" ;;
-        sage)  echo "System Architect" ;;
-        bolt)  echo "Code Builder" ;;
-        vigil) echo "Quality Reviewer" ;;
-        havoc) echo "Adversarial Challenger" ;;
-        forge) echo "Research Scanner" ;;
-        pixel) echo "UI/UX Specialist" ;;
-        muse)  echo "Documentation Writer" ;;
+        captain-america)  echo "Session Orchestrator" ;;
+        iron-man)  echo "System Architect" ;;
+        spider-man)  echo "Code Builder" ;;
+        black-panther) echo "Quality Reviewer" ;;
+        loki) echo "Adversarial Challenger" ;;
+        beast) echo "Research Scanner" ;;
+        wasp) echo "UI/UX Specialist" ;;
+        songbird)  echo "Documentation Writer" ;;
         *)     echo "Agent" ;;
     esac
 }
@@ -62,9 +62,9 @@ get_role() {
 # --------------------------------------------------------------------------
 get_team() {
     case "$1" in
-        build)  echo "sage:Architect,bolt:Implementer,vigil:Reviewer" ;;
-        review) echo "forge:Scanner,havoc:Challenger,vigil:Reviewer" ;;
-        debate) echo "sage:Proposer,bolt:Feasibility,havoc:Challenger,navi:Synthesizer" ;;
+        build)  echo "iron-man:Architect,spider-man:Implementer,black-panther:Reviewer" ;;
+        review) echo "beast:Scanner,loki:Challenger,black-panther:Reviewer" ;;
+        debate) echo "iron-man:Proposer,spider-man:Feasibility,loki:Challenger,captain-america:Synthesizer" ;;
         *)      echo "" ;;
     esac
 }
@@ -91,7 +91,7 @@ Spawn multiple Claude Code agents in tmux panes for parallel work.
 
 ${BOLD}USAGE${NC}
   aegis-team.sh --team <name> --task "description"
-  aegis-team.sh --team custom --agents "sage,bolt" --task "description"
+  aegis-team.sh --team custom --agents "iron-man,spider-man" --task "description"
   aegis-team.sh --kill
   aegis-team.sh --attach
 
@@ -106,16 +106,16 @@ ${BOLD}OPTIONS${NC}
   --help                Show this help
 
 ${BOLD}TEAMS${NC}
-  ${CYAN}build${NC}    Sage (Architect) -> Bolt (Implementer) -> Vigil (Reviewer)
-  ${CYAN}review${NC}   Forge (Scanner) + Havoc (Challenger) + Vigil (Reviewer)
-  ${CYAN}debate${NC}   Sage (Proposer) + Bolt (Feasibility) + Havoc (Challenger) + Navi (Synthesizer)
+  ${CYAN}build${NC}    Iron Man (Architect) -> Spider-Man (Implementer) -> Black Panther (Reviewer)
+  ${CYAN}review${NC}   Beast (Scanner) + Loki (Challenger) + Black Panther (Reviewer)
+  ${CYAN}debate${NC}   Iron Man (Proposer) + Spider-Man (Feasibility) + Loki (Challenger) + Captain America (Synthesizer)
   ${CYAN}custom${NC}   Pick your own agents with --agents
 
 ${BOLD}EXAMPLES${NC}
   aegis-team.sh --team build --task "Implement auth system"
   aegis-team.sh --team review --task "Review src/ directory"
   aegis-team.sh --team debate --task "SQL vs NoSQL for this project"
-  aegis-team.sh --team custom --agents "sage,bolt" --task "Quick spec and build"
+  aegis-team.sh --team custom --agents "iron-man,spider-man" --task "Quick spec and build"
 
 ${BOLD}CONTROLS${NC} (inside tmux)
   Ctrl+B o    Switch between panes

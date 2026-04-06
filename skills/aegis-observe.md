@@ -14,7 +14,7 @@ Observability layer for AEGIS agent operations.
 - **Traces**: Decision audit trail — why each agent made each choice
 - **Dashboard**: Real-time status summary of active agents
 - **Output**: `_aegis-brain/logs/` and `_aegis-output/observability/`
-- **Agent**: Forge (haiku) — data collection; Lumen (sonnet) — analysis
+- **Agent**: Beast (haiku) — data collection; Lumen (sonnet) — analysis
 
 ## Full Instructions
 
@@ -38,7 +38,7 @@ All agent activity is logged in structured format:
 {
   "timestamp": "2026-03-20T10:30:00Z",
   "session_id": "aegis-20260320-001",
-  "agent": "bolt",
+  "agent": "spider-man",
   "agent_emoji": "⚡",
   "event_type": "task_start|task_complete|gate_check|error|decision",
   "severity": "info|warn|error",
@@ -70,7 +70,7 @@ _aegis-brain/logs/
 [2026-03-20T10:30:00Z] [⚡] [START] — Implementing user authentication module
 [2026-03-20T10:30:45Z] [⚡] [DONE] — auth.service.ts created (47 lines)
 [2026-03-20T10:30:46Z] [🛡️] [GATE] — Code review: PASS (0 critical)
-[2026-03-20T10:31:00Z] [🧭] [DECISION] — Routing to Vigil for test generation
+[2026-03-20T10:31:00Z] [🧭] [DECISION] — Routing to Black Panther for test generation
 ```
 
 ### Cost Tracking
@@ -83,11 +83,11 @@ Track token usage per agent and per session:
 ### Session Summary
 | Agent | Input Tokens | Output Tokens | Total | Model | Est. Cost |
 |-------|-------------|--------------|-------|-------|-----------|
-| Navi (opus) | <n> | <n> | <n> | opus | $<cost> |
-| Sage (opus) | <n> | <n> | <n> | opus | $<cost> |
-| Bolt (sonnet) | <n> | <n> | <n> | sonnet | $<cost> |
-| Vigil (sonnet) | <n> | <n> | <n> | sonnet | $<cost> |
-| Forge (haiku) | <n> | <n> | <n> | haiku | $<cost> |
+| Captain America (opus) | <n> | <n> | <n> | opus | $<cost> |
+| Iron Man (opus) | <n> | <n> | <n> | opus | $<cost> |
+| Spider-Man (sonnet) | <n> | <n> | <n> | sonnet | $<cost> |
+| Black Panther (sonnet) | <n> | <n> | <n> | sonnet | $<cost> |
+| Beast (haiku) | <n> | <n> | <n> | haiku | $<cost> |
 | **Total** | **<n>** | **<n>** | **<n>** | — | **$<cost>** |
 
 ### Cost Per Skill
@@ -131,11 +131,11 @@ Record every significant decision made by agents:
 ```
 
 **Decision categories:**
-- Architecture decisions (Sage)
-- Implementation choices (Bolt)
-- Quality gate verdicts (Vigil)
-- Task routing decisions (Navi)
-- Security assessments (Havoc)
+- Architecture decisions (Iron Man)
+- Implementation choices (Spider-Man)
+- Quality gate verdicts (Black Panther)
+- Task routing decisions (Captain America)
+- Security assessments (Loki)
 
 ### Real-Time Dashboard
 
@@ -145,9 +145,9 @@ Record every significant decision made by agents:
 ### Active Agents
 | Agent | Status | Current Task | Duration | Tokens Used |
 |-------|--------|-------------|----------|-------------|
-| 🧭 Navi | 🟢 Active | Orchestrating build | 5m | 2,400 |
-| ⚡ Bolt | 🟢 Active | Implementing auth | 3m | 4,700 |
-| 🛡️ Vigil | 🟡 Waiting | Pending review gate | — | 0 |
+| 🧭 Captain America | 🟢 Active | Orchestrating build | 5m | 2,400 |
+| ⚡ Spider-Man | 🟢 Active | Implementing auth | 3m | 4,700 |
+| 🛡️ Black Panther | 🟡 Waiting | Pending review gate | — | 0 |
 
 ### Session Stats
 - Session ID: <id>

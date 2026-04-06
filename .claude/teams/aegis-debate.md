@@ -1,8 +1,8 @@
 ---
 name: aegis-debate
 description: "Architecture decision debate team"
-lead: navi
-members: [sage, bolt, havoc]
+lead: captain-america
+members: [iron-man, spider-man, loki]
 mode: tmux
 requires: tmux
 ---
@@ -11,16 +11,16 @@ requires: tmux
 Structured debate for architecture decisions. Multiple perspectives, devil's advocate, consensus building.
 
 ## Task Breakdown
-1. Sage (opus): Present architecture options with trade-offs
-2. Bolt (sonnet): Evaluate implementation feasibility of each option
-3. Havoc (opus): Challenge every option, find failure modes
-4. Navi (opus): Facilitate, synthesize, drive consensus
+1. Iron Man (opus): Present architecture options with trade-offs
+2. Spider-Man (sonnet): Evaluate implementation feasibility of each option
+3. Loki (opus): Challenge every option, find failure modes
+4. Captain America (opus): Facilitate, synthesize, drive consensus
 
 ## Communication Flow
-All → PlanProposal → Navi (proposals)
-Havoc → CounterProposal → All (challenges)
-Navi → ApprovalRequest → All (vote)
-Navi → ArchitectureDecision → All (final)
+All → PlanProposal → Captain America (proposals)
+Loki → CounterProposal → All (challenges)
+Captain America → ApprovalRequest → All (vote)
+Captain America → ArchitectureDecision → All (final)
 
 ## Output
 _aegis-brain/resonance/architecture-decisions.md (append)

@@ -1,9 +1,9 @@
 # Architecture Specification: PM State System for AEGIS v7.0
 
 **ID**: ADR-007
-**Author**: Sage (System Architect)
+**Author**: Iron Man (System Architect)
 **Date**: 2026-03-24
-**Status**: PROPOSED (pending review by Vigil or Havoc)
+**Status**: PROPOSED (pending review by Black Panther or Loki)
 
 ---
 
@@ -129,7 +129,7 @@ Every command that creates an entity MUST follow this exact sequence:
 4. USE the new ID for the entity being created
 ```
 
-This is a read-modify-write cycle. Because AEGIS enforces single-writer (Navi) for state mutations, there is no concurrent write risk. If a non-Navi agent needs an ID, it MUST request it via a message to Navi.
+This is a read-modify-write cycle. Because AEGIS enforces single-writer (Captain America) for state mutations, there is no concurrent write risk. If a non-Captain America agent needs an ID, it MUST request it via a message to Captain America.
 
 ### 4.4 Counter Initialization
 
@@ -224,8 +224,8 @@ BACKLOG -> TODO -> IN_PROGRESS -> IN_REVIEW -> QA -> DONE
 | BACKLOG | Created but not yet scheduled |
 | TODO | Committed to a sprint, not yet started |
 | IN_PROGRESS | Agent actively working |
-| IN_REVIEW | Code review by Vigil |
-| QA | Quality assurance by Sentinel/Probe |
+| IN_REVIEW | Code review by Black Panther |
+| QA | Quality assurance by War Machine/Vision |
 | DONE | Completed and accepted |
 | BLOCKED | Waiting on external dependency |
 | CANCELLED | Abandoned (terminal state) |
@@ -242,7 +242,7 @@ Transition rules carry forward from the existing kanban-board skill (Section 2 o
 
 | Timestamp | Agent | Action | From | To | Note |
 |-----------|-------|--------|------|----|------|
-| 2026-03-24 10:00 | navi | CREATED | - | BACKLOG | Created from breakdown |
+| 2026-03-24 10:00 | captain-america | CREATED | - | BACKLOG | Created from breakdown |
 ```
 
 **Action types:**
@@ -271,11 +271,11 @@ Transition rules carry forward from the existing kanban-board skill (Section 2 o
 ## {ID} Comments
 
 ---
-**2026-03-24 14:00** | @vigil
+**2026-03-24 14:00** | @black-panther
 Missing input validation on email field. See review PROJ-T-001-review.md.
 
 ---
-**2026-03-24 14:35** | @bolt
+**2026-03-24 14:35** | @spider-man
 Fixed. Added Zod schema validation for all input fields.
 
 ---
@@ -312,8 +312,8 @@ Note: `current.md` is a file copy, not a symlink. This avoids portability issues
       "title": "Requirements Specification",
       "current_version": 2,
       "status": "Approved",
-      "author": "scribe",
-      "reviewer": "vigil",
+      "author": "coulson",
+      "reviewer": "black-panther",
       "created": "2026-03-24",
       "last_updated": "2026-03-24",
       "path": "_aegis-output/iso-docs/SI-01-requirements-spec/"
@@ -349,11 +349,11 @@ When a command generates or updates a document:
 ## v2 (2026-03-24)
 - Updated requirements after sprint-1 feedback
 - Added non-functional requirement NFR-003 (performance)
-- Reviewed by: vigil
+- Reviewed by: black-panther
 
 ## v1 (2026-03-24)
 - Initial version created from breakdown PROJ-US-001
-- Reviewed by: vigil
+- Reviewed by: black-panther
 ```
 
 ---
@@ -455,22 +455,22 @@ TASK DISTRIBUTION
   BLOCKED:      0    CANCELLED:    0
 
 AGENT WORKLOAD
-  @bolt      3 tasks (13 pts) | 2 done, 1 in_progress
-  @vigil     2 tasks ( 6 pts) | 2 done
-  @sage      1 task  ( 5 pts) | 1 done
-  @sentinel  2 tasks ( 5 pts) | 1 qa, 1 todo
+  @spider-man      3 tasks (13 pts) | 2 done, 1 in_progress
+  @black-panther     2 tasks ( 6 pts) | 2 done
+  @iron-man      1 task  ( 5 pts) | 1 done
+  @war-machine  2 tasks ( 5 pts) | 1 qa, 1 todo
 
 BLOCKED TASKS
   (none)
 
 UPCOMING (next to finish)
-  PROJ-T-006  "Add payment webhook"  IN_PROGRESS  @bolt  [5pts]
-  PROJ-T-008  "Write integration tests" TODO  @sentinel  [3pts]
+  PROJ-T-006  "Add payment webhook"  IN_PROGRESS  @spider-man  [5pts]
+  PROJ-T-008  "Write integration tests" TODO  @war-machine  [3pts]
 
 RECENT ACTIVITY
-  2026-03-26 15:05  PROJ-T-005  MOVED  IN_REVIEW -> DONE  @navi
-  2026-03-26 15:00  PROJ-T-005  GATE_PASS  Gate 2  @sentinel
-  2026-03-26 14:30  PROJ-T-003  MOVED  QA -> DONE  @navi
+  2026-03-26 15:05  PROJ-T-005  MOVED  IN_REVIEW -> DONE  @captain-america
+  2026-03-26 15:00  PROJ-T-005  GATE_PASS  Gate 2  @war-machine
+  2026-03-26 14:30  PROJ-T-003  MOVED  QA -> DONE  @captain-america
   ...
 
 DOCUMENTS (ISO 29110)
@@ -686,11 +686,11 @@ WRITES:
 
 ### 10.1 Single-Writer Rule
 
-The existing AEGIS rule holds: **only Navi writes to state files**. Other agents send StatusUpdate messages to Navi, who performs the actual file writes. This eliminates concurrent write conflicts.
+The existing AEGIS rule holds: **only Captain America writes to state files**. Other agents send StatusUpdate messages to Captain America, who performs the actual file writes. This eliminates concurrent write conflicts.
 
 ### 10.2 Counter Atomicity
 
-Because Navi is the single writer, the read-increment-write cycle on `counters.json` is effectively atomic. If AEGIS ever moves to multi-writer, this file would need file locking or a compare-and-swap mechanism.
+Because Captain America is the single writer, the read-increment-write cycle on `counters.json` is effectively atomic. If AEGIS ever moves to multi-writer, this file would need file locking or a compare-and-swap mechanism.
 
 ### 10.3 Append-Only Safety
 
@@ -774,9 +774,9 @@ During migration, commands that previously read `kanban.md` as source of truth w
 
 1. Should the `project_key` in counters.json be configurable per session, or fixed at project initialization?
 2. Should CANCELLED tasks have their directories archived (moved to `_aegis-brain/tasks/.archive/`) or kept in place with a terminal status?
-3. Should the dashboard command support filtering (e.g., `/aegis-dashboard --agent bolt` or `/aegis-dashboard --sprint sprint-2`)?
+3. Should the dashboard command support filtering (e.g., `/aegis-dashboard --agent spider-man` or `/aegis-dashboard --sprint sprint-2`)?
 4. What is the maximum sprint duration to enforce in metrics.json validation?
 
 ---
 
-**Next steps**: This spec requires review by Vigil (structural integrity) or Havoc (adversarial testing of edge cases) before implementation begins. After approval, implementation should follow the phased migration path in Section 11.
+**Next steps**: This spec requires review by Black Panther (structural integrity) or Loki (adversarial testing of edge cases) before implementation begins. After approval, implementation should follow the phased migration path in Section 11.

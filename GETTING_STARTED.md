@@ -141,20 +141,20 @@ Inside Claude Code:
 ```
 > /aegis-start
 
-🧬 Mother Brain: ONLINE
+🧬 Nick Fury: ONLINE
 🧬 Scanning project state...
 🧬 Decision: P10 — Empty project
 🧬 "What is this project? One sentence."
 
 > E-commerce platform with payment, shipping, and admin dashboard
 
-🧬 Mother Brain: Got it. Starting autonomous pipeline...
+🧬 Nick Fury: Got it. Starting autonomous pipeline...
 🧬 → /aegis-breakdown (decomposing user story)
 🧬 → /aegis-sprint plan (creating sprint)
 🧬 → Spawning Build Team...
 ```
 
-**Mother Brain ทำทุกอย่างเอง — ไม่ต้องสั่งเพิ่ม**
+**Nick Fury ทำทุกอย่างเอง — ไม่ต้องสั่งเพิ่ม**
 
 ---
 
@@ -202,17 +202,17 @@ claude --dangerously-skip-permissions
 
 | Command | Purpose |
 |---------|---------|
-| `/aegis-team-build` | Spawn build team: Sage specs → Bolt builds → Vigil reviews |
-| `/aegis-team-review` | Spawn review team: Forge scans → Havoc challenges → Vigil gates |
-| `/aegis-team-debate` | Architecture debate: Sage vs Bolt vs Havoc → Navi decides |
+| `/aegis-team-build` | Spawn build team: Iron Man specs → Spider-Man builds → Black Panther reviews |
+| `/aegis-team-review` | Spawn review team: Beast scans → Loki challenges → Black Panther gates |
+| `/aegis-team-debate` | Architecture debate: Iron Man vs Spider-Man vs Loki → Captain America decides |
 | `/aegis-pipeline` | Full analysis pipeline with quality gates |
 
 ### 🧪 Quality
 
 | Command | Purpose |
 |---------|---------|
-| `/aegis-qa plan` | Sentinel creates test plan from requirements |
-| `/aegis-qa run` | Probe executes tests |
+| `/aegis-qa plan` | War Machine creates test plan from requirements |
+| `/aegis-qa run` | Vision executes tests |
 | `/aegis-qa full` | Plan + run + report in sequence |
 | `/aegis-qa gate` | QA quality gate check (PASS/FAIL) |
 | `/aegis-verify` | Quick verification: tests, lint, git, security |
@@ -229,7 +229,7 @@ claude --dangerously-skip-permissions
 
 | Command | Purpose |
 |---------|---------|
-| `/aegis-start` | Begin session — Mother Brain activates |
+| `/aegis-start` | Begin session — Nick Fury activates |
 | `/aegis-status` | Team dashboard — agents, tasks, progress |
 | `/aegis-context` | Context budget — token usage |
 | `/aegis-retro` | Session retrospective |
@@ -242,25 +242,25 @@ claude --dangerously-skip-permissions
 
 | # | Agent | Model | Role |
 |:-:|-------|:-----:|------|
-| 🧬 | **Mother Brain** | opus | Autonomous controller — scans, decides, spawns |
-| 🧭 | **Navi** | opus | Navigator — orchestrates, sprints, retros |
-| 📐 | **Sage** | opus | Architect — specs, design, breakdown |
-| ⚡ | **Bolt** | sonnet | Implementer — writes code, runs tests |
-| 🛡️ | **Vigil** | sonnet | Code Reviewer — Gate 1: code quality |
-| 🔴 | **Havoc** | opus | Devil's Advocate — challenges everything |
-| 🔧 | **Forge** | haiku | Scanner — gathers data, researches |
-| 🖌️ | **Pixel** | sonnet | UX Designer — accessibility, dark mode |
-| 🎨 | **Muse** | haiku | Content Creator — docs, changelogs |
-| 🎯 | **Sentinel** | sonnet | QA Lead — Gate 2: product quality |
-| 🔬 | **Probe** | haiku | QA Executor — runs test suites |
-| 📜 | **Scribe** | haiku | Compliance — Gate 3: ISO 29110 docs |
+| 🧬 | **Nick Fury** | opus | Autonomous controller — scans, decides, spawns |
+| 🧭 | **Captain America** | opus | Navigator — orchestrates, sprints, retros |
+| 📐 | **Iron Man** | opus | Architect — specs, design, breakdown |
+| ⚡ | **Spider-Man** | sonnet | Implementer — writes code, runs tests |
+| 🛡️ | **Black Panther** | sonnet | Code Reviewer — Gate 1: code quality |
+| 🔴 | **Loki** | opus | Devil's Advocate — challenges everything |
+| 🔧 | **Beast** | haiku | Scanner — gathers data, researches |
+| 🖌️ | **Wasp** | sonnet | UX Designer — accessibility, dark mode |
+| 🎨 | **Songbird** | haiku | Content Creator — docs, changelogs |
+| 🎯 | **War Machine** | sonnet | QA Lead — Gate 2: product quality |
+| 🔬 | **Vision** | haiku | QA Executor — runs test suites |
+| 📜 | **Coulson** | haiku | Compliance — Gate 3: ISO 29110 docs |
 
 ### 3-Gate Quality System
 
 ```
-Code written → Gate 1 (Vigil): Code review
-            → Gate 2 (Sentinel): QA testing
-            → Gate 3 (Scribe): ISO 29110 compliance
+Code written → Gate 1 (Black Panther): Code review
+            → Gate 2 (War Machine): QA testing
+            → Gate 3 (Coulson): ISO 29110 compliance
             → DONE ✅
 ```
 
@@ -270,11 +270,11 @@ Tasks under 3 story points skip Gates 2-3 (solo mode).
 
 ## 3-Scale Auto-Selection
 
-Mother Brain auto-selects the right mode:
+Nick Fury auto-selects the right mode:
 
 | Task Size | Mode | Agents | Gates |
 |-----------|------|:------:|:-----:|
-| 1-2 files, ≤2 pts | **Solo** | 2 (Bolt + Vigil) | 1 |
+| 1-2 files, ≤2 pts | **Solo** | 2 (Spider-Man + Black Panther) | 1 |
 | 3-5 files, 3-8 pts | **Team** | 6 (Build + QA) | 3 |
 | 6+ files, 8+ pts | **Full Pipeline** | 8-10 (all teams) | 3 |
 
@@ -296,7 +296,7 @@ Mother Brain auto-selects the right mode:
 | SI.06 | Acceptance Record | Sprint close |
 | SI.07 | Software Config | Release prep |
 
-All docs live in `_aegis-output/iso-docs/` and are generated by **Scribe** from agent outputs.
+All docs live in `_aegis-output/iso-docs/` and are generated by **Coulson** from agent outputs.
 
 ---
 

@@ -14,7 +14,7 @@ Systematic challenge of design decisions, assumptions, and implementations.
 - **Failure modes**: Propose how the system can break
 - **Counter-arguments**: Generate alternative approaches
 - **Output**: `_aegis-output/adversarial-review.md`
-- **Agent**: Havoc (opus) — primary challenger
+- **Agent**: Loki (opus) — primary challenger
 
 ## Full Instructions
 
@@ -170,7 +170,7 @@ For each major design decision, generate alternatives:
 ```markdown
 # Adversarial Review Report
 **Date**: YYYY-MM-DD
-**Reviewer**: Havoc (AEGIS)
+**Reviewer**: Loki (AEGIS)
 **Target**: <what was reviewed>
 **Risk Level**: Critical / High / Medium / Low
 

@@ -12,8 +12,8 @@ Generate and maintain ISO/IEC 29110 Basic profile compliant work products from A
 - When scope changes to log Change Requests (PM.2)
 - When issues or defects found to update Correction Register (PM.3)
 - After /aegis-breakdown to generate Requirements Specification + Traceability Matrix initial (SI.2)
-- After Sage architecture spec to generate Design Document + Traceability Matrix design links (SI.3)
-- After Bolt implementation to generate Test Cases document + Traceability Matrix code+test links (SI.4)
+- After Iron Man architecture spec to generate Design Document + Traceability Matrix design links (SI.3)
+- After Spider-Man implementation to generate Test Cases document + Traceability Matrix code+test links (SI.4)
 - After /aegis-qa to generate Test Report + Traceability Matrix final verification (SI.5)
 - After QA gate pass and customer sign-off to generate Acceptance Record (PM.4)
 - At release time to generate Software Configuration (SI.6)
@@ -52,11 +52,11 @@ Generate and maintain ISO/IEC 29110 Basic profile compliant work products from A
 | SI.1 Initiation | (uses Project Plan) | Sprint start | Planning |
 | SI.2 Requirements | Requirements Specification | When reqs defined | /aegis-breakdown, /super-spec |
 | SI.2 Requirements | Traceability Matrix (start) | With reqs | /aegis-breakdown |
-| SI.3 Design | Software Design Document | Before coding | /aegis-team-build (Sage phase) |
-| SI.3 Design | Traceability Matrix (update) | With design | /aegis-team-build (Sage phase) |
-| SI.4 Construction | Software Components | During coding | /aegis-team-build (Bolt phase) |
-| SI.4 Construction | Test Cases & Procedures | During coding | /aegis-team-build (Bolt phase) |
-| SI.4 Construction | Traceability Matrix (update) | With code+tests | /aegis-team-build (Bolt phase) |
+| SI.3 Design | Software Design Document | Before coding | /aegis-team-build (Iron Man phase) |
+| SI.3 Design | Traceability Matrix (update) | With design | /aegis-team-build (Iron Man phase) |
+| SI.4 Construction | Software Components | During coding | /aegis-team-build (Spider-Man phase) |
+| SI.4 Construction | Test Cases & Procedures | During coding | /aegis-team-build (Spider-Man phase) |
+| SI.4 Construction | Traceability Matrix (update) | With code+tests | /aegis-team-build (Spider-Man phase) |
 | SI.5 Integration & Test | Test Report | After testing | /aegis-qa |
 | SI.5 Integration & Test | Traceability Matrix (final) | After testing | /aegis-qa |
 | SI.6 Delivery | Software Configuration | Release | /aegis-launch |
@@ -68,31 +68,31 @@ Generate and maintain ISO/IEC 29110 Basic profile compliant work products from A
 ## Auto-Generation Triggers (REAL-TIME, not batch)
 
 When /aegis-breakdown runs (SI.2):
-  → Scribe auto-generates: Requirements Specification + Traceability Matrix (initial)
+  → Coulson auto-generates: Requirements Specification + Traceability Matrix (initial)
 
-When /aegis-team-build runs — Sage phase (SI.3):
-  → Scribe auto-generates: Software Design Document + Traceability Matrix (design links)
+When /aegis-team-build runs — Iron Man phase (SI.3):
+  → Coulson auto-generates: Software Design Document + Traceability Matrix (design links)
 
-When /aegis-team-build runs — Bolt phase (SI.4):
-  → Scribe auto-generates: Test Cases document + Traceability Matrix (code+test links)
+When /aegis-team-build runs — Spider-Man phase (SI.4):
+  → Coulson auto-generates: Test Cases document + Traceability Matrix (code+test links)
 
 When /aegis-qa runs (SI.5):
-  → Scribe auto-generates: Test Report + Traceability Matrix (final verification)
+  → Coulson auto-generates: Test Report + Traceability Matrix (final verification)
 
 When /aegis-sprint plan runs (PM.1):
-  → Scribe auto-generates: Project Plan update + Meeting Record (planning)
+  → Coulson auto-generates: Project Plan update + Meeting Record (planning)
 
 When /aegis-sprint standup runs (PM.2):
-  → Scribe auto-generates: Progress Status Record entry
+  → Coulson auto-generates: Progress Status Record entry
 
 When /aegis-kanban move ... --force or bug found (PM.3):
-  → Scribe auto-generates: Correction Register entry
+  → Coulson auto-generates: Correction Register entry
 
 When /aegis-sprint close runs (PM.4):
-  → Scribe auto-generates: Acceptance Record + Meeting Record (review+retro)
+  → Coulson auto-generates: Acceptance Record + Meeting Record (review+retro)
 
 When /aegis-launch runs (SI.6):
-  → Scribe auto-generates: Software Configuration + User Manual (if needed)
+  → Coulson auto-generates: Software Configuration + User Manual (if needed)
 ```
 
 ---
@@ -103,7 +103,7 @@ When /aegis-launch runs (SI.6):
 
 #### PM.1 — Project Plan
 - **Content**: Task descriptions, effort estimates, schedule, milestones, resource assignments, risk identification, version control strategy, lifecycle selection
-- **Source data**: Sprint plan (_aegis-brain/sprints/), backlog (_aegis-brain/backlog.md), kanban assignments, Havoc risk analysis
+- **Source data**: Sprint plan (_aegis-brain/sprints/), backlog (_aegis-brain/backlog.md), kanban assignments, Loki risk analysis
 - **Auto-trigger**: Generated at project start (PM.1), updated each sprint planning (PM.2)
 - **Location**: _aegis-output/iso-docs/PM-01-project-plan/
 
@@ -116,7 +116,7 @@ When /aegis-launch runs (SI.6):
 
 #### PM.2 — Change Requests
 - **Content**: Requested changes, impact analysis, approval status, implementation status
-- **Source data**: Scope changes tracked by Navi, EscalationAlert messages
+- **Source data**: Scope changes tracked by Captain America, EscalationAlert messages
 - **Auto-trigger**: When any scope or requirement change is detected or requested
 - **Location**: _aegis-output/iso-docs/PM-03-change-requests/
 - **NOTE**: Every change, no matter how small, requires a documented Change Request with impact evaluation
@@ -130,7 +130,7 @@ When /aegis-launch runs (SI.6):
 
 #### PM.3 — Correction Register
 - **Content**: Issue ID, description, severity, root cause, corrective action, resolution status
-- **Source data**: QA failures, Vigil findings, audit gaps, retrospective action items
+- **Source data**: QA failures, Black Panther findings, audit gaps, retrospective action items
 - **Auto-trigger**: When any defect, issue, or deviation is identified (PM.3 ongoing)
 - **Location**: _aegis-output/iso-docs/PM-05-correction-register/
 - **NOTE**: PM.3 runs periodically throughout the project, not just at closure. Auditors check this.
@@ -146,57 +146,57 @@ When /aegis-launch runs (SI.6):
 
 #### SI.2 — Requirements Specification
 - **Content**: Functional requirements, non-functional requirements, constraints, acceptance criteria
-- **Source data**: Work breakdown outputs from Sage (/aegis-breakdown)
+- **Source data**: Work breakdown outputs from Iron Man (/aegis-breakdown)
 - **Auto-trigger**: When /aegis-breakdown completes (SI.2 activity)
 - **Location**: _aegis-output/iso-docs/SI-01-requirements-spec/
 - **NOTE**: Must be customer-approved and baselined before SI.3 (design) begins
 
 #### SI.2 / SI.3 / SI.4 / SI.5 — Requirements Traceability Matrix
 - **Content**: Matrix linking Requirement -> Design section -> Code file -> Test case -> Test result
-- **Source data**: Cross-reference of all above documents + Bolt commit refs + Probe test results
+- **Source data**: Cross-reference of all above documents + Spider-Man commit refs + Vision test results
 - **Auto-trigger**: Created at SI.2, updated at SI.3, SI.4, SI.5 — ONE living document
 - **Location**: _aegis-output/iso-docs/SI-02-traceability-matrix/
 - **NOTE**: This is a SINGLE document updated across all SI activities. Not four separate docs.
-- **Computation**: Scribe auto-generates by scanning requirement IDs, design section anchors, code references from commits, test case IDs, and test results
+- **Computation**: Coulson auto-generates by scanning requirement IDs, design section anchors, code references from commits, test case IDs, and test results
 
 #### SI.3 — Software Design Document
 - **Content**: Architecture overview, component design, interfaces, data model, design decisions
-- **Source data**: Sage architecture specs, ADRs (docs/decisions/)
-- **Auto-trigger**: When Sage completes architecture spec (SI.3 activity)
+- **Source data**: Iron Man architecture specs, ADRs (docs/decisions/)
+- **Auto-trigger**: When Iron Man completes architecture spec (SI.3 activity)
 - **Location**: _aegis-output/iso-docs/SI-03-design-doc/
 - **NOTE**: Must cover both architectural design AND detailed design per the standard
 
 #### SI.4 — Software Components
 - **Content**: Source code files, unit test results, code review records
-- **Source data**: Bolt implementation commits, Vigil code review results
-- **Auto-trigger**: When Bolt completes implementation (SI.4 activity)
+- **Source data**: Spider-Man implementation commits, Black Panther code review results
+- **Auto-trigger**: When Spider-Man completes implementation (SI.4 activity)
 - **Location**: src/ (tracked via git), referenced in traceability matrix
 - **NOTE**: Software Components = the actual code. Referenced in registry but stored in src/.
 
 #### SI.4 — Test Cases and Test Procedures
 - **Content**: Test strategy, test cases, test data, pass/fail criteria, environment requirements
-- **Source data**: Sentinel test plan (_aegis-output/qa/)
-- **Auto-trigger**: When /aegis-team-build Bolt phase completes (SI.4 activity)
+- **Source data**: War Machine test plan (_aegis-output/qa/)
+- **Auto-trigger**: When /aegis-team-build Spider-Man phase completes (SI.4 activity)
 - **Location**: _aegis-output/iso-docs/SI-04-test-cases/
 - **NOTE**: Test Cases are created IN SI.4 (during construction), NOT just before testing. They validate the design.
 
 #### SI.5 — Test Report
 - **Content**: Test execution summary, pass/fail counts, defects found, QA verdict, verification results, validation results
-- **Source data**: Probe execution results + Sentinel verdict (_aegis-output/qa/)
+- **Source data**: Vision execution results + War Machine verdict (_aegis-output/qa/)
 - **Auto-trigger**: When /aegis-qa run completes (SI.5 activity)
 - **Location**: _aegis-output/iso-docs/SI-05-test-report/
 - **NOTE**: Test Report includes verification results (does it match design?) and validation results (does it meet customer needs?).
 
 #### SI.6 — Software Configuration
 - **Content**: Release version, included components, build instructions, deployment notes, known issues
-- **Source data**: Release artifacts from Bolt, git tags, CHANGELOG
+- **Source data**: Release artifacts from Spider-Man, git tags, CHANGELOG
 - **Auto-trigger**: At release preparation (/aegis-launch)
 - **Location**: _aegis-output/iso-docs/SI-06-delivery/release-<version>.md
 - **NOTE**: This is the deliverable set — what was packaged and delivered to the customer.
 
 #### SI.6 — User Manual (if required)
 - **Content**: Installation guide, user guide, operational procedures
-- **Source data**: Product specs, Muse documentation outputs
+- **Source data**: Product specs, Songbird documentation outputs
 - **Auto-trigger**: At release if contractually required
 - **Location**: _aegis-output/iso-docs/SI-06-delivery/user-manual.md
 - **NOTE**: Required "if contractually required" by the standard. Check Statement of Work.
@@ -209,10 +209,10 @@ Every ISO 29110 document follows this lifecycle:
 
 | Stage | Action | Responsible |
 |-------|--------|-------------|
-| **Draft** | Generated by Scribe from source data | Scribe |
-| **Review** | Checked for completeness and consistency | Vigil |
-| **Approved** | Formal approval (or escalation to human) | Navi |
-| **Baselined** | Version-tagged in git via commit | Navi + git |
+| **Draft** | Generated by Coulson from source data | Coulson |
+| **Review** | Checked for completeness and consistency | Black Panther |
+| **Approved** | Formal approval (or escalation to human) | Captain America |
+| **Baselined** | Version-tagged in git via commit | Captain America + git |
 
 Status is tracked in a header block at the top of each document:
 ```markdown
@@ -222,9 +222,9 @@ title: Requirements Specification
 version: 1.2
 status: Approved
 last_updated: 2026-03-24
-author: scribe
-reviewer: vigil
-approver: navi
+author: coulson
+reviewer: black-panther
+approver: captain-america
 ---
 ```
 
@@ -241,10 +241,10 @@ approver: navi
 | REQ-002 | <text> | design-doc#section-3 | src/api.ts | TC-002 | FAIL | Open |
 ```
 
-**Computation method**: Scribe scans and cross-references:
+**Computation method**: Coulson scans and cross-references:
 1. Requirement IDs from _aegis-output/breakdown/ and iso-docs/SI-01-requirements-spec/current.md
 2. Design section anchors from iso-docs/SI-03-design-doc/current.md
-3. Code file references from Bolt implementation commits
+3. Code file references from Spider-Man implementation commits
 4. Test case IDs from _aegis-output/qa/ test plans
 5. Test results from _aegis-output/qa/results/
 
@@ -254,14 +254,14 @@ approver: navi
 
 ## Workflow
 
-1. Scribe receives TaskAssignment (from Navi or triggered by pipeline event)
-2. Scribe reads source data from _aegis-output/ and _aegis-brain/
-3. Scribe generates or updates the target ISO document
-4. Scribe stamps document with version, date, and status=Draft
-5. If traceability matrix is affected, Scribe updates it (not regenerates — updates)
-6. Scribe sends StatusUpdate to Navi confirming document generation
-7. Vigil reviews document for completeness (Gate 3: Compliance)
-8. Navi approves or escalates to human
+1. Coulson receives TaskAssignment (from Captain America or triggered by pipeline event)
+2. Coulson reads source data from _aegis-output/ and _aegis-brain/
+3. Coulson generates or updates the target ISO document
+4. Coulson stamps document with version, date, and status=Draft
+5. If traceability matrix is affected, Coulson updates it (not regenerates — updates)
+6. Coulson sends StatusUpdate to Captain America confirming document generation
+7. Black Panther reviews document for completeness (Gate 3: Compliance)
+8. Captain America approves or escalates to human
 
 ## Inputs
 - Agent outputs in _aegis-output/ (specs, reviews, QA results, breakdowns)
@@ -273,10 +273,10 @@ approver: navi
 - Traceability matrix in _aegis-output/iso-docs/SI-02-traceability-matrix/current.md
 
 ## Agent Routing
-- **Primary**: Scribe (document generation)
-- **Assist**: Muse (for prose-heavy sections like executive summaries)
-- **Review**: Vigil (document completeness check)
-- **Approval**: Navi (formal sign-off)
+- **Primary**: Coulson (document generation)
+- **Assist**: Songbird (for prose-heavy sections like executive summaries)
+- **Review**: Black Panther (document completeness check)
+- **Approval**: Captain America (formal sign-off)
 
 ## Examples
 ```

@@ -24,14 +24,14 @@ L1 (Supervised) — default for new session
 
 ## Team
 AEGIS v6.0 — 8 AI Agent Personas
-- 🧭 Navi (opus) — Lead
-- 📐 Sage (opus) — Architect
-- ⚡ Bolt (sonnet) — Implementer
-- 🛡️ Vigil (sonnet) — Reviewer
-- 🔴 Havoc (opus) — Devil's Advocate
-- 🔧 Forge (haiku) — Research
-- 🖌️ Pixel (sonnet) — UX
-- 🎨 Muse (haiku) — Content
+- 🧭 Captain America (opus) — Lead
+- 📐 Iron Man (opus) — Architect
+- ⚡ Spider-Man (sonnet) — Implementer
+- 🛡️ Black Panther (sonnet) — Reviewer
+- 🔴 Loki (opus) — Devil's Advocate
+- 🔧 Beast (haiku) — Research
+- 🖌️ Wasp (sonnet) — UX
+- 🎨 Songbird (haiku) — Content
 
 ## Created
 2026-03-20 (Session 1 — Full rebuild from spec v2 + 10 research upgrades)

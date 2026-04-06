@@ -1,6 +1,6 @@
 ---
 name: aegis-sprint
-description: "Sprint management — plan, standup, review, retro, status, close. Full scrum lifecycle via Navi."
+description: "Sprint management — plan, standup, review, retro, status, close. Full scrum lifecycle via Captain America."
 triggers:
   en: sprint, scrum, standup, sprint plan, sprint review, sprint retro, sprint status, sprint close
   th: สปรินต์, สครัม, สแตนอัพ, วางแผนสปรินต์
@@ -10,7 +10,7 @@ triggers:
 
 ## Quick Reference
 
-Full sprint lifecycle management. Navi (opus) orchestrates all ceremonies.
+Full sprint lifecycle management. Captain America (opus) orchestrates all ceremonies.
 
 | Subcommand | Purpose |
 |-----------|---------|
@@ -22,23 +22,23 @@ Full sprint lifecycle management. Navi (opus) orchestrates all ceremonies.
 | `/aegis-sprint close` | Close sprint, calculate velocity, carry over incomplete tasks |
 
 - **Sprint data**: `_aegis-brain/sprints/sprint-<N>/`
-- **Orchestrator**: Navi (opus) — ceremony facilitator, single writer to kanban
+- **Orchestrator**: Captain America (opus) — ceremony facilitator, single writer to kanban
 - **Skill reference**: `skills/sprint-tracker.md` (full templates and rules)
 
 ### ⚠️ MANDATORY: ISO 29110 Documents Per Sprint
 
-**Documents are generated AT ACTIVITY TIME by Scribe, not batch-generated at sprint close.**
+**Documents are generated AT ACTIVITY TIME by Coulson, not batch-generated at sprint close.**
 **Sprint close only VERIFIES all required docs exist — it does not generate them.**
 
-| Sprint Phase | Activity | Scribe Auto-Generates |
+| Sprint Phase | Activity | Coulson Auto-Generates |
 |-------------|----------|----------------------|
 | Sprint Plan | PM.1 | Project Plan (update), Meeting Record |
 | Daily Work | PM.2 | Progress Status (per standup) |
 | When Scope Changes | PM.2 | Change Request |
 | When Issues Found | PM.3 | Correction Register entry |
 | After /aegis-breakdown | SI.2 | Requirements Spec, Traceability Matrix |
-| After Sage specs | SI.3 | Design Document, Traceability Matrix |
-| After Bolt builds | SI.4 | Test Cases, Traceability Matrix |
+| After Iron Man specs | SI.3 | Design Document, Traceability Matrix |
+| After Spider-Man builds | SI.4 | Test Cases, Traceability Matrix |
 | After /aegis-qa | SI.5 | Test Report, Traceability Matrix (final) |
 | Sprint Close | PM.4 | Acceptance Record, Meeting Record |
 | Release | SI.6 | Software Configuration |
@@ -115,15 +115,15 @@ Before any subcommand, detect the current sprint number:
 
 #### Step 5: Assign to Agents
 Map each task to the appropriate agent by type:
-- Architecture / design → @sage
-- Implementation / code → @bolt
-- Code review / security → @vigil
-- UI / content → @pixel or @muse
-- Test planning → @sentinel
-- Test execution → @probe
-- Documentation → @scribe
-- Research / adversarial → @havoc
-- Data / analytics → @forge
+- Architecture / design → @iron-man
+- Implementation / code → @spider-man
+- Code review / security → @black-panther
+- UI / content → @wasp or @songbird
+- Test planning → @war-machine
+- Test execution → @vision
+- Documentation → @coulson
+- Research / adversarial → @loki
+- Data / analytics → @beast
 
 #### Step 6: Create Sprint Directory and Files
 - Create `_aegis-brain/sprints/sprint-<N>/` and `daily/` subdirectory.
@@ -146,8 +146,8 @@ Map each task to the appropriate agent by type:
   - Set `updated` to the current timestamp.
 - For each selected task, append to `_aegis-brain/tasks/{ID}/history.md`:
   ```
-  | {timestamp} | navi | SPRINT_ASSIGNED | - | sprint-<N> | Sprint <N> planning |
-  | {timestamp} | navi | MOVED | BACKLOG | TODO | Sprint <N> planning |
+  | {timestamp} | captain-america | SPRINT_ASSIGNED | - | sprint-<N> | Sprint <N> planning |
+  | {timestamp} | captain-america | MOVED | BACKLOG | TODO | Sprint <N> planning |
   ```
 - Generate `_aegis-brain/sprints/sprint-<N>/kanban.md` by reading all selected tasks'
   meta.json files and rendering the board view (see pm-state-protocol.md "Regenerating Kanban Board").
@@ -351,7 +351,7 @@ No file is written for status — it is a read-only display. Do NOT write to met
   - Update `_aegis-brain/tasks/{ID}/meta.json`: set `sprint = null`, `status = "BACKLOG"`, `updated` to now.
   - Append to `_aegis-brain/tasks/{ID}/history.md`:
     ```
-    | {timestamp} | navi | MOVED | {current_status} | BACKLOG | Carried over from sprint-<N> |
+    | {timestamp} | captain-america | MOVED | {current_status} | BACKLOG | Carried over from sprint-<N> |
     ```
   - Also add it back to `_aegis-brain/backlog.md` (if that file is still in use) at the top of its
     priority tier, marked with `[carried from sprint-<N>]`.
@@ -385,7 +385,7 @@ No file is written for status — it is a read-only display. Do NOT write to met
 - Read `_aegis-brain/metrics/benchmarks.json`.
 - For the closing sprint, compute:
   - **Speed**: time_per_point (from timestamps), gate_pass_rate (GATE_PASS / total gates), rework_rate (tasks sent back / total).
-  - **Quality**: g1_first_pass (Vigil first-pass %), g2_first_pass (Sentinel first-pass %), critical_findings count, post_deploy_issues (PM.03 count).
+  - **Quality**: g1_first_pass (Black Panther first-pass %), g2_first_pass (War Machine first-pass %), critical_findings count, post_deploy_issues (PM.03 count).
   - **Efficiency**: tokens_per_point (from token-usage.json), cache_hit_rate (from skill cache stats if available), auto_learn_count (new patterns this sprint).
   - **Learning**: evolved_high (HIGH confidence patterns), anti_patterns (detected count), skill_evolutions (skill file updates).
 - Save sprint entry to `sprints` object.
@@ -453,5 +453,5 @@ Sprint <N> Closed
 - **No active sprint** (standup/status/review/retro/close): Report "No active sprint found. Run `/aegis-sprint plan` first."
 - **Sprint already closed** (close): Report "Sprint <N> is already closed."
 - **Missing brain directory**: Create `_aegis-brain/sprints/` and `_aegis-brain/logs/` automatically.
-- **Kanban write conflict**: Only Navi writes to `kanban.md` and `meta.json` files. Other agents send StatusUpdate messages; Navi performs the actual file writes.
+- **Kanban write conflict**: Only Captain America writes to `kanban.md` and `meta.json` files. Other agents send StatusUpdate messages; Captain America performs the actual file writes.
 - **Missing metrics.json**: If `metrics.json` is absent, recompute it from all task `meta.json` files in the sprint (see pm-state-protocol.md "Recomputing Sprint Metrics").

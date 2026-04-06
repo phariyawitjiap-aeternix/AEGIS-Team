@@ -13,7 +13,7 @@ Extracts API endpoints from code and generates OpenAPI specs with examples.
 - **Generate**: OpenAPI 3.0 spec (YAML/JSON)
 - **Examples**: SDK usage snippets (curl, JS, Python)
 - **Output**: `_aegis-output/api-docs/`
-- **Agent**: Echo (sonnet) — documentation; Forge (haiku) — extraction
+- **Agent**: Echo (sonnet) — documentation; Beast (haiku) — extraction
 
 ## Full Instructions
 

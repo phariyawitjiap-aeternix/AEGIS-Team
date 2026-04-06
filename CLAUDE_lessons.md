@@ -10,19 +10,19 @@
 
 ### P001: Progressive Disclosure Saves 90% Context
 - **Discovery**: Framework design phase
-- **Pattern**: Load only CLAUDE.md at session start (~500 tokens). Load CLAUDE_safety.md only before git/file ops. Load CLAUDE_agents.md only before spawning. Load CLAUDE_skills.md only when choosing skills.
+- **Pattern**: Load only CLAUDE.md at session start (~500 tokens). Load CLAUDE_safety.md only before git/file thor. Load CLAUDE_agents.md only before spawning. Load CLAUDE_skills.md only when choosing skills.
 - **Impact**: Starting context drops from ~15K tokens to ~1.5K tokens. Leaves 90%+ of context window for actual work.
 - **Rule**: Never preload all CLAUDE_*.md files. Use the navigation table in CLAUDE.md to decide what to load.
 
 ### P002: Haiku Gathers, Opus Synthesizes
 - **Discovery**: Multi-agent pipeline testing
-- **Pattern**: Use haiku-tier agents (Forge, Muse) for parallel data collection -- they are cheap, fast, and can run 5+ instances simultaneously. Then route collected data to opus-tier agents (Navi, Sage) for synthesis and decision-making.
+- **Pattern**: Use haiku-tier agents (Beast, Songbird) for parallel data collection -- they are cheap, fast, and can run 5+ instances simultaneously. Then route collected data to opus-tier agents (Captain America, Iron Man) for synthesis and decision-making.
 - **Impact**: 80% cost reduction vs. using opus for everything. Faster pipeline execution due to parallel haiku scans.
 - **Rule**: Never ask haiku to make decisions. Never ask opus to do bulk scanning.
 
 ### P003: Review Gates Catch 80% of Issues
 - **Discovery**: Pipeline quality analysis
-- **Pattern**: Insert a Vigil review step between every major pipeline phase: after spec (Sage) -> review -> after implementation (Bolt) -> review -> after content (Muse) -> review. Each gate has explicit acceptance criteria.
+- **Pattern**: Insert a Black Panther review step between every major pipeline phase: after spec (Iron Man) -> review -> after implementation (Spider-Man) -> review -> after content (Songbird) -> review. Each gate has explicit acceptance criteria.
 - **Impact**: Issues caught early are 10x cheaper to fix. Review gates reduce rework cycles from 3-4 to 1-2.
 - **Rule**: Never skip the review gate, even under time pressure. A 2-minute review saves 20 minutes of rework.
 
@@ -40,7 +40,7 @@
 
 ### P006: Blast Radius Prevents Cascade Failures
 - **Discovery**: Multi-agent conflict resolution
-- **Pattern**: Each agent has explicitly defined directories they can read/write. If Bolt accidentally modifies a docs file, Vigil catches it in review. If Forge tries to write code, the system blocks it.
+- **Pattern**: Each agent has explicitly defined directories they can read/write. If Spider-Man accidentally modifies a docs file, Black Panther catches it in review. If Beast tries to write code, the system blocks it.
 - **Impact**: Eliminates merge conflicts between agents. Prevents accidental overwrites. Makes agent behavior predictable.
 - **Rule**: Trust the blast radius table in CLAUDE_agents.md. Violations are always bugs, never features.
 
@@ -59,15 +59,15 @@
 - **Symptom**: Final output is inconsistent in quality, voice, and reasoning depth
 - **Cost**: Rework to rewrite synthesis, inconsistent project documentation
 - **Root Cause**: Delegating the "hard thinking" to save opus tokens -- but synthesis IS the hard thinking
-- **Fix**: Subagents (Bolt, Forge, Muse) provide structured data. Navi (opus) always writes the final synthesis.
-- **Prevention**: Only Navi writes to CLAUDE_lessons.md, retrospectives, and final reports.
+- **Fix**: Subagents (Spider-Man, Beast, Songbird) provide structured data. Captain America (opus) always writes the final synthesis.
+- **Prevention**: Only Captain America writes to CLAUDE_lessons.md, retrospectives, and final reports.
 
 ### A003: Skipping /aegis-retro
 - **Symptom**: Next session starts from scratch, repeats mistakes, loses context
 - **Cost**: 15-30 minutes of re-discovery per session. Lessons never compound.
 - **Root Cause**: "I'll remember" -- but you won't. Context dies with the session.
 - **Fix**: Make /aegis-retro a non-negotiable ritual. It takes 2 minutes and saves 20+ minutes next time.
-- **Prevention**: Navi prompts for retro when session appears to be ending. Golden Rule #6.
+- **Prevention**: Captain America prompts for retro when session appears to be ending. Golden Rule #6.
 
 ### A004: git commit --amend in Multi-Agent Workflows
 - **Symptom**: Agent B's reference to commit hash X becomes invalid because Agent A amended it
@@ -95,7 +95,7 @@
 - **Cost**: Lost work, incomplete features, emergency recovery needed
 - **Root Cause**: Not monitoring token usage, loading too much context too early
 - **Fix**: Monitor context at each phase. Trigger distillation at 60%. Emergency mode at 80%.
-- **Prevention**: /aegis-observe tracks context budget. Navi monitors and triggers distill.
+- **Prevention**: /aegis-observe tracks context budget. Captain America monitors and triggers distill.
 
 ---
 

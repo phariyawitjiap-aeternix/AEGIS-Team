@@ -14,7 +14,7 @@ Meta-tool for extending and customizing the AEGIS framework.
 - **Teams**: Create new team configurations
 - **Modules**: Build reusable framework components
 - **Output**: New files in `skills/`, `.claude/teams/`, or framework dirs
-- **Agent**: Sage (opus) — design; Bolt (sonnet) — implementation
+- **Agent**: Iron Man (opus) — design; Spider-Man (sonnet) — implementation
 
 ## Full Instructions
 

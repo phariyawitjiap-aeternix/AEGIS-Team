@@ -38,19 +38,19 @@ hotfix/<short-desc>
 ## 2. Agent Safety
 
 ### Role Enforcement
-- **Opus writes synthesis** -- only Navi (opus) or Sage (opus) may write final synthesis, architecture decisions, and retrospectives
-- **Haiku gathers only** -- Forge and Muse (haiku models) collect data, scan, research. They NEVER make decisions or write final outputs
-- **Sonnet executes** -- Bolt, Vigil, and Pixel (sonnet models) implement, review, and design. They follow plans, not create them
-- **Never let a subagent write the retrospective** -- only Navi writes retros; subagent contributions are inputs, not outputs
+- **Opus writes synthesis** -- only Captain America (opus) or Iron Man (opus) may write final synthesis, architecture decisions, and retrospectives
+- **Haiku gathers only** -- Beast and Songbird (haiku models) collect data, scan, research. They NEVER make decisions or write final outputs
+- **Sonnet executes** -- Spider-Man, Black Panther, and Wasp (sonnet models) implement, review, and design. They follow plans, not create them
+- **Never let a subagent write the retrospective** -- only Captain America writes retros; subagent contributions are inputs, not outputs
 
 ### Turn Safety
 - **Never end turn before agents finish** (false-ready guard) -- the orchestrator must verify all spawned agents have returned their reports before declaring the pipeline complete
 - **Agent timeout**: if an agent has not responded in 120 seconds, send a status ping. After 300 seconds with no response, escalate to human
-- **Dead agent detection**: if an agent's tmux pane exits unexpectedly, log the failure and notify Navi immediately
+- **Dead agent detection**: if an agent's tmux pane exits unexpectedly, log the failure and notify Captain America immediately
 
 ### Agent Communication
 - Agents communicate via structured message types only (see CLAUDE_agents.md)
-- No agent may directly invoke another agent -- all routing goes through Navi
+- No agent may directly invoke another agent -- all routing goes through Captain America
 - Agent reports must be <= 2000 tokens. If more detail is needed, write to `_aegis-brain/logs/` and reference the file path
 
 ---
@@ -85,20 +85,20 @@ Each agent operates within a defined set of directories and file patterns. Any a
 
 | Agent | Allowed Scope | Forbidden |
 |-------|--------------|-----------|
-| Navi | CLAUDE*.md, _aegis-brain/, _aegis-output/ | Source code (delegates to others) |
-| Sage | docs/, specs/, architecture/ | Direct code changes |
-| Bolt | src/, lib/, tests/, package.json, configs | CLAUDE*.md, _aegis-brain/ |
-| Vigil | Read-only on all project files, _aegis-output/reviews/ | Write to src/ |
-| Havoc | Read-only on all files, _aegis-output/adversarial/ | Write to src/, CLAUDE*.md |
-| Forge | Read-only on all files, _aegis-brain/logs/ | Write to src/, CLAUDE*.md |
-| Pixel | src/components/, src/styles/, public/assets/ | Backend code, CLAUDE*.md |
-| Muse | docs/, README*, CHANGELOG*, _aegis-brain/ | Source code |
+| Captain America | CLAUDE*.md, _aegis-brain/, _aegis-output/ | Source code (delegates to others) |
+| Iron Man | docs/, specs/, architecture/ | Direct code changes |
+| Spider-Man | src/, lib/, tests/, package.json, configs | CLAUDE*.md, _aegis-brain/ |
+| Black Panther | Read-only on all project files, _aegis-output/reviews/ | Write to src/ |
+| Loki | Read-only on all files, _aegis-output/adversarial/ | Write to src/, CLAUDE*.md |
+| Beast | Read-only on all files, _aegis-brain/logs/ | Write to src/, CLAUDE*.md |
+| Wasp | src/components/, src/styles/, public/assets/ | Backend code, CLAUDE*.md |
+| Songbird | docs/, README*, CHANGELOG*, _aegis-brain/ | Source code |
 
 ### Escalation Protocol
 1. Agent detects out-of-scope request
 2. Agent logs the request to `_aegis-brain/logs/escalation-<timestamp>.md`
-3. Agent sends EscalationAlert message to Navi
-4. Navi evaluates: delegate to correct agent OR escalate to human
+3. Agent sends EscalationAlert message to Captain America
+4. Captain America evaluates: delegate to correct agent OR escalate to human
 5. Never silently proceed with out-of-scope work
 
 ---
@@ -112,10 +112,10 @@ Each agent operates within a defined set of directories and file patterns. Any a
 | File read (any project file) | Auto | No confirmation needed |
 | File read (outside project) | Warn | Log + notify, but allow |
 | File write (within project, in-scope) | Auto | No confirmation needed |
-| File write (within project, out-of-scope) | Warn | Escalate to Navi |
+| File write (within project, out-of-scope) | Warn | Escalate to Captain America |
 | File write (outside project) | Block | Reject + escalate to human |
 | Git commit | Auto | Within branch, following conventions |
-| Git push (feature branch) | Confirm | Require Navi approval |
+| Git push (feature branch) | Confirm | Require Captain America approval |
 | Git push (main/master) | Block | Always reject |
 | Shell command (safe: ls, cat, grep, find) | Auto | No confirmation needed |
 | Shell command (mutation: rm, mv, chmod) | Warn | Log + require agent-level approval |
@@ -177,7 +177,7 @@ node_modules/
 | Level | Description | Response |
 |-------|-------------|----------|
 | S1 - Critical | Secret exposed, data loss, main branch corrupted | Stop all agents immediately. Notify human. |
-| S2 - High | Agent wrote outside scope, git conflict, test suite broken | Pause pipeline. Navi investigates. |
+| S2 - High | Agent wrote outside scope, git conflict, test suite broken | Pause pipeline. Captain America investigates. |
 | S3 - Medium | Context budget exceeded, agent timeout, skill load failure | Log and continue with workaround. |
 | S4 - Low | Style violation, minor convention break | Log for retro. Continue. |
 

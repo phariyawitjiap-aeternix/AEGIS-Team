@@ -205,14 +205,14 @@ src/
 
 ### Applying Standards
 
-When generating code (Bolt persona):
+When generating code (Spider-Man persona):
 1. Detect project stack from config files
 2. Load applicable standards from this skill
 3. Apply naming conventions and file structure
 4. Order imports per convention
 5. Add type annotations and documentation
 
-When reviewing code (Vigil persona):
+When reviewing code (Black Panther persona):
 1. Check each standard category
 2. Flag violations with severity:
    - 🔴 Critical: Type safety, security patterns

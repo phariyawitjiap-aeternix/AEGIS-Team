@@ -4,7 +4,7 @@ title: Acceptance Record — AEGIS Version History
 version: 1
 status: Approved
 created: 2026-03-24
-author: Scribe (AEGIS v7.1)
+author: Coulson (AEGIS v7.1)
 project: AEGIS — AI Agent Team Framework
 ---
 
@@ -34,7 +34,7 @@ A version is considered accepted when:
 **Acceptance Verdict**: Accepted with conditions
 
 **What Was Delivered**:
-- 8 agent personas (Navi, Sage, Bolt, Vigil, Havoc, Forge, Pixel, Muse)
+- 8 agent personas (Captain America, Iron Man, Spider-Man, Black Panther, Loki, Beast, Wasp, Songbird)
 - ~20 slash command skills
 - _aegis-brain/ directory with 10 JSON memory files
 - tmux-based multi-agent orchestration
@@ -55,19 +55,19 @@ A version is considered accepted when:
 **Post-v6.0 Actions**:
 - CON-01 → CR-001 (tmux optional) — resolved in v7.0
 - CON-02 → CR-004 (PM state persistence) — resolved in v7.0
-- CON-03 → Sentinel + Probe agents added in v7.0
+- CON-03 → War Machine + Vision agents added in v7.0
 
 ---
 
 ### v7.0 — Enterprise Release
 
 **Date Accepted**: 2026-Q1
-**Accepted By**: Human Operator (Primary) + Navi (Lead Agent)
+**Accepted By**: Human Operator (Primary) + Captain America (Lead Agent)
 **Acceptance Verdict**: Accepted
 
 **What Was Delivered**:
-- 4 new agents: Sentinel (QA Lead), Probe (QA Executor), Scribe (Compliance), Mother Brain
-- 3-gate quality system (Vigil → Sentinel → Havoc)
+- 4 new agents: War Machine (QA Lead), Vision (QA Executor), Coulson (Compliance), Nick Fury
+- 3-gate quality system (Black Panther → War Machine → Loki)
 - PM State Machine (planning → in-process → review → retro)
 - pm-state.json persistence
 - ISO 29110 scaffolding (doc-registry.json, counters.json)
@@ -82,10 +82,10 @@ A version is considered accepted when:
 - Manual: 3-gate pipeline executed end-to-end on one change set
 - Manual: PM state transitions through full cycle (planning → retro)
 - Manual: In-process mode (without tmux) — session completed
-- Manual: Mother Brain scanned project and produced plan without human prompting
+- Manual: Nick Fury scanned project and produced plan without human prompting
 
 **Conditions at Acceptance**:
-- CON-04: ISO 29110 documents scaffolded but not generated — Scribe defined but not yet used
+- CON-04: ISO 29110 documents scaffolded but not generated — Coulson defined but not yet used
 - CON-05: No automated test harness — all testing manual
 
 **Post-v7.0 Actions**:
@@ -97,7 +97,7 @@ A version is considered accepted when:
 ### v7.1 — ISO Documentation Release
 
 **Date Accepted**: 2026-03-24
-**Accepted By**: Human Operator (Primary) + Sentinel (QA Lead)
+**Accepted By**: Human Operator (Primary) + War Machine (QA Lead)
 **Acceptance Verdict**: Accepted
 
 **What Was Delivered**:

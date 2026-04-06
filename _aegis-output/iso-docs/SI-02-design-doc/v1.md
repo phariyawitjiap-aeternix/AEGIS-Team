@@ -4,7 +4,7 @@ title: Design Document — AEGIS Architecture
 version: 1
 status: Approved
 created: 2026-03-24
-author: Scribe (AEGIS v7.1)
+author: Coulson (AEGIS v7.1)
 project: AEGIS — AI Agent Team Framework
 ---
 
@@ -18,7 +18,7 @@ AEGIS is a layered framework built entirely on Claude Code's CLAUDE.md instructi
 Layer 6: ISO Compliance         _aegis-output/iso-docs/
 Layer 5: Output Artifacts       _aegis-output/retros/, qa-reports/
 Layer 4: Agent Memory           _aegis-brain/ (10 JSON files)
-Layer 3: Quality Gates          Vigil → Sentinel → Havoc (3-gate pipeline)
+Layer 3: Quality Gates          Black Panther → War Machine → Loki (3-gate pipeline)
 Layer 2: Skill Commands         /aegis-* (27 slash commands in CLAUDE_skills.md)
 Layer 1: Agent Personas         12 agents defined in CLAUDE_agents.md
 Layer 0: Framework Core         CLAUDE.md, CLAUDE_safety.md, CLAUDE_lessons.md
@@ -32,7 +32,7 @@ Layer 0: Framework Core         CLAUDE.md, CLAUDE_safety.md, CLAUDE_lessons.md
 CLAUDE.md is the root instruction file read at every session start. It defines:
 - Navigation table (which files to read, when, priority)
 - Golden Rules (absolute constraints, never overridden)
-- Mother Brain behavior and default autonomy level
+- Nick Fury behavior and default autonomy level
 - Quick command reference
 
 CLAUDE_safety.md defines the permission model:
@@ -54,9 +54,9 @@ CLAUDE_lessons.md accumulates learnings from retrospectives:
 - Behavioral rules: 3–5 invariant rules that define the agent's character
 
 Model routing rationale:
-- `opus`: Navi, Sage, Havoc, Mother Brain — tasks requiring deep reasoning, architecture, challenge
-- `sonnet`: Bolt, Vigil, Pixel, Sentinel — tasks requiring solid implementation and review
-- `haiku`: Forge, Muse, Probe, Scribe — high-frequency, volume-oriented, cost-sensitive tasks
+- `opus`: Captain America, Iron Man, Loki, Nick Fury — tasks requiring deep reasoning, architecture, challenge
+- `sonnet`: Spider-Man, Black Panther, Wasp, War Machine — tasks requiring solid implementation and review
+- `haiku`: Beast, Songbird, Vision, Coulson — high-frequency, volume-oriented, cost-sensitive tasks
 
 ### Layer 2: Skill Commands
 **File**: CLAUDE_skills.md
@@ -79,25 +79,25 @@ Each skill specifies: purpose, inputs, outputs, agents involved, gate requiremen
 Change Proposed
       │
       ▼
- [Gate 1: Vigil]
+ [Gate 1: Black Panther]
  Code quality, security, style
- Output: Vigil verdict (Pass/Fail + comments)
+ Output: Black Panther verdict (Pass/Fail + comments)
       │
       ▼ (on Pass)
- [Gate 2: Sentinel]
+ [Gate 2: War Machine]
  Test coverage, QA verdict, regression check
- Output: Sentinel QA report
+ Output: War Machine QA report
       │
       ▼ (on Pass)
- [Gate 3: Havoc]
+ [Gate 3: Loki]
  Assumptions, strategic risks, "what breaks at scale"
- Output: Havoc challenge report (Accept/Escalate)
+ Output: Loki challenge report (Accept/Escalate)
       │
       ▼ (on Accept)
    DONE
 ```
 
-Gate failures trigger either fix-and-resubmit (Vigil, Sentinel) or architecture review (Havoc escalation to Navi).
+Gate failures trigger either fix-and-resubmit (Black Panther, War Machine) or architecture review (Loki escalation to Captain America).
 
 ### Layer 4: Agent Memory
 **Directory**: `_aegis-brain/`
@@ -119,9 +119,9 @@ Gate failures trigger either fix-and-resubmit (Vigil, Sentinel) or architecture 
 **Directory**: `_aegis-output/`
 
 - `retros/` — Retrospective documents (one per session)
-- `qa-reports/` — Sentinel QA reports and Probe test results
+- `qa-reports/` — War Machine QA reports and Vision test results
 - `iso-docs/` — ISO 29110 work products (this document lives here)
-- `debate-logs/` — Havoc challenge + team debate transcripts
+- `debate-logs/` — Loki challenge + team debate transcripts
 
 ### Layer 6: ISO Compliance
 **Directory**: `_aegis-output/iso-docs/`
@@ -147,17 +147,17 @@ Tracked in `doc-registry.json`.
                       next cycle
 ```
 
-State transitions triggered by `/aegis-pm-cycle`. Mother Brain reads state at session start and resumes from last known phase.
+State transitions triggered by `/aegis-pm-cycle`. Nick Fury reads state at session start and resumes from last known phase.
 
-## 4. Decision Matrix (Mother Brain)
+## 4. Decision Matrix (Nick Fury)
 
-Mother Brain scores pending tasks P0–P10 based on:
+Nick Fury scores pending tasks P0–P10 based on:
 - P0–P2: Blockers (broken build, security issue, data loss risk)
 - P3–P5: High priority (unfinished cycle, failing gate, stale plan)
 - P6–P8: Normal (feature work, doc updates, refactoring)
 - P9–P10: Low (nice-to-have, cosmetic, future ideas)
 
-Mother Brain always works from P0 down. Never skips a P0 to work on P5.
+Nick Fury always works from P0 down. Never skips a P0 to work on P5.
 
 ## 5. Data Flow
 
@@ -165,7 +165,7 @@ Mother Brain always works from P0 down. Never skips a P0 to work on P5.
 Operator input (/aegis-start)
     │
     ▼
-Mother Brain reads pm-state.json + git log + brain files
+Nick Fury reads pm-state.json + git log + brain files
     │
     ▼
 Decision Matrix constructed (P0–P10)
@@ -177,7 +177,7 @@ Plan artifact written to current-plan.json
 Agents assigned (agent-assignments.json)
     │
     ▼
-Bolt/Pixel implement ─► Vigil Gate 1 ─► Sentinel Gate 2 ─► Havoc Gate 3
+Spider-Man/Wasp implement ─► Black Panther Gate 1 ─► War Machine Gate 2 ─► Loki Gate 3
     │
     ▼
 Output artifacts written (_aegis-output/)

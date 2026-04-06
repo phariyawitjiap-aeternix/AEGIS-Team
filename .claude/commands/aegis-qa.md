@@ -10,8 +10,8 @@ triggers:
 
 ## Quick Reference
 QA command that plans test strategies, executes tests, reviews results, and gates
-releases. Solo mode uses sub-agent Sentinel for single targets. Team mode spawns
-a full QA team (Sentinel + Probe) via TeamCreate for multi-target work.
+releases. Solo mode uses sub-agent War Machine for single targets. Team mode spawns
+a full QA team (War Machine + Vision) via TeamCreate for multi-target work.
 
 ## Full Instructions
 
@@ -28,13 +28,13 @@ a full QA team (Sentinel + Probe) via TeamCreate for multi-target work.
 ### Mode Selection
 
 **Solo Mode** (1 target, simple scope):
-- Uses sub-agent Sentinel directly
-- Sentinel plans, coordinates Probe internally, reviews, and gates
+- Uses sub-agent War Machine directly
+- War Machine plans, coordinates Vision internally, reviews, and gates
 - Best for: single module, single feature, quick checks
 
 **Team Mode** (2+ targets, complex scope):
 - Spawns full QA team via TeamCreate in tmux
-- Sentinel as QA Lead, Probe as parallel executor
+- War Machine as QA Lead, Vision as parallel executor
 - Best for: sprint-wide QA, multi-module changes, release candidates
 
 Mode is auto-detected based on scope, or forced with `--mode solo|team`.
@@ -59,7 +59,7 @@ Execute tests for the target. Requires a test plan (auto-generates one if missin
 
 1. Load or generate test plan
 2. Detect test runner and environment
-3. Execute test cases via Probe
+3. Execute test cases via Vision
 4. Capture raw results
 5. Output: `_aegis-output/qa/sprint-N/raw-results.md`
 
@@ -68,7 +68,7 @@ Execute tests for the target. Requires a test plan (auto-generates one if missin
 Generate QA report from existing test results.
 
 1. Load raw results from `_aegis-output/qa/sprint-N/raw-results.md`
-2. Sentinel analyzes and interprets results
+2. War Machine analyzes and interprets results
 3. Calculate metrics: pass rate, regression count, coverage delta
 4. Classify failures by severity and type
 5. Output: `_aegis-output/qa/sprint-N/qa-report.md`
@@ -104,11 +104,11 @@ Release gate check — issues a verdict based on existing QA report.
    - Append to `_aegis-brain/tasks/{TASK-ID}/history.md`:
      - On PASS or CONDITIONAL:
        ```
-       | {YYYY-MM-DD HH:MM} | sentinel | GATE_PASS | - | Gate {N} | {one-line summary} |
+       | {YYYY-MM-DD HH:MM} | war-machine | GATE_PASS | - | Gate {N} | {one-line summary} |
        ```
      - On FAIL:
        ```
-       | {YYYY-MM-DD HH:MM} | sentinel | GATE_FAIL | - | Gate {N} | {one-line summary} |
+       | {YYYY-MM-DD HH:MM} | war-machine | GATE_FAIL | - | Gate {N} | {one-line summary} |
        ```
    - If verdict is FAIL or CONDITIONAL with findings, append a comment to
      `_aegis-brain/tasks/{TASK-ID}/comments.md` (use comment format from pm-state-protocol.md)
@@ -134,13 +134,13 @@ When team mode is activated:
 
 ```
 TeamCreate: aegis-qa-team
-  Sentinel (sonnet) — QA Lead: plans, reviews, gates
-  Probe (haiku)     — Executor: runs tests in parallel
+  War Machine (sonnet) — QA Lead: plans, reviews, gates
+  Vision (haiku)     — Executor: runs tests in parallel
 ```
 
-- Sentinel breaks work into parallel test batches for Probe
-- Probe instances run test batches concurrently
-- Sentinel collects and merges results
+- War Machine breaks work into parallel test batches for Vision
+- Vision instances run test batches concurrently
+- War Machine collects and merges results
 - Human monitors via `tmux attach -t aegis-qa-team`
 
 ### Examples
@@ -167,8 +167,8 @@ TeamCreate: aegis-qa-team
 ```
 _aegis-output/qa/sprint-N/
   test-plan.md      # Test strategy and case list
-  raw-results.md    # Probe's raw execution output
-  qa-report.md      # Sentinel's analysis and verdict
+  raw-results.md    # Vision's raw execution output
+  qa-report.md      # War Machine's analysis and verdict
   coverage/         # Coverage reports (if available)
 ```
 

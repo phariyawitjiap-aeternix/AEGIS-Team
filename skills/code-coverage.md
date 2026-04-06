@@ -14,7 +14,7 @@ Analyzes test coverage and suggests missing test cases.
 - **Prioritize**: Rank uncovered code by risk and importance
 - **Suggest**: Generate specific test cases for uncovered paths
 - **Output**: `_aegis-output/coverage/`
-- **Agent**: Vigil (sonnet) — analysis; Bolt (sonnet) — test generation
+- **Agent**: Black Panther (sonnet) — analysis; Spider-Man (sonnet) — test generation
 
 ## Full Instructions
 
@@ -161,7 +161,7 @@ describe('AuthService.validateToken', () => {
 ```markdown
 # Coverage Report
 **Date**: YYYY-MM-DD
-**Analyzer**: Vigil (AEGIS)
+**Analyzer**: Black Panther (AEGIS)
 **Target**: <project/directory>
 
 ## Overall Coverage

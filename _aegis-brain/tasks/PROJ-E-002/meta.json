@@ -1,6 +1,6 @@
 {
   "id": "PROJ-E-002",
-  "title": "Mother Brain delivers on promises",
+  "title": "Nick Fury delivers on promises",
   "type": "epic",
   "task_type": null,
   "parent": "PROJ-J-002",
@@ -9,7 +9,7 @@
   "assignee": "unassigned",
   "points": null,
   "priority": "high",
-  "labels": ["mother-brain", "orchestration"],
+  "labels": ["nick-fury", "orchestration"],
   "dependencies": {
     "blocks": [],
     "blocked_by": []

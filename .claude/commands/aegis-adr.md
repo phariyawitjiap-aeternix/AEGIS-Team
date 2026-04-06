@@ -15,9 +15,9 @@ debated, and made searchable so the team never asks "why did we choose X?" again
 
 | Subcommand | Purpose |
 |-----------|---------|
-| `/aegis-adr new "title"` | Create new ADR (Sage analyzes options, Havoc challenges) |
+| `/aegis-adr new "title"` | Create new ADR (Iron Man analyzes options, Loki challenges) |
 | `/aegis-adr list` | Show all ADRs with status |
-| `/aegis-adr review ADR-NNN` | Review an ADR (Havoc challenges, Sage defends) |
+| `/aegis-adr review ADR-NNN` | Review an ADR (Loki challenges, Iron Man defends) |
 | `/aegis-adr accept ADR-NNN` | Mark as ACCEPTED |
 | `/aegis-adr deprecate ADR-NNN "reason"` | Mark as DEPRECATED with reason |
 | `/aegis-adr search "keyword"` | Search ADRs by keyword |
@@ -60,16 +60,16 @@ and ask which action to run.
 - Convert title to lowercase kebab-case slug.
 - Example: "Use PostgreSQL for primary datastore" -> `use-postgresql-for-primary-datastore`
 
-#### Step 3: Sage Analyzes Options
-Spawn Sage (sub-agent) to:
+#### Step 3: Iron Man Analyzes Options
+Spawn Iron Man (sub-agent) to:
 1. Read all existing ADRs in `_aegis-brain/adrs/` to check for contradictions.
 2. Identify at least 3 options for the decision.
 3. For each option, list pros, cons, and risk level (LOW/MEDIUM/HIGH).
 4. Recommend one option with rationale.
 
-#### Step 4: Havoc Challenges (optional, for HIGH-risk decisions)
-If any option has risk=HIGH, spawn Havoc to:
-1. Challenge assumptions in Sage's analysis.
+#### Step 4: Loki Challenges (optional, for HIGH-risk decisions)
+If any option has risk=HIGH, spawn Loki to:
+1. Challenge assumptions in Iron Man's analysis.
 2. Identify hidden risks or overlooked options.
 3. Add findings to the ADR's "Options Considered" table.
 
@@ -78,7 +78,7 @@ If any option has risk=HIGH, spawn Havoc to:
 - Write `_aegis-brain/adrs/ADR-NNN-{slug}.md` using the format from `adr-protocol.md`.
 - Set status to `PROPOSED`.
 - Set date to today.
-- Set deciders to agents who participated (sage, havoc if involved).
+- Set deciders to agents who participated (iron-man, loki if involved).
 
 #### Step 6: Log
 Append to `_aegis-brain/logs/activity.log`:
@@ -133,19 +133,19 @@ No files are written -- this is read-only.
 1. Read `_aegis-brain/adrs/ADR-NNN-*.md` (find file by ID prefix).
 2. If not found, error: `ADR-NNN not found in _aegis-brain/adrs/`.
 3. Display the full ADR content.
-4. Spawn Havoc to challenge the decision:
+4. Spawn Loki to challenge the decision:
    - Question each "Pro" -- is it really a benefit?
    - Stress-test each "Con" -- is it worse than stated?
    - Propose scenarios where the decision fails.
-5. Spawn Sage to defend the decision against Havoc's challenges.
+5. Spawn Iron Man to defend the decision against Loki's challenges.
 6. Append debate outcome to the ADR file under a new `## Review` section:
    ```markdown
    ## Review (YYYY-MM-DD)
-   ### Challenges (Havoc)
+   ### Challenges (Loki)
    - {challenge 1}
    - {challenge 2}
 
-   ### Defense (Sage)
+   ### Defense (Iron Man)
    - {response 1}
    - {response 2}
 

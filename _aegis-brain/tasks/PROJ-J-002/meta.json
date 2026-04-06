@@ -9,7 +9,7 @@
   "assignee": "unassigned",
   "points": null,
   "priority": "high",
-  "labels": ["mother-brain", "autonomy"],
+  "labels": ["nick-fury", "autonomy"],
   "dependencies": {
     "blocks": [],
     "blocked_by": []

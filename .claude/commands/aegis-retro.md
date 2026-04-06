@@ -13,12 +13,12 @@ End-of-session retrospective inspired by Oracle's rrr pattern. Gathers git activ
 writes a session summary, composes an honest AI diary (150+ words first-person reflection),
 documents friction points (3+ minimum), extracts lessons learned to _aegis-brain/learnings/,
 saves full retro to _aegis-brain/retrospectives/, and updates activity.log.
-IMPORTANT: Only the main agent (Navi/Opus) writes this — never a subagent.
+IMPORTANT: Only the main agent (Captain America/Opus) writes this — never a subagent.
 
 ## Full Instructions
 
 ### Prerequisites
-- This command should ONLY be executed by the main orchestrator agent (Navi/Opus).
+- This command should ONLY be executed by the main orchestrator agent (Captain America/Opus).
 - If a subagent is asked to run this, it should refuse and defer to the main agent.
 
 ### Step 1: Gather Session Activity

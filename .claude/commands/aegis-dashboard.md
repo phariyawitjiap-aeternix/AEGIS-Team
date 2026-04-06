@@ -177,10 +177,10 @@ When `agents` subcommand is used, show bar chart:
 
 ```
 AGENT WORKLOAD
-  @bolt      [========--------]  5/8 tasks done  (13 pts)
-  @vigil     [============----]  3/4 tasks done  ( 8 pts)
-  @sage      [================]  2/2 tasks done  ( 5 pts)
-  @sentinel  [====------------]  1/4 tasks done  ( 5 pts)
+  @spider-man      [========--------]  5/8 tasks done  (13 pts)
+  @black-panther     [============----]  3/4 tasks done  ( 8 pts)
+  @iron-man      [================]  2/2 tasks done  ( 5 pts)
+  @war-machine  [====------------]  1/4 tasks done  ( 5 pts)
 ```
 
 ---
@@ -214,7 +214,7 @@ AGENT WORKLOAD
 - **Sprint overdue (current day > total days)**: Show day as "Day X of Y (OVERDUE +Z days)" and status as OFF_TRACK.
 
 ## Agent Routing
-- **Primary**: Navi (read-only, no writes)
+- **Primary**: Captain America (read-only, no writes)
 - **No sub-agents needed**: This is a pure read + compute + display command.
 
 ## Output Location

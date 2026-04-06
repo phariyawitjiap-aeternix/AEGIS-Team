@@ -6,7 +6,7 @@
 | File | When to Read | Priority |
 |------|-------------|----------|
 | CLAUDE.md | Every session | Required |
-| CLAUDE_safety.md | Before git/file ops | Required |
+| CLAUDE_safety.md | Before git/file thor | Required |
 | CLAUDE_agents.md | Before spawning agents | As needed |
 | CLAUDE_skills.md | When choosing skills | As needed |
 | CLAUDE_lessons.md | When stuck or deciding | Reference |
@@ -19,8 +19,8 @@
 5. Run /aegis-start at session begin
 6. Run /aegis-retro at session end
 
-## Mother Brain (🧬)
-After /aegis-start, Mother Brain takes full control:
+## Nick Fury (🧬)
+After /aegis-start, Nick Fury takes full control:
 - Scans project state (git, tests, specs, deps, tech debt)
 - Decides what to do next (Decision Matrix P0-P10)
 - Spawns the right team via tmux automatically
@@ -28,12 +28,12 @@ After /aegis-start, Mother Brain takes full control:
 - Human watches via `tmux attach -t aegis-team`
 - Human can interrupt anytime (Ctrl+C) or downgrade: /aegis-mode --autonomy L1
 
-Default autonomy: L3 (Autonomous) with Mother Brain active
+Default autonomy: L3 (Autonomous) with Nick Fury active
 
 ## Quick Commands
 | Command | Purpose |
 |---------|---------|
-| /aegis-start | Begin session -- Mother Brain activates |
+| /aegis-start | Begin session -- Nick Fury activates |
 | /aegis-retro | End session -- retrospective + lessons |
 | /aegis-pipeline | Full analysis pipeline |
 | /aegis-team-build | Spawn build team (tmux) |

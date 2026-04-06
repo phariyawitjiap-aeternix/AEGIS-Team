@@ -14,7 +14,7 @@ Generates complete project specifications from minimal input.
 - **UX Blueprint**: User flows, wireframe descriptions, interaction patterns
 - **Pipeline**: Brief → Research → BRD → SRS → UX Blueprint
 - **Output**: `_aegis-output/specs/` (BRD.md, SRS.md, UX-Blueprint.md)
-- **Agent**: Sage (opus) — primary author
+- **Agent**: Iron Man (opus) — primary author
 
 ## Full Instructions
 
@@ -49,7 +49,7 @@ Before generating any spec, gather context:
 **Project**: <name>
 **Version**: 1.0
 **Date**: YYYY-MM-DD
-**Author**: Sage (AEGIS)
+**Author**: Iron Man (AEGIS)
 
 ## 1. Executive Summary
 <2-3 paragraphs: what, why, for whom>
@@ -237,4 +237,4 @@ Before marking specs complete:
 - [ ] Requirements are testable (clear acceptance criteria)
 - [ ] No contradictions between BRD, SRS, and UX Blueprint
 - [ ] Scope is realistic for stated constraints
-- [ ] Review by Vigil for completeness (if team mode)
+- [ ] Review by Black Panther for completeness (if team mode)

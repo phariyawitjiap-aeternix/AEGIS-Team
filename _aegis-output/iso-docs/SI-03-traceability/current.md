@@ -4,7 +4,7 @@ title: Traceability Matrix — Requirements to Design to Files to Tests
 version: 1
 status: Approved
 created: 2026-03-24
-author: Scribe (AEGIS v7.1)
+author: Coulson (AEGIS v7.1)
 project: AEGIS — AI Agent Team Framework
 ---
 
@@ -22,18 +22,18 @@ This matrix traces each functional requirement (SI.01) to its design element (SI
 | FR-02 | Skill command system (27 skills) | Layer 2: Skill Commands | CLAUDE_skills.md | TC-02 |
 | FR-03 | Session lifecycle (start → work → retro) | PM State Machine | CLAUDE.md, CLAUDE_skills.md | TC-03 |
 | FR-04 | Persistent memory (_aegis-brain/) | Layer 4: Agent Memory | _aegis-brain/*.json | TC-04 |
-| FR-05 | Three-gate quality system | Layer 3: Quality Gates | CLAUDE_agents.md (Vigil, Sentinel, Havoc) | TC-05 |
+| FR-05 | Three-gate quality system | Layer 3: Quality Gates | CLAUDE_agents.md (Black Panther, War Machine, Loki) | TC-05 |
 | FR-06 | PM State Machine | PM State Machine (SI.02 §3) | _aegis-brain/pm-state.json, CLAUDE_skills.md | TC-06 |
 | FR-07 | ISO 29110 compliance docs (11 docs) | Layer 6: ISO Compliance | _aegis-output/iso-docs/ | TC-07 |
-| FR-08 | Autonomy levels (L1/L2/L3) | Mother Brain, /aegis-mode | CLAUDE.md, CLAUDE_agents.md | TC-08 |
-| FR-09 | Mother Brain orchestration | Decision Matrix (SI.02 §4) | CLAUDE_agents.md (Mother Brain) | TC-09 |
+| FR-08 | Autonomy levels (L1/L2/L3) | Nick Fury, /aegis-mode | CLAUDE.md, CLAUDE_agents.md | TC-08 |
+| FR-09 | Nick Fury orchestration | Decision Matrix (SI.02 §4) | CLAUDE_agents.md (Nick Fury) | TC-09 |
 | FR-10 | tmux optional / in-process fallback | Layer 0: Framework Core | CLAUDE.md, GETTING_STARTED.md | TC-10 |
 | NFR-01 | Zero external runtime dependencies | All layers (no imports) | All CLAUDE*.md, _aegis-brain/ | TC-11 |
 | NFR-02 | Token efficiency (model routing) | Layer 1: Model tier assignment | CLAUDE_agents.md | TC-12 |
 | NFR-03 | Portability | Layer 0: plain file approach | All *.md, *.json | TC-13 |
 | NFR-04 | Graceful degradation | Skill error handling | CLAUDE_skills.md | TC-14 |
 | NFR-05 | Audit trail | Layer 4 + Layer 5 | _aegis-brain/, _aegis-output/ | TC-15 |
-| NFR-06 | Bilingual operator interface | Muse agent, language rules | CLAUDE_agents.md (Muse) | TC-16 |
+| NFR-06 | Bilingual operator interface | Songbird agent, language rules | CLAUDE_agents.md (Songbird) | TC-16 |
 | NFR-07 | Version compatibility | CLAUDE.md version header | CLAUDE.md | TC-17 |
 
 ## 3. Design Element → Requirements Coverage

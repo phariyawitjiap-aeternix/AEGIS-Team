@@ -1,6 +1,6 @@
 {
   "id": "PROJ-T-009",
-  "title": "Scribe generates versioned ISO docs automatically",
+  "title": "Coulson generates versioned ISO docs automatically",
   "type": "task",
   "task_type": "doc",
   "parent": "PROJ-E-003",
@@ -9,7 +9,7 @@
   "assignee": "unassigned",
   "points": 5,
   "priority": "medium",
-  "labels": ["scribe", "iso-29110", "compliance"],
+  "labels": ["coulson", "iso-29110", "compliance"],
   "dependencies": {
     "blocks": [],
     "blocked_by": []

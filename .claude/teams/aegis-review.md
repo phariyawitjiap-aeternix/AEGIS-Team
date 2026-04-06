@@ -1,24 +1,24 @@
 ---
 name: aegis-review
 description: "Deep multi-perspective code review team"
-lead: vigil
-members: [havoc, forge]
+lead: black-panther
+members: [loki, beast]
 mode: tmux
 requires: tmux
 ---
 
 ## Team Purpose
-Multi-perspective review combining quality enforcement (Vigil), adversarial challenge (Havoc), and data gathering (Forge).
+Multi-perspective review combining quality enforcement (Black Panther), adversarial challenge (Loki), and data gathering (Beast).
 
 ## Task Breakdown
-1. Forge (haiku): Scan codebase, gather metrics, identify hotspots
-2. Havoc (opus): Challenge assumptions, find edge cases, adversarial test
-3. Vigil (sonnet): Synthesize findings, enforce quality gate, write report
+1. Beast (haiku): Scan codebase, gather metrics, identify hotspots
+2. Loki (opus): Challenge assumptions, find edge cases, adversarial test
+3. Black Panther (sonnet): Synthesize findings, enforce quality gate, write report
 
 ## Communication Flow
-Forge → StatusUpdate → Vigil
-Havoc → FindingReport → Vigil
-Vigil → QualityGate → Lead (Navi)
+Beast → StatusUpdate → Black Panther
+Loki → FindingReport → Black Panther
+Black Panther → QualityGate → Lead (Captain America)
 
 ## Review Gate
 - 0 critical findings = PASS

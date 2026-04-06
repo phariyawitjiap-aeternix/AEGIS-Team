@@ -4,7 +4,7 @@ title: Test Report — AEGIS v7.1 Session 2026-03-24
 version: 1
 status: Approved
 created: 2026-03-24
-author: Scribe (AEGIS v7.1)
+author: Coulson (AEGIS v7.1)
 project: AEGIS — AI Agent Team Framework
 ---
 
@@ -13,8 +13,8 @@ project: AEGIS — AI Agent Team Framework
 ## 1. Test Session Summary
 
 **Session Date**: 2026-03-24
-**Test Executor**: Probe (AEGIS v7.1, haiku tier) — results recorded by Scribe
-**Test Approver**: Sentinel (QA Lead)
+**Test Executor**: Vision (AEGIS v7.1, haiku tier) — results recorded by Coulson
+**Test Approver**: War Machine (QA Lead)
 **Scope**: v7.1 ISO documentation completion verification (TC-01 through TC-15 subset)
 
 **Overall Result**: PASS
@@ -32,28 +32,28 @@ project: AEGIS — AI Agent Team Framework
 
 ### TC-01: Agent Roster Completeness — PASS
 **Date**: 2026-03-24
-**Executor**: Probe
+**Executor**: Vision
 
 CLAUDE_agents.md verified to contain all 12 agents:
-1. Navi (opus) — Navigator/Lead
-2. Sage (opus) — Architect
-3. Bolt (sonnet) — Implementer
-4. Vigil (sonnet) — Reviewer
-5. Havoc (opus) — Devil's Advocate
-6. Forge (haiku) — Scanner/Research
-7. Pixel (sonnet) — UX Designer
-8. Muse (haiku) — Content Creator
-9. Sentinel (sonnet) — QA Lead
-10. Probe (haiku) — QA Executor
-11. Scribe (haiku) — Compliance Doc Generator
-12. Mother Brain (opus) — Autonomous Controller
+1. Captain America (opus) — Navigator/Lead
+2. Iron Man (opus) — Architect
+3. Spider-Man (sonnet) — Implementer
+4. Black Panther (sonnet) — Reviewer
+5. Loki (opus) — Devil's Advocate
+6. Beast (haiku) — Scanner/Research
+7. Wasp (sonnet) — UX Designer
+8. Songbird (haiku) — Content Creator
+9. War Machine (sonnet) — QA Lead
+10. Vision (haiku) — QA Executor
+11. Coulson (haiku) — Compliance Doc Generator
+12. Nick Fury (opus) — Autonomous Controller
 
 Each agent verified to have: model tier, role, tools, blast radius, message types, behavioral rules.
 **Result**: PASS — All 12 agents present with required fields.
 
 ### TC-02: Skill Command Completeness — PASS
 **Date**: 2026-03-24
-**Executor**: Probe
+**Executor**: Vision
 
 CLAUDE_skills.md counted: 27 skills across 7 categories.
 Categories confirmed: Session (4), Pipeline (6), Team (3), Brain (3), PM (3), QA (3), Docs (2), Util (3).
@@ -62,7 +62,7 @@ Note: Util count is 3, bringing total to 27.
 
 ### TC-03: Brain Directory Structure — PASS
 **Date**: 2026-03-24
-**Executor**: Probe
+**Executor**: Vision
 
 _aegis-brain/ directory scanned. Confirmed files:
 - pm-state.json: Present, valid JSON
@@ -73,7 +73,7 @@ _aegis-brain/ directory scanned. Confirmed files:
 
 ### TC-04: ISO Doc Directory Structure — PASS
 **Date**: 2026-03-24
-**Executor**: Probe
+**Executor**: Vision
 
 Post-generation verification of _aegis-output/iso-docs/:
 - PM-01-project-plan/: v1.md, current.md, changelog.md — Present
@@ -92,9 +92,9 @@ Post-generation verification of _aegis-output/iso-docs/:
 
 ### TC-05: /aegis-start Execution — PASS
 **Date**: 2026-03-24
-**Executor**: Probe (manual verification)
+**Executor**: Vision (manual verification)
 
-The v7.1 generation session itself serves as evidence of /aegis-start functioning. Session initialized, CLAUDE.md read, pm-state.json read, project state scanned. Scribe activated for ISO doc generation.
+The v7.1 generation session itself serves as evidence of /aegis-start functioning. Session initialized, CLAUDE.md read, pm-state.json read, project state scanned. Coulson activated for ISO doc generation.
 **Result**: PASS — Session lifecycle initiated successfully.
 
 ### TC-06: /aegis-retro — BLOCKED
@@ -109,7 +109,7 @@ The v7.1 generation session itself serves as evidence of /aegis-start functionin
 
 ### TC-08: Phase Transition — PASS (partial)
 **Date**: 2026-03-24
-**Executor**: Probe
+**Executor**: Vision
 
 pm-state.json confirmed readable. Phase field present. Transition mechanism confirmed in CLAUDE_skills.md (/aegis-pm-cycle).
 **Result**: PASS (structural) — Runtime transition test deferred to TC-09.
@@ -121,28 +121,28 @@ pm-state.json confirmed readable. Phase field present. Transition mechanism conf
 
 ### TC-13: Document Registry Completeness — PASS
 **Date**: 2026-03-24
-**Executor**: Probe
+**Executor**: Vision
 
 doc-registry.json verified post-update: 11 entries, each with id, title, path, status="Approved", created="2026-03-24".
 **Result**: PASS — All 11 documents registered.
 
 ### TC-14: Document Header Conformance — PASS
 **Date**: 2026-03-24
-**Executor**: Probe
+**Executor**: Vision
 
 Spot-checked 5 of 11 documents. All contain YAML front matter with: document, title, version, status, created, author, project.
 **Result**: PASS — Header conformance verified.
 
 ### TC-15: Counter Accuracy — PASS
 **Date**: 2026-03-24
-**Executor**: Probe
+**Executor**: Vision
 
 counters.json post-update: DOC=11. All other counters non-negative.
 **Result**: PASS — DOC counter accurate.
 
 ### TC-16: In-Process Mode — PASS
 **Date**: 2026-03-24
-**Executor**: Probe (manual verification)
+**Executor**: Vision (manual verification)
 
 This entire session executed in in-process mode (no tmux). All 11 documents generated, all quality gates applied in-process. No errors related to tmux absence.
 **Result**: PASS — In-process mode functions correctly.
@@ -151,7 +151,7 @@ This entire session executed in in-process mode (no tmux). All 11 documents gene
 
 None. No defects identified during this test session.
 
-## 4. Sentinel QA Verdict
+## 4. War Machine QA Verdict
 
 **Verdict**: PASS
 

@@ -4,7 +4,7 @@ title: Requirements Specification — AEGIS AI Agent Team Framework
 version: 1
 status: Approved
 created: 2026-03-24
-author: Scribe (AEGIS v7.1)
+author: Coulson (AEGIS v7.1)
 project: AEGIS — AI Agent Team Framework
 ---
 
@@ -49,9 +49,9 @@ The system shall maintain a `_aegis-brain/` directory with JSON files persisting
 
 ### FR-05: Three-Gate Quality System
 The system shall enforce a three-gate quality pipeline for all significant changes:
-- Gate 1: Vigil (code quality, security, style)
-- Gate 2: Sentinel (test coverage, QA verdict)
-- Gate 3: Havoc (assumptions, strategic risks)
+- Gate 1: Black Panther (code quality, security, style)
+- Gate 2: War Machine (test coverage, QA verdict)
+- Gate 3: Loki (assumptions, strategic risks)
 
 **Acceptance**: No change reaches "Done" status without passing all three gates. Each gate produces a written verdict artifact.
 
@@ -69,12 +69,12 @@ The system shall generate and maintain all 11 ISO 29110 Basic Profile work produ
 The system shall support three autonomy levels:
 - L1 (Guided): Human approves every agent action
 - L2 (Supervised): Human approves major decisions, agents handle details
-- L3 (Autonomous): Mother Brain decides and executes; human can interrupt
+- L3 (Autonomous): Nick Fury decides and executes; human can interrupt
 
 **Acceptance**: `/aegis-mode --autonomy L1/L2/L3` switches mode. Current mode reflected in pm-state.json.
 
-### FR-09: Mother Brain Orchestration
-Mother Brain shall, on activation, scan project state (git log, brain files, open tasks), construct a Decision Matrix (P0–P10 priority), and spawn the appropriate agent team without human prompting.
+### FR-09: Nick Fury Orchestration
+Nick Fury shall, on activation, scan project state (git log, brain files, open tasks), construct a Decision Matrix (P0–P10 priority), and spawn the appropriate agent team without human prompting.
 
 **Acceptance**: `/aegis-start` in L3 mode produces a plan and begins execution without operator input beyond the initial command.
 

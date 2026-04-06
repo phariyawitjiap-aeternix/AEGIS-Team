@@ -4,7 +4,7 @@ title: Change Requests Log — AEGIS v7.1
 version: 1
 status: Approved
 created: 2026-03-24
-author: Scribe (AEGIS v7.1)
+author: Coulson (AEGIS v7.1)
 project: AEGIS — AI Agent Team Framework
 ---
 
@@ -22,7 +22,7 @@ This document records all formal change requests raised against AEGIS from v6.0 
 
 **ID**: CR-001
 **Date Raised**: 2026-Q1
-**Raised By**: Sage (Architect)
+**Raised By**: Iron Man (Architect)
 **Status**: Approved and Implemented (v7.0)
 
 **Problem Statement**:
@@ -34,7 +34,7 @@ tmux was a hard dependency for multi-agent orchestration. New operators on macOS
 - Add tmux availability check at `/aegis-start`
 - Update GETTING_STARTED.md to document both modes
 
-**Decision**: Approved by Navi (Lead). Risk accepted: in-process mode sacrifices true parallelism but preserves all quality gates.
+**Decision**: Approved by Captain America (Lead). Risk accepted: in-process mode sacrifices true parallelism but preserves all quality gates.
 
 **Impact**:
 - CLAUDE.md: Added in-process mode documentation
@@ -48,7 +48,7 @@ tmux was a hard dependency for multi-agent orchestration. New operators on macOS
 
 **ID**: CR-002
 **Date Raised**: 2026-Q1
-**Raised By**: Havoc (Devil's Advocate)
+**Raised By**: Loki (Devil's Advocate)
 **Status**: Approved and Implemented (v7.0)
 
 **Problem Statement**:
@@ -73,21 +73,21 @@ The term "loop" in agent communication (e.g., "build loop", "review loop") cause
 
 **ID**: CR-003
 **Date Raised**: 2026-Q1
-**Raised By**: Vigil (Reviewer)
+**Raised By**: Black Panther (Reviewer)
 **Status**: Approved and Implemented (v7.0)
 
 **Problem Statement**:
-In v6.0, agents (primarily Bolt) would begin implementation immediately upon receiving a task, before Sage had confirmed the architecture. This led to rework when Vigil's review revealed design flaws that should have been caught at the planning stage.
+In v6.0, agents (primarily Spider-Man) would begin implementation immediately upon receiving a task, before Iron Man had confirmed the architecture. This led to rework when Black Panther's review revealed design flaws that should have been caught at the planning stage.
 
 **Proposed Change**:
-- Add mandatory planning gate: Sage must produce a design summary before Bolt begins
+- Add mandatory planning gate: Iron Man must produce a design summary before Spider-Man begins
 - Add gate check to `/aegis-build` skill: aborts if no plan artifact exists in `_aegis-brain/current-plan.json`
-- Update Mother Brain decision matrix: planning phase must complete before in-process phase begins
+- Update Nick Fury decision matrix: planning phase must complete before in-process phase begins
 
-**Decision**: Approved by Navi. Havoc challenged whether the gate adds latency; Navi accepted the latency trade-off in favor of rework reduction.
+**Decision**: Approved by Captain America. Loki challenged whether the gate adds latency; Captain America accepted the latency trade-off in favor of rework reduction.
 
 **Impact**:
-- CLAUDE_agents.md: Bolt behavioral rule added — "Never start implementation without confirmed plan"
+- CLAUDE_agents.md: Spider-Man behavioral rule added — "Never start implementation without confirmed plan"
 - CLAUDE_skills.md: `/aegis-build` updated with gate check logic
 - _aegis-brain/: `current-plan.json` schema defined
 - Estimated rework reduction: 40% based on v6.0 retrospective data
@@ -98,7 +98,7 @@ In v6.0, agents (primarily Bolt) would begin implementation immediately upon rec
 
 **ID**: CR-004
 **Date Raised**: 2026-Q1
-**Raised By**: Mother Brain
+**Raised By**: Nick Fury
 **Status**: Approved and Implemented (v7.0)
 
 **Problem Statement**:
@@ -109,12 +109,12 @@ AEGIS sessions had no memory of their PM state between Claude Code restarts. Eac
 - Add `/aegis-pm-start` skill to initialize/restore PM state at session start
 - Add `/aegis-pm-cycle` skill to advance phase (planning → in-process → review → retro)
 - Add `/aegis-pm-status` skill to display current state as formatted report
-- Mother Brain reads pm-state.json as first action in `/aegis-start`
+- Nick Fury reads pm-state.json as first action in `/aegis-start`
 
 **Decision**: Approved. This was identified as the highest-leverage architectural change for v7.0.
 
 **Impact**:
 - _aegis-brain/pm-state.json: New file, always present
 - CLAUDE_skills.md: 3 new PM skills
-- CLAUDE_agents.md: Mother Brain updated to read pm-state on startup
+- CLAUDE_agents.md: Nick Fury updated to read pm-state on startup
 - CLAUDE.md: PM state section added to overview
