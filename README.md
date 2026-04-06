@@ -1,48 +1,51 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/version-8.2-blue?style=for-the-badge" alt="Version 8.2"/>
+  <img src="https://img.shields.io/badge/version-8.3-blue?style=for-the-badge" alt="Version 8.3"/>
   <img src="https://img.shields.io/badge/agents-13-green?style=for-the-badge" alt="13 Agents"/>
   <img src="https://img.shields.io/badge/skills-29-orange?style=for-the-badge" alt="29 Skills"/>
   <img src="https://img.shields.io/badge/commands-22-yellow?style=for-the-badge" alt="22 Commands"/>
-  <img src="https://img.shields.io/badge/gates-5-red?style=for-the-badge" alt="5 Gates"/>
+  <img src="https://img.shields.io/badge/gates-6-red?style=for-the-badge" alt="6 Gates"/>
   <img src="https://img.shields.io/badge/ISO--29110-compliant-brightgreen?style=for-the-badge" alt="ISO 29110"/>
+  <img src="https://img.shields.io/badge/Claude_4.x-1M_context-blueviolet?style=for-the-badge" alt="Claude 4.x"/>
   <img src="https://img.shields.io/badge/license-MIT-purple?style=for-the-badge" alt="MIT License"/>
 </p>
 
-# :shield: AEGIS v8.2 — AI Agent Team Framework for Claude Code
+# :shield: AEGIS v8.3 — AI Agent Team Framework for Claude Code
 
 > **"Context is King, Memory is Soul"**
 >
-> :dna: Nick Fury · 13 AI Agents · 29 Skills · 22 Commands · 5-Gate Quality · Self-Evolving Intelligence
+> :dna: Nick Fury · 13 Marvel Agents · 29 Skills · 22 Commands · 6-Gate Quality · ISO 29110 · Claude 4.x 1M Context
 
 ---
 
 ## What is AEGIS?
 
-AEGIS (**A**utonomous **E**nhanced **G**roup **I**ntelligence **S**ystem) — production-grade AI agent team framework for Claude Code. 13 agents, 14-stage SDLC pipeline, 5-gate quality, ISO 29110 compliance, JIRA-like PM, self-evolving intelligence. :dna: ยิ่งใช้ยิ่งเก่ง.
+AEGIS (**A**utonomous **E**nhanced **G**roup **I**ntelligence **S**ystem) — production-grade AI agent team framework for Claude Code. 13 Marvel-character agents, 14-stage SDLC pipeline, 6-gate quality (including a mandatory pre-work gate), ISO 29110 compliance, JIRA-like PM, self-evolving intelligence. :dna: ยิ่งใช้ยิ่งเก่ง.
 
 ---
 
 ## :rocket: New Install (one command)
 
+**Step 1 — Install prerequisites (skip if already done):**
+
 ```bash
 brew install node && npm install -g @anthropic-ai/claude-code
 ```
 
+**Step 2 — Initialize your project:**
+
 ```bash
-cd ~/Documents/my-project && git init
+cd ~/Documents/my-project && git init && git commit --allow-empty -m "init"
 ```
+
+**Step 3 — Install AEGIS:**
 
 ```bash
 bash <(curl -sL https://raw.githubusercontent.com/phariyawitjiap-aeternix/AEGIS-Team/main/install-remote.sh) --profile full --project-name "My Project"
 ```
 
-```bash
-claude --dangerously-skip-permissions
-```
-
 > :bulb: Profile options: `minimal` (7 skills) · `standard` (15 skills) · `full` (29 skills)
 
-**Permissions (one-time):**
+**Step 4 — Set permissions (one-time):**
 
 ```bash
 cat > ~/.claude/settings.json << 'EOF'
@@ -50,17 +53,38 @@ cat > ~/.claude/settings.json << 'EOF'
 EOF
 ```
 
+**Step 5 — Start:**
+
+```bash
+claude --dangerously-skip-permissions
+```
+
+Then type `/aegis-start`. Nick Fury will scan your project, check **BLOCK 0** (required ISO docs + kanban), and begin autonomously.
+
+**What you get with a fresh install:**
+
+| | |
+|--|--|
+| :dna: **13 Marvel agents** | Nick Fury, Iron Man, Spider-Man, Black Panther, Loki, Coulson, Thor + 6 more |
+| :lock: **BLOCK 0 gate** | Coulson creates PM.01 + SI.01 + SI.02 + kanban before any code is written |
+| :brain: **Claude 4.x models** | Opus 4.6 (1M ctx) for thinkers · Sonnet 4.6 (1M ctx) for builders · Haiku 4.5 for scanners |
+| :chart_with_upwards_trend: **Adaptive thinking** | Each agent uses the right reasoning depth (`max` → `low`) |
+| :scroll: **ISO 29110** | 14 work products, activity-time generation, traceability matrix |
+
 ---
 
 ## :arrows_counterclockwise: Upgrade Existing Install
 
-```bash
-cd ~/Documents/my-project
-```
+> :warning: **Exit Claude Code before upgrading** — Claude caches files at session start
+
+**Step 1 — Run the upgrade:**
 
 ```bash
+cd ~/Documents/my-project
 bash <(curl -sL https://raw.githubusercontent.com/phariyawitjiap-aeternix/AEGIS-Team/main/install-remote.sh) --upgrade
 ```
+
+**Step 2 — Restart:**
 
 ```bash
 claude --dangerously-skip-permissions
@@ -73,12 +97,21 @@ claude --dangerously-skip-permissions
 | 1 | :lock: **Backup** `_aegis-brain/`, `iso-docs/`, `CLAUDE_lessons.md` → `_aegis-backup/` |
 | 2 | :wastebasket: **Remove** old agents, commands, references, teams, skills |
 | 3 | :arrow_down: **Download** latest AEGIS from GitHub (to `/tmp/`, auto-cleaned) |
-| 4 | :package: **Install** new 13 agents, 22 commands, 11 references, 7 teams, 29 skills |
-| 5 | :mag: **Verify** all files present + migrate old versions (v6→v8, v7→v8) |
+| 4 | :package: **Install** 13 Marvel agents, 22 commands, 13 references, 7 teams, 29 skills |
+| 5 | :mag: **Verify** all files present + migrate old versions (v6→v8, v7→v8, v8.2→v8.3) |
+
+**What changes in v8.3:**
+
+| Change | Details |
+|--------|---------|
+| :superhero: Agent renames | All 13 agents renamed to Marvel characters matching their behavior |
+| :lock: BLOCK 0 gate | Coulson enforced as mandatory pre-work checkpoint before any task starts |
+| :brain: Claude 4.x models | Haiku agents updated to `claude-haiku-4-5-20251001`; Opus/Sonnet get 1M context |
+| :wrench: Beast capabilities | `code_execution_20260120` added — scans 100s of files in one round-trip |
+| :6: Gate 0 added | Quality pipeline is now 6 gates (Gate 0 = pre-work docs) |
+| :books: New references | `adaptive-thinking-guide.md`, `context-editing-protocol.md` |
 
 **:lock: NEVER touched by upgrade:** `_aegis-brain/` (tasks, sprints, patterns, learnings), `iso-docs/`, `CLAUDE_lessons.md`, project source code
-
-> :warning: **Always exit Claude Code before upgrading** — Claude caches files at session start
 
 ---
 
@@ -86,42 +119,49 @@ claude --dangerously-skip-permissions
 
 | # | Agent | Model | Role |
 |:-:|:------|:-----:|:-----|
-| :dna: | **Nick Fury** | `opus` | Autonomous Controller — scans, decides, spawns teams |
-| :compass: | **Captain America** | `opus` | Navigator/Lead — orchestrates, synthesizes, retros |
-| :triangular_ruler: | **Iron Man** | `opus` | Architect — specs, system design, ADRs |
-| :zap: | **Spider-Man** | `sonnet` | Implementer — writes code, builds features |
-| :shield: | **Black Panther** | `sonnet` | Reviewer — code review, quality gates |
-| :red_circle: | **Loki** | `opus` | Devil's Advocate — challenges, finds flaws |
-| :wrench: | **Beast** | `haiku` | Scanner/Research — gathers data, metrics |
-| :art: | **Wasp** | `sonnet` | UX Designer — UI/UX, accessibility |
-| :paintbrush: | **Songbird** | `haiku` | Content Creator — docs, changelogs |
-| :dart: | **War Machine** | `sonnet` | QA Lead — test strategy, release gate |
-| :microscope: | **Vision** | `haiku` | QA Executor — runs tests, reports |
-| :scroll: | **Coulson** | `haiku` | Compliance — ISO 29110, traceability |
-| :rocket: | **Thor** | `sonnet` | DevOps — deploy, health check, rollback |
+| :dna: | **Nick Fury** | `opus 4.6` | Autonomous Controller — scans, decides, spawns teams, enforces BLOCK 0 |
+| :compass: | **Captain America** | `opus 4.6` | Navigator/Lead — orchestrates, synthesizes, retros |
+| :triangular_ruler: | **Iron Man** | `opus 4.6` | Architect — specs, system design, ADRs |
+| :zap: | **Spider-Man** | `sonnet 4.6` | Implementer — writes code, builds features |
+| :shield: | **Black Panther** | `sonnet 4.6` | Reviewer — 5-pass code review, quality gates |
+| :red_circle: | **Loki** | `opus 4.6` | Devil's Advocate — challenges assumptions, finds flaws |
+| :wrench: | **Beast** | `haiku 4.5` | Scanner/Research — programmatic codebase analysis |
+| :art: | **Wasp** | `sonnet 4.6` | UX Designer — UI/UX, accessibility |
+| :paintbrush: | **Songbird** | `haiku 4.5` | Content Creator — docs, changelogs |
+| :dart: | **War Machine** | `sonnet 4.6` | QA Lead — test strategy, release gate |
+| :microscope: | **Vision** | `haiku 4.5` | QA Executor — runs tests, reports raw results |
+| :scroll: | **Coulson** | `haiku 4.5` | Compliance — ISO 29110, BLOCK 0 gate owner |
+| :rocket: | **Thor** | `sonnet 4.6` | DevOps — deploy, health check, rollback |
 
-> **Routing:** Opus thinks, Sonnet builds, Haiku gathers.
-
----
-
-## :factory: 14-Stage SDLC Pipeline
-
-```
-IDEA → BREAKDOWN → SPRINT → [ SPEC → BUILD → REVIEW(G1) → QA(G2) → COMPLY(G3) ] → CLOSE → DEPLOY(G4) → MONITOR(G5) → FEEDBACK
-                              └──────────── per-task loop ────────────┘
-```
+> **Routing:** Opus (1M ctx, max thinking) → Sonnet (1M ctx, medium thinking) → Haiku (200k ctx, low thinking)
 
 ---
 
-## :vertical_traffic_light: 5-Gate Quality System
+## :factory: SDLC Pipeline
 
-| Gate | Name | Owner | Checks |
+```
+BLOCK 0 (Coulson) → BREAKDOWN → SPRINT PLAN
+     ↓
+[ SPEC → BUILD → REVIEW(G1) → QA(G2) → COMPLY(G3) ] → CLOSE → DEPLOY(G4) → MONITOR(G5) → FEEDBACK
+  └──────────────── per-task loop ─────────────────┘
+```
+
+> BLOCK 0 is a hard gate. No task enters the per-task loop until PM.01 + SI.01 + SI.02 + kanban exist.
+
+---
+
+## :vertical_traffic_light: 6-Gate Quality System
+
+| Gate | Name | Owner | Blocks |
 |:----:|:-----|:------|:-------|
-| G1 | Code Review | Black Panther | 5-pass review: correctness, security, performance, maintainability, compliance |
+| **G0** | **Pre-Work Docs** | **Coulson** | **PM.01 + SI.01 + SI.02 + Epic/Task/Sub-task + Kanban must exist** |
+| G1 | Code Review | Black Panther | 5-pass: correctness, security, performance, maintainability, compliance |
 | G2 | Product QA | War Machine | Test plan, execution, coverage, verdict |
 | G3 | Compliance | Coulson | ISO 29110 work products, traceability matrix |
 | G4 | Deploy | Thor | Build, deploy, health check, smoke test |
 | G5 | Monitor | Thor | Post-deploy health, metrics, rollback readiness |
+
+> Gate 0 is enforced by Nick Fury at session start and before every IN_PROGRESS transition.
 
 ---
 
@@ -129,7 +169,7 @@ IDEA → BREAKDOWN → SPRINT → [ SPEC → BUILD → REVIEW(G1) → QA(G2) →
 
 | Command | Purpose |
 |:--------|:--------|
-| `/aegis-start` | Begin session — Nick Fury activates |
+| `/aegis-start` | Begin session — Nick Fury activates + checks BLOCK 0 |
 | `/aegis-retro` | End session — retrospective + lessons |
 | `/aegis-handoff` | Handoff document for next session |
 | `/aegis-pipeline` | Full analysis pipeline (all agents) |
@@ -156,11 +196,11 @@ IDEA → BREAKDOWN → SPRINT → [ SPEC → BUILD → REVIEW(G1) → QA(G2) →
 
 ## :jigsaw: Skill Profiles
 
-| Profile | Skills | Context | Use Case |
-|:--------|:------:|:-------:|:---------|
-| `minimal` | 7 | ~3K tokens | Quick tasks, small projects |
-| `standard` | 15 | ~6K tokens | Normal development (default) |
-| `full` | 29 | ~12K tokens | Enterprise, full SDLC |
+| Profile | Skills | Use Case |
+|:--------|:------:|:---------|
+| `minimal` | 7 | Quick tasks, small projects |
+| `standard` | 15 | Normal development (default) |
+| `full` | 29 | Enterprise, full SDLC |
 
 Switch: `/aegis-mode minimal` · `/aegis-mode standard` · `/aegis-mode full`
 
@@ -168,15 +208,15 @@ Switch: `/aegis-mode minimal` · `/aegis-mode standard` · `/aegis-mode full`
 
 ## :star2: Key Features
 
+- **BLOCK 0 Pre-Work Gate** — Coulson generates PM.01 + SI.01 + SI.02 + kanban before any code is written. Nick Fury hard-blocks the team until complete.
+- **Claude 4.x 1M Context** — Opus 4.6 and Sonnet 4.6 agents operate with 1M token context windows. No more session fragmentation on large codebases.
+- **Adaptive Thinking** — Each agent uses the right reasoning depth: `max` for architecture, `high` for review, `medium` for implementation, `low` for scanning.
+- **Programmatic Scanning (Beast)** — `code_execution_20260120` lets Beast scan 100s of files in a single round-trip, not N sequential reads.
 - **Self-Evolving Intelligence** — auto-learn from tasks, shared cache across agents, skill evolution
-- **JIRA-like PM State** — sequential IDs, per-task history, sprint dashboard
 - **ISO 29110 Compliance** — 14 work products, activity-time generation, audit trail
 - **Sprint/Scrum/Kanban** — ceremonies, velocity tracking, WIP limits, burndown
-- **Context Router** — Hermes-like routing to the right agent based on intent
-- **Knowledge Pipeline** — 4-stage: capture :arrow_right: extract :arrow_right: distill :arrow_right: propagate
 - **Architecture Decision Records (ADRs)** — structured decisions with status tracking
 - **Tech Debt Tracking** — continuous scanning, sprint-integrated, priority scoring
-- **Release Management** — semver, checklist, rollback, health monitoring
 - **Persistent Brain** — resonance, learnings, retrospectives survive across sessions
 
 ---
@@ -213,15 +253,16 @@ your-project/
 ├── CLAUDE_lessons.md            # Accumulated learnings
 ├── .claude/
 │   ├── commands/                # 22 slash commands
-│   ├── agents/                  # 13 agent personas
-│   ├── references/              # Protocol files
+│   ├── agents/                  # 13 Marvel agent personas
+│   ├── references/              # 13 protocol files
 │   ├── teams/                   # Team configurations
 │   └── settings.json            # Permissions + env
 ├── skills/                      # 29 skill definitions
-└── _aegis-brain/                # Persistent memory (never overwritten)
+└── _aegis-brain/                # Persistent memory (never overwritten by upgrade)
     ├── resonance/               # Project identity + conventions + ADRs
     ├── learnings/               # Accumulated lessons
-    ├── retrospectives/          # Session retros + AI diaries
+    ├── tasks/                   # Epic/Task/Sub-task hierarchy (BLOCK 0)
+    ├── sprints/                 # Sprint plans + kanban boards
     └── logs/                    # Activity tracking
 ```
 
@@ -246,5 +287,5 @@ MIT License. See [LICENSE](LICENSE) for details.
 
 <p align="center">
   <b>Built with :brain: by the AEGIS community</b><br/>
-  <sub>Powered by Claude Code · Anthropic</sub>
+  <sub>Powered by Claude Code · Anthropic · Claude 4.x</sub>
 </p>
