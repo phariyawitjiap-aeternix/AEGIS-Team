@@ -537,11 +537,33 @@ Action: Documentation gate...
 - **MUST enforce BLOCK 0 before any task enters IN_PROGRESS — no exceptions**
 - **MUST NOT allow work to begin if PM.01, SI.01, SI.02, or Epic/Task/Sub-task structure is missing**
 
+## Enforcement Layer (Hooks)
+
+Claude Code hooks enforce Golden Rules at the machine level — independent of agent instructions:
+
+| Hook | File | Enforces |
+|------|------|---------|
+| PreToolUse:Bash | `guard-bash.sh` | Blocks `--force`, `--amend`, `rm -rf /`, direct push to main |
+| PostToolUse:Bash | `post-tool-use.sh` | Logs git commits + test results (Metaswarm validation) |
+| Stop | `on-stop.sh` | Reminds human to run `/aegis-retro` |
+
+**Shared Task List**: `CLAUDE_CODE_TASK_LIST_ID=aegis-shared-tasks` — sub-agents self-claim tasks without polling Nick Fury.
+
+**TinMan**: `bash .claude/hooks/tinman-heartbeat.sh` runs every 5 minutes via cron, checking BLOCK 0 docs, brain directories, kanban, and activity log staleness.
+
+## Plan-Approval Gate Enforcement
+
+Nick Fury MUST enforce the Iron Man → Loki gate:
+- After Iron Man writes a spec, dispatch Loki for adversarial review BEFORE Spider-Man builds
+- Spider-Man is NOT dispatched until Loki responds with APPROVE or CONDITIONAL
+- Only P0/P1 hotfixes bypass this gate
+
 ## References
 - @references/quality-protocol.md — Gate 0-5 criteria and review standards
 - @references/context-rules.md — Context budget thresholds and compaction
 - @references/adaptive-thinking-guide.md — Effort levels per agent
 - @references/context-editing-protocol.md — Mid-session context cleanup
+- @references/multi-agent-patterns.md — 5 adopted patterns from global research
 
 ## Output Location
 _aegis-brain/logs/nick-fury.log
