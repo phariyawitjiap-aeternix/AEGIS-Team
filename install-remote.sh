@@ -20,6 +20,7 @@ TARGET_DIR="$(pwd)"
 PROFILE="standard"
 PROJECT_NAME=""
 UPGRADE=false
+PROFILE_EXPLICIT=false
 
 # Colors
 RED='\033[0;31m'
@@ -38,7 +39,7 @@ error()   { echo -e "${RED}[ERROR]${NC} $*"; }
 # Parse args
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --profile)      PROFILE="$2"; shift 2 ;;
+        --profile)      PROFILE="$2"; PROFILE_EXPLICIT=true; shift 2 ;;
         --project-name) PROJECT_NAME="$2"; shift 2 ;;
         --target-dir)   TARGET_DIR="$2"; shift 2 ;;
         --upgrade)      UPGRADE=true; shift ;;
@@ -72,6 +73,17 @@ while [[ $# -gt 0 ]]; do
         *) error "Unknown option: $1"; exit 1 ;;
     esac
 done
+
+# On upgrade: auto-detect existing profile from project-identity.md (unless --profile given)
+if [[ "$UPGRADE" == true ]] && [[ "$PROFILE_EXPLICIT" == false ]]; then
+    IDENTITY_FILE="${TARGET_DIR}/_aegis-brain/resonance/project-identity.md"
+    if [[ -f "$IDENTITY_FILE" ]]; then
+        DETECTED=$(grep -i "^- Profile:" "$IDENTITY_FILE" | head -1 | sed 's/.*: *//' | tr -d '[:space:]')
+        if [[ "$DETECTED" == "full" || "$DETECTED" == "standard" || "$DETECTED" == "minimal" ]]; then
+            PROFILE="$DETECTED"
+        fi
+    fi
+fi
 
 echo -e "${BOLD}${CYAN}================================================${NC}"
 echo -e "${BOLD}${CYAN}  AEGIS v${VERSION} — Remote Installer${NC}"
@@ -321,9 +333,10 @@ if [[ ! -f "${TARGET_DIR}/_aegis-brain/logs/activity.log" ]]; then
     success "activity.log initialized"
 fi
 
-# project-identity.md
-if [[ ! -f "${TARGET_DIR}/_aegis-brain/resonance/project-identity.md" ]] && [[ -n "$PROJECT_NAME" ]]; then
-    cat > "${TARGET_DIR}/_aegis-brain/resonance/project-identity.md" << IDENTITY
+# project-identity.md — create on new install, update version+profile on upgrade
+IDENTITY_FILE="${TARGET_DIR}/_aegis-brain/resonance/project-identity.md"
+if [[ ! -f "$IDENTITY_FILE" ]] && [[ -n "$PROJECT_NAME" ]]; then
+    cat > "$IDENTITY_FILE" << IDENTITY
 # Project Identity
 - Name: ${PROJECT_NAME}
 - Created: $(date +%Y-%m-%d)
@@ -332,6 +345,12 @@ if [[ ! -f "${TARGET_DIR}/_aegis-brain/resonance/project-identity.md" ]] && [[ -
 - Profile: ${PROFILE}
 IDENTITY
     success "Project identity created"
+elif [[ -f "$IDENTITY_FILE" ]] && [[ "$UPGRADE" == true ]]; then
+    # Update version and profile in existing identity file
+    sed -i.bak "s/^- Framework: .*/- Framework: AEGIS v${VERSION}/" "$IDENTITY_FILE"
+    sed -i.bak "s/^- Profile: .*/- Profile: ${PROFILE}/" "$IDENTITY_FILE"
+    rm -f "${IDENTITY_FILE}.bak"
+    success "Project identity updated (v${VERSION}, profile: ${PROFILE})"
 fi
 
 # .gitignore
