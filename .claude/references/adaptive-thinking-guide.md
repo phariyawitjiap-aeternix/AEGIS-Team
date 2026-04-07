@@ -72,3 +72,96 @@ Higher effort = better decisions + higher cost. Apply `max`/`high` only when the
 - Simple CRUD operations (Spider-Man implementing a well-specified endpoint): `low`/`medium`
 - Document skeleton generation (Coulson, BLOCK 0): `low`
 - Test execution (Vision): none needed, Vision runs deterministic commands
+
+---
+
+## Power Keywords — ultrathink / ultraplan / ultrareview
+
+> Source-confirmed in Claude Code CLI v2.1.92 source code. These are official Anthropic features.
+
+### `ultrathink` — Per-Turn Max Effort (Local)
+
+Type the word `ultrathink` anywhere in your prompt. Claude Code detects it client-side, removes the word, and injects:
+> *"The user has requested reasoning effort level: high. Apply this to the current turn."*
+
+```
+ultrathink — design the database schema for the auth system
+```
+
+| Aspect | Detail |
+|--------|--------|
+| Maps to | `effort: "high"` (NOT "max" — use `/effort max` for max) |
+| Scope | Current turn only |
+| Persistent alternative | `/effort high` (lasts the full session) |
+| Regex | `\bultrathink\b` case-insensitive, whole-word |
+| Feature flag | `tengu_turtle_carbon` (enabled by default) |
+
+**When to use in AEGIS**: Iron Man writing architecture, Loki adversarial review, Nick Fury complex scan-and-decide.
+
+**Keyword hierarchy** (from deprecated Claude 3.x era, for context only):
+- `think` → 4,000 budget_tokens
+- `megathink` → 10,000 budget_tokens
+- `ultrathink` → 31,999 budget_tokens
+
+In Claude 4.x these fixed budgets are replaced by adaptive thinking. Only `ultrathink` has a dedicated code path now.
+
+---
+
+### `ultraplan` — Remote Multi-Agent Planning (Cloud)
+
+Type `ultraplan` in prompt OR use `/ultraplan <prompt>`.
+Launches a planning session on **claude.ai cloud** (not local). Requires:
+- Logged in with claude.ai account (not API Console)
+- GitHub app installed on repo
+- Feature flag `tengu_ultraplan_config.enabled = true`
+
+```
+ultraplan — build a complete auth system with JWT, refresh tokens, and rate limiting
+```
+
+**Three strategy modes** (selected by Anthropic feature flag):
+
+| Mode | What Happens | Time |
+|------|-------------|------|
+| `simple_plan` (default) | Scans codebase → builds plan → you approve → executes | ~2–5 min |
+| `visual_plan` | Same + Mermaid/ASCII diagrams for structural changes | ~3–7 min |
+| `three_subagents_with_critique` | 3 parallel agents (architecture + files + risks) + critique agent → synthesized plan | ~10–30 min |
+
+**Execution paths after approval**:
+- **Remote**: cloud session implements, opens a PR automatically
+- **Teleport to local**: plan sent back to terminal, local Claude Code implements
+
+**AEGIS integration**: `ultraplan` is equivalent to AEGIS's Plan-Approval Gate but cloud-native.
+Use when: no sprint/spec exists yet (P8/P10), complex greenfield features needing deep codebase scan.
+Do NOT use when: BLOCK 0 is already passing and a spec exists — use AEGIS pipeline instead.
+
+---
+
+### `ultrareview` — Remote Branch Bug Review (Cloud)
+
+Type `ultrareview` or `/ultrareview`. Same infrastructure as ultraplan.
+Scans a branch, finds and verifies bugs, returns findings.
+
+```
+ultrareview — check the auth branch for security vulnerabilities
+```
+
+| Aspect | Detail |
+|--------|--------|
+| Time | ~10–20 min |
+| Output | Bug findings with evidence |
+| AEGIS equivalent | Black Panther Gate 1 (local) or Beast scan |
+| When to use | Before merging a large branch, as a second opinion to Black Panther |
+
+---
+
+## Summary: Which Keyword for Which Situation
+
+| Situation | Use |
+|-----------|-----|
+| Need deeper reasoning THIS turn | `ultrathink` in prompt |
+| Need deep reasoning ALL session | `/effort max` |
+| Greenfield feature, no spec yet | `ultraplan` (if cloud available) |
+| Complex sprint with no breakdown | `ultraplan three_subagents_with_critique` |
+| Pre-merge security check | `ultrareview` |
+| Standard AEGIS pipeline already running | AEGIS native (BLOCK 0 → Iron Man → Loki → build) |

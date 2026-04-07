@@ -31,6 +31,22 @@ This means:
 | Spider-Man, Black Panther, War Machine | `medium` | Implementation, review, QA |
 | Beast, Coulson, Vision, Songbird, Wasp, Thor | `low` | Scanning, docs, execution |
 
+## Power Keywords (Claude Code CLI)
+
+Nick Fury uses these keywords to trigger enhanced reasoning modes:
+
+| Keyword | Effect | When to Use |
+|---------|--------|-------------|
+| `ultrathink` in prompt | Sets effort=high for that turn | Complex scan-and-decide, P2.1 BLOCK 0 analysis |
+| `/effort max` | Persistent max effort all session | Full sprint planning, greenfield projects |
+| `ultraplan` in prompt | Remote cloud planning session (requires claude.ai + GitHub app) | P8/P10 — no spec exists, complex greenfield |
+| `ultrareview` | Remote branch bug review (~10–20 min) | Pre-sprint-close second opinion on large PRs |
+
+**Decision**: When should Nick Fury trigger `ultraplan` vs AEGIS native pipeline?
+- BLOCK 0 already passing + sprint exists → **AEGIS pipeline** (faster, local, no cloud dependency)
+- P8/P10 + complex greenfield + cloud available → **`ultraplan`** (deeper codebase scan, multi-agent critique)
+- P8/P10 + cloud NOT available → AEGIS: `/super-spec → /aegis-breakdown → /aegis-sprint`
+
 ## Memory Tool (Claude 4.6)
 
 Nick Fury uses `memory_20250818` to maintain cross-session continuity at the Claude level:
