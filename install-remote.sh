@@ -129,6 +129,7 @@ if [[ "$UPGRADE" == true ]] && [[ -f "${TARGET_DIR}/CLAUDE.md" ]]; then
     rm -rf "${TARGET_DIR}/.claude/commands/"
     rm -rf "${TARGET_DIR}/.claude/references/"
     rm -rf "${TARGET_DIR}/.claude/teams/"
+    rm -rf "${TARGET_DIR}/.claude/hooks/"
     rm -f  "${TARGET_DIR}/.claude/settings.json"
     rm -rf "${TARGET_DIR}/skills/"
     rm -f  "${TARGET_DIR}/CLAUDE.md" "${TARGET_DIR}/CLAUDE_agents.md"
@@ -187,6 +188,13 @@ mkdir -p "${TARGET_DIR}/.claude/teams/"
 cp "${TMP_DIR}/.claude/teams/"*.md "${TARGET_DIR}/.claude/teams/"
 TEAM_COUNT=$(ls "${TARGET_DIR}/.claude/teams/"*.md | wc -l | tr -d ' ')
 success "${TEAM_COUNT} team configs installed"
+
+# Hooks — enforcement scripts (PreToolUse, PostToolUse, Stop)
+mkdir -p "${TARGET_DIR}/.claude/hooks/"
+cp "${TMP_DIR}/.claude/hooks/"*.sh "${TARGET_DIR}/.claude/hooks/" 2>/dev/null || true
+chmod +x "${TARGET_DIR}/.claude/hooks/"*.sh 2>/dev/null || true
+HOOK_COUNT=$(ls "${TARGET_DIR}/.claude/hooks/"*.sh 2>/dev/null | wc -l | tr -d ' ')
+success "${HOOK_COUNT} hooks installed (guard-bash, post-tool-use, on-stop, tinman-heartbeat)"
 
 # Settings
 cp "${TMP_DIR}/.claude/settings.json" "${TARGET_DIR}/.claude/" 2>/dev/null || true
