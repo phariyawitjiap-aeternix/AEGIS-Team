@@ -236,6 +236,7 @@ full_skills=(
     aegis-distill
     aegis-observe
     aegis-doctor
+    aegis-reengineer
     qa-pipeline
     iso-29110-docs
     api-docs
