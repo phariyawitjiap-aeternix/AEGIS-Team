@@ -1,4 +1,4 @@
-# AEGIS v6.0 -- Agent Team Framework
+# AEGIS v8.2.1 -- Agent Team Framework
 
 > "Context is King, Memory is Soul"
 
@@ -23,9 +23,9 @@
 After /aegis-start, Nick Fury takes full control:
 - Scans project state (git, tests, specs, deps, tech debt)
 - Decides what to do next (Decision Matrix P0-P10)
-- Spawns the right team via tmux automatically
+- Spawns the right team automatically (in-process agents)
 - Does NOT ask human -- analyzes, decides, executes
-- Human watches via `tmux attach -t aegis-team`
+- Human watches via Shift+Down to view agent detail
 - Human can interrupt anytime (Ctrl+C) or downgrade: /aegis-mode --autonomy L1
 
 Default autonomy: L3 (Autonomous) with Nick Fury active
@@ -36,8 +36,8 @@ Default autonomy: L3 (Autonomous) with Nick Fury active
 | /aegis-start | Begin session -- Nick Fury activates |
 | /aegis-retro | End session -- retrospective + lessons |
 | /aegis-pipeline | Full analysis pipeline |
-| /aegis-team-build | Spawn build team (tmux) |
-| /aegis-team-review | Spawn review team (tmux) |
-| /aegis-team-debate | Spawn debate team (tmux) |
+| /aegis-team-build | Spawn build team (in-process) |
+| /aegis-team-review | Spawn review team (in-process) |
+| /aegis-team-debate | Spawn debate team (in-process) |
 | /aegis-status | Check all agent progress |
 | /aegis-mode | Switch autonomy level or profile |

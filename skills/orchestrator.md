@@ -10,11 +10,11 @@ triggers:
 ## Quick Reference
 Dual-mode multi-agent orchestration engine for AEGIS.
 - **Mode 1 — Subagent**: Sequential agent calls within single Claude session
-- **Mode 2 — Agent Team (tmux)**: Parallel agents in separate tmux panes
+- **Mode 2 — Agent Team (in-process)**: Parallel background agents via Agent tool
 - **Auto-select**: Simple tasks → Subagent; Complex/parallel → Agent Team
 - **Review gates**: Phase transitions require quality checks before proceeding
 - **Context budget**: Monitor token usage, compress when approaching limits
-- **tmux required**: Agent Teams run in tmux panes — tmux is a core dependency, not optional
+- **Agent Teams**: Run as in-process background agents with Mother Brain heartbeat monitoring
 - **Output**: Task status logged to `_aegis-brain/logs/activity.log`
 
 ## Full Instructions
@@ -24,11 +24,11 @@ Dual-mode multi-agent orchestration engine for AEGIS.
 ```
 IF task.complexity == "simple" OR task.agents <= 2:
     mode = "subagent"
-ELIF tmux_available():
+ELIF agent_teams_enabled():
     mode = "agent-team"
 ELSE:
     mode = "subagent"  # fallback
-    log_warning("tmux unavailable, falling back to subagent mode")
+    log_warning("agent teams unavailable, falling back to subagent mode")
 ```
 
 ### Subagent Mode
@@ -45,9 +45,9 @@ Sequential execution within a single session. Best for:
 4. Apply review gate after each phase
 5. Aggregate results and report
 
-### Agent Team Mode (tmux)
+### Agent Team Mode (in-process)
 
-Parallel execution across tmux panes. Best for:
+Parallel execution via background agents. Best for:
 - Tasks requiring 3+ agents
 - Independent parallel workstreams
 - Long-running operations
@@ -55,10 +55,10 @@ Parallel execution across tmux panes. Best for:
 **Protocol:**
 1. Parse task into independent workstreams
 2. Load team config from `.claude/teams/` if applicable
-3. Create tmux session: `tmux new-session -d -s aegis-<task-id>`
-4. Spawn agent per pane with persona context
-5. Monitor progress via structured status messages
-6. Collect results at synchronization points
+3. Spawn agents via Agent tool (run_in_background=true, named)
+4. Each agent reads its persona from `.claude/agents/{name}.md`
+5. Mother Brain monitors health via heartbeat loop (nudge idle > 120s, respawn > 300s)
+6. Agents communicate via SendMessage at synchronization points
 7. Apply review gates before phase transitions
 8. Synthesize final output
 

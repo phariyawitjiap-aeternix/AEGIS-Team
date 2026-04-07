@@ -52,11 +52,11 @@
       "title": "Correction Register — AEGIS v7.1",
       "slug": "PM-05-correction-register",
       "path": "_aegis-output/iso-docs/PM-05-correction-register/current.md",
-      "version": null,
-      "status": "Not Created",
-      "created": null,
-      "author": null,
-      "_note": "Required by PM.3 (Project Assessment and Control). Must be created when first issue/defect is found. Mandatory for audit."
+      "version": 1,
+      "status": "Draft",
+      "created": "2026-03-30",
+      "author": "Scribe (AEGIS v8.2)",
+      "_note": "Required by PM.3 (Project Assessment and Control). Created during sprint-3 with 3 correction entries."
     },
     {
       "id": "PM.06",
@@ -149,5 +149,5 @@
       "removed_date": "2026-03-24"
     }
   ],
-  "last_updated": "2026-03-24T00:00:00"
+  "last_updated": "2026-03-30T00:00:00"
 }

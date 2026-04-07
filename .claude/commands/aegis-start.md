@@ -15,6 +15,53 @@ input needed. The human watches via tmux and can interrupt anytime.
 
 ## Full Instructions
 
+### Step 0: Start Dashboard Web App (auto, every session)
+
+**ALWAYS run this step.** The dashboard must be running for observability.
+
+```bash
+# 1. Check if dashboard directory exists
+if [ ! -d "dashboard" ]; then
+  echo "⚠️ Dashboard not installed. Skipping web app."
+  # Skip to Step 1
+fi
+
+# 2. Check Node.js is available
+if ! command -v node &>/dev/null; then
+  echo "⚠️ Node.js not found. Installing via brew..."
+  brew install node
+fi
+
+# 3. Check if dependencies installed
+if [ ! -d "dashboard/node_modules" ]; then
+  echo "📦 Installing dashboard dependencies..."
+  cd dashboard && npm install && cd ..
+fi
+
+# 4. Check if dashboard already running on port 4321
+if ! curl -s -o /dev/null -w "%{http_code}" http://localhost:4321 2>/dev/null | grep -q "200"; then
+  echo "🖥️ Starting dashboard on http://localhost:4321 ..."
+  cd dashboard && npx next dev -p 4321 &
+  cd ..
+  # Wait for server ready
+  sleep 5
+fi
+```
+
+**Display to user:**
+```
+🖥️ Dashboard: http://localhost:4321
+   ├── Home:         http://localhost:4321
+   ├── Kanban:       http://localhost:4321/kanban
+   ├── Pixel Office: http://localhost:4321/pixel-office
+   └── Timeline:     http://localhost:4321/timeline
+```
+
+If dashboard is already running, just confirm:
+```
+🖥️ Dashboard: RUNNING on http://localhost:4321 ✅
+```
+
 ### Step 1: Check Context Budget
 - Estimate current context window usage as a percentage.
 - If >20%, display warning and suggest `/compact`.
@@ -29,7 +76,7 @@ input needed. The human watches via tmux and can interrupt anytime.
 
 ```
 🛡️ ═══════════════════════════════════════════════════
-🛡️  AEGIS v6.0 — Session Started
+🛡️  AEGIS HQ v8.3 — Session Started
 🛡️  "Context is King, Memory is Soul"
 🛡️ ═══════════════════════════════════════════════════
 
@@ -47,38 +94,47 @@ input needed. The human watches via tmux and can interrupt anytime.
 **This is the critical step.** Do NOT display "What would you like to do?" or
 present options. Instead, immediately execute the Nick Fury scan loop:
 
-#### 4a. Scan Project State
-Gather ALL of these signals:
+**Spawn Mother Brain:**
+```
+Agent tool call:
+  subagent_type: "mother-brain"
+  name: "mother-brain"
+  mode: "bypassPermissions"
+  run_in_background: true
+  prompt: |
+    You are 🧬 Mother Brain — the autonomous controller of AEGIS.
+    Read .claude/agents/mother-brain.md for your full protocol.
 
-```bash
-# Git state
-git status --short
-git log --oneline -5
-git diff --stat
+    SESSION CONTEXT:
+    - Date: [current date]
+    - Autonomy: L3 (Autonomous)
+    - Profile: [tier]
+    - Context budget: [X]%
+    - Handoff data: [summary from Step 2, or "none"]
+    - Brain resonance: [key points from Step 2]
 
-# Project structure
-find . -not -path './.git/*' -type f | head -50
+    IMMEDIATE ACTIONS:
+    1. Run your first SCAN (git, tests, sprint, kanban, specs, deps, debt)
+    2. Apply Decision Matrix — pick highest-priority action
+    3. Announce your decision
+    4. DISPATCH sub-agents to execute (use Agent tool, run_in_background=true)
+    5. Enter HEARTBEAT LOOP:
+       - Monitor spawned agents via SendMessage
+       - Nudge agents idle > 120s
+       - Re-spawn agents that timeout > 300s
+       - After each task completes: verify gates, log results, pick next task
+       - Check context budget each cycle
+       - Continue until context >= 80% or all tasks done
+    6. When wrapping up: log final state to activity.log, report summary
 
-# Test state
-find . -name '*test*' -o -name '*spec*' -o -name '*.test.*' | head -20
-
-# Specs
-ls _aegis-output/specs/ 2>/dev/null
-
-# Planning artifacts (MANDATORY check)
-ls _aegis-output/breakdown/ 2>/dev/null
-ls _aegis-brain/sprints/sprint-*/plan.md 2>/dev/null
-ls _aegis-brain/sprints/current/kanban.md 2>/dev/null
-ls _aegis-output/iso-docs/PM-01* 2>/dev/null
-
-# Tech debt
-grep -r 'TODO\|FIXME\|HACK\|XXX' --include='*.swift' --include='*.ts' --include='*.py' --include='*.js' -c 2>/dev/null
-
-# Dependencies
-ls package.json Gemfile requirements.txt Podfile Package.swift 2>/dev/null
-
-# Pending from last session
-cat _aegis-brain/logs/activity.log 2>/dev/null | tail -20
+    RULES:
+    - NEVER ask "what would you like to do?" — analyze, decide, execute
+    - ALWAYS announce decisions with rationale before acting
+    - ALWAYS spawn sub-agents with run_in_background=true
+    - ALWAYS include SUCCESS CRITERIA in sub-agent prompts
+    - ALWAYS instruct sub-agents to SendMessage back when done
+    - Log every heartbeat pulse to _aegis-brain/logs/heartbeat.log
+    - Log every decision to _aegis-brain/logs/activity.log
 ```
 
 #### 4b. Check Planning Artifacts — BLOCK 0 (MANDATORY)
@@ -173,7 +229,7 @@ Ask/Analyze → /super-spec → /aegis-breakdown → /aegis-sprint plan → buil
 - When complete, report results and loop back to scan
 
 ### Step 5: Log Session
-Append to `_aegis-brain/logs/activity.log`:
+Mother Brain logs automatically, but the main session should also log:
 ```
 [YYYY-MM-DD HH:MM] SESSION_START | autonomy=L3 | mode=nick-fury | context=[X]%
 [YYYY-MM-DD HH:MM] SCAN | git=[status] | tests=[status] | spec=[status]
@@ -200,6 +256,50 @@ After that single answer, she takes over completely.
 
 ### Error Handling
 - If scan finds nothing actionable: report "Project healthy, no action needed"
-- If tmux fails to start: fall back to subagent mode with warning
+- If Mother Brain spawn fails: fall back to inline mode with warning
 - If brain directory missing: create it, then scan
 - If 2+ consecutive failures: downgrade to L1, ask human for guidance
+- If agent unresponsive > 300s: Mother Brain auto-respawns it
+
+### Step 2.5: Load Latest Handoff (NEW -- cross-session pickup)
+
+After loading the brain (Step 2), explicitly check for and load the latest handoff:
+
+1. **Find latest handoff:**
+   - List files in `_aegis-brain/handoffs/` (exclude .gitkeep)
+   - Sort by filename (date-based: YYYY-MM-DD_HH-MM.md)
+   - Pick the most recent file
+   - If no handoffs exist: skip to Step 3 (first session or clean start)
+
+2. **Parse handoff frontmatter:**
+   - Read the `mother_brain_state` section from the YAML frontmatter
+   - Extract: sprint, kanban counts, context info, tasks done, last decision
+   - If frontmatter is missing or malformed: fall back to reading the body text
+
+3. **Build handoff summary for Mother Brain:**
+   - Create a structured summary string:
+     ```
+     HANDOFF FROM PREVIOUS SESSION:
+     - Sprint: [sprint-N] (day [N])
+     - Kanban: [TODO/WIP/DONE counts]
+     - Tasks done last session: [list]
+     - Recommended first action: [from handoff body]
+     - Last decision point: [P-level]
+     - Blockers: [from handoff body]
+     ```
+
+4. **Pass to Mother Brain spawn prompt:**
+   - Include the handoff summary in the SESSION CONTEXT section
+   - Set `Handoff data: [summary]` instead of "none"
+   - This allows Mother Brain to skip redundant scans and jump to P2
+     (Pending handoff tasks) in her Decision Matrix
+
+5. **Log:**
+   ```
+   [YYYY-MM-DD HH:MM] HANDOFF_LOADED | file=[filename] | sprint=[sprint-N] | pending=[N]
+   ```
+
+**If handoff is stale (> 7 days old):**
+- Log warning: "Handoff is [N] days old, may be outdated"
+- Still load it but tell Mother Brain to do a full scan anyway
+- Do not auto-delete old handoffs (git preserves history)

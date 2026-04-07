@@ -14,7 +14,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # --------------------------------------------------------------------------
 if [[ ! -f "$SCRIPT_DIR/CLAUDE.md" ]]; then
     echo -e "\033[0;31m[ERROR]\033[0m Cannot find AEGIS source files in $SCRIPT_DIR"
-    echo -e "\033[0;31m[ERROR]\033[0m Make sure you're running install.sh from the AEGIS-Team repo"
+    echo -e "\033[0;31m[ERROR]\033[0m Make sure you're running install.sh from the aegis-hq repo"
     exit 1
 fi
 
@@ -221,15 +221,21 @@ directories=(
     "${TARGET_DIR}/_aegis-brain/learnings"
     "${TARGET_DIR}/_aegis-brain/logs"
     "${TARGET_DIR}/_aegis-brain/retrospectives"
+    "${TARGET_DIR}/_aegis-brain/tasks"
+    "${TARGET_DIR}/_aegis-brain/skill-cache"
+    "${TARGET_DIR}/_aegis-brain/metrics"
+    "${TARGET_DIR}/_aegis-brain/learnings/raw"
     "${TARGET_DIR}/_aegis-output"
     "${TARGET_DIR}/_aegis-output/reviews"
     "${TARGET_DIR}/_aegis-output/adversarial"
     "${TARGET_DIR}/_aegis-output/scans"
     "${TARGET_DIR}/_aegis-output/architecture"
+    "${TARGET_DIR}/_aegis-output/architecture/archive"
     "${TARGET_DIR}/_aegis-output/design"
     "${TARGET_DIR}/_aegis-output/content"
     "${TARGET_DIR}/_aegis-output/specs"
     "${TARGET_DIR}/_aegis-output/breakdown"
+    "${TARGET_DIR}/_aegis-output/research"
     "${TARGET_DIR}/_aegis-output/qa"
     "${TARGET_DIR}/_aegis-output/qa/results"
     "${TARGET_DIR}/_aegis-output/iso-docs"
@@ -252,6 +258,26 @@ for dir in "${directories[@]}"; do
     mkdir -p "$dir"
 done
 success "Directory structure created"
+
+# --------------------------------------------------------------------------
+# Initialize counters.json (sequential ID system)
+# --------------------------------------------------------------------------
+if [[ ! -f "${TARGET_DIR}/_aegis-brain/counters.json" ]]; then
+    info "Initializing counters.json for sequential IDs..."
+    cat > "${TARGET_DIR}/_aegis-brain/counters.json" << 'COUNTERS'
+{
+  "project_key": "PROJ",
+  "counters": {"US":0,"J":0,"E":0,"T":0,"ST":0,"DOC":0,"ADR":0,"TD":0,"REL":0,"HO":0},
+  "last_updated": "1970-01-01T00:00:00"
+}
+COUNTERS
+    success "counters.json initialized"
+else
+    if [[ "$UPGRADE" == true ]]; then
+        info "Preserving existing counters.json (upgrade mode)"
+    fi
+    success "counters.json already exists"
+fi
 
 # --------------------------------------------------------------------------
 # Git Init (if not already a repo)
@@ -471,6 +497,162 @@ skill_count=$(ls -1 "${TARGET_DIR}/skills/"*.md 2>/dev/null | wc -l | tr -d ' ')
 success "${skill_count} skills installed (full definitions, not stubs)"
 
 # --------------------------------------------------------------------------
+# Copy ISO 29110 Document Templates
+# --------------------------------------------------------------------------
+info "Installing ISO 29110 document templates..."
+
+iso_doc_dirs=(
+    "PM-01-project-plan"
+    "PM-02-progress-status"
+    "PM-03-change-requests"
+    "PM-04-meeting-records"
+    "SI-01-requirements-spec"
+    "SI-02-design-doc"
+    "SI-03-traceability"
+    "SI-04-test-plan"
+    "SI-05-test-report"
+    "SI-06-acceptance"
+    "SI-07-configuration"
+)
+
+iso_count=0
+for doc_dir in "${iso_doc_dirs[@]}"; do
+    src_dir="${SCRIPT_DIR}/_aegis-output/iso-docs/${doc_dir}"
+    dst_dir="${TARGET_DIR}/_aegis-output/iso-docs/${doc_dir}"
+
+    if [[ ! -d "$src_dir" ]]; then
+        warn "ISO doc template not found: ${src_dir} -- skipping"
+        continue
+    fi
+
+    # On upgrade, preserve existing ISO docs (user may have customized them)
+    if [[ "$UPGRADE" == true && -d "$dst_dir" ]]; then
+        info "Preserving existing ${doc_dir} (upgrade mode)"
+        continue
+    fi
+
+    mkdir -p "$dst_dir"
+    for f in "$src_dir"/*; do
+        [[ -f "$f" ]] || continue
+        cp "$f" "$dst_dir/"
+    done
+    iso_count=$((iso_count + 1))
+done
+
+# Copy doc-registry.json
+if [[ -f "${SCRIPT_DIR}/_aegis-output/iso-docs/doc-registry.json" ]]; then
+    if [[ "$UPGRADE" == true && -f "${TARGET_DIR}/_aegis-output/iso-docs/doc-registry.json" ]]; then
+        info "Preserving existing doc-registry.json (upgrade mode)"
+    else
+        cp "${SCRIPT_DIR}/_aegis-output/iso-docs/doc-registry.json" "${TARGET_DIR}/_aegis-output/iso-docs/doc-registry.json"
+    fi
+fi
+
+success "${iso_count} ISO 29110 document templates installed"
+
+# --------------------------------------------------------------------------
+# Initial Activity Log + Welcome Data (new installs only)
+# --------------------------------------------------------------------------
+if [[ "$UPGRADE" != true ]]; then
+    info "Creating initial activity log and welcome data..."
+
+    # Activity log with install entry
+    cat > "${TARGET_DIR}/_aegis-brain/logs/activity.log" <<ACTLOG
+# AEGIS Activity Log — Append Only
+# Format: [ISO-8601] [AGENT_EMOJI] [STATUS] — [message]
+# ---
+[$(date +%Y-%m-%dT%H:%M:%S)] 🧬 INSTALL | version=${VERSION} | profile=${PROFILE} | project=${PROJECT_NAME:-"unnamed"}
+[$(date +%Y-%m-%dT%H:%M:%S)] 🧬 SESSION_READY | Run /aegis-start to activate Mother Brain
+ACTLOG
+
+    # Heartbeat log so dashboard shows "installed" not "dead"
+    echo "[$(date '+%Y-%m-%d %H:%M')] PULSE | status=installed | agents=0 | context=0%" \
+      > "${TARGET_DIR}/_aegis-brain/logs/heartbeat.log"
+
+    # Create a welcome sprint (sprint-0) with initial kanban
+    mkdir -p "${TARGET_DIR}/_aegis-brain/sprints/sprint-0/daily"
+
+    cat > "${TARGET_DIR}/_aegis-brain/sprints/sprint-0/plan.md" <<PLAN
+# Sprint 0 — Getting Started
+
+## Sprint Goal
+Set up the project and run the first /aegis-start session.
+
+## Tasks
+| ID | Title | Pts | Assignee | Priority |
+|----|-------|-----|----------|----------|
+| SETUP-001 | Run /aegis-start for the first time | 1 | @human | high |
+| SETUP-002 | Describe your project (Mother Brain asks at P10) | 1 | @human | high |
+| SETUP-003 | Run /super-spec to create BRD + SRS | 3 | @sage | medium |
+PLAN
+
+    cat > "${TARGET_DIR}/_aegis-brain/sprints/sprint-0/kanban.md" <<KANBAN
+# Sprint 0 — Getting Started
+
+> Updated: $(date '+%Y-%m-%d %H:%M') | First install
+
+## TODO (3 tasks, 5 pts)
+
+| ID | Title | Pts | Assignee | Priority |
+|----|-------|-----|----------|----------|
+| SETUP-001 | Run /aegis-start for the first time | 1 | @human | high |
+| SETUP-002 | Describe your project (Mother Brain asks at P10) | 1 | @human | high |
+| SETUP-003 | Run /super-spec to create BRD + SRS | 3 | @sage | medium |
+
+## IN_PROGRESS (0 tasks, 0 pts)
+
+| ID | Title | Pts | Assignee | Priority |
+|----|-------|-----|----------|----------|
+
+## DONE (0 tasks, 0 pts)
+
+| ID | Title | Pts | Assignee | Priority |
+|----|-------|-----|----------|----------|
+KANBAN
+
+    cat > "${TARGET_DIR}/_aegis-brain/sprints/sprint-0/metrics.json" <<METRICS
+{
+  "sprint": "sprint-0",
+  "started": "$(date +%Y-%m-%d)",
+  "planned_end": "$(date +%Y-%m-%d)",
+  "actual_end": null,
+  "goal": "Set up the project and run the first /aegis-start session",
+  "capacity_pts": 5,
+  "committed_pts": 5,
+  "completed_pts": 0,
+  "daily_burndown": [
+    { "date": "$(date +%Y-%m-%d)", "day": 1, "remaining": 5, "completed": 0 }
+  ],
+  "velocity_history": [],
+  "tasks": { "TODO": 3, "IN_PROGRESS": 0, "IN_REVIEW": 0, "QA": 0, "DONE": 0, "BLOCKED": 0 },
+  "carry_over": { "count": 0, "points": 0, "task_ids": [] }
+}
+METRICS
+
+    # Symlink current → sprint-0
+    ln -sfn sprint-0 "${TARGET_DIR}/_aegis-brain/sprints/current"
+
+    # Token usage + benchmarks (empty but valid structure)
+    cat > "${TARGET_DIR}/_aegis-brain/metrics/token-usage.json" <<'TOKENS'
+{
+  "sprints": {},
+  "trend": { "tokens_per_point": [], "improvement_pct": 0 }
+}
+TOKENS
+
+    cat > "${TARGET_DIR}/_aegis-brain/metrics/benchmarks.json" <<'BENCH'
+{
+  "sprints": {},
+  "baseline": null
+}
+BENCH
+
+    success "Welcome data created (sprint-0 kanban + activity log)"
+else
+    info "Upgrade mode: preserving existing brain data"
+fi
+
+# --------------------------------------------------------------------------
 # Summary
 # --------------------------------------------------------------------------
 echo ""
@@ -484,6 +666,7 @@ echo -e "${BOLD}Project:${NC}    ${PROJECT_NAME}"
 fi
 echo -e "${BOLD}Location:${NC}   ${TARGET_DIR}"
 echo -e "${BOLD}Skills:${NC}     ${skill_count} loaded"
+echo -e "${BOLD}ISO Docs:${NC}   ${iso_count} templates"
 echo ""
 echo -e "${BOLD}Directory Structure:${NC}"
 echo "  ${TARGET_DIR}/"
@@ -496,8 +679,11 @@ echo "  ├── _aegis-brain/          # Persistent memory"
 echo "  │   ├── resonance/         # Session continuity"
 echo "  │   ├── learnings/         # Accumulated knowledge"
 echo "  │   ├── logs/              # Agent logs"
+echo "  │   ├── tasks/             # Task tracking"
+echo "  │   ├── skill-cache/       # Reusable patterns"
 echo "  │   └── retrospectives/    # Session retros"
 echo "  ├── _aegis-output/         # Pipeline outputs"
+echo "  │   └── iso-docs/          # ISO 29110 templates"
 echo "  ├── skills/                # Skill definitions"
 echo "  └── .claude/               # Claude CLI config"
 echo ""

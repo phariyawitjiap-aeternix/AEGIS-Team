@@ -119,3 +119,60 @@ handoff brief. Run this after /aegis-retro or as a standalone end-of-session com
   ╚══════════════════════════════════════════════════╝
   ```
 - Inform the user: "Next session, run /aegis-start to load this handoff automatically."
+
+### Step 5.5: Capture Mother Brain State (NEW -- for cross-session continuity)
+
+In addition to the human-readable summary, capture machine-readable state
+that Mother Brain can parse on the next /aegis-start:
+
+- Read the current sprint plan from `_aegis-brain/sprints/current/plan.md`
+- Read the current kanban from `_aegis-brain/sprints/current/kanban.md`
+- Count tasks in each kanban column (TODO, IN_PROGRESS, IN_REVIEW, QA, DONE)
+- Read context zone from the latest activity.log entry
+
+Add this to the handoff file frontmatter:
+```yaml
+---
+date: YYYY-MM-DD HH:MM
+from_session: [session start time]
+autonomy_level: L[N]
+mother_brain_state:
+  sprint: [sprint-N]
+  sprint_day: [N of M]
+  kanban:
+    todo: [N]
+    in_progress: [N]
+    in_review: [N]
+    qa: [N]
+    done: [N]
+  context_zone: [GREEN|YELLOW|ORANGE|RED]
+  context_estimate: [N]%
+  cycles_completed: [N]
+  tasks_done_this_session: [list of task IDs]
+  last_decision: [description of last Decision Matrix signal]
+  active_agents: [list of agents that were running, if any]
+---
+```
+
+And add a new section to the body:
+```markdown
+## Mother Brain State
+- Sprint: [sprint-N] (day [N] of [M])
+- Kanban: [N] TODO, [N] IN_PROGRESS, [N] IN_REVIEW, [N] QA, [N] DONE
+- Context was at ~[X]% ([ZONE]) when this handoff was written
+- Completed [N] cycles, [N] tasks this session
+- Last working on: [task ID and description]
+- Decision Matrix was at: [P-level and signal description]
+```
+
+**Why this matters:** When the next /aegis-start loads this handoff, Mother Brain
+can skip redundant scanning and immediately resume from the right Decision Matrix
+priority level, saving context budget on the new session.
+
+### Step 8: Verify Handoff is Loadable
+
+After saving the handoff file:
+1. Re-read the saved file to confirm it parses correctly
+2. Verify the frontmatter YAML is valid (no syntax errors)
+3. Confirm the file is in `_aegis-brain/handoffs/` with the correct date-based filename
+4. Display: "Handoff verified. Next session will auto-load from [filepath]."

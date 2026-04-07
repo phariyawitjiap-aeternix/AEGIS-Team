@@ -91,7 +91,34 @@ BACKLOG -> TODO -> IN_PROGRESS -> IN_REVIEW -> QA -> DONE
 |-----------|-------|--------|------|----|------|
 ```
 
-Action types: CREATED, MOVED, ASSIGNED, COMMENT, POINTS_CHANGED, PRIORITY_CHANGED, DEPENDENCY_ADDED, DEPENDENCY_REMOVED, SPRINT_ASSIGNED, GATE_PASS, GATE_FAIL, TIME_LOGGED, LABEL_CHANGED, HANDOFF
+Action types: CREATED, MOVED, ASSIGNED, COMMENT, POINTS_CHANGED, PRIORITY_CHANGED, DEPENDENCY_ADDED, DEPENDENCY_REMOVED, SPRINT_ASSIGNED, GATE_PASS, GATE_FAIL, TIME_LOGGED, LABEL_CHANGED, HANDOFF, CORRECTION, SYNC
+
+### APPEND-ONLY Rule (NEVER violate)
+
+history.md is an **immutable audit log**. Every entry is permanent evidence of what happened.
+
+```
+RULES:
+  1. NEVER edit or delete existing rows in history.md
+  2. NEVER reorder rows — new entries go at the BOTTOM only
+  3. Timestamps MUST be monotonically increasing (each >= previous)
+  4. To correct a mistake: append a CORRECTION row (do NOT edit the original)
+     Example: | 2026-03-30 12:00 | Navi | CORRECTION | — | — | Fixes row at 11:45: status was IN_REVIEW not TODO |
+  5. To sync after a conflict: append a SYNC row
+     Example: | 2026-03-30 12:05 | Mother Brain | SYNC | — | DONE | Reconciled from meta.json after agent conflict |
+  6. If history.md and meta.json disagree on status, meta.json is the source of truth.
+     Append a SYNC row to history.md to reconcile.
+```
+
+**Integrity check (run by Mother Brain on session start):**
+```
+FOR each task in _aegis-brain/tasks/:
+  1. Read history.md last row → extract "To" status
+  2. Read meta.json → extract "status"
+  3. IF mismatch → append SYNC row to history.md, update meta.json timestamp
+  4. Check timestamps are monotonically increasing
+  5. IF out of order → log warning to activity.log (do NOT reorder)
+```
 
 ---
 

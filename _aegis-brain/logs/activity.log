@@ -1,7 +1,7 @@
 # AEGIS Activity Log — Append Only
 # Format: [ISO-8601] [AGENT_EMOJI] [STATUS] — [message]
 # ---
-[2026-03-20T12:24:49Z] 🧭 SESSION_START — AEGIS-Team (self-dogfood) | profile: full | autonomy: L1
+[2026-03-20T12:24:49Z] SESSION_START — AEGIS-Team (self-dogfood) | profile: full | autonomy: L1
 [2026-03-24 10:00] BREAKDOWN | story=PROJ-US-001 | journeys=4 | epics=4 | tasks=13 | subtasks=0 | total_pts=55
 [2026-03-24 10:05] SPRINT_START | sprint=1 | capacity=28 | committed=27 | stories=8 | load=96%
 [2026-04-07T09:00:00Z] 🧬 SESSION_START | autonomy=L3 | mode=nick-fury | context=8%

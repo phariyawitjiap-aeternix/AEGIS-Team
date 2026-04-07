@@ -1,6 +1,6 @@
 # Sprint 1 Kanban Board
 
-> Generated: 2026-03-24 10:05 | Source of truth: `_aegis-brain/tasks/*/meta.json`
+> Updated: 2026-03-30 17:30 | Source of truth: `_aegis-brain/tasks/*/meta.json`
 
 ## TODO (7 tasks, 22 pts)
 

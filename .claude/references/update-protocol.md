@@ -214,7 +214,7 @@ If `_aegis-brain/counters.json` doesn't exist (first install), create:
 
 After update, Nick Fury should:
 1. ✅ Verify all 13 agent files exist
-2. ✅ Verify all 22 command files exist
+2. ✅ Verify all 23 command files exist
 3. ✅ Verify counters.json preserved (not reset to 0)
 4. ✅ Verify _aegis-brain/tasks/ preserved (user data intact)
 5. ✅ Verify _aegis-output/iso-docs/ preserved (versioned docs intact)
@@ -231,5 +231,5 @@ After update, Nick Fury should:
 | v7.1.0  | 12     | 27     | 21       | 8          | +PM State (JIRA-like) |
 | v8.0.0  | 13     | 28     | 22       | 15         | +Thor/SDLC/Handoff |
 | v8.1.0  | 13     | 29     | 22       | 19         | +Self-evolving |
-| v8.2.0  | 13     | 29     | 22       | 10         | Optimized (-50% context) |
-| v8.2.1  | 13     | 29     | 22       | 11         | +Update protocol |
+| v8.2.0  | 13     | 25     | 23       | 10         | Optimized (-50% context) |
+| v8.2.1  | 13     | 25     | 23       | 11         | +Update protocol |

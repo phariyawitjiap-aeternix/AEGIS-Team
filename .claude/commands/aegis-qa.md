@@ -183,3 +183,30 @@ _aegis-brain/sprints/sprint-N/
   kanban.md         # Regenerated if status changed
   metrics.json      # Recomputed if status changed
 ```
+
+### Step 0: Initialize QA Output Directory (NEW -- auto-setup)
+
+Before running any subcommand, ensure the output directory exists:
+
+```
+INITIALIZATION:
+  1. Determine sprint name from _aegis-brain/sprints/current/plan.md
+  2. Create directory: _aegis-output/qa/sprint-{N}/
+  3. Create subdirectory: _aegis-output/qa/sprint-{N}/results/
+  4. If directories already exist: skip (no-op)
+  5. Log: "QA output directory ready: _aegis-output/qa/sprint-{N}/"
+```
+
+This ensures Sentinel and Probe can write their outputs without directory errors.
+
+### Agent Permissions Note
+
+**Sentinel** has Write access scoped to `_aegis-output/qa/` -- she produces:
+- test-plan.md (test strategy)
+- qa-report.md (analysis and verdict)
+
+**Probe** has Write access scoped to `_aegis-output/qa/results/` -- she produces:
+- raw-results.md (execution output)
+- Individual test case logs
+
+Neither agent can write outside their scoped blast radius.

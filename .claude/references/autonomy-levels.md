@@ -95,10 +95,48 @@ Agent behavior at L4:
 When autonomy is L3 or L4, Nick Fury (`🧬`) takes control:
 - Scans project state automatically (git, tests, specs, deps, debt)
 - Applies Decision Matrix (P0-P10) to pick highest-priority action
-- Spawns the right team via tmux without asking
+- Spawns sub-agents in background without asking (Agent tool, run_in_background=true)
+- Monitors agent health via heartbeat: nudges idle agents, respawns stuck ones
 - Reports decisions with rationale (transparent, not secretive)
-- Human watches via `tmux attach -t aegis-team` and interrupts if needed
+- Human watches via **Shift+Down** (agent detail) and interrupts if needed
 - Only asks human for P10 (completely empty project with no identity)
+- Logs every pulse to `_aegis-brain/logs/heartbeat.log`
+
+### Two-Phase Autonomy (Spec Gate)
+
+Even at L3/L4, autonomy is **not uniform** across the pipeline.
+Mother Brain automatically adjusts based on spec status:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Phase A: SPEC CREATION                                     │
+│  Autonomy: L2 (Guided) — Human MUST answer questions        │
+│                                                             │
+│  • Sage asks human 10 clarifying questions                  │
+│  • Human answers are saved to human-input.md                │
+│  • Sage writes BRD + SRS + UX Blueprint                     │
+│  • Human approves spec → approval.md                        │
+│  • No build agents spawned until approval                   │
+│                                                             │
+│  Trigger: /super-spec OR P8/P10 in Decision Matrix          │
+├─────────────────────────────────────────────────────────────┤
+│  Phase B: POST-SPEC EXECUTION                               │
+│  Autonomy: L3/L4 (Full) — Mother Brain as Spec Proxy        │
+│                                                             │
+│  • Mother Brain answers team questions using approved spec   │
+│  • Does NOT ask human for spec-covered topics               │
+│  • CAN research for technical details                       │
+│  • ESCALATES only: business decisions, scope changes,       │
+│    budget commitments, spec contradictions                   │
+│  • Logs all proxy answers to spec-proxy.log                 │
+│                                                             │
+│  Trigger: spec approved by human                            │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Rationale:** The spec is the most critical artifact — wrong spec = wrong product.
+Human input here is worth 100x the time saved by skipping it. But once the spec
+is locked, Mother Brain has all the context needed to drive autonomously.
 
 See `.claude/agents/nick-fury.md` for full protocol.
 

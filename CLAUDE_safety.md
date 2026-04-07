@@ -1,4 +1,4 @@
-# AEGIS v6.0 -- Safety Rules
+# AEGIS v8.2.1 -- Safety Rules
 
 > Trigger: "safety rules" | Thai trigger: "กฎความปลอดภัย"
 
@@ -184,7 +184,7 @@ node_modules/
 ### Recovery Procedures
 1. **Secret exposure**: Rotate secret -> Remove from git history -> Scan all branches -> Notify human
 2. **Branch corruption**: `git reflog` to find safe point -> `git checkout -b recovery <safe-hash>` -> Notify human
-3. **Agent deadlock**: Kill all tmux sessions -> Log state -> Restart pipeline from last checkpoint
+3. **Agent deadlock**: Mother Brain detects via heartbeat -> Respawn stuck agents -> Log state -> Restart from last checkpoint
 4. **Context overflow**: Write emergency retro -> Archive conversation -> Start fresh session with brain reload
 
 ---

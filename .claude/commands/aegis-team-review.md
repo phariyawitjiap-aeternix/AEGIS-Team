@@ -81,7 +81,4 @@ If any agent fails to respond within a reasonable time:
 
 ---
 
-> **Optional tmux mode**: For visual split panes, exit Claude Code and run:
-> `~/AEGIS-Team/aegis-team.sh --team review --task "your task"`
-> Note: tmux mode has known permission bugs (#26479). In-process mode (default) is recommended.
-> Use **Shift+Down** to view agent activity in-process.
+> Use **Shift+Down** to view agent activity in-process. **Shift+Up** to return to main.

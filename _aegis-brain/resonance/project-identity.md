@@ -1,19 +1,19 @@
 # Project Identity
 
 ## Name
-AEGIS v6.0 — AI Agent Team Framework for Claude Code
+AEGIS v8.3 — AI Agent Team Framework for Claude Code
 
 ## Stack
 - Language: Markdown (skill/command definitions), Bash (installer)
 - Platform: Claude Code (Anthropic)
-- Features: tmux Agent Teams, Persistent Brain, Progressive Disclosure
+- Features: In-process Agent Teams, Persistent Brain, Mother Brain Heartbeat, Two-Phase Autonomy
 - Repo: https://github.com/phariyawitjiap-aeternix/AEGIS-Team
 
 ## Profile
-full (21 skills — this is the source framework)
+full (25 skills — this is the source framework)
 
 ## Autonomy Level
-L1 (Supervised) — default for new session
+L3 (Autonomous) — Mother Brain active with heartbeat + Spec Proxy
 
 ## Conventions
 - English code + Thai trigger words
@@ -35,3 +35,10 @@ AEGIS v6.0 — 8 AI Agent Personas
 
 ## Created
 2026-03-20 (Session 1 — Full rebuild from spec v2 + 10 research upgrades)
+
+## Version History
+- v6.0 (2026-03-20) — Initial release: 9 agents, 21 skills
+- v7.0 — +Sprint/QA/ISO: 12 agents, 27 skills
+- v8.0 — +Ops/SDLC/Handoff: 13 agents, 28 skills
+- v8.2 — Optimized context (-50%): 13 agents, 25 skills
+- v8.3 (2026-03-30) — +Heartbeat, +Two-Phase Autonomy, +Spec Proxy, tmux→in-process

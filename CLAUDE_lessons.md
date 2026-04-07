@@ -1,8 +1,8 @@
-# AEGIS v6.0 -- Lessons Learned
+# AEGIS v8.2.1 -- Lessons Learned
 
 > This file is a living document. Updated via /aegis-retro at the end of each session.
 > New entries are appended at the top of each section.
-> Last updated: 2026-03-20 (initial patterns from framework design)
+> Last updated: 2026-03-30 (v8.2.1 upgrade audit)
 
 ---
 
@@ -118,3 +118,5 @@
 > Format: [DATE] Session #N — Summary | Lessons Added: P/A numbers
 
 [2026-03-20] Session #0 -- Framework initialization. Created AEGIS v6 core files. | Lessons Added: P001-P006, A001-A007
+[2026-03-23] Session #N -- v6.1 team command upgrade. Added threshold check, baseline commit, success metrics, failure handling, explicit integration to all team commands. | Changes: aegis-team-build/review/debate.md
+[2026-03-30] Session #N -- v8.2.1 upgrade audit. Fixed version strings (v6.0→v8.2.1), removed legacy files, corrected command count (22→23), corrected skill count (29→25), standardized haiku models to claude-haiku-4-5. | Changes: CLAUDE*.md, README.md, update-protocol.md, forge/muse/scribe.md

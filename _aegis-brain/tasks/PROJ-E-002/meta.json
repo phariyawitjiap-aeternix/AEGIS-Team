@@ -4,8 +4,12 @@
   "type": "epic",
   "task_type": null,
   "parent": "PROJ-J-002",
-  "children": ["PROJ-T-004", "PROJ-T-005", "PROJ-T-006"],
-  "status": "BACKLOG",
+  "children": [
+    "PROJ-T-004",
+    "PROJ-T-005",
+    "PROJ-T-006"
+  ],
+  "status": "DONE",
   "assignee": "unassigned",
   "points": null,
   "priority": "high",
@@ -15,7 +19,7 @@
     "blocked_by": []
   },
   "created": "2026-03-24T10:00:00",
-  "updated": "2026-03-24T10:00:00",
+  "updated": "2026-03-30T22:00:00",
   "sprint": null,
   "time_tracking": {
     "estimated_hours": null,

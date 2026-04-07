@@ -27,3 +27,7 @@ venv/
 # Logs (keep activity.log, ignore others)
 *.log
 !_aegis-brain/logs/activity.log
+
+# Next.js build
+dashboard/.next/
+dashboard/node_modules/
