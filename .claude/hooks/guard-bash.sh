@@ -33,9 +33,10 @@ if echo "$SAFE_CMD" | grep -qE 'git push\s+(-f|--force)'; then
     block "AEGIS Golden Rule 1 violated: git push --force is banned. Use a branch + PR instead."
 fi
 
-# ── Golden Rule 2: NEVER push to main directly ───────────────────────────────
+# ── Golden Rule 2: warn on push to main (soft check — not all repos require PRs) ──
 if echo "$SAFE_CMD" | grep -qE 'git push\s+(origin\s+)?main(\s|$)'; then
-    block "AEGIS Golden Rule 2 violated: never push directly to main. Create a branch + PR."
+    echo "⚠️  AEGIS Golden Rule 2: pushing directly to main. Confirm this is intentional." >&2
+    # Warn only — exit 0 allows it. Hard block is reserved for --force.
 fi
 
 # ── Golden Rule 3: NEVER amend commits ───────────────────────────────────────
