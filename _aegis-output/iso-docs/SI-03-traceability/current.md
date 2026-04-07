@@ -35,6 +35,7 @@ This matrix traces each functional requirement (SI.01) to its design element (SI
 | NFR-05 | Audit trail | Layer 4 + Layer 5 | _aegis-brain/, _aegis-output/ | TC-15 |
 | NFR-06 | Bilingual operator interface | Songbird agent, language rules | CLAUDE_agents.md (Songbird) | TC-16 |
 | NFR-07 | Version compatibility | CLAUDE.md version header | CLAUDE.md | TC-17 |
+| FR-11 | Post-install verification (/aegis-doctor) | Health check layer | .claude/commands/aegis-doctor.md, skills/aegis-doctor.md | TC-001 to TC-008 (PROJ-T-003 QA) |
 
 ## 3. Design Element → Requirements Coverage
 
