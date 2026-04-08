@@ -9,44 +9,80 @@ triggers:
 # /aegis-start
 
 ## Quick Reference
-Initialize AEGIS and hand control to Nick Fury. After displaying the dashboard,
-Nick Fury scans the project, decides what to do, and starts executing — NO human
-input needed. The human watches via tmux and can interrupt anytime.
+Initialize AEGIS and hand control to Nick Fury. Nick Fury scans the project,
+decides what to do, and starts executing — NO human input needed. The human
+watches via tmux and can interrupt anytime.
+
+## Flags
+| Flag | Effect |
+|------|--------|
+| (none) | Default — no dashboard, fast start |
+| `--dashboard` | Start dashboard web app on `localhost:4321` (auto-fetch + install on first run) |
+| `--no-dashboard` | Explicit skip (same as default) |
 
 ## Full Instructions
 
-### Step 0: Start Dashboard Web App (optional)
+### Step 0: Start Dashboard Web App (opt-in via `--dashboard`)
 
-**Only run if `dashboard/` directory exists.** If not present, skip silently and continue to Step 1.
+**Default = NO dashboard.** Only run when the user explicitly passes `--dashboard` as an argument to `/aegis-start`.
+
+**Argument parsing:**
+- `/aegis-start` → no dashboard (default)
+- `/aegis-start --dashboard` → start the dashboard (auto-fetch + install if missing)
+- `/aegis-start --no-dashboard` → explicit skip (same as default)
 
 ```bash
-# Single guarded block — all checks nested under directory existence.
-if [ -d "dashboard" ]; then
-  # Node.js available?
-  if ! command -v node &>/dev/null; then
-    echo "⚠️ Node.js not found. Install Node 18+ to run the dashboard."
-  else
-    # Install deps if missing
-    if [ ! -d "dashboard/node_modules" ]; then
-      echo "📦 Installing dashboard dependencies..."
-      (cd dashboard && npm install)
-    fi
+# Detect --dashboard flag from the command's $ARGUMENTS
+WANT_DASHBOARD=false
+if echo "$ARGUMENTS" | grep -qE '(^|\s)--dashboard(\s|$)'; then
+  WANT_DASHBOARD=true
+fi
 
-    # Already running on 4321?
-    HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 1 http://localhost:4321 2>/dev/null || echo "000")
-    if [ "$HTTP_CODE" = "200" ]; then
-      echo "🖥️  Dashboard: RUNNING on http://localhost:4321 ✅"
+if [ "$WANT_DASHBOARD" = "true" ]; then
+  # 1. If dashboard/ doesn't exist, sparse-fetch it from the AEGIS-Team repo
+  if [ ! -d "dashboard" ]; then
+    echo "🖥️  Dashboard not installed. Fetching from AEGIS-Team repo..."
+    TMP_FETCH="/tmp/aegis-dashboard-fetch-$$"
+    git clone --depth 1 --filter=blob:none --sparse \
+      https://github.com/phariyawitjiap-aeternix/AEGIS-Team.git "$TMP_FETCH" 2>/dev/null
+    if [ -d "$TMP_FETCH" ]; then
+      (cd "$TMP_FETCH" && git sparse-checkout set dashboard 2>/dev/null)
+      cp -R "$TMP_FETCH/dashboard" ./dashboard
+      rm -rf "$TMP_FETCH"
+      echo "✅ Dashboard fetched (~3MB)"
     else
-      echo "🖥️  Starting dashboard on http://localhost:4321 ..."
-      (cd dashboard && nohup npx next dev -p 4321 >/dev/null 2>&1 &)
-      sleep 5
+      echo "❌ Failed to fetch dashboard. Check network or git access."
+    fi
+  fi
+
+  # 2. Node available?
+  if [ -d "dashboard" ]; then
+    if ! command -v node &>/dev/null; then
+      echo "⚠️  Node.js not found. Install Node 18+ then re-run /aegis-start --dashboard"
+    else
+      # 3. Install deps if missing
+      if [ ! -d "dashboard/node_modules" ]; then
+        echo "📦 Installing dashboard dependencies (~50MB, ~30s)..."
+        (cd dashboard && npm install --silent)
+      fi
+
+      # 4. Already running on 4321?
+      HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 1 http://localhost:4321 2>/dev/null || echo "000")
+      if [ "$HTTP_CODE" = "200" ]; then
+        echo "🖥️  Dashboard: RUNNING on http://localhost:4321 ✅"
+      else
+        echo "🖥️  Starting dashboard on http://localhost:4321 ..."
+        (cd dashboard && nohup npx next dev -p 4321 >/dev/null 2>&1 &)
+        sleep 5
+        echo "✅ Dashboard started"
+      fi
     fi
   fi
 fi
-# If dashboard/ does not exist: silent skip — no error, no warning.
+# If --dashboard was NOT passed: silent skip — Step 0 does nothing.
 ```
 
-**Display to user (only when dashboard is available):**
+**Display to user (only when `--dashboard` was used and start succeeded):**
 ```
 🖥️ Dashboard: http://localhost:4321
    ├── Home:         http://localhost:4321
