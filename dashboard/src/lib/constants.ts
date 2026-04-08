@@ -17,95 +17,95 @@ export interface AgentDef {
 
 export const AGENTS: AgentDef[] = [
   {
-    name: "Mother Brain",
+    name: "Nick Fury",
     emoji: "🧬",
     model: "opus",
     role: "Autonomous Controller",
-    color: "#FF00FF",
+    color: "#1C1C1C", // Black trench coat / eye patch
   },
   {
-    name: "Navi",
-    emoji: "🧭",
+    name: "Captain America",
+    emoji: "🛡️",
     model: "opus",
-    role: "Project Manager",
-    color: "#00CED1",
+    role: "Navigator / Team Lead",
+    color: "#1C3F94", // Cap blue (with the star)
   },
   {
-    name: "Sage",
-    emoji: "📐",
+    name: "Iron Man",
+    emoji: "🤖",
     model: "opus",
     role: "Architect",
-    color: "#4B0082",
+    color: "#A6192E", // Hot rod red armor
   },
   {
-    name: "Bolt",
-    emoji: "⚡",
+    name: "Spider-Man",
+    emoji: "🕷️",
     model: "sonnet",
     role: "Implementer",
-    color: "#FFD700",
+    color: "#E62429", // Spidey suit red
   },
   {
-    name: "Vigil",
-    emoji: "🛡️",
+    name: "Black Panther",
+    emoji: "🐾",
     model: "sonnet",
     role: "Code Reviewer",
-    color: "#4682B4",
+    color: "#3A1C71", // Wakandan vibranium purple
   },
   {
-    name: "Havoc",
+    name: "Loki",
     emoji: "😈",
     model: "opus",
     role: "Devil's Advocate",
-    color: "#DC143C",
+    color: "#1F7A3D", // Loki green cape/helmet
   },
   {
-    name: "Forge",
-    emoji: "🔧",
+    name: "Beast",
+    emoji: "🦁",
     model: "haiku",
     role: "Researcher",
-    color: "#B87333",
+    color: "#1E5BC6", // Hank McCoy blue fur
   },
   {
-    name: "Pixel",
-    emoji: "🎨",
+    name: "Wasp",
+    emoji: "🐝",
     model: "sonnet",
-    role: "UI Designer",
-    color: "#E6E6FA",
+    role: "UX Designer",
+    color: "#FFC72C", // Wasp yellow + black
   },
   {
-    name: "Muse",
-    emoji: "✍️",
+    name: "Songbird",
+    emoji: "🎵",
     model: "haiku",
     role: "Writer",
-    color: "#B76E79",
+    color: "#FF1493", // Sonic pink
   },
   {
-    name: "Sentinel",
-    emoji: "🎯",
+    name: "War Machine",
+    emoji: "⚙️",
     model: "sonnet",
-    role: "QA Strategist",
-    color: "#355E3B",
+    role: "QA Lead",
+    color: "#5A5A5A", // Gunmetal military gray
   },
   {
-    name: "Probe",
-    emoji: "🔬",
+    name: "Vision",
+    emoji: "👁️",
     model: "haiku",
     role: "QA Executor",
-    color: "#FFBF00",
+    color: "#FF8F00", // Vision cape gold/amber
   },
   {
-    name: "Scribe",
-    emoji: "📜",
+    name: "Coulson",
+    emoji: "📋",
     model: "haiku",
     role: "Compliance",
-    color: "#F5DEB3",
+    color: "#003F7F", // S.H.I.E.L.D. agent navy
   },
   {
-    name: "Ops",
-    emoji: "🚀",
+    name: "Thor",
+    emoji: "⚡",
     model: "sonnet",
     role: "DevOps",
-    color: "#2C3539",
+    color: "#B0C4DE", // Mjolnir silver
   },
 ];
 

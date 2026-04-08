@@ -128,7 +128,7 @@ describe("GET /api/heartbeat", () => {
       vi.spyOn(fs, "readFile").mockImplementation(async (p) => {
         if (String(p).endsWith("heartbeat.log")) throw new Error("ENOENT");
         if (String(p).endsWith("activity.log"))
-          return `[${recentTs}] SESSION_START | Mother Brain started\n`;
+          return `[${recentTs}] SESSION_START | Nick Fury started\n`;
         throw new Error("ENOENT");
       });
       vi.spyOn(fs, "readdir").mockRejectedValue(new Error("ENOENT"));

@@ -34,7 +34,7 @@ function task(
     title: `Task ${id}`,
     type: "task",
     status: "DONE",
-    assignee: "bolt",
+    assignee: "spider-man",
     gate_results: {
       gate1_code_review: "PASS",
       gate2_test: "PASS",
@@ -84,7 +84,7 @@ describe("GET /api/gates", () => {
           title: "Task",
           type: "task",
           status: "TODO",
-          assignee: "bolt",
+          assignee: "spider-man",
           // gate_results intentionally omitted
         }),
       ]);
@@ -99,7 +99,7 @@ describe("GET /api/gates", () => {
           title: "Task",
           type: "task",
           status: "TODO",
-          assignee: "bolt",
+          assignee: "spider-man",
         }),
       ]);
 
@@ -165,7 +165,7 @@ describe("GET /api/gates", () => {
           title: "Task",
           type: "task",
           status: "TODO",
-          assignee: "bolt",
+          assignee: "spider-man",
         }), // pending (no gate_results)
       ]);
 

@@ -23,12 +23,12 @@ Updated: 2026-03-30
 ## TODO (1 task, 5 pts)
 | ID | Title | Pts | Assignee | Priority |
 |---|---|---|---|---|
-| PROJ-T-010 | Build login page | 5 | @bolt | high |
+| PROJ-T-010 | Build login page | 5 | @spider-man | high |
 
 ## IN_PROGRESS (1 task, 3 pts)
 | ID | Title | Pts | Assignee | Priority |
 |---|---|---|---|---|
-| PROJ-T-011 | Write tests | 3 | @sentinel | medium |
+| PROJ-T-011 | Write tests | 3 | @war-machine | medium |
 
 ## DONE (0 tasks, 0 pts)
 `;
@@ -69,7 +69,7 @@ describe("GET /api/kanban", () => {
       const board = (res as any).body.data;
       const todo = board.columns.find((c: any) => c.name === "TODO");
 
-      expect(todo.tasks[0].assignee).toBe("bolt");
+      expect(todo.tasks[0].assignee).toBe("spider-man");
     });
 
     it("parses updated timestamp", async () => {

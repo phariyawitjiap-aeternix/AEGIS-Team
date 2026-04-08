@@ -6,12 +6,12 @@ import { parseActivityLog, parseKanbanMd } from "./parsers";
 // ---------------------------------------------------------------------------
 describe("parseActivityLog", () => {
   it("parses a standard log line", () => {
-    const line = "[2026-03-30T10:00:00Z] SESSION_START | Mother Brain activated";
+    const line = "[2026-03-30T10:00:00Z] SESSION_START | Nick Fury activated";
     const result = parseActivityLog(line);
     expect(result).toHaveLength(1);
     expect(result[0].timestamp).toBe("2026-03-30T10:00:00Z");
     expect(result[0].event_type).toBe("SESSION_START");
-    expect(result[0].message).toBe("Mother Brain activated");
+    expect(result[0].message).toBe("Nick Fury activated");
   });
 
   it("parses a log line with an emoji", () => {
@@ -74,18 +74,18 @@ Updated: 2026-03-30
 ## TODO (2 tasks, 8 pts)
 | ID | Title | Pts | Assignee | Priority |
 |---|---|---|---|---|
-| PROJ-T-001 | Implement auth | 5 | @bolt | high |
-| PROJ-T-002 | Write docs | 3 | @muse | low |
+| PROJ-T-001 | Implement auth | 5 | @spider-man | high |
+| PROJ-T-002 | Write docs | 3 | @songbird | low |
 
 ## IN_PROGRESS (1 task, 5 pts)
 | ID | Title | Pts | Assignee | Priority |
 |---|---|---|---|---|
-| PROJ-T-003 | Build dashboard | 5 | @bolt | critical |
+| PROJ-T-003 | Build dashboard | 5 | @spider-man | critical |
 
 ## DONE (1 task, 3 pts)
 | ID | Title | Pts | Assignee | Priority |
 |---|---|---|---|---|
-| PROJ-T-004 | Setup CI | 3 | @ops | medium |
+| PROJ-T-004 | Setup CI | 3 | @thor | medium |
 `;
 
   it("parses the sprint name", () => {
@@ -130,14 +130,14 @@ Updated: 2026-03-30
     expect(todo.tasks[0].id).toBe("PROJ-T-001");
     expect(todo.tasks[0].title).toBe("Implement auth");
     expect(todo.tasks[0].points).toBe(5);
-    expect(todo.tasks[0].assignee).toBe("bolt");
+    expect(todo.tasks[0].assignee).toBe("spider-man");
     expect(todo.tasks[0].priority).toBe("high");
   });
 
   it("strips @ from assignee", () => {
     const board = parseKanbanMd(SAMPLE_MD);
     const inProgress = board.columns.find((c) => c.name === "IN_PROGRESS")!;
-    expect(inProgress.tasks[0].assignee).toBe("bolt");
+    expect(inProgress.tasks[0].assignee).toBe("spider-man");
   });
 
   it("parses task_count and point_sum from column header", () => {
@@ -170,7 +170,7 @@ Updated: 2026-03-30
   });
 
   it("correctly handles singular 'task' header label", () => {
-    const md = `## IN_PROGRESS (1 task, 5 pts)\n| PROJ-T-010 | Fix bug | 5 | @bolt | high |\n`;
+    const md = `## IN_PROGRESS (1 task, 5 pts)\n| PROJ-T-010 | Fix bug | 5 | @spider-man | high |\n`;
     const board = parseKanbanMd(md);
     const col = board.columns.find((c) => c.name === "IN_PROGRESS")!;
     expect(col.task_count).toBe(1);
@@ -178,7 +178,7 @@ Updated: 2026-03-30
   });
 
   it("ignores table separator rows with ---", () => {
-    const md = `## TODO (1 task, 3 pts)\n| ID | Title | Pts | Assignee | Priority |\n|---|---|---|---|---|\n| PROJ-T-005 | Task | 3 | @sage | medium |\n`;
+    const md = `## TODO (1 task, 3 pts)\n| ID | Title | Pts | Assignee | Priority |\n|---|---|---|---|---|\n| PROJ-T-005 | Task | 3 | @iron-man | medium |\n`;
     const board = parseKanbanMd(md);
     const todo = board.columns.find((c) => c.name === "TODO")!;
     expect(todo.tasks).toHaveLength(1);

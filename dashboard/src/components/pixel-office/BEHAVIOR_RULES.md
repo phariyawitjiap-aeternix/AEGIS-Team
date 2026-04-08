@@ -26,7 +26,7 @@ Only triggered when `/api/agents` returns a non-idle status for this agent.
 | `blocked` | Sit at own desk, frustrated | — (stationary) | Still, no typing | Red: "Blocked...", "Blocked! 🚫" |
 | `waiting` | Stand near own desk | — (stationary) | Slight sway | Yellow: "Waiting..." (occasional) |
 | `done` → celebrate | Bounce at desk | — (stationary) | Jump + sparkles | Green: "Done! 🎉", "Complete! ✅" |
-| `done` → report | Walk to Mother Brain orb | 2.0 px/frame | Walk cycle (satisfied) | Purple: role-specific MB report |
+| `done` → report | Walk to Nick Fury orb | 2.0 px/frame | Walk cycle (satisfied) | Purple: role-specific Nick Fury report |
 | `done` → socialize | Fall through to idle | 0.8 px/frame | Idle behaviors | — |
 
 ### Work Transitions (status changes)
@@ -34,8 +34,8 @@ Only triggered when `/api/agents` returns a non-idle status for this agent.
 | From → To | What Happens |
 |-----------|-------------|
 | `idle` → `working` | Agent walks home, bubble "On it!", start typing |
-| `working` → `done` | Celebrate (120 ticks) → walk to MB → report → idle |
-| `idle` → `done` | Celebrate (80 ticks) → walk to MB → report → idle |
+| `working` → `done` | Celebrate (120 ticks) → walk to Nick Fury → report → idle |
+| `idle` → `done` | Celebrate (80 ticks) → walk to Nick Fury → report → idle |
 | any → `blocked` | Walk home, red bubble "Blocked! 🚫" |
 
 ### Pipeline Handoff Chain
@@ -43,15 +43,15 @@ Only triggered when `/api/agents` returns a non-idle status for this agent.
 When an agent finishes and hands off to the next:
 
 ```
-Sage → Bolt → Vigil → Sentinel → Probe → Scribe
+Iron Man → Spider-Man → Black Panther → War Machine → Vision → Coulson
 ```
 
 Agent walks to next-in-chain's desk with handoff bubble:
-- Sage: "Spec ready!", "Here, Bolt"
-- Bolt: "Code done!", "PR ready"
-- Vigil: "PASS!", "Approved ✅"
-- Sentinel: "QA plan done", "Go Probe!"
-- Probe: "All pass!", "Results in"
+- Iron Man: "Spec ready!", "Here, Spider-Man"
+- Spider-Man: "Code done!", "PR ready"
+- Black Panther: "PASS!", "Approved ✅"
+- War Machine: "QA plan done", "Go Vision!"
+- Vision: "All pass!", "Results in"
 
 Receiving agent responds: "Got it!", "Thanks!", "On it!", "Roger!"
 
@@ -59,18 +59,18 @@ Receiving agent responds: "Got it!", "Thanks!", "On it!", "Roger!"
 
 | Agent | Work Bubbles (blue) |
 |-------|-------------------|
-| Navi | "Planning...", "Routing task", "Sprint check" |
-| Sage | "Writing spec", "Designing...", "Architecture" |
-| Bolt | "Coding...", "npm install", "Building...", "git commit" |
-| Vigil | "Reviewing...", "Security?", "LGTM!", "Needs fix" |
-| Havoc | "What if...?", "Edge case!", "Challenge!" |
-| Forge | "Scanning...", "Metrics...", "grep -r" |
-| Pixel | "UI wireframe", "Colors...", "Responsive?" |
-| Muse | "Writing docs", "README...", "Changelog" |
-| Sentinel | "Test plan", "Coverage?", "Risk matrix" |
-| Probe | "Running...", "PASS ✅", "Testing..." |
-| Scribe | "ISO docs", "SI.03...", "Tracing..." |
-| Ops | "Deploying...", "Health OK", "docker build" |
+| Captain America | "Planning...", "Routing task", "Sprint check" |
+| Iron Man | "Writing spec", "Designing...", "Architecture" |
+| Spider-Man | "Coding...", "npm install", "Building...", "git commit" |
+| Black Panther | "Reviewing...", "Security?", "LGTM!", "Needs fix" |
+| Loki | "What if...?", "Edge case!", "Challenge!" |
+| Beast | "Scanning...", "Metrics...", "grep -r" |
+| Wasp | "UI wireframe", "Colors...", "Responsive?" |
+| Songbird | "Writing docs", "README...", "Changelog" |
+| War Machine | "Test plan", "Coverage?", "Risk matrix" |
+| Vision | "Running...", "PASS ✅", "Testing..." |
+| Coulson | "ISO docs", "SI.03...", "Tracing..." |
+| Thor | "Deploying...", "Health OK", "docker build" |
 
 ---
 
@@ -91,18 +91,18 @@ Only triggered when `/api/agents` returns `idle` (or `done` after reporting).
 
 | Agent | Casual Chat |
 |-------|------------|
-| Navi | "What a day", "Any plans?", "Lunch?" |
-| Sage | "Read this?", "Cool article", "Interesting..." |
-| Bolt | "Games later?", "LFG!", "Weekend?", "So tired lol" |
-| Vigil | "Stay sharp", "Good job", "Not bad" |
-| Havoc | "Haha!", "No way!", "Crazy!", "LOL" |
-| Forge | "Did you see", "Numbers!", "Cool stats" |
-| Pixel | "Love this!", "Colors!", "So pretty" |
-| Muse | "Great read", "Typo!", "Creative!" |
-| Sentinel | "All quiet", "No bugs", "Peaceful", "Boring day" |
-| Probe | "Tests pass", "Clean!", "Easy day" |
-| Scribe | "Filed it", "All good", "Organized" |
-| Ops | "Servers up", "All green", "Quiet day" |
+| Captain America | "What a day", "Any plans?", "Lunch?" |
+| Iron Man | "Read this?", "Cool article", "Interesting..." |
+| Spider-Man | "Games later?", "LFG!", "Weekend?", "So tired lol" |
+| Black Panther | "Stay sharp", "Good job", "Not bad" |
+| Loki | "Haha!", "No way!", "Crazy!", "LOL" |
+| Beast | "Did you see", "Numbers!", "Cool stats" |
+| Wasp | "Love this!", "Colors!", "So pretty" |
+| Songbird | "Great read", "Typo!", "Creative!" |
+| War Machine | "All quiet", "No bugs", "Peaceful", "Boring day" |
+| Vision | "Tests pass", "Clean!", "Easy day" |
+| Coulson | "Filed it", "All good", "Organized" |
+| Thor | "Servers up", "All green", "Quiet day" |
 
 ### Social Rules
 
@@ -113,7 +113,7 @@ Only triggered when `/api/agents` returns `idle` (or `done` after reporting).
 
 ---
 
-## 3. Mother Brain Orb
+## 3. Nick Fury Command Orb
 
 | State | Condition | Visual |
 |-------|----------|--------|
@@ -121,22 +121,22 @@ Only triggered when `/api/agents` returns `idle` (or `done` after reporting).
 | **Sleeping** | All agents are `idle` | Dim purple (#332244), slow breathing, no particles, floating "Zzz", label "sleeping — no work" |
 | **Stale** | Heartbeat > 60s old | Yellow, slow pulse, 6 particles |
 
-### MB Interaction Rules
+### Orb Interaction Rules
 
-- Agents visit MB orb **ONLY** after completing real work (`done` → `reporting_to_mb`)
-- Idle agents that wander near MB just glance ("🧬") and leave quickly (30-60 ticks)
+- Agents visit the orb **ONLY** after completing real work (`done` → `reporting_to_mb`)
+- Idle agents that wander near the orb just glance ("🧬") and leave quickly (30-60 ticks)
 - **No fake check-ins. No fake reporting.**
 
-### MB Report Bubbles (purple, only after real work)
+### Nick Fury Report Bubbles (purple, only after real work)
 
-| Agent | Report to MB |
-|-------|-------------|
-| Sage | "Spec complete", "Design ready", "ADR filed" |
-| Bolt | "Build done", "Code merged", "Tests pass" |
-| Vigil | "Review done", "Gate 1 pass", "Clean code" |
-| Sentinel | "QA complete", "Gate 2 pass", "All tested" |
-| Scribe | "ISO updated", "Gate 3 pass", "Docs synced" |
-| Ops | "Deployed OK", "Health green", "Gate 4 pass" |
+| Agent | Report to Nick Fury |
+|-------|---------------------|
+| Iron Man | "Spec complete", "Design ready", "ADR filed" |
+| Spider-Man | "Build done", "Code merged", "Tests pass" |
+| Black Panther | "Review done", "Gate 1 pass", "Clean code" |
+| War Machine | "QA complete", "Gate 2 pass", "All tested" |
+| Coulson | "ISO updated", "Gate 3 pass", "Docs synced" |
+| Thor | "Deployed OK", "Health green", "Gate 4 pass" |
 
 ---
 
@@ -155,7 +155,7 @@ Only triggered when `/api/agents` returns `idle` (or `done` after reporting).
 Real-time data from `/api/kanban` (SWR polling every 5s):
 
 - **3 columns**: TODO, WIP (IN_PROGRESS + IN_REVIEW + QA), DONE
-- **Cards** colored by assignee agent color
+- **Cards** colored by assignee agent color (Marvel-themed palette in `lib/constants.ts`)
 - **WIP cards** pulse border (active work indicator)
 - **DONE cards** show ✓ checkmark
 - **Progress bar** at top: completed_pts / total_pts
@@ -167,11 +167,11 @@ Real-time data from `/api/kanban` (SWR polling every 5s):
 
 ```
 ❌ Fake work bubbles when idle
-❌ Fake "check in with MB" when idle
+❌ Fake "check in with Nick Fury" when idle
 ❌ Fake meetings when no team command active
 ❌ Fake "reporting" when no task was completed
 ❌ Work speech bubbles ("Coding...", "Reviewing...") when status is idle
-❌ Mother Brain active/glowing when no work exists
+❌ Nick Fury orb active/glowing when no work exists
 ❌ Fast walking when just going for coffee
 ```
 
@@ -184,5 +184,5 @@ Real-time data from `/api/kanban` (SWR polling every 5s):
 | `types.ts` | Agent state types, behavior states, speech bubble types |
 | `behaviors.ts` | State machine: status → behavior → bubbles + movement targets |
 | `pathfinding.ts` | Movement speed (state-aware), walk animation, collision |
-| `sprites.ts` | All drawing: agents, MB orb, office, wall kanban, speech bubbles |
+| `sprites.ts` | All drawing: agents, Nick Fury orb, office, wall kanban, speech bubbles |
 | `PixelOfficeCanvas.tsx` | Main loop: tick → behavior → move → draw. Data from hooks |

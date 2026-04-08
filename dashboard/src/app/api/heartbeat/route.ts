@@ -7,7 +7,7 @@ import type { ApiResponse, HeartbeatStatus } from "@/types";
 export const dynamic = "force-dynamic";
 
 /**
- * Check if Mother Brain agent process is running.
+ * Check if Nick Fury agent process is running.
  * Looks for active output files being written to by background agents.
  */
 async function checkProcessAlive(): Promise<{
@@ -15,7 +15,7 @@ async function checkProcessAlive(): Promise<{
   source: string;
 }> {
   // Check 1: Look for recent file modifications in _aegis-brain/ (last 30s)
-  // If Mother Brain is working, she's reading/writing files constantly
+  // If Nick Fury is working, he's reading/writing files constantly
   try {
     const logsDir = path.join(BRAIN_DIR, "logs");
     const tasksDir = path.join(BRAIN_DIR, "tasks");
@@ -79,7 +79,7 @@ export async function GET() {
     let lastBeat: string | null = null;
     let lastBeatSource: "heartbeat" | "activity" | "process" = "heartbeat";
 
-    // Source 1: heartbeat.log (most reliable when Mother Brain writes it)
+    // Source 1: heartbeat.log (most reliable when Nick Fury writes it)
     try {
       const content = await fs.readFile(heartbeatPath, "utf-8");
       const lines = content.trim().split("\n").filter(Boolean);
@@ -124,7 +124,7 @@ export async function GET() {
     // Determine health from ALL sources
     let health: HeartbeatStatus["health"] = "unknown";
     if (processCheck.alive) {
-      // Process is actively writing files — Mother Brain is WORKING
+      // Process is actively writing files — Nick Fury is WORKING
       // even if heartbeat.log hasn't been written yet
       health = ageSeconds <= 60 ? "healthy" : "working";
     } else if (lastBeat && ageSeconds !== Infinity) {

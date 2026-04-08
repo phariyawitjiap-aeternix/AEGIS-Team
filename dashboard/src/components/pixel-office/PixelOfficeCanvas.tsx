@@ -52,6 +52,8 @@ const SPRITE_W = 32;
 const SPRITE_H = 32;
 
 // ---- Sprite drawing dispatch ----
+// Sprite art is reused: each Marvel character maps to an existing sprite draw fn.
+// (Sprite redraw is a future task — for now we just rename + recolor via constants.ts.)
 const SPRITE_DRAW: Record<
   string,
   (
@@ -63,18 +65,18 @@ const SPRITE_DRAW: Record<
     tick: number
   ) => void
 > = {
-  Navi:     drawNavi,
-  Sage:     drawSage,
-  Bolt:     drawBolt,
-  Vigil:    drawVigil,
-  Havoc:    drawHavoc,
-  Forge:    drawForge,
-  Pixel:    drawPixel,
-  Muse:     drawMuse,
-  Sentinel: drawSentinel,
-  Probe:    drawProbe,
-  Scribe:   drawScribe,
-  Ops:      drawOps,
+  "Captain America": drawNavi,     // Navigator → Captain America
+  "Iron Man":        drawSage,     // Architect → Iron Man
+  "Spider-Man":      drawBolt,     // Implementer → Spider-Man
+  "Black Panther":   drawVigil,    // Code Reviewer → Black Panther
+  "Loki":            drawHavoc,    // Devil's Advocate → Loki
+  "Beast":           drawForge,    // Researcher → Beast
+  "Wasp":            drawPixel,    // UX Designer → Wasp
+  "Songbird":        drawMuse,     // Writer → Songbird
+  "War Machine":     drawSentinel, // QA Lead → War Machine
+  "Vision":          drawProbe,    // QA Executor → Vision
+  "Coulson":         drawScribe,   // Compliance → Coulson
+  "Thor":            drawOps,      // DevOps → Thor
 };
 
 interface Popup {
@@ -116,10 +118,10 @@ export function PixelOfficeCanvas() {
       const cx     = mx * scaleX;
       const cy     = my * scaleY;
 
-      // Mother Brain orb
+      // Nick Fury command orb
       const dOrb = Math.sqrt((cx - ORB_POS.x) ** 2 + (cy - ORB_POS.y) ** 2);
       if (dOrb < 50) {
-        const mb = agentsRef.current.find((a) => a.name === "Mother Brain");
+        const mb = agentsRef.current.find((a) => a.name === "Nick Fury");
         if (mb) return mb;
       }
 
@@ -212,8 +214,8 @@ export function PixelOfficeCanvas() {
       // ---- Meeting room ----
       drawMeetingRoom(ctx, 490, 390, 260, 190);
 
-      // ---- Mother Brain orb ----
-      // MB sleeps when no agent is working/blocked/done
+      // ---- Nick Fury command orb ----
+      // Orb sleeps when no agent is working/blocked/done
       const hasWork = liveAgents.some(a =>
         a.status === "working" || a.status === "blocked" || a.status === "done"
       );

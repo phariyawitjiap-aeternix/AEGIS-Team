@@ -42,7 +42,7 @@ function makeTask(
     id: "PROJ-T-001",
     title: "Test task",
     status: "TODO",
-    assignee: "bolt",
+    assignee: "spider-man",
     points: 3,
     sprint: "sprint-1",
     updated: new Date().toISOString(),
@@ -68,7 +68,7 @@ describe("GET /api/agents", () => {
       });
       vi.spyOn(fs, "readFile").mockImplementation(async (p) => {
         if (String(p).includes("PROJ-T-001")) {
-          return makeTask({ assignee: "bolt", status: "IN_PROGRESS", sprint: "sprint-1" });
+          return makeTask({ assignee: "spider-man", status: "IN_PROGRESS", sprint: "sprint-1" });
         }
         throw new Error("ENOENT");
       });
@@ -76,20 +76,20 @@ describe("GET /api/agents", () => {
 
       const res = await GET();
       const agents: any[] = (res as any).body.data;
-      const bolt = agents.find((a) => a.name === "Bolt");
+      const spiderMan = agents.find((a) => a.name === "Spider-Man");
 
-      expect(bolt).toBeDefined();
-      expect(bolt.status).toBe("working");
+      expect(spiderMan).toBeDefined();
+      expect(spiderMan.status).toBe("working");
     });
 
-    it("matches assignee with @ prefix (@bolt)", async () => {
+    it("matches assignee with @ prefix (@spider-man)", async () => {
       vi.spyOn(fs, "readdir").mockImplementation(async (p) => {
         if (String(p).endsWith("/tasks")) return ["PROJ-T-001"] as any;
         throw new Error("ENOENT");
       });
       vi.spyOn(fs, "readFile").mockImplementation(async (p) => {
         if (String(p).includes("PROJ-T-001")) {
-          return makeTask({ assignee: "@bolt", status: "IN_PROGRESS", sprint: "sprint-1" });
+          return makeTask({ assignee: "@spider-man", status: "IN_PROGRESS", sprint: "sprint-1" });
         }
         throw new Error("ENOENT");
       });
@@ -97,19 +97,19 @@ describe("GET /api/agents", () => {
 
       const res = await GET();
       const agents: any[] = (res as any).body.data;
-      const bolt = agents.find((a) => a.name === "Bolt");
+      const spiderMan = agents.find((a) => a.name === "Spider-Man");
 
-      expect(bolt.status).toBe("working");
+      expect(spiderMan.status).toBe("working");
     });
 
-    it("matches assignee with mixed case (@Bolt)", async () => {
+    it("matches assignee with mixed case (@Spider-Man)", async () => {
       vi.spyOn(fs, "readdir").mockImplementation(async (p) => {
         if (String(p).endsWith("/tasks")) return ["PROJ-T-001"] as any;
         throw new Error("ENOENT");
       });
       vi.spyOn(fs, "readFile").mockImplementation(async (p) => {
         if (String(p).includes("PROJ-T-001")) {
-          return makeTask({ assignee: "@Bolt", status: "IN_PROGRESS", sprint: "sprint-1" });
+          return makeTask({ assignee: "@Spider-Man", status: "IN_PROGRESS", sprint: "sprint-1" });
         }
         throw new Error("ENOENT");
       });
@@ -117,12 +117,12 @@ describe("GET /api/agents", () => {
 
       const res = await GET();
       const agents: any[] = (res as any).body.data;
-      const bolt = agents.find((a) => a.name === "Bolt");
+      const spiderMan = agents.find((a) => a.name === "Spider-Man");
 
-      expect(bolt.status).toBe("working");
+      expect(spiderMan.status).toBe("working");
     });
 
-    it("matches multi-word agent name with hyphens (mother-brain)", async () => {
+    it("matches multi-word agent name with hyphens (nick-fury)", async () => {
       vi.spyOn(fs, "readdir").mockImplementation(async (p) => {
         if (String(p).endsWith("/tasks")) return ["PROJ-T-002"] as any;
         throw new Error("ENOENT");
@@ -131,7 +131,7 @@ describe("GET /api/agents", () => {
         if (String(p).includes("PROJ-T-002")) {
           return makeTask({
             id: "PROJ-T-002",
-            assignee: "mother-brain",
+            assignee: "nick-fury",
             status: "IN_PROGRESS",
             sprint: "sprint-1",
           });
@@ -142,10 +142,10 @@ describe("GET /api/agents", () => {
 
       const res = await GET();
       const agents: any[] = (res as any).body.data;
-      const mb = agents.find((a) => a.name === "Mother Brain");
+      const nickFury = agents.find((a) => a.name === "Nick Fury");
 
-      expect(mb).toBeDefined();
-      expect(mb.status).toBe("working");
+      expect(nickFury).toBeDefined();
+      expect(nickFury.status).toBe("working");
     });
   });
 
@@ -157,11 +157,11 @@ describe("GET /api/agents", () => {
 
       const res = await GET();
       const agents: any[] = (res as any).body.data;
-      const bolt = agents.find((a) => a.name === "Bolt");
+      const spiderMan = agents.find((a) => a.name === "Spider-Man");
 
-      expect(bolt.status).toBe("idle");
-      expect(bolt.tasks_completed).toBe(0);
-      expect(bolt.active_task).toBeUndefined();
+      expect(spiderMan.status).toBe("idle");
+      expect(spiderMan.tasks_completed).toBe(0);
+      expect(spiderMan.active_task).toBeUndefined();
     });
 
     it("is waiting when task is in TODO state", async () => {
@@ -171,16 +171,16 @@ describe("GET /api/agents", () => {
       });
       vi.spyOn(fs, "readFile").mockImplementation(async (p) => {
         if (String(p).includes("PROJ-T-001")) {
-          return makeTask({ assignee: "bolt", status: "TODO", sprint: "sprint-1" });
+          return makeTask({ assignee: "spider-man", status: "TODO", sprint: "sprint-1" });
         }
         throw new Error("ENOENT");
       });
       vi.spyOn(fs, "readlink").mockRejectedValue(new Error("ENOENT"));
 
       const res = await GET();
-      const bolt = (res as any).body.data.find((a: any) => a.name === "Bolt");
+      const spiderMan = (res as any).body.data.find((a: any) => a.name === "Spider-Man");
 
-      expect(bolt.status).toBe("waiting");
+      expect(spiderMan.status).toBe("waiting");
     });
 
     it("is blocked when task is BLOCKED", async () => {
@@ -190,18 +190,18 @@ describe("GET /api/agents", () => {
       });
       vi.spyOn(fs, "readFile").mockImplementation(async (p) => {
         if (String(p).includes("PROJ-T-001")) {
-          return makeTask({ assignee: "bolt", status: "BLOCKED", sprint: "sprint-1" });
+          return makeTask({ assignee: "spider-man", status: "BLOCKED", sprint: "sprint-1" });
         }
         throw new Error("ENOENT");
       });
       vi.spyOn(fs, "readlink").mockRejectedValue(new Error("ENOENT"));
 
       const res = await GET();
-      const bolt = (res as any).body.data.find((a: any) => a.name === "Bolt");
+      const spiderMan = (res as any).body.data.find((a: any) => a.name === "Spider-Man");
 
-      expect(bolt.status).toBe("blocked");
-      expect(bolt.active_task).toBeDefined();
-      expect(bolt.active_task.id).toBe("PROJ-T-001");
+      expect(spiderMan.status).toBe("blocked");
+      expect(spiderMan.active_task).toBeDefined();
+      expect(spiderMan.active_task.id).toBe("PROJ-T-001");
     });
 
     it("accumulates tasks_completed and points_completed correctly", async () => {
@@ -211,20 +211,20 @@ describe("GET /api/agents", () => {
       });
       vi.spyOn(fs, "readFile").mockImplementation(async (p) => {
         if (String(p).includes("PROJ-T-001")) {
-          return makeTask({ id: "PROJ-T-001", assignee: "bolt", status: "DONE", points: 5, sprint: "sprint-1" });
+          return makeTask({ id: "PROJ-T-001", assignee: "spider-man", status: "DONE", points: 5, sprint: "sprint-1" });
         }
         if (String(p).includes("PROJ-T-002")) {
-          return makeTask({ id: "PROJ-T-002", assignee: "bolt", status: "DONE", points: 3, sprint: "sprint-1" });
+          return makeTask({ id: "PROJ-T-002", assignee: "spider-man", status: "DONE", points: 3, sprint: "sprint-1" });
         }
         throw new Error("ENOENT");
       });
       vi.spyOn(fs, "readlink").mockRejectedValue(new Error("ENOENT"));
 
       const res = await GET();
-      const bolt = (res as any).body.data.find((a: any) => a.name === "Bolt");
+      const spiderMan = (res as any).body.data.find((a: any) => a.name === "Spider-Man");
 
-      expect(bolt.tasks_completed).toBe(2);
-      expect(bolt.points_completed).toBe(8);
+      expect(spiderMan.tasks_completed).toBe(2);
+      expect(spiderMan.points_completed).toBe(8);
     });
 
     it("blocked status takes priority over working", async () => {
@@ -234,19 +234,19 @@ describe("GET /api/agents", () => {
       });
       vi.spyOn(fs, "readFile").mockImplementation(async (p) => {
         if (String(p).includes("PROJ-T-001")) {
-          return makeTask({ id: "PROJ-T-001", assignee: "bolt", status: "BLOCKED", sprint: "sprint-1" });
+          return makeTask({ id: "PROJ-T-001", assignee: "spider-man", status: "BLOCKED", sprint: "sprint-1" });
         }
         if (String(p).includes("PROJ-T-002")) {
-          return makeTask({ id: "PROJ-T-002", assignee: "bolt", status: "IN_PROGRESS", sprint: "sprint-1" });
+          return makeTask({ id: "PROJ-T-002", assignee: "spider-man", status: "IN_PROGRESS", sprint: "sprint-1" });
         }
         throw new Error("ENOENT");
       });
       vi.spyOn(fs, "readlink").mockRejectedValue(new Error("ENOENT"));
 
       const res = await GET();
-      const bolt = (res as any).body.data.find((a: any) => a.name === "Bolt");
+      const spiderMan = (res as any).body.data.find((a: any) => a.name === "Spider-Man");
 
-      expect(bolt.status).toBe("blocked");
+      expect(spiderMan.status).toBe("blocked");
     });
   });
 

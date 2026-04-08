@@ -426,7 +426,7 @@ export function drawOps(
 }
 
 // ============================================================
-// Mother Brain Orb (larger, 80x80 bounding box)
+// Nick Fury Command Orb (larger, 80x80 bounding box)
 // ============================================================
 
 export function drawMotherBrainOrb(
@@ -608,11 +608,26 @@ export function drawWalls(ctx: CanvasRenderingContext2D, W: number, tick: number
   });
 }
 
-// Agent colors for kanban cards
+// Marvel character colors for kanban cards (assignee key = lowercase, hyphens stripped)
 const AGENT_CARD_COLORS: Record<string, string> = {
-  bolt: "#FFD700", sage: "#4B0082", vigil: "#4682B4", havoc: "#DC143C",
-  navi: "#00CED1", forge: "#B87333", pixel: "#E6E6FA", muse: "#B76E79",
-  sentinel: "#355E3B", probe: "#FFBF00", scribe: "#F5DEB3", ops: "#2C3539",
+  "spider-man":      "#E62429", // Spidey red
+  "ironman":         "#A6192E", // Hot rod red
+  "iron-man":        "#A6192E",
+  "blackpanther":    "#3A1C71", // Wakandan purple
+  "black-panther":   "#3A1C71",
+  "loki":            "#1F7A3D", // Loki green
+  "captainamerica":  "#1C3F94", // Cap blue
+  "captain-america": "#1C3F94",
+  "beast":           "#1E5BC6", // Beast blue fur
+  "wasp":            "#FFC72C", // Wasp yellow
+  "songbird":        "#FF1493", // Sonic pink
+  "warmachine":      "#5A5A5A", // Gunmetal
+  "war-machine":     "#5A5A5A",
+  "vision":          "#FF8F00", // Vision amber/cape gold
+  "coulson":         "#003F7F", // S.H.I.E.L.D. navy
+  "thor":            "#B0C4DE", // Mjolnir silver
+  "nickfury":        "#1C1C1C", // Black trench coat
+  "nick-fury":       "#1C1C1C",
 };
 
 interface WallKanbanData {

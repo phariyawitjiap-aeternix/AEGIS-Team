@@ -46,7 +46,7 @@ export async function GET() {
     // Derive agent states
     const agents: AgentState[] = AGENTS.map((def) => {
       const agentName = def.name.toLowerCase();
-      // Match: "bolt", "@bolt", "Bolt", "@Bolt", "mother-brain", "motherbrain"
+      // Match: "spider-man", "@spider-man", "Spider-Man", "iron-man", "ironman"
       const normalizeAssignee = (a: string) =>
         (a || "").replace(/^@/, "").toLowerCase().replace(/[\s-]+/g, "");
       const normalizedAgent = normalizeAssignee(agentName);

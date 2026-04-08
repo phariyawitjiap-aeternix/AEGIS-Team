@@ -9,10 +9,10 @@ export type AgentBehaviorState =
   | "at_meeting"
   | "idle_anim"
   | "working_at_desk"     // actively working on a task
-  | "reporting_to_mb"     // walking to Mother Brain to report
-  | "receiving_task"      // at MB orb, getting a new task assignment
-  | "collaborating"       // walking to teammate for handoff (Sage→Bolt→Vigil chain)
-  | "code_reviewing"      // Vigil reviewing at someone's desk
+  | "reporting_to_mb"     // walking to Nick Fury orb to report
+  | "receiving_task"      // at orb, getting a new task assignment
+  | "collaborating"       // walking to teammate for handoff (Iron Man → Spider-Man → Black Panther chain)
+  | "code_reviewing"      // Black Panther reviewing at someone's desk
   | "celebrating"         // task/sprint done celebration
   | "coffee_break"        // relaxing at water cooler
   | "chatting";           // casual chat with friend

@@ -18,96 +18,96 @@ export const MEETING_SEATS = [
 ];
 
 export const DESK_POSITIONS: Record<string, { x: number; y: number }> = {
-  Navi:     { x: 120, y: 295 },
-  Sage:     { x: 248, y: 295 },
-  Bolt:     { x: 376, y: 295 },
-  Vigil:    { x: 504, y: 295 },
-  Havoc:    { x: 632, y: 295 },
-  Forge:    { x: 120, y: 425 },
-  Pixel:    { x: 248, y: 425 },
-  Muse:     { x: 376, y: 425 },
-  Sentinel: { x: 504, y: 425 },
-  Probe:    { x: 632, y: 425 },
-  Scribe:   { x: 120, y: 555 },
-  Ops:      { x: 248, y: 555 },
+  "Captain America": { x: 120, y: 295 },
+  "Iron Man":        { x: 248, y: 295 },
+  "Spider-Man":      { x: 376, y: 295 },
+  "Black Panther":   { x: 504, y: 295 },
+  "Loki":            { x: 632, y: 295 },
+  "Beast":           { x: 120, y: 425 },
+  "Wasp":            { x: 248, y: 425 },
+  "Songbird":        { x: 376, y: 425 },
+  "War Machine":     { x: 504, y: 425 },
+  "Vision":          { x: 632, y: 425 },
+  "Coulson":         { x: 120, y: 555 },
+  "Thor":            { x: 248, y: 555 },
 };
 
 // ---- Pipeline chain: who hands off to whom ----
 const PIPELINE_CHAINS: Record<string, string> = {
-  Sage: "Bolt",       // Sage specs → Bolt builds
-  Bolt: "Vigil",      // Bolt builds → Vigil reviews
-  Vigil: "Sentinel",  // Vigil passes → Sentinel QA
-  Sentinel: "Probe",  // Sentinel plans → Probe executes
-  Probe: "Scribe",    // Probe reports → Scribe docs
+  "Iron Man":      "Spider-Man",    // Iron Man specs → Spider-Man builds
+  "Spider-Man":    "Black Panther", // Spider-Man builds → Black Panther reviews
+  "Black Panther": "War Machine",   // Black Panther passes → War Machine QA
+  "War Machine":   "Vision",        // War Machine plans → Vision executes
+  "Vision":        "Coulson",       // Vision reports → Coulson docs
 };
 
 // ---- Work speech bubbles (role-specific) ----
 const WORK_BUBBLES: Record<string, string[]> = {
-  Navi:     ["Planning...", "Routing task", "Sprint check", "Deciding..."],
-  Sage:     ["Writing spec", "Designing...", "Architecture", "Trade-offs..."],
-  Bolt:     ["Coding...", "npm install", "Building...", "git commit"],
-  Vigil:    ["Reviewing...", "Security?", "LGTM!", "Needs fix"],
-  Havoc:    ["What if...?", "Edge case!", "Challenge!", "Hmm, flaw?"],
-  Forge:    ["Scanning...", "Metrics...", "grep -r", "Dependencies"],
-  Pixel:    ["UI wireframe", "Colors...", "Responsive?", "Accessible?"],
-  Muse:     ["Writing docs", "README...", "Changelog", "API docs"],
-  Sentinel: ["Test plan", "Coverage?", "Risk matrix", "P0 tests"],
-  Probe:    ["Running...", "PASS ✅", "Testing...", "npm test"],
-  Scribe:   ["ISO docs", "SI.03...", "Tracing...", "PM.01 update"],
-  Ops:      ["Deploying...", "Health OK", "docker build", "Monitoring"],
+  "Captain America": ["Planning...", "Routing task", "Sprint check", "Deciding..."],
+  "Iron Man":        ["Writing spec", "Designing...", "Architecture", "Trade-offs..."],
+  "Spider-Man":      ["Coding...", "npm install", "Building...", "git commit"],
+  "Black Panther":   ["Reviewing...", "Security?", "LGTM!", "Needs fix"],
+  "Loki":            ["What if...?", "Edge case!", "Challenge!", "Hmm, flaw?"],
+  "Beast":           ["Scanning...", "Metrics...", "grep -r", "Dependencies"],
+  "Wasp":            ["UI wireframe", "Colors...", "Responsive?", "Accessible?"],
+  "Songbird":        ["Writing docs", "README...", "Changelog", "API docs"],
+  "War Machine":     ["Test plan", "Coverage?", "Risk matrix", "P0 tests"],
+  "Vision":          ["Running...", "PASS ✅", "Testing...", "npm test"],
+  "Coulson":         ["ISO docs", "SI.03...", "Tracing...", "PM.01 update"],
+  "Thor":            ["Deploying...", "Health OK", "docker build", "Monitoring"],
 };
 
 // ---- Handoff speech bubbles ----
 const HANDOFF_BUBBLES: Record<string, string[]> = {
-  Sage:     ["Spec ready!", "Here, Bolt", "Design done"],
-  Bolt:     ["Code done!", "PR ready", "Build green"],
-  Vigil:    ["PASS!", "Approved ✅", "Ship it"],
-  Sentinel: ["QA plan done", "Go Probe!", "Tests ready"],
-  Probe:    ["All pass!", "Results in", "73/73 ✅"],
+  "Iron Man":      ["Spec ready!", "Here, Spider-Man", "Design done"],
+  "Spider-Man":    ["Code done!", "PR ready", "Build green"],
+  "Black Panther": ["PASS!", "Approved ✅", "Ship it"],
+  "War Machine":   ["QA plan done", "Go Vision!", "Tests ready"],
+  "Vision":        ["All pass!", "Results in", "73/73 ✅"],
 };
 
 // ---- Social chat (personality-specific) ----
 const SOCIAL_CHAT: Record<string, string[]> = {
-  Navi:     ["Team sync?", "Status?", "On track!", "Sprint OK"],
-  Sage:     ["Interesting...", "Pattern!", "ADR idea", "Hmm design"],
-  Bolt:     ["Shipped!", "LFG!", "Coffee?", "Break time"],
-  Vigil:    ["Good code", "Clean PR", "Watch this", "Security?"],
-  Havoc:    ["But what if", "Devil's Q", "Challenge!", "Red team"],
-  Forge:    ["Data says", "Found it!", "Metrics up", "Stats"],
-  Pixel:    ["Nice UI!", "Dark mode?", "Spacing...", "Pixels!"],
-  Muse:     ["Good read!", "Docs done", "Typo fix", "Changelog"],
-  Sentinel: ["All green", "Coverage!", "Risk low", "QA OK"],
-  Probe:    ["Tests pass", "No bugs!", "Fast run", "Clean!"],
-  Scribe:   ["ISO ready", "Compliant", "Audit OK", "Traced!"],
-  Ops:      ["Healthy!", "Deployed", "No alerts", "Uptime 99%"],
+  "Captain America": ["Team sync?", "Status?", "On track!", "Sprint OK"],
+  "Iron Man":        ["Interesting...", "Pattern!", "ADR idea", "Hmm design"],
+  "Spider-Man":      ["Shipped!", "LFG!", "Coffee?", "Break time"],
+  "Black Panther":   ["Good code", "Clean PR", "Watch this", "Security?"],
+  "Loki":            ["But what if", "Devil's Q", "Challenge!", "Red team"],
+  "Beast":           ["Data says", "Found it!", "Metrics up", "Stats"],
+  "Wasp":            ["Nice UI!", "Dark mode?", "Spacing...", "Pixels!"],
+  "Songbird":        ["Good read!", "Docs done", "Typo fix", "Changelog"],
+  "War Machine":     ["All green", "Coverage!", "Risk low", "QA OK"],
+  "Vision":          ["Tests pass", "No bugs!", "Fast run", "Clean!"],
+  "Coulson":         ["ISO ready", "Compliant", "Audit OK", "Traced!"],
+  "Thor":            ["Healthy!", "Deployed", "No alerts", "Uptime 99%"],
 };
 
-// ---- MB report messages ----
+// ---- Nick Fury report messages ----
 const MB_REPORT: Record<string, string[]> = {
-  Sage:     ["Spec complete", "Design ready", "ADR filed"],
-  Bolt:     ["Build done", "Code merged", "Tests pass"],
-  Vigil:    ["Review done", "Gate 1 pass", "Clean code"],
-  Sentinel: ["QA complete", "Gate 2 pass", "All tested"],
-  Scribe:   ["ISO updated", "Gate 3 pass", "Docs synced"],
-  Ops:      ["Deployed OK", "Health green", "Gate 4 pass"],
+  "Iron Man":      ["Spec complete", "Design ready", "ADR filed"],
+  "Spider-Man":    ["Build done", "Code merged", "Tests pass"],
+  "Black Panther": ["Review done", "Gate 1 pass", "Clean code"],
+  "War Machine":   ["QA complete", "Gate 2 pass", "All tested"],
+  "Coulson":       ["ISO updated", "Gate 3 pass", "Docs synced"],
+  "Thor":          ["Deployed OK", "Health green", "Gate 4 pass"],
 };
 
 // ---- Leisure / rest (ONLY when idle — no work, just life) ----
 const COFFEE_BUBBLES = ["☕", "Ahh...", "*sip*", "Nice coffee", "Refueling", "Mmm", "Hot!"];
 const IDLE_DESK = ["*stretch*", "*yawn*", "📱", "*look around*", "*tap tap*", "🎵", "*hum*", "😴"];
 const CASUAL_CHAT: Record<string, string[]> = {
-  Navi:     ["What a day", "Any plans?", "Lunch?", "Nice weather"],
-  Sage:     ["Read this?", "Cool article", "New pattern", "Interesting..."],
-  Bolt:     ["Games later?", "LFG!", "Weekend?", "So tired lol"],
-  Vigil:    ["Stay sharp", "Good job", "Clean code", "Not bad"],
-  Havoc:    ["Haha!", "No way!", "Crazy!", "LOL"],
-  Forge:    ["Did you see", "Numbers!", "Cool stats", "Data nerd"],
-  Pixel:    ["Love this!", "Colors!", "So pretty", "Nice design"],
-  Muse:     ["Great read", "Typo!", "Docs done", "Creative!"],
-  Sentinel: ["All quiet", "No bugs", "Peaceful", "Boring day"],
-  Probe:    ["Tests pass", "Clean!", "No issues", "Easy day"],
-  Scribe:   ["Filed it", "All good", "Organized", "Neat"],
-  Ops:      ["Servers up", "All green", "Quiet day", "Smooth"],
+  "Captain America": ["What a day", "Any plans?", "Lunch?", "Nice weather"],
+  "Iron Man":        ["Read this?", "Cool article", "New pattern", "Interesting..."],
+  "Spider-Man":      ["Games later?", "LFG!", "Weekend?", "So tired lol"],
+  "Black Panther":   ["Stay sharp", "Good job", "Clean code", "Not bad"],
+  "Loki":            ["Haha!", "No way!", "Crazy!", "LOL"],
+  "Beast":           ["Did you see", "Numbers!", "Cool stats", "Data nerd"],
+  "Wasp":            ["Love this!", "Colors!", "So pretty", "Nice design"],
+  "Songbird":        ["Great read", "Typo!", "Docs done", "Creative!"],
+  "War Machine":     ["All quiet", "No bugs", "Peaceful", "Boring day"],
+  "Vision":          ["Tests pass", "Clean!", "No issues", "Easy day"],
+  "Coulson":         ["Filed it", "All good", "Organized", "Neat"],
+  "Thor":            ["Servers up", "All green", "Quiet day", "Smooth"],
 };
 const WALK_THOUGHTS = ["🎵", "...", "💭", "🚶"];
 
@@ -236,7 +236,7 @@ export function tickBehavior(
     if (pa.behavior === "celebrating") {
       pa.waitTicks--;
       if (pa.waitTicks <= 0) {
-        // Go report to Mother Brain
+        // Go report to Nick Fury
         pa.behavior = "reporting_to_mb";
         startWalking(pa, ORB_POS.x, ORB_POS.y + 10);
         const msgs = MB_REPORT[pa.name] || ["Done!"];
@@ -348,7 +348,7 @@ function onArrived(pa: PixelAgent, allAgents: PixelAgent[], tick: number): void 
     return;
   }
 
-  // Arrived at Mother Brain — ONLY for real work reporting
+  // Arrived at Nick Fury — ONLY for real work reporting
   if (distToOrb < 40) {
     if (pa.behavior === "reporting_to_mb") {
       // Real report: agent just finished a task

@@ -39,7 +39,7 @@ export function HeartbeatIndicator() {
   return (
     <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-surface)] p-4">
       <div className="text-xs text-[var(--text-secondary)] mb-2 uppercase tracking-wider">
-        Mother Brain
+        Nick Fury
       </div>
       <div className="flex items-center gap-3">
         <div className="relative">
