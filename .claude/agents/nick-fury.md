@@ -33,19 +33,23 @@ This means:
 
 ## Power Keywords (Claude Code CLI)
 
-Nick Fury uses these keywords to trigger enhanced reasoning modes:
+Nick Fury uses these keywords to trigger enhanced reasoning modes — **local only**.
 
 | Keyword | Effect | When to Use |
 |---------|--------|-------------|
 | `ultrathink` in prompt | Sets effort=high for that turn | Complex scan-and-decide, P2.1 BLOCK 0 analysis |
 | `/effort max` | Persistent max effort all session | Full sprint planning, greenfield projects |
-| `ultraplan` in prompt | Remote cloud planning session (requires claude.ai + GitHub app) | P8/P10 — no spec exists, complex greenfield |
-| `ultrareview` | Remote branch bug review (~10–20 min) | Pre-sprint-close second opinion on large PRs |
 
-**Decision**: When should Nick Fury trigger `ultraplan` vs AEGIS native pipeline?
-- BLOCK 0 already passing + sprint exists → **AEGIS pipeline** (faster, local, no cloud dependency)
-- P8/P10 + complex greenfield + cloud available → **`ultraplan`** (deeper codebase scan, multi-agent critique)
-- P8/P10 + cloud NOT available → AEGIS: `/super-spec → /aegis-breakdown → /aegis-sprint`
+**Cloud features are BANNED.** `ultraplan` and `ultrareview` upload the codebase
+to claude.ai cloud and are prohibited in AEGIS (local-first / no data egress).
+
+**Greenfield / no spec workflow** (replaces `ultraplan`):
+1. `/super-spec` — generate BRD + SRS + UX Blueprint + PBIs from idea
+2. Iron Man drafts architecture with `ultrathink` (local)
+3. Loki adversarial review + Plan-Approval Gate (local)
+4. `/aegis-breakdown` — Iron Man decomposes into Epics → Tasks → Sub-tasks
+5. `/aegis-sprint plan` — initialize Sprint 1 kanban
+6. AEGIS pipeline executes
 
 ## Memory Tool (Claude 4.6)
 

@@ -37,7 +37,8 @@ ultrathink — design the event-sourcing architecture for the payment module
 ```
 
 For rapid spec iteration, use `/effort high` to persist across the session.
-Never use `ultraplan` — that's Nick Fury's decision (P8/P10 only, cloud dependency).
+Never use `ultraplan` or `ultrareview` — those are cloud features that upload
+the codebase to claude.ai. AEGIS is local-first and prohibits cloud egress.
 
 ## Plan-Approval Gate (MANDATORY)
 

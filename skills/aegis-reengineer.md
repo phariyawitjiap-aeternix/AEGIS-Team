@@ -3,19 +3,22 @@ name: aegis-reengineer
 trigger: /aegis-reengineer
 description: >
   Re-engineer an existing project — upgrade tech stack, add features, improve performance.
-  Beast scans current state → Iron Man drafts target architecture → Loki critiques →
-  ultraplan generates full re-engineering spec → AEGIS pipeline executes.
-agents: [nick-fury, beast, iron-man, loki]
+  100% local. Beast scans current state → Iron Man drafts target architecture → Loki critiques →
+  Iron Man writes the full re-engineering spec → AEGIS pipeline executes.
+agents: [nick-fury, beast, iron-man, loki, coulson]
 ---
 
 # /aegis-reengineer
 
 ## Purpose
-Systematically upgrade an existing project by:
+Systematically upgrade an existing project. **100% local** — no cloud uploads, no
+ultraplan, no GitHub-app dependency. The full pipeline runs inside Claude Code on
+your machine.
+
 1. Scanning current state comprehensively (Beast)
-2. Drafting target architecture (Iron Man)
-3. Adversarial stress-test of the plan (Loki)
-4. Generating full re-engineering spec via ultraplan (cloud, multi-agent critique)
+2. Drafting target architecture (Iron Man, `ultrathink`)
+3. Adversarial stress-test of the plan (Loki, `ultrathink`)
+4. Writing the full re-engineering spec (Iron Man, `ultrathink`)
 5. Executing via AEGIS pipeline
 
 ---
@@ -145,64 +148,79 @@ Respond with PLAN_APPROVAL_RESPONSE:
 Signal Nick Fury when done.
 ```
 
+If REJECT → loop back to Phase 2 (Iron Man revises target state, max 2 rounds).
+
 ---
 
-## Phase 4 — ultraplan: Full Re-Engineering Spec
+## Phase 4 — Iron Man: Full Re-Engineering Spec (LOCAL)
 
-After Loki gives APPROVE or CONDITIONAL, Nick Fury triggers ultraplan.
+After Loki gives APPROVE or CONDITIONAL, Nick Fury dispatches Iron Man one more
+time to write the **full executable re-engineering spec** locally — no cloud
+upload, no ultraplan.
 
-**How Nick Fury builds the ultraplan prompt:**
-
-```bash
-# Nick Fury reads the two files and builds a rich seed prompt:
-CURRENT=$(cat _aegis-output/research/reengineer-current-state.md)
-TARGET=$(cat _aegis-output/architecture/reengineer-target-state.md)
-LOKI=$(cat _aegis-output/adversarial/reengineer-loki-review.md)
 ```
+Task for Iron Man (ultrathink, second pass):
+Read all three artifacts:
+  - _aegis-output/research/reengineer-current-state.md   (Beast scan)
+  - _aegis-output/architecture/reengineer-target-state.md (your Phase 2 draft)
+  - _aegis-output/adversarial/reengineer-loki-review.md  (Loki's verdict + conditions)
 
-Then invokes:
+Write a complete, executable re-engineering specification.
+Save to: _aegis-output/specs/reengineer-master-spec.md
+
+The spec must contain (machine-actionable, no hand-waving):
+
+### 1. File-Level Change Manifest
+For every file affected, one of:
+  - CREATE  path/to/file.ts  — purpose, exports, key functions
+  - MODIFY  path/to/file.ts  — what changes, what stays
+  - DELETE  path/to/file.ts  — replacement (or 'no replacement')
+  - RENAME  old/path → new/path
+
+### 2. Migration Steps in Order
+Numbered, dependency-respecting steps. Each step:
+  - Step N: <action>
+    - Files touched
+    - Validation: how to verify this step worked
+    - Rollback: how to undo if it fails
+
+### 3. Test Strategy Per Phase
+For each migration phase:
+  - Unit tests required
+  - Integration tests required
+  - Smoke tests (post-deploy)
+  - Performance regression tests
+
+### 4. Rollback Checkpoints
+Mark explicit checkpoints where the system is in a known-good state.
+Rollback = revert to previous checkpoint, not random commits.
+
+### 5. Definition of Done Per Phase
+Concrete checklist — when this phase is "done":
+  - [ ] All tests pass
+  - [ ] Performance baseline met
+  - [ ] Loki concerns addressed
+  - [ ] Coulson docs updated
+
+Apply Loki's CONDITIONAL conditions (if any) directly into the spec.
+
+Use ultrathink. Take your time — this spec drives the entire re-engineering.
+
+Signal Nick Fury when done: "PHASE 4 COMPLETE — master spec at _aegis-output/specs/reengineer-master-spec.md"
 ```
-ultraplan — Re-engineer this project based on the analysis below.
-
-=== CURRENT STATE (from Beast scan) ===
-[CURRENT content]
-
-=== TARGET ARCHITECTURE (from Iron Man) ===
-[TARGET content]
-
-=== ADVERSARIAL REVIEW (from Loki — addressed concerns) ===
-[LOKI content]
-
-=== INSTRUCTIONS FOR ULTRAPLAN ===
-Strategy: three_subagents_with_critique
-Goal: Generate a complete, executable re-engineering plan covering:
-1. Exact files to create / modify / delete
-2. Migration steps in order
-3. Test strategy for each phase
-4. Rollback checkpoints
-5. Definition of Done per phase
-```
-
-**What ultraplan does with this:**
-- Sub-agent 1 (Architecture): validates tech stack choices against codebase
-- Sub-agent 2 (Files): maps every file change needed (create/modify/delete)
-- Sub-agent 3 (Risks): cross-checks against Loki's concerns
-- Critique agent: synthesizes into executable plan
-
-Human reviews plan → Approve → teleport to terminal
 
 ---
 
 ## Phase 5 — AEGIS Pipeline: Execute
 
-After ultraplan approved, Nick Fury:
+After the master spec is approved (Loki re-validates the spec, not just the draft):
 
 ```
-1. Coulson: Convert ultraplan output → PM.01 + SI.01 + SI.02
-2. /aegis-breakdown: Break plan into Epics → Tasks → Sub-tasks
-3. /aegis-sprint plan: Prioritize by dependency order
+1. Coulson: Convert master spec → PM.01 + SI.01 + SI.02
+2. /aegis-breakdown: Break spec into Epics → Tasks → Sub-tasks
+3. /aegis-sprint plan: Prioritize by dependency order from spec Section 2
 4. Execute sprint by sprint:
-   - Iron Man validates each task spec
+   - Iron Man validates each task spec against master spec
    - Loki gates each spec (Plan-Approval Gate)
    - Spider-Man implements
    - Black Panther reviews (Gate 1)
@@ -226,14 +244,22 @@ Nick Fury will automatically run Phase 1–5 in order.
 
 ---
 
-## When NOT to Use ultraplan Here
+## Why Not ultraplan?
 
-Skip ultraplan (use Iron Man directly) if:
-- Project is small (< 20 files) → Iron Man alone is faster
-- Re-engineering scope is narrow (1 module only) → `/aegis-breakdown` is sufficient
-- No GitHub app installed → ultraplan won't work, fall back to Iron Man + Loki
+`ultraplan` is an Anthropic cloud feature that uploads your codebase to claude.ai.
+**AEGIS prohibits cloud uploads** — local-first, no data egress. Iron Man with
+`ultrathink` can produce the same quality of spec entirely locally. The trade-off
+is time (one extra Iron Man pass) for **zero data leakage**.
 
-In those cases: skip Phase 4, use Iron Man's Phase 2 output directly as the spec.
+---
+
+## When the Pipeline Can Be Shortened
+
+| Scenario | Skip |
+|----------|------|
+| Project < 20 files | Skip Phase 4 — use Phase 2 draft directly as spec |
+| Re-engineering scope = 1 module only | Use `/aegis-breakdown` directly, skip Phases 1–4 |
+| Loki REJECTs twice in a row | Stop, escalate to human — design has a fundamental flaw |
 
 ---
 
@@ -244,5 +270,5 @@ In those cases: skip Phase 4, use Iron Man's Phase 2 output directly as the spec
 | 1 | Beast | `_aegis-output/research/reengineer-current-state.md` |
 | 2 | Iron Man | `_aegis-output/architecture/reengineer-target-state.md` |
 | 3 | Loki | `_aegis-output/adversarial/reengineer-loki-review.md` |
-| 4 | ultraplan | `_aegis-output/specs/reengineer-ultraplan-spec.md` (teleported) |
+| 4 | Iron Man | `_aegis-output/specs/reengineer-master-spec.md` |
 | 5 | Coulson | `_aegis-output/iso-docs/PM-01.../SI-01.../SI-02...` |

@@ -75,11 +75,11 @@ Higher effort = better decisions + higher cost. Apply `max`/`high` only when the
 
 ---
 
-## Power Keywords — ultrathink / ultraplan / ultrareview
+## Power Keyword — ultrathink (Local Only)
 
-> Source-confirmed in Claude Code CLI v2.1.92 source code. These are official Anthropic features.
+> Source-confirmed in Claude Code CLI v2.1.92 source code. Official Anthropic feature.
 
-### `ultrathink` — Per-Turn Max Effort (Local)
+### `ultrathink` — Per-Turn Max Effort
 
 Type the word `ultrathink` anywhere in your prompt. Claude Code detects it client-side, removes the word, and injects:
 > *"The user has requested reasoning effort level: high. Apply this to the current turn."*
@@ -95,6 +95,7 @@ ultrathink — design the database schema for the auth system
 | Persistent alternative | `/effort high` (lasts the full session) |
 | Regex | `\bultrathink\b` case-insensitive, whole-word |
 | Feature flag | `tengu_turtle_carbon` (enabled by default) |
+| Cloud upload? | **No** — runs entirely local in Claude Code CLI |
 
 **When to use in AEGIS**: Iron Man writing architecture, Loki adversarial review, Nick Fury complex scan-and-decide.
 
@@ -107,51 +108,18 @@ In Claude 4.x these fixed budgets are replaced by adaptive thinking. Only `ultra
 
 ---
 
-### `ultraplan` — Remote Multi-Agent Planning (Cloud)
+## Cloud Features Are Banned in AEGIS
 
-Type `ultraplan` in prompt OR use `/ultraplan <prompt>`.
-Launches a planning session on **claude.ai cloud** (not local). Requires:
-- Logged in with claude.ai account (not API Console)
-- GitHub app installed on repo
-- Feature flag `tengu_ultraplan_config.enabled = true`
+**`ultraplan` and `ultrareview` are NOT used in AEGIS** — they upload code to claude.ai
+cloud, which violates the local-first / no-data-egress principle of this framework.
 
-```
-ultraplan — build a complete auth system with JWT, refresh tokens, and rate limiting
-```
+| Banned Cloud Feature | AEGIS Local Replacement |
+|---------------------|-------------------------|
+| `ultraplan` | `/super-spec` → Iron Man (`ultrathink`) → Loki review → `/aegis-breakdown` → `/aegis-sprint` |
+| `ultrareview` | Black Panther Gate 1 + Beast scan + Loki adversarial review |
 
-**Three strategy modes** (selected by Anthropic feature flag):
-
-| Mode | What Happens | Time |
-|------|-------------|------|
-| `simple_plan` (default) | Scans codebase → builds plan → you approve → executes | ~2–5 min |
-| `visual_plan` | Same + Mermaid/ASCII diagrams for structural changes | ~3–7 min |
-| `three_subagents_with_critique` | 3 parallel agents (architecture + files + risks) + critique agent → synthesized plan | ~10–30 min |
-
-**Execution paths after approval**:
-- **Remote**: cloud session implements, opens a PR automatically
-- **Teleport to local**: plan sent back to terminal, local Claude Code implements
-
-**AEGIS integration**: `ultraplan` is equivalent to AEGIS's Plan-Approval Gate but cloud-native.
-Use when: no sprint/spec exists yet (P8/P10), complex greenfield features needing deep codebase scan.
-Do NOT use when: BLOCK 0 is already passing and a spec exists — use AEGIS pipeline instead.
-
----
-
-### `ultrareview` — Remote Branch Bug Review (Cloud)
-
-Type `ultrareview` or `/ultrareview`. Same infrastructure as ultraplan.
-Scans a branch, finds and verifies bugs, returns findings.
-
-```
-ultrareview — check the auth branch for security vulnerabilities
-```
-
-| Aspect | Detail |
-|--------|--------|
-| Time | ~10–20 min |
-| Output | Bug findings with evidence |
-| AEGIS equivalent | Black Panther Gate 1 (local) or Beast scan |
-| When to use | Before merging a large branch, as a second opinion to Black Panther |
+**Rule**: Never type `ultraplan` or `ultrareview` in any prompt. If a workflow doc
+mentions them, treat that doc as out-of-date and use the local replacement.
 
 ---
 
@@ -159,9 +127,9 @@ ultrareview — check the auth branch for security vulnerabilities
 
 | Situation | Use |
 |-----------|-----|
-| Need deeper reasoning THIS turn | `ultrathink` in prompt |
+| Need deeper reasoning THIS turn | `ultrathink` in prompt (local only) |
 | Need deep reasoning ALL session | `/effort max` |
-| Greenfield feature, no spec yet | `ultraplan` (if cloud available) |
-| Complex sprint with no breakdown | `ultraplan three_subagents_with_critique` |
-| Pre-merge security check | `ultrareview` |
+| Greenfield feature, no spec yet | `/super-spec` → Iron Man drafts → Loki gates |
+| Complex sprint with no breakdown | `/aegis-breakdown` → Iron Man + Loki ultrathink |
+| Pre-merge security check | Black Panther Gate 1 + Loki adversarial review |
 | Standard AEGIS pipeline already running | AEGIS native (BLOCK 0 → Iron Man → Loki → build) |
