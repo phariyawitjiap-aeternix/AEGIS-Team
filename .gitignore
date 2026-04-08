@@ -1,6 +1,5 @@
-# AEGIS Runtime Output
-_aegis-output/*.tmp
-_aegis-output/.cache/
+# AEGIS Runtime Output (all session artifacts — research, specs, reviews, qa, etc.)
+_aegis-output/
 
 # Environment
 .env
@@ -24,9 +23,9 @@ __pycache__/
 venv/
 .venv/
 
-# Logs (keep activity.log, ignore others)
+# Logs (all logs are runtime noise — ignore everything)
 *.log
-!_aegis-brain/logs/activity.log
+_aegis-brain/logs/
 
 # Next.js build
 dashboard/.next/
