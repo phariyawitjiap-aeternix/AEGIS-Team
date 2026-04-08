@@ -16,26 +16,46 @@ watches via tmux and can interrupt anytime.
 ## Flags
 | Flag | Effect |
 |------|--------|
-| (none) | Default — no dashboard, fast start |
-| `--dashboard` | Start dashboard web app on `localhost:4321` (auto-fetch + install on first run) |
-| `--no-dashboard` | Explicit skip (same as default) |
+| (none) | Default — leave dashboard alone (start nothing, kill nothing) |
+| `--dashboard` | Start dashboard on `localhost:4321` (auto-fetch + install on first run) |
+| `--no-dashboard` | **Explicit off** — kill any dashboard process running on port 4321 |
 
 ## Full Instructions
 
-### Step 0: Start Dashboard Web App (opt-in via `--dashboard`)
+### Step 0: Dashboard Web App (opt-in via `--dashboard`)
 
-**Default = NO dashboard.** Only run when the user explicitly passes `--dashboard` as an argument to `/aegis-start`.
+**Default = leave dashboard alone.** Only act when the user explicitly passes a flag.
 
 **Argument parsing:**
-- `/aegis-start` → no dashboard (default)
+- `/aegis-start` → no dashboard action (default)
 - `/aegis-start --dashboard` → start the dashboard (auto-fetch + install if missing)
-- `/aegis-start --no-dashboard` → explicit skip (same as default)
+- `/aegis-start --no-dashboard` → **kill** any dashboard running on port 4321
 
 ```bash
-# Detect --dashboard flag from the command's $ARGUMENTS
+# Detect dashboard flags from the command's $ARGUMENTS
 WANT_DASHBOARD=false
+KILL_DASHBOARD=false
 if echo "$ARGUMENTS" | grep -qE '(^|\s)--dashboard(\s|$)'; then
   WANT_DASHBOARD=true
+fi
+if echo "$ARGUMENTS" | grep -qE '(^|\s)--no-dashboard(\s|$)'; then
+  KILL_DASHBOARD=true
+fi
+
+# --no-dashboard: explicit off — kill any process on port 4321
+if [ "$KILL_DASHBOARD" = "true" ]; then
+  PIDS=$(lsof -ti:4321 2>/dev/null || true)
+  if [ -n "$PIDS" ]; then
+    kill $PIDS 2>/dev/null && sleep 1
+    # Force kill if still alive
+    STILL=$(lsof -ti:4321 2>/dev/null || true)
+    if [ -n "$STILL" ]; then
+      kill -9 $STILL 2>/dev/null
+    fi
+    echo "🛑 Dashboard stopped (port 4321 freed)"
+  else
+    echo "ℹ️  No dashboard running on port 4321"
+  fi
 fi
 
 if [ "$WANT_DASHBOARD" = "true" ]; then
