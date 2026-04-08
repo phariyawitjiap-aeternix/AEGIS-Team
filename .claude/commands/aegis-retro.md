@@ -142,3 +142,22 @@ IMPORTANT: Only the main agent (Captain America/Opus) writes this — never a su
   └──────────────────────────────────────────────┘
   ```
 - Ask if user wants to run /aegis-handoff for next session.
+
+### Step 9: Stop Dashboard (clean session end)
+Retro = session over. If a dashboard is running on port 4321 from this session,
+shut it down so the next `/aegis-start` starts clean and no orphan process leaks.
+
+```bash
+PIDS=$(lsof -ti:4321 2>/dev/null || true)
+if [ -n "$PIDS" ]; then
+  kill $PIDS 2>/dev/null && sleep 1
+  STILL=$(lsof -ti:4321 2>/dev/null || true)
+  if [ -n "$STILL" ]; then
+    kill -9 $STILL 2>/dev/null
+  fi
+  echo "🛑 Dashboard stopped (port 4321 freed)"
+fi
+```
+
+**Note**: `/aegis-handoff` does NOT do this — handoff is a pause, retro is the end.
+If you want the dashboard to stay alive across sessions, use `/aegis-handoff` instead of `/aegis-retro`.
