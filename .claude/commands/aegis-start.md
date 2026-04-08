@@ -15,51 +15,44 @@ input needed. The human watches via tmux and can interrupt anytime.
 
 ## Full Instructions
 
-### Step 0: Start Dashboard Web App (auto, every session)
+### Step 0: Start Dashboard Web App (optional)
 
-**ALWAYS run this step.** The dashboard must be running for observability.
+**Only run if `dashboard/` directory exists.** If not present, skip silently and continue to Step 1.
 
 ```bash
-# 1. Check if dashboard directory exists
-if [ ! -d "dashboard" ]; then
-  echo "⚠️ Dashboard not installed. Skipping web app."
-  # Skip to Step 1
-fi
+# Single guarded block — all checks nested under directory existence.
+if [ -d "dashboard" ]; then
+  # Node.js available?
+  if ! command -v node &>/dev/null; then
+    echo "⚠️ Node.js not found. Install Node 18+ to run the dashboard."
+  else
+    # Install deps if missing
+    if [ ! -d "dashboard/node_modules" ]; then
+      echo "📦 Installing dashboard dependencies..."
+      (cd dashboard && npm install)
+    fi
 
-# 2. Check Node.js is available
-if ! command -v node &>/dev/null; then
-  echo "⚠️ Node.js not found. Installing via brew..."
-  brew install node
+    # Already running on 4321?
+    HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 1 http://localhost:4321 2>/dev/null || echo "000")
+    if [ "$HTTP_CODE" = "200" ]; then
+      echo "🖥️  Dashboard: RUNNING on http://localhost:4321 ✅"
+    else
+      echo "🖥️  Starting dashboard on http://localhost:4321 ..."
+      (cd dashboard && nohup npx next dev -p 4321 >/dev/null 2>&1 &)
+      sleep 5
+    fi
+  fi
 fi
-
-# 3. Check if dependencies installed
-if [ ! -d "dashboard/node_modules" ]; then
-  echo "📦 Installing dashboard dependencies..."
-  cd dashboard && npm install && cd ..
-fi
-
-# 4. Check if dashboard already running on port 4321
-if ! curl -s -o /dev/null -w "%{http_code}" http://localhost:4321 2>/dev/null | grep -q "200"; then
-  echo "🖥️ Starting dashboard on http://localhost:4321 ..."
-  cd dashboard && npx next dev -p 4321 &
-  cd ..
-  # Wait for server ready
-  sleep 5
-fi
+# If dashboard/ does not exist: silent skip — no error, no warning.
 ```
 
-**Display to user:**
+**Display to user (only when dashboard is available):**
 ```
 🖥️ Dashboard: http://localhost:4321
    ├── Home:         http://localhost:4321
    ├── Kanban:       http://localhost:4321/kanban
    ├── Pixel Office: http://localhost:4321/pixel-office
    └── Timeline:     http://localhost:4321/timeline
-```
-
-If dashboard is already running, just confirm:
-```
-🖥️ Dashboard: RUNNING on http://localhost:4321 ✅
 ```
 
 ### Step 1: Check Context Budget
