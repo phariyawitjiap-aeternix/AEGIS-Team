@@ -115,12 +115,74 @@ Based on research failures:
 
 ---
 
+## Patterns Adopted from ECC (everything-claude-code, v8.3.1)
+
+After a deep-dive analysis of `affaan-m/everything-claude-code` (145k stars,
+Anthropic Hackathon winner), AEGIS adopted four high-leverage patterns:
+
+### Pattern 6: Runtime Hook Profile Switching (from ECC)
+**Source**: ECC's `scripts/hooks/run-with-flags.js`
+**Status**: ✅ Wired via `.claude/hooks/run-with-flags.sh` + `profiles.json`
+
+Two env vars control hook execution at runtime:
+```bash
+AEGIS_HOOK_PROFILE=minimal|standard|strict   # profile membership check
+AEGIS_DISABLED_HOOKS=id1,id2                 # explicit opt-out
+```
+
+Every hook in `settings.json` is wrapped: `run-with-flags.sh <hook-id> <script>`.
+The wrapper checks the profile manifest, exits silently if not in profile, otherwise
+pipes stdin through to the real hook. Pairs with `/aegis-mode` autonomy L1-L4.
+
+### Pattern 7: Batched Stop-time Format/Typecheck (from ECC)
+**Source**: ECC's `post:edit:accumulator` + `stop:format-typecheck` hooks
+**Status**: ✅ Wired via `post-edit-accumulate.sh` + updated `on-stop.sh`
+
+Instead of running `tsc` / `biome` after every Edit (expensive), record edited
+paths in a session-scoped accumulator file (`/tmp/aegis-edits/<session>.txt`)
+and run a single batched check at Stop time. Deduped, scoped per session.
+
+Result: Spider-Man loop speed-up (10 edits = 1 tsc run, not 10).
+
+### Pattern 8: Write-Side Config Protection (from ECC)
+**Source**: ECC's `pre:config-protection` hook
+**Status**: ✅ Wired via `guard-write.sh` on Edit/Write/MultiEdit
+
+Blocks agents from editing lint/format/typecheck config files
+(`.eslintrc*`, `biome.json`, `tsconfig*.json`, `pyproject.toml`, `ruff.toml`,
+etc.). Prevents the "silence the linter to ship" anti-pattern where an agent
+weakens rules instead of fixing code.
+
+Also protects AEGIS's own `settings.json` from mid-session edits.
+
+### Pattern 9: Instinct Confidence Lifecycle (from ECC)
+**Source**: ECC's `continuous-learning-v2` skill
+**Status**: ✅ Implemented in `_aegis-brain/instincts/` + `/aegis-instinct` + `/aegis-evolve`
+
+Upgrades freeform `_aegis-brain/learnings/` lessons into confidence-scored
+YAML instincts with 4 lifecycle stages: `pending` → `active` → `promoted` → `retired`.
+
+- **Loki** loads `promoted/` as hard rules (auto-REJECT) and `active/` as warnings
+- **`/aegis-instinct reinforce <id>`** bumps confidence +0.15, auto-promotes at thresholds
+- **`/aegis-evolve`** clusters similar instincts, merges duplicates, retires stale
+
+This is how AEGIS's lesson system becomes a self-enforcing immune system.
+
+---
+
 ## Related Files
 
-- `.claude/hooks/guard-bash.sh` — PreToolUse blocker
-- `.claude/hooks/post-tool-use.sh` — PostToolUse logger
-- `.claude/hooks/on-stop.sh` — Stop reminder
+- `.claude/hooks/guard-bash.sh` — PreToolUse Bash blocker
+- `.claude/hooks/guard-write.sh` — PreToolUse Edit/Write blocker (config-protection)
+- `.claude/hooks/post-tool-use.sh` — PostToolUse Bash logger
+- `.claude/hooks/post-edit-accumulate.sh` — PostToolUse Edit accumulator
+- `.claude/hooks/on-stop.sh` — Stop reminder + batched format/typecheck
+- `.claude/hooks/run-with-flags.sh` — Profile/disable wrapper for all hooks
+- `.claude/hooks/profiles.json` — Hook profile registry (minimal/standard/strict)
 - `.claude/hooks/tinman-heartbeat.sh` — Background monitor
-- `.claude/settings.json` — Hook wiring + env vars
+- `.claude/settings.json` — Hook wiring + env vars (AEGIS_HOOK_PROFILE)
+- `_aegis-brain/instincts/` — Instinct registry (pending/active/promoted/retired)
+- `.claude/commands/aegis-instinct.md` — Instinct management command
+- `.claude/commands/aegis-evolve.md` — Cluster + merge + promote command
 - `@references/quality-protocol.md` — Gate 0 + 6-gate quality system
 - `@references/adaptive-thinking-guide.md` — Effort levels per agent

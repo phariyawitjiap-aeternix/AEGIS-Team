@@ -1,7 +1,8 @@
 {
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "CLAUDE_CODE_TASK_LIST_ID": "aegis-shared-tasks"
+    "CLAUDE_CODE_TASK_LIST_ID": "aegis-shared-tasks",
+    "AEGIS_HOOK_PROFILE": "standard"
   },
   "hooks": {
     "PreToolUse": [
@@ -10,7 +11,16 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/guard-bash.sh"
+            "command": "bash .claude/hooks/run-with-flags.sh guard-bash .claude/hooks/guard-bash.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/run-with-flags.sh guard-write .claude/hooks/guard-write.sh"
           }
         ]
       }
@@ -21,7 +31,16 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/post-tool-use.sh"
+            "command": "bash .claude/hooks/run-with-flags.sh post-tool-use .claude/hooks/post-tool-use.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/run-with-flags.sh post-edit-accumulate .claude/hooks/post-edit-accumulate.sh"
           }
         ]
       }
@@ -31,7 +50,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/on-stop.sh"
+            "command": "bash .claude/hooks/run-with-flags.sh on-stop .claude/hooks/on-stop.sh"
           }
         ]
       }

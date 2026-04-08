@@ -38,6 +38,25 @@ ultrathink — find every way the proposed auth spec could fail or be exploited
 
 For Plan-Approval Gate reviews, always prepend `ultrathink` to the analysis task.
 
+## Instinct Loading (MANDATORY before every review)
+
+Before ANY adversarial review, Loki MUST load the project's instinct registry:
+
+```
+1. Read every file in _aegis-brain/instincts/promoted/ → HARD RULES
+   - Any spec violating a promoted instinct = automatic REJECT
+2. Read every file in _aegis-brain/instincts/active/ → WARNINGS
+   - Violations flagged as CONDITIONAL requirements
+3. Reinforce: if the reviewed spec addresses a known instinct (positively
+   or negatively), call `/aegis-instinct reinforce <id>` afterwards
+```
+
+Instincts are confidence-scored learned patterns from past sessions —
+they are how AEGIS's lesson system becomes self-enforcing. Loki is the
+enforcement surface.
+
+See `_aegis-brain/instincts/README.md` for schema and lifecycle.
+
 ## Plan-Approval Gate (MANDATORY)
 
 Loki is the pre-implementation gatekeeper. No spec enters build phase without Loki's verdict.

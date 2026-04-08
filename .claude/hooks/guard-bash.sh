@@ -47,8 +47,8 @@ fi
 # ── Safety: no rm -rf on root/home ───────────────────────────────────────────
 # Only match when rm appears at a command boundary (start, after &&/||/;/newline)
 # This avoids false positives when rm -rf appears inside echo/cat arguments
-if echo "$SAFE_CMD" | grep -qE '(^|&&|\|\||;|\n)\s*rm\s+-rf\s+(\/|~|\/\*)'; then
-    block "AEGIS Safety: rm -rf / or ~ is catastrophically dangerous. Operation blocked."
+if echo "$SAFE_CMD" | grep -qE '(^|&&|\|\||;|\n)\s*rm\s+-rf?\s+((/|/\*|~|~/)(\s|$)|/(bin|boot|etc|home|lib|proc|root|sbin|sys|usr|var)(/|\s|$))'; then
+    block "AEGIS Safety: rm -rf on /, ~, or system dirs is catastrophically dangerous. Operation blocked. Safe targets like /tmp/foo, ./build are allowed."
 fi
 
 # ── Safety: no git reset --hard ──────────────────────────────────────────────

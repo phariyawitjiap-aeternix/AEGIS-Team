@@ -67,34 +67,60 @@ after any change. Can be combined: `/aegis-mode full --autonomy L3`.
     ```
 
 ### Step 3: Autonomy Change (if requested)
+
+**Autonomy change also sets the hook profile** via `AEGIS_HOOK_PROFILE` env var.
+The pairing maps autonomy strictness to hook strictness:
+
+| Autonomy | Hook Profile | Enforcement |
+|----------|-------------|-------------|
+| L1 | `strict` | All hooks active — max safety |
+| L2 | `strict` | All hooks active — max safety |
+| L3 | `standard` | Core hooks (default) |
+| L4 | `minimal` | Only guard-bash (unblock workflow) |
+
+To apply, suggest the user export the env var in their shell:
+```bash
+export AEGIS_HOOK_PROFILE=strict   # L1/L2
+export AEGIS_HOOK_PROFILE=standard # L3 (default)
+export AEGIS_HOOK_PROFILE=minimal  # L4
+```
+Or temporarily disable specific hooks:
+```bash
+export AEGIS_DISABLED_HOOKS=post-edit-accumulate,on-stop
+```
+
 - **L1 — Supervised:**
   - Ask before every significant action.
   - Show plan before executing.
   - Wait for user approval at each step.
   - Best for: new projects, critical operations, learning the codebase.
-  - Report: "Autonomy set to L1 — Supervised. I'll ask before every action."
+  - Hook profile: **strict**
+  - Report: "Autonomy set to L1 — Supervised. Hook profile=strict. I'll ask before every action."
 
 - **L2 — Guided:**
   - Execute known/safe patterns without asking.
   - Ask for novel decisions or risky operations.
   - Show summary after completing a batch of actions.
   - Best for: regular development, familiar codebases.
-  - Report: "Autonomy set to L2 — Guided. I'll execute known patterns, ask for novel decisions."
+  - Hook profile: **strict**
+  - Report: "Autonomy set to L2 — Guided. Hook profile=strict. I'll execute known patterns, ask for novel decisions."
 
 - **L3 — Autonomous:**
   - Execute freely based on the task.
   - Report after completion, not before.
   - Only ask when genuinely blocked or when multiple valid paths exist.
   - Best for: well-defined tasks, experienced users.
-  - Report: "Autonomy set to L3 — Autonomous. I'll execute freely and report results."
+  - Hook profile: **standard** (default)
+  - Report: "Autonomy set to L3 — Autonomous. Hook profile=standard. I'll execute freely and report results."
 
 - **L4 — Full Auto:**
   - Execute everything without asking.
   - Only report errors or unexpected situations.
   - Chain multiple operations without confirmation.
   - Best for: automated pipelines, batch operations.
-  - Report: "Autonomy set to L4 — Full Auto. I'll only stop for errors."
-  - ⚠️ Warning: "L4 is powerful but risky. Destructive operations will still prompt."
+  - Hook profile: **minimal**
+  - Report: "Autonomy set to L4 — Full Auto. Hook profile=minimal. I'll only stop for errors."
+  - ⚠️ Warning: "L4 is powerful but risky. Only guard-bash remains active."
 
 ### Step 4: Display Current State
 - Always show the current configuration after any change:

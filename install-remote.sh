@@ -204,9 +204,10 @@ success "${TEAM_COUNT} team configs installed"
 # Hooks — enforcement scripts (PreToolUse, PostToolUse, Stop)
 mkdir -p "${TARGET_DIR}/.claude/hooks/"
 cp "${TMP_DIR}/.claude/hooks/"*.sh "${TARGET_DIR}/.claude/hooks/" 2>/dev/null || true
+cp "${TMP_DIR}/.claude/hooks/profiles.json" "${TARGET_DIR}/.claude/hooks/" 2>/dev/null || true
 chmod +x "${TARGET_DIR}/.claude/hooks/"*.sh 2>/dev/null || true
 HOOK_COUNT=$(ls "${TARGET_DIR}/.claude/hooks/"*.sh 2>/dev/null | wc -l | tr -d ' ')
-success "${HOOK_COUNT} hooks installed (guard-bash, post-tool-use, on-stop, tinman-heartbeat)"
+success "${HOOK_COUNT} hooks installed (guard-bash, guard-write, post-tool-use, post-edit-accumulate, on-stop, run-with-flags, tinman-heartbeat)"
 
 # Settings
 cp "${TMP_DIR}/.claude/settings.json" "${TARGET_DIR}/.claude/" 2>/dev/null || true
@@ -284,6 +285,10 @@ mkdir -p "${TARGET_DIR}/_aegis-brain/logs"
 mkdir -p "${TARGET_DIR}/_aegis-brain/handoffs"
 mkdir -p "${TARGET_DIR}/_aegis-brain/backlog"
 mkdir -p "${TARGET_DIR}/_aegis-brain/retrospectives"
+mkdir -p "${TARGET_DIR}/_aegis-brain/instincts/pending"
+mkdir -p "${TARGET_DIR}/_aegis-brain/instincts/active"
+mkdir -p "${TARGET_DIR}/_aegis-brain/instincts/promoted"
+mkdir -p "${TARGET_DIR}/_aegis-brain/instincts/retired"
 
 # Output
 mkdir -p "${TARGET_DIR}/_aegis-output/specs"
