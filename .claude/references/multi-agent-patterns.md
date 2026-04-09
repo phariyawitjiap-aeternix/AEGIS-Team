@@ -170,6 +170,79 @@ This is how AEGIS's lesson system becomes a self-enforcing immune system.
 
 ---
 
+## Patterns Adopted from VoltAgent/awesome-design-md (v8.4)
+
+After analysis of `VoltAgent/awesome-design-md` (35.7k stars in 9 days), AEGIS
+adopted five format/discipline patterns for spec documents:
+
+### Pattern 10: `DESIGN.md` Visual Design System (Google Stitch 9-section format)
+**Source**: Google Stitch + VoltAgent/awesome-design-md
+**Status**: ✅ New skill `skills/design-system-md.md`, owned by Wasp
+
+AEGIS previously had no story for visual design. Iron Man wrote functional
+specs, but no one defined HOW the UI should look. Result: every project shipped
+generic bootstrap-style UI. `DESIGN.md` fills this gap with a locked 9-section
+skeleton: Theme → Colors → Typography → Components → Layout → Depth →
+Do's/Don'ts → Responsive → **Agent Prompt Guide**.
+
+Owned by Wasp. Iron Man validates technical feasibility. Loki adversarially
+reviews for internal contradictions.
+
+### Pattern 11: Do's and Don'ts Guardrail Blocks
+**Source**: Every DESIGN.md §7
+**Status**: ✅ Mandatory in super-spec, iso-29110-docs, aegis-reengineer
+
+Every Iron Man spec, ISO 29110 document, and re-engineering master spec now
+ends with a `## Do's and Don'ts` section containing two bulleted lists (5–12
+items each). Items must be:
+- Imperative ("Do X" / "Don't Y", never "should")
+- Verifiable (Loki can check violations)
+- Non-obvious (skip platitudes like "write tests")
+
+Loki enforces format at Plan-Approval Gate — missing Do's/Don'ts = CONDITIONAL.
+
+### Pattern 12: Agent Prompt Guide Footer
+**Source**: Every DESIGN.md §9
+**Status**: ✅ Mandatory in aegis-reengineer master spec, Iron Man architecture specs
+
+Every spec ends with 3–7 copy-paste-ready prompts for downstream agents
+(Spider-Man, Thor, Coulson). Compresses the spec→build handoff from hours
+of interpretation to minutes of execution. Example:
+```
+### Prompts for Spider-Man
+- "Scaffold src/db/schema.ts per §1 CREATE manifest using Drizzle..."
+```
+
+### Pattern 13: Locked H2 Skeletons for ISO 29110 Docs
+**Source**: VoltAgent's stable-skeleton-across-all-files discipline
+**Status**: ✅ Frozen in `skills/iso-29110-docs.md`
+
+Each ISO document type (PM.01, PM.02, PM.03, SI.01–SI.06) has a FROZEN list of
+required H2 sections in a fixed order. Coulson validates skeleton compliance
+before writing any doc — missing or reordered sections = document rejected.
+Makes documents diff-able, teachable to new agents, and lint-able.
+
+Config-protection style enforcement applied to documents instead of lint configs.
+
+### Pattern 14: Matrix Table Convention (≥3 values → table)
+**Source**: Every DESIGN.md §3, §6, §8 + Stitch recommendation
+**Status**: ✅ Mandatory convention in Iron Man agent definition
+
+Any architectural concept with 3+ discrete values MUST use a table, not prose.
+Canonical tables:
+- `Layer | Responsibility | Interface`
+- `Severity | Handler | Escalation`
+- `Trust Zone | Auth | Data Access`
+- `Breakpoint | Name | Layout Changes`
+
+Prose is ambiguous; tables are parseable. Saves agents ~200 words per concept.
+
+Plus Pattern 14b: **Soul paragraph** requirement — every spec opens with 2–3
+sentences naming the feel/intent BEFORE any bullets. Provides semantic anchor
+for ambiguous decisions downstream.
+
+---
+
 ## Related Files
 
 - `.claude/hooks/guard-bash.sh` — PreToolUse Bash blocker
@@ -184,5 +257,12 @@ This is how AEGIS's lesson system becomes a self-enforcing immune system.
 - `_aegis-brain/instincts/` — Instinct registry (pending/active/promoted/retired)
 - `.claude/commands/aegis-instinct.md` — Instinct management command
 - `.claude/commands/aegis-evolve.md` — Cluster + merge + promote command
+- `skills/design-system-md.md` — DESIGN.md 9-section skeleton (Wasp-owned)
+- `skills/super-spec.md` — §8 Do's/Don'ts mandatory
+- `skills/aegis-reengineer.md` — §6 Do's/Don'ts + §7 Agent Prompt Guide
+- `skills/iso-29110-docs.md` — Locked H2 skeletons per document type
+- `.claude/agents/iron-man.md` — Spec Format Conventions (soul + tables + Do/Don't + prompts)
+- `.claude/agents/wasp.md` — Primary owner of DESIGN.md
+- `.claude/agents/loki.md` — Spec Format Enforcement (auto-CONDITIONAL on missing sections)
 - `@references/quality-protocol.md` — Gate 0 + 6-gate quality system
 - `@references/adaptive-thinking-guide.md` — Effort levels per agent

@@ -294,6 +294,31 @@ Does this look right? Any corrections before I proceed?
 - Keyboard navigation for all interactive elements
 - Screen reader support with ARIA labels
 - Color contrast ratios ≥ 4.5:1
+
+## 8. Do's and Don'ts (MANDATORY — machine-readable guardrails)
+
+Every BRD/SRS/UX-Blueprint MUST end with this section. Loki enforces it
+during Plan-Approval Gate review. Two bulleted lists, 5–12 items each,
+concrete and verifiable.
+
+### ✅ Do
+- Use JWT refresh token rotation with 15-minute access tokens
+- Validate all API inputs via Zod schemas at the route boundary
+- Log auth events (success + failure) to the audit trail
+- ...
+
+### ❌ Don't
+- Don't store passwords reversibly — argon2id only
+- Don't trust client-supplied user IDs for authorization decisions
+- Don't expose internal IDs in URLs (use UUIDs or opaque tokens)
+- Don't rely on email for uniqueness — use a canonical user ID
+- ...
+
+Format rules (Loki checks these):
+- Every bullet is imperative and verifiable
+- No "should" or "try to" — use "do" or "don't"
+- Bullets address non-obvious choices (not platitudes like "write tests")
+- If a Do/Don't is framework-specific, name the framework
 ```
 
 ### Output Location
@@ -304,6 +329,7 @@ _aegis-output/specs/
   BRD.md
   SRS.md
   UX-Blueprint.md
+  DESIGN.md             # optional — only if project has a UI (see design-system-md skill)
 ```
 
 ### Phase 5: Human Approval Gate (MANDATORY)

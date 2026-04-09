@@ -250,6 +250,7 @@ full_skills=(
     aegis-observe
     aegis-doctor
     aegis-reengineer
+    design-system-md
     qa-pipeline
     iso-29110-docs
     api-docs
@@ -299,6 +300,8 @@ mkdir -p "${TARGET_DIR}/_aegis-output/research"
 mkdir -p "${TARGET_DIR}/_aegis-output/sessions"
 mkdir -p "${TARGET_DIR}/_aegis-output/deployments"
 mkdir -p "${TARGET_DIR}/_aegis-output/architecture/archive"
+mkdir -p "${TARGET_DIR}/_aegis-output/design"
+mkdir -p "${TARGET_DIR}/_aegis-output/adversarial"
 
 # ISO docs — BLOCK 0 required directories
 mkdir -p "${TARGET_DIR}/_aegis-output/iso-docs/PM-01-project-plan"

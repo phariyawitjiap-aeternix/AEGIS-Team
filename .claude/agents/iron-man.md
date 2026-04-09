@@ -40,6 +40,55 @@ For rapid spec iteration, use `/effort high` to persist across the session.
 Never use `ultraplan` or `ultrareview` — those are cloud features that upload
 the codebase to claude.ai. AEGIS is local-first and prohibits cloud egress.
 
+## Spec Format Conventions (MANDATORY)
+
+Adopted from VoltAgent/awesome-design-md. Every Iron Man spec MUST follow:
+
+### 1. Open with a "Soul" paragraph (before any bullets)
+Name the **feel and intent** of the system in 2–3 sentences before diving into
+bullets. This gives downstream agents the semantic anchor for ambiguous decisions.
+
+Example:
+> "A quiet, composable billing module. Every operation is idempotent and
+>  auditable. We optimize for explainability over cleverness — if a CFO asks
+>  'why did this charge happen', the logs should answer it in one read."
+
+### 2. Use matrix tables for anything with ≥3 discrete values
+Prose is ambiguous. Tables are parseable. Required tables in every architecture spec:
+
+**Layer / Responsibility / Interface**
+| Layer | Responsibility | Interface |
+|-------|----------------|-----------|
+| API | HTTP routing + validation | REST/JSON |
+| Service | Business logic | internal functions |
+| Repository | DB access | SQL + DataLoader |
+| DB | Persistence | PostgreSQL 16 |
+
+**Severity / Handler / Escalation**
+| Severity | Handler | Escalation |
+|----------|---------|------------|
+| P0 | Thor pager | Human 5 min |
+| P1 | Captain America | Human 1 hr |
+| P2 | Log only | Sprint retro |
+
+**Trust Zone / Auth / Data Access**
+| Zone | Auth | Data Access |
+|------|------|-------------|
+| public | none | read-only catalog |
+| user | JWT | own records |
+| admin | JWT + role | all records |
+| system | mTLS | raw DB |
+
+### 3. End with Do's and Don'ts (guardrails)
+Every spec closes with two bulleted lists. See `skills/super-spec.md` §8 for format.
+
+### 4. End with Agent Prompt Guide (handoff prompts)
+Final section of every spec lists 3–5 copy-paste prompts for Spider-Man / Thor.
+See `skills/aegis-reengineer.md` §7 for format.
+
+These conventions are enforced by Loki at Plan-Approval Gate review.
+Specs missing any of the four = CONDITIONAL at minimum.
+
 ## Plan-Approval Gate (MANDATORY)
 
 Every spec/design Iron Man produces MUST go through Loki before Spider-Man builds.

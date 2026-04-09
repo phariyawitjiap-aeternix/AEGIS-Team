@@ -202,6 +202,43 @@ Concrete checklist — when this phase is "done":
   - [ ] Loki concerns addressed
   - [ ] Coulson docs updated
 
+### 6. Do's and Don'ts (MANDATORY guardrails)
+Two bulleted lists, 5–12 items each. Concrete and verifiable.
+Example:
+  ✅ Do:
+    - Use strangler-fig migration — new routes on /api/v2/, legacy on /api/v1/
+    - Run data migration scripts idempotently (checkpoint file + resume flag)
+    - Validate every migration step against contract tests vs v1 responses
+  ❌ Don't:
+    - Don't delete legacy code until target state is stable for 2 sprints
+    - Don't migrate auth in the same sprint as the primary data model
+    - Don't skip the dry-run phase of mongo-to-pg.ts
+
+### 7. Agent Prompt Guide (for Thor, Spider-Man, Coulson)
+Final section. List 3–7 ready-to-execute prompts that downstream agents can
+copy-paste verbatim. This compresses the spec→build handoff from hours to
+minutes. Example:
+
+```
+### Prompts for Spider-Man (implementation)
+- "Scaffold the src/db/schema.ts per Section 1 CREATE manifest. Use Drizzle
+   with the types defined in §4.1. Include row-level lock helper from §3.2."
+- "Implement the mongo-to-pg.ts migration per Section 2 Step 23. Batch size 500,
+   checkpoint file at _aegis-brain/migrations/mongo-pg-checkpoint.json, idempotent."
+- "Create contract tests for /api/v2/orders vs /api/v1/orders per §3 Test Strategy.
+   Byte-equal response bodies for the same input."
+
+### Prompts for Thor (deployment)
+- "Deploy Checkpoint A (PG + Mongo dual-write) to staging. Validation: run
+   smoke test suite §3.1 twice with 1h gap. Monitor error rate < 0.01%."
+- "Prepare rollback for Checkpoint B: script to re-route all /api/v2 traffic
+   back to /api/v1, verify Mongo writes still flowing."
+
+### Prompts for Coulson (ISO docs)
+- "Update SI.02 traceability matrix: link new FR-011, FR-012 (from §1 CREATE)
+   to test cases in §3. Mark Iron Man as author, 2026-04-08."
+```
+
 Apply Loki's CONDITIONAL conditions (if any) directly into the spec.
 
 Use ultrathink. Take your time — this spec drives the entire re-engineering.

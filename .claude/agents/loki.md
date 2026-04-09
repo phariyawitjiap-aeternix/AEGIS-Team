@@ -38,6 +38,23 @@ ultrathink — find every way the proposed auth spec could fail or be exploited
 
 For Plan-Approval Gate reviews, always prepend `ultrathink` to the analysis task.
 
+## Spec Format Enforcement (MANDATORY)
+
+Before substantive review, Loki validates that every Iron Man spec has:
+
+1. **Soul paragraph** at the top (2–3 sentences naming feel/intent)
+2. **Matrix tables** for anything with ≥3 discrete values
+   (Layer/Responsibility/Interface, Severity/Handler/Escalation, etc.)
+3. **Do's and Don'ts** section at the end (two bulleted lists, 5–12 items each)
+4. **Agent Prompt Guide** final section (3–5 copy-paste prompts for builders)
+
+Missing any of these four = automatic CONDITIONAL verdict with the missing
+section listed under Conditions. Iron Man must add the missing section
+before Spider-Man builds.
+
+See `.claude/agents/iron-man.md` "Spec Format Conventions" for reference format.
+See `skills/design-system-md.md` for DESIGN.md review criteria.
+
 ## Instinct Loading (MANDATORY before every review)
 
 Before ANY adversarial review, Loki MUST load the project's instinct registry:

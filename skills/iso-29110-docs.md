@@ -203,6 +203,165 @@ When /aegis-launch runs (SI.6):
 
 ---
 
+## Locked H2 Skeletons (MANDATORY — do not drift)
+
+Each ISO 29110 document type has a FROZEN H2 skeleton. Coulson MUST emit these
+exact sections in this exact order. Missing or reordered sections = document
+rejected. Adopted from VoltAgent/awesome-design-md's stable-skeleton discipline.
+
+### PM.01 — Project Plan (frozen skeleton)
+```
+# PM.01 — Project Plan
+
+## 1. Project Scope
+## 2. Tasks & Activities
+## 3. Effort Estimates
+## 4. Schedule & Milestones
+## 5. Resources (Agents, Humans, Tools)
+## 6. Risk Identification
+## 7. Version Control Strategy
+## 8. Lifecycle Model
+## 9. Acceptance Criteria
+## 10. Do's and Don'ts (guardrails)
+## 11. Sign-off
+```
+
+### PM.02 — Progress Status (frozen skeleton)
+```
+# PM.02 — Progress Status Record — Sprint <N>
+
+## 1. Period Covered
+## 2. Planned vs Actual
+## 3. Completed Work
+## 4. In-Progress Work
+## 5. Blockers & Impediments
+## 6. Deviations from Plan
+## 7. Adjustments for Next Period
+## 8. Sign-off
+```
+
+### PM.03 — Change Request (frozen skeleton, one per request)
+```
+# PM.03 — CR-<id>: <title>
+
+## 1. Requested Change
+## 2. Justification
+## 3. Impact Analysis (scope, schedule, cost, risk)
+## 4. Alternatives Considered
+## 5. Approval Status
+## 6. Implementation Plan (if approved)
+## 7. Sign-off
+```
+
+### SI.01 — Requirements Specification (frozen skeleton)
+```
+# SI.01 — Requirements Specification
+
+## 1. System Overview
+## 2. Stakeholders & Roles
+## 3. Functional Requirements (FR-###)
+## 4. Non-Functional Requirements (NFR-###)
+## 5. Constraints
+## 6. Assumptions
+## 7. Acceptance Criteria
+## 8. Do's and Don'ts (guardrails)
+## 9. Sign-off & Baseline
+```
+
+### SI.02 — Traceability Matrix (frozen skeleton)
+```
+# SI.02 — Traceability Matrix
+
+## 1. Matrix Legend
+## 2. Requirement → Design → Code → Test → Result Table
+## 3. Coverage Summary
+## 4. Orphaned Requirements (no code/test)
+## 5. Orphaned Code (no requirement)
+## 6. Last Updated
+```
+
+### SI.03 — Software Design (frozen skeleton)
+```
+# SI.03 — Software Design Document
+
+## 1. Architectural Overview
+## 2. Component Diagram
+## 3. Interface Definitions
+## 4. Data Model
+## 5. Layer Responsibilities (matrix table: Layer | Responsibility | Interface)
+## 6. Design Decisions (link to ADRs)
+## 7. Error Handling Strategy
+## 8. Security Considerations
+## 9. Do's and Don'ts
+## 10. Sign-off
+```
+
+### SI.04 — Test Cases (frozen skeleton)
+```
+# SI.04 — Test Cases & Procedures
+
+## 1. Test Strategy
+## 2. Test Environment
+## 3. Test Data
+## 4. Unit Tests (per component)
+## 5. Integration Tests
+## 6. System Tests
+## 7. Acceptance Tests
+## 8. Pass/Fail Criteria
+## 9. Sign-off
+```
+
+### SI.05 — Test Report (frozen skeleton)
+```
+# SI.05 — Test Report
+
+## 1. Test Execution Summary
+## 2. Pass/Fail Counts
+## 3. Defects Found
+## 4. Verification Results
+## 5. Validation Results
+## 6. QA Verdict
+## 7. Retest Plan (if failures)
+## 8. Sign-off
+```
+
+### SI.06 — Software Configuration / Release (frozen skeleton)
+```
+# SI.06 — Release <version>
+
+## 1. Release Identifier
+## 2. Included Components
+## 3. Build Instructions
+## 4. Deployment Notes
+## 5. Rollback Procedure
+## 6. Known Issues
+## 7. Changelog (link)
+## 8. Sign-off
+```
+
+### Enforcement
+
+Coulson MUST validate H2 skeleton compliance before writing any ISO doc:
+```python
+REQUIRED = {
+    "PM.01": ["Project Scope", "Tasks & Activities", "Effort Estimates",
+              "Schedule & Milestones", "Resources (Agents, Humans, Tools)",
+              "Risk Identification", "Version Control Strategy",
+              "Lifecycle Model", "Acceptance Criteria",
+              "Do's and Don'ts (guardrails)", "Sign-off"],
+    "SI.01": ["System Overview", "Stakeholders & Roles",
+              "Functional Requirements (FR-###)",
+              "Non-Functional Requirements (NFR-###)", "Constraints",
+              "Assumptions", "Acceptance Criteria",
+              "Do's and Don'ts (guardrails)", "Sign-off & Baseline"],
+    # ...
+}
+# Before write: check every required H2 exists, in order.
+# If missing: DO NOT WRITE. Return error to Nick Fury.
+```
+
+---
+
 ## Document Lifecycle
 
 Every ISO 29110 document follows this lifecycle:
