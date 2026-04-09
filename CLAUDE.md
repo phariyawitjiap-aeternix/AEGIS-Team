@@ -18,6 +18,9 @@
 4. NEVER end turn before agents finish (false-ready guard)
 5. Run /aegis-start at session begin
 6. Run /aegis-retro at session end
+7. **Agents ask Nick Fury, not the human** -- Master Brain Protocol (v8.4)
+   See `.claude/references/context-rules.md` for QUESTION_TO_BRAIN format
+   and the four allowed escalation categories. Only Nick Fury escalates to human.
 
 ## Nick Fury (🧬)
 After /aegis-start, Nick Fury takes full control:

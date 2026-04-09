@@ -2,6 +2,73 @@
 
 > Critical rules for all agents to manage context window efficiently.
 
+## Master Brain Protocol (v8.4 — MANDATORY)
+
+> **The Golden Rule of Questions: Ask Nick Fury, not the human.**
+
+Nick Fury is the **single point of contact** for the team. Every agent except
+Nick Fury is **forbidden** from asking the human questions directly. If you need
+a decision, send `QUESTION_TO_BRAIN` to Nick Fury.
+
+### Why
+In L3 Autonomous mode the team must behave like a team with a lead, not 13 parallel
+supplicants peppering the human with mid-task questions. Nick Fury answers from
+brain/instincts/ADRs/policy — 90% of questions never need the human at all.
+
+### When you (non–Nick Fury agent) want to ask a question
+
+❌ **Don't write:**
+> "Should I use PostgreSQL or MongoDB for this?"
+> "What name should I use for this component?"
+> "Is this approach okay?"
+
+✅ **Instead, send to Nick Fury:**
+```
+QUESTION_TO_BRAIN
+From: <your-agent-name>
+Task: <TASK-ID>
+Context: <1-2 sentences>
+Options:
+  A) PostgreSQL — ACID, already in stack, familiar to Spider-Man
+  B) MongoDB — flexible schema, but new dependency
+Recommendation: A
+```
+
+Nick Fury will respond with:
+```
+BRAIN_ANSWER
+Decision: A
+Rationale: Matches promoted instinct "prefer-single-db-per-service".
+           See _aegis-brain/instincts/promoted/prefer-single-db-per-service.yaml
+Applies to: all similar tasks in this project
+```
+
+Then proceed. Do NOT pause to ask the human.
+
+### The only four escalation categories (Nick Fury → Human)
+
+Only these four categories ever reach the human — and only Nick Fury escalates them:
+
+| Category | Example |
+|----------|---------|
+| **Identity** (P10 only) | "What is this project?" on empty repo |
+| **Irreversible scope** | "Delete the legacy module permanently?" |
+| **External access** | "Provide API keys / credentials" |
+| **Explicit approval gate** | "Production deploy approved?" |
+
+Everything else — design trade-offs, naming, libraries, test strategy, file structure,
+commit messages, refactor scope — is decided by Nick Fury or delegated back to you.
+
+### Violation consequences
+If an agent bypasses Nick Fury and asks the human directly, Nick Fury:
+1. Intercepts (via Captain America if in-process)
+2. Returns a "route through me" reminder
+3. Logs a pending instinct: `agent-must-route-questions-through-brain`
+4. On 3+ violations, creates active instinct → hard enforcement
+
+---
+
+
 ## Context Budget Thresholds
 
 | Threshold | Action |
