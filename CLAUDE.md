@@ -1,4 +1,4 @@
-# AEGIS v8.2.1 -- Agent Team Framework
+# AEGIS v8.4 -- Agent Team Framework
 
 > "Context is King, Memory is Soul"
 

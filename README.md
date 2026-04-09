@@ -1,25 +1,52 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/version-8.3-blue?style=for-the-badge" alt="Version 8.3"/>
+  <img src="https://img.shields.io/badge/version-8.4-blue?style=for-the-badge" alt="Version 8.4"/>
   <img src="https://img.shields.io/badge/agents-13-green?style=for-the-badge" alt="13 Agents"/>
-  <img src="https://img.shields.io/badge/skills-29-orange?style=for-the-badge" alt="29 Skills"/>
-  <img src="https://img.shields.io/badge/commands-22-yellow?style=for-the-badge" alt="22 Commands"/>
+  <img src="https://img.shields.io/badge/skills-30-orange?style=for-the-badge" alt="30 Skills"/>
+  <img src="https://img.shields.io/badge/commands-27-yellow?style=for-the-badge" alt="27 Commands"/>
   <img src="https://img.shields.io/badge/gates-6-red?style=for-the-badge" alt="6 Gates"/>
+  <img src="https://img.shields.io/badge/hooks-6-teal?style=for-the-badge" alt="6 Hooks"/>
   <img src="https://img.shields.io/badge/ISO--29110-compliant-brightgreen?style=for-the-badge" alt="ISO 29110"/>
   <img src="https://img.shields.io/badge/Claude_4.x-1M_context-blueviolet?style=for-the-badge" alt="Claude 4.x"/>
   <img src="https://img.shields.io/badge/license-MIT-purple?style=for-the-badge" alt="MIT License"/>
 </p>
 
-# :shield: AEGIS v8.3 — AI Agent Team Framework for Claude Code
+# :shield: AEGIS v8.4 — AI Agent Team Framework for Claude Code
 
 > **"Context is King, Memory is Soul"**
 >
-> :dna: Nick Fury · 13 Marvel Agents · 29 Skills · 22 Commands · 6-Gate Quality · ISO 29110 · Claude 4.x 1M Context
+> :dna: Nick Fury · 13 Marvel Agents · 30 Skills · 27 Commands · 6-Gate Quality · 6 Hooks · ISO 29110 · Claude 4.x 1M Context
+
+---
+
+## :sparkles: What's new in v8.4
+
+**9 patterns adopted from global research** — zero cloud uploads, all local.
+
+### 4 patterns from [affaan-m/everything-claude-code](https://github.com/affaan-m/everything-claude-code) (145k ⭐)
+- **Runtime hook profile switching** — `AEGIS_HOOK_PROFILE=minimal|standard|strict`, live-tunable without editing files
+- **Batched Stop-time format/typecheck** — 10 edits = 1 `tsc` run (was 10), via accumulator pattern
+- **Config protection hook** — blocks agents from editing `.eslintrc`/`biome`/`tsconfig` to "fix" lint errors
+- **Instinct lifecycle** — confidence-scored learned patterns (`pending → active → promoted → retired`), enforced by Loki
+
+### 5 patterns from [VoltAgent/awesome-design-md](https://github.com/VoltAgent/awesome-design-md) (35k ⭐)
+- **DESIGN.md 9-section visual design system** — new `design-system-md` skill (Wasp-owned)
+- **Do's and Don'ts** mandatory in every spec — Loki auto-CONDITIONAL if missing
+- **Agent Prompt Guide footer** — every master spec ends with copy-paste prompts for Spider-Man/Thor
+- **Locked H2 skeletons** for all 9 ISO 29110 document types — Coulson validates before write
+- **Matrix tables + soul paragraphs** — Iron Man specs open with intent, use tables for 3+ discrete values
+
+### New artifacts
+- `/aegis-instinct` · `/aegis-evolve` commands
+- `skills/design-system-md.md`
+- `.claude/hooks/guard-write.sh` · `post-edit-accumulate.sh` · `run-with-flags.sh`
+- `_aegis-brain/instincts/` (pending/active/promoted/retired)
+- `_aegis-output/design/` (for `DESIGN.md`)
 
 ---
 
 ## What is AEGIS?
 
-AEGIS (**A**utonomous **E**nhanced **G**roup **I**ntelligence **S**ystem) — production-grade AI agent team framework for Claude Code. 13 Marvel-character agents, 14-stage SDLC pipeline, 6-gate quality (including a mandatory pre-work gate), ISO 29110 compliance, JIRA-like PM, self-evolving intelligence. :dna: ยิ่งใช้ยิ่งเก่ง.
+AEGIS (**A**utonomous **E**nhanced **G**roup **I**ntelligence **S**ystem) — production-grade AI agent team framework for Claude Code. 13 Marvel-character agents, 14-stage SDLC pipeline, 6-gate quality (including a mandatory pre-work gate), ISO 29110 compliance, JIRA-like PM, self-enforcing instinct system, visual design discipline. :dna: ยิ่งใช้ยิ่งเก่ง.
 
 ---
 
@@ -43,7 +70,7 @@ cd ~/Documents/my-project && git init && git commit --allow-empty -m "init"
 bash <(curl -sL https://raw.githubusercontent.com/phariyawitjiap-aeternix/AEGIS-Team/main/install-remote.sh) --profile full --project-name "My Project"
 ```
 
-> :bulb: Profile options: `minimal` (7 skills) · `standard` (15 skills) · `full` (29 skills)
+> :bulb: Profile options: `minimal` (7 skills) · `standard` (15 skills) · `full` (30 skills)
 
 **Step 4 — Set permissions (one-time):**
 
@@ -97,19 +124,31 @@ claude --dangerously-skip-permissions
 | 1 | :lock: **Backup** `_aegis-brain/`, `iso-docs/`, `CLAUDE_lessons.md` → `_aegis-backup/` |
 | 2 | :wastebasket: **Remove** old agents, commands, references, teams, skills |
 | 3 | :arrow_down: **Download** latest AEGIS from GitHub (to `/tmp/`, auto-cleaned) |
-| 4 | :package: **Install** 13 Marvel agents, 22 commands, 13 references, 7 teams, 29 skills |
-| 5 | :mag: **Verify** all files present + migrate old versions (v6→v8, v7→v8, v8.2→v8.3) |
+| 4 | :package: **Install** 13 Marvel agents, 27 commands, 14 references, 7 teams, 30 skills, 6 hooks |
+| 5 | :mag: **Verify** all files present + migrate old versions (v6→v8, v7→v8, v8.2→v8.3→v8.4) + auto-detect profile from project-identity.md |
 
-**What changes in v8.3:**
+**What's new in v8.4:**
+
+| Change | Details |
+|--------|---------|
+| :zap: Hook profiles | Runtime switching via `AEGIS_HOOK_PROFILE` env var (minimal/standard/strict) |
+| :stopwatch: Batched check | `post-edit-accumulate` + Stop-time `tsc`/`biome` — 10× speedup on multi-file edits |
+| :lock: Config protection | `guard-write.sh` blocks agent edits to `.eslintrc`/`biome`/`tsconfig`/`pyproject.toml` |
+| :brain: Instinct lifecycle | Confidence-scored patterns enforced by Loki (new `/aegis-instinct`, `/aegis-evolve`) |
+| :art: DESIGN.md skill | New `design-system-md` skill — 9-section visual design system (Wasp-owned) |
+| :bookmark: Do's/Don'ts | Mandatory in every spec — Loki auto-CONDITIONAL if missing |
+| :rocket: Agent Prompt Guide | Every master spec ends with copy-paste prompts for downstream agents |
+| :clipboard: Locked ISO H2 | Coulson validates frozen H2 skeletons for all 9 ISO 29110 doc types |
+| :bar_chart: Matrix tables | Iron Man specs use tables for 3+ discrete values, open with "soul paragraph" |
+
+**Previous v8.3 changes (still in effect):**
 
 | Change | Details |
 |--------|---------|
 | :superhero: Agent renames | All 13 agents renamed to Marvel characters matching their behavior |
 | :lock: BLOCK 0 gate | Coulson enforced as mandatory pre-work checkpoint before any task starts |
 | :brain: Claude 4.x models | Haiku agents updated to `claude-haiku-4-5-20251001`; Opus/Sonnet get 1M context |
-| :wrench: Beast capabilities | `code_execution_20260120` added — scans 100s of files in one round-trip |
 | :6: Gate 0 added | Quality pipeline is now 6 gates (Gate 0 = pre-work docs) |
-| :books: New references | `adaptive-thinking-guide.md`, `context-editing-protocol.md` |
 
 **:lock: NEVER touched by upgrade:** `_aegis-brain/` (tasks, sprints, patterns, learnings), `iso-docs/`, `CLAUDE_lessons.md`, project source code
 
@@ -121,7 +160,7 @@ claude --dangerously-skip-permissions
 
 ```
 🛡️ ═══════════════════════════════════════════════════
-🛡️  AEGIS v8.3 — Session Started
+🛡️  AEGIS v8.4 — Session Started
 🛡️  "Context is King, Memory is Soul"
 🛡️ ═══════════════════════════════════════════════════
 
@@ -169,7 +208,7 @@ claude --dangerously-skip-permissions
 
 ```
 ╔══════════════════════════════════════════════════════════════════╗
-║  AEGIS Team Status                              v8.3            ║
+║  AEGIS Team Status                              v8.4            ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║                                                                 ║
 ║  💓 Mother Brain: ALIVE (last pulse: 8s ago)                    ║
@@ -379,17 +418,31 @@ your-project/
 
 ---
 
-## :sparkles: What's New in v8.3
+## :sparkles: Version History
+
+### v8.4 (current) — Global Patterns Adopted
+
+| Feature | Before (v8.3) | After (v8.4) |
+|:--------|:-------------|:-------------|
+| **Hook config** | Edit settings.json to toggle | Live env var: `AEGIS_HOOK_PROFILE=minimal\|standard\|strict` |
+| **Quality checks** | Per-edit or Gate 1 only | Batched at Stop time (10× faster) |
+| **Lint configs** | Agents could weaken rules | Blocked by `guard-write.sh` |
+| **Lessons** | Freeform markdown | Confidence-scored instincts with auto-promotion |
+| **Visual design** | No artifact | `DESIGN.md` 9-section skeleton (Wasp-owned) |
+| **Spec guardrails** | Optional | Mandatory Do's/Don'ts + Agent Prompt Guide |
+| **ISO 29110 docs** | Variable structure | Frozen H2 skeletons per doc type |
+| **Iron Man specs** | Prose-heavy | Matrix tables + soul paragraphs |
+
+### v8.3 — Marvel Rename + BLOCK 0 + Claude 4.x
 
 | Feature | Before (v8.2) | After (v8.3) |
 |:--------|:-------------|:-------------|
-| **Mother Brain** | Inline scan, one-shot | Persistent background agent + heartbeat loop |
-| **Agent Health** | No monitoring | Auto-nudge (>120s), auto-respawn (>300s) |
-| **Spec Phase** | AI guesses requirements | Human Q&A (10 questions) + approval gate |
-| **Post-Spec** | Asks human everything | Spec Proxy — Mother Brain answers for human |
-| **Agent Mode** | tmux panes | In-process background agents (Agent tool) |
-| **Haiku Models** | Mixed (3-5 / 4-5) | All standardized to `claude-haiku-4-5` |
-| **Logging** | activity.log only | + heartbeat.log + spec-proxy.log |
+| **Agent names** | Sage, Bolt, Vigil, Havoc... | 13 Marvel characters (Nick Fury, Iron Man, ...) |
+| **Pre-work gate** | None | BLOCK 0 — Coulson enforces PM.01+SI.01+SI.02 |
+| **Haiku Models** | Mixed (3-5 / 4-5) | All standardized to `claude-haiku-4-5-20251001` |
+| **Context window** | 200k | 1M (Opus 4.6 / Sonnet 4.6) |
+| **Quality gates** | 5 | 6 (Gate 0 = pre-work docs) |
+| **Thinking** | Manual | `ultrathink` keyword + adaptive thinking guide |
 
 ---
 

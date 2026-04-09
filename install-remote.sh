@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================================
-# AEGIS v8.3 — Remote Installer (one-liner, no clone needed)
+# AEGIS v8.4 — Remote Installer (one-liner, no clone needed)
 #
 # New install:
 #   cd ~/Documents/my-project && git init && git commit --allow-empty -m "init"
@@ -13,7 +13,7 @@
 
 set -euo pipefail
 
-VERSION="8.3"
+VERSION="8.4"
 REPO_URL="https://github.com/phariyawitjiap-aeternix/AEGIS-Team.git"
 TMP_DIR="/tmp/aegis-install-$$"
 TARGET_DIR="$(pwd)"
@@ -405,14 +405,27 @@ echo -e "  ${BOLD}Commands:${NC}  ${CMD_COUNT}"
 echo ""
 
 if [[ "$UPGRADE" == true ]]; then
-    echo -e "${BOLD}What changed in v8.3:${NC}"
-    echo "  • All 13 agents renamed to Marvel characters"
-    echo "  • BLOCK 0 gate: Coulson enforces PM.01+SI.01+SI.02 before any work"
-    echo "  • Claude 4.x model IDs (haiku-4-5-20251001, opus-4-6, sonnet-4-6)"
-    echo "  • Beast: code_execution_20260120 for programmatic scanning"
-    echo "  • 6-gate quality system (Gate 0 = pre-work docs)"
-    echo "  • New: adaptive-thinking-guide, context-editing-protocol"
-    echo "  • New: /aegis-doctor health check command"
+    echo -e "${BOLD}What's new in v8.4:${NC}"
+    echo "  ${BOLD}4 ECC patterns adopted:${NC}"
+    echo "  • Runtime hook profile switching (AEGIS_HOOK_PROFILE=minimal|standard|strict)"
+    echo "  • Batched Stop-time format/typecheck (10 edits = 1 tsc run)"
+    echo "  • Config protection hook (blocks .eslintrc/biome/tsconfig edits)"
+    echo "  • Instinct lifecycle — confidence-scored learned patterns"
+    echo "    (pending → active → promoted → retired)"
+    echo ""
+    echo "  ${BOLD}5 VoltAgent/awesome-design-md patterns adopted:${NC}"
+    echo "  • DESIGN.md 9-section visual design system (new skill, Wasp-owned)"
+    echo "  • Do's/Don'ts mandatory in every spec (Loki-enforced)"
+    echo "  • Agent Prompt Guide footer on every master spec"
+    echo "  • Locked H2 skeletons for all ISO 29110 docs"
+    echo "  • Matrix tables + soul paragraphs in Iron Man specs"
+    echo ""
+    echo "  ${BOLD}New commands:${NC} /aegis-instinct  /aegis-evolve"
+    echo "  ${BOLD}New skill:${NC}    design-system-md (full profile only)"
+    echo "  ${BOLD}New hooks:${NC}    guard-write, post-edit-accumulate, run-with-flags"
+    echo ""
+    echo -e "  ${BOLD}Previous (v8.3):${NC} Marvel rename, BLOCK 0 gate, 6-gate quality,"
+    echo "                    /aegis-doctor, /aegis-reengineer, ultrathink"
     echo ""
 fi
 
@@ -424,4 +437,4 @@ if [[ "$UPGRADE" == true ]]; then
 fi
 echo "  > /aegis-start"
 echo ""
-echo -e "${CYAN}Happy building! — AEGIS v${VERSION} · 13 Marvel Agents · Claude 4.x${NC}"
+echo -e "${CYAN}Happy building! — AEGIS v${VERSION} · 13 Marvel Agents · Claude 4.x · 9 Global Patterns${NC}"
