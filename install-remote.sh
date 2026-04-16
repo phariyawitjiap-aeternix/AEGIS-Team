@@ -85,9 +85,28 @@ if [[ "$UPGRADE" == true ]] && [[ "$PROFILE_EXPLICIT" == false ]]; then
     fi
 fi
 
-echo -e "${BOLD}${CYAN}================================================${NC}"
-echo -e "${BOLD}${CYAN}  AEGIS v${VERSION} — Remote Installer${NC}"
-echo -e "${BOLD}${CYAN}================================================${NC}"
+echo ""
+echo -e "${CYAN}    ╔═══════════════════════════════════════════════╗${NC}"
+echo -e "${CYAN}    ║                                               ║${NC}"
+echo -e "${CYAN}    ║${NC}${BOLD}${WHITE}    █████  ███████  ██████  ██  ██████     ${NC}${CYAN}║${NC}"
+echo -e "${CYAN}    ║${NC}${BOLD}${WHITE}   ██   ██ ██       ██      ██ ██          ${NC}${CYAN}║${NC}"
+echo -e "${CYAN}    ║${NC}${BOLD}${WHITE}   ███████ █████    ██  ███ ██  █████      ${NC}${CYAN}║${NC}"
+echo -e "${CYAN}    ║${NC}${BOLD}${WHITE}   ██   ██ ██       ██   ██ ██      ██     ${NC}${CYAN}║${NC}"
+echo -e "${CYAN}    ║${NC}${BOLD}${WHITE}   ██   ██ ███████   ██████ ██ ██████      ${NC}${CYAN}║${NC}"
+echo -e "${CYAN}    ║                                               ║${NC}"
+echo -e "${CYAN}    ╠═══════════════════╦═══════╦═══════════════════╣${NC}"
+echo -e "${CYAN}    ║                   ║${NC}${BOLD}${YELLOW} ◆ ◆ ◆ ${NC}${CYAN}║                   ║${NC}"
+echo -e "${CYAN}    ╚═══════════════════╩═══════╩═══════════════════╝${NC}"
+echo ""
+echo -e "        ${BOLD}${YELLOW}⚡  v${VERSION}  ·  13 Marvel Agents  ⚡${NC}"
+echo -e "       ${CYAN} \"Context is King, Memory is Soul\"${NC}"
+echo ""
+if [[ "$UPGRADE" == true ]]; then
+    echo -e "            ${BOLD}${GREEN}↑  UPGRADE MODE  ↑${NC}"
+else
+    echo -e "          ${BOLD}${GREEN}★  NEW INSTALLATION  ★${NC}"
+fi
+echo ""
 echo ""
 info "Profile: ${BOLD}${PROFILE}${NC}"
 info "Target:  ${BOLD}${TARGET_DIR}${NC}"
