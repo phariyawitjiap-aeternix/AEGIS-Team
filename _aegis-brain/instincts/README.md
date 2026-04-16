@@ -65,3 +65,15 @@ Before every adversarial review, Loki loads:
 2. All `promoted/` instincts as **hard rules** (auto-REJECT on violation)
 
 This is how AEGIS's lesson system becomes a self-enforcing immune system.
+
+## Integration with Brain Wiki (Karpathy Pattern)
+
+The instinct system is part of the broader AEGIS Brain Wiki:
+
+- **index.md** catalogs all instincts by stage
+- **/aegis-ingest** can create new pending instincts from external sources
+- **/aegis-lint** checks for stale instincts (>90 days no reinforcement)
+- **/aegis-evolve** clusters and promotes instincts
+
+Cross-references between instincts and other brain pages (resonance, learnings)
+are maintained automatically during ingest and lint operations.
