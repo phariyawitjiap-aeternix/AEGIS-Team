@@ -1,7 +1,7 @@
 # Instinct System
 
 > Confidence-scored learned patterns with lifecycle promotion.
-> Upgrade to the freeform `_aegis-brain/learnings/` lessons file.
+> Upgrade to the freeform `.aegis/brain/learnings/` lessons file.
 
 ## Lifecycle
 
@@ -53,7 +53,7 @@ rationale: |
 ## Filename Convention
 
 ```
-_aegis-brain/instincts/<stage>/<id>.yaml
+.aegis/brain/instincts/<stage>/<id>.yaml
 ```
 
 Where `<id>` is the `id` field from the YAML (kebab-case, unique across all stages).

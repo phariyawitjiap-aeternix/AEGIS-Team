@@ -25,7 +25,9 @@ venv/
 
 # Logs (all logs are runtime noise — ignore everything)
 *.log
-_aegis-brain/logs/
+
+# AEGIS v9 migration backup (POC -- do not commit safety net)
+.aegis-backup/
 
 # Next.js build
 dashboard/.next/

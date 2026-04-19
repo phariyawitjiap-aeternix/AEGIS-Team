@@ -44,3 +44,10 @@ Default autonomy: L3 (Autonomous) with Nick Fury active
 | /aegis-team-debate | Spawn debate team (in-process) |
 | /aegis-status | Check all agent progress |
 | /aegis-mode | Switch autonomy level or profile |
+
+## v9 Transition State (in progress)
+- Brain migrated: `_aegis-brain/` → `.aegis/brain/` (POC dogfood complete)
+- Backup: `.aegis-backup/_aegis-brain/` (untracked, safety net for rollback)
+- Plan: [AEGIS_v9_UPGRADE_PLAN.md](AEGIS_v9_UPGRADE_PLAN.md) (15 sprints, 482pt, 7 ADRs)
+- Migration tool: [tools/aegis-migrate-consolidate.sh](tools/aegis-migrate-consolidate.sh)
+- Out-of-scope (future v9 work): installer, dashboard, README, CLAUDE_*.md lift
