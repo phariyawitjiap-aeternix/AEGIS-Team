@@ -41,7 +41,7 @@ Call Agent tool 4 times in a SINGLE message (parallel). All agents run in-proces
    Prompt: "You are 🔴 Loki the devil's advocate on team aegis-debate. Read .claude/agents/loki.md for your persona. TOPIC: [TOPIC]. Wait for iron-man's proposals. Then challenge EVERY option: What could go wrong? What assumptions are wrong? What's the worst case? What are they not considering? SUCCESS CRITERIA: At least 2 challenges per option with severity rating. Send your challenges to captain-america via SendMessage."
 
 4. Agent with subagent_type="captain-america", team_name="aegis-debate", name="captain-america", mode="bypassPermissions", run_in_background=true
-   Prompt: "You are 🧭 Captain America the navigator on team aegis-debate. Read .claude/agents/captain-america.md for your persona. TOPIC: [TOPIC]. Wait for input from iron-man (proposals), spider-man (feasibility), and loki (challenges). Then synthesize into a final Architecture Decision Record (ADR). Write the ADR to _aegis-brain/resonance/architecture-decisions.md (append, don't overwrite). SUCCESS CRITERIA: ADR contains: context, options considered, decision, rationale, consequences, and dissenting views. Send the decision summary to the team lead via SendMessage."
+   Prompt: "You are 🧭 Captain America the navigator on team aegis-debate. Read .claude/agents/captain-america.md for your persona. TOPIC: [TOPIC]. Wait for input from iron-man (proposals), spider-man (feasibility), and loki (challenges). Then synthesize into a final Architecture Decision Record (ADR). Write the ADR to .aegis/brain/resonance/architecture-decisions.md (append, don't overwrite). SUCCESS CRITERIA: ADR contains: context, options considered, decision, rationale, consequences, and dissenting views. Send the decision summary to the team lead via SendMessage."
 
 ## Step 5: Report to user
 
@@ -59,7 +59,7 @@ View agents: Shift+Down | Back to main: Shift+Up
 
 ## Step 6: Integration (after all agents complete)
 
-1. Read Captain America's ADR from _aegis-brain/resonance/architecture-decisions.md
+1. Read Captain America's ADR from .aegis/brain/resonance/architecture-decisions.md
 2. Present the decision:
    - Chosen option and rationale
    - Key trade-offs acknowledged

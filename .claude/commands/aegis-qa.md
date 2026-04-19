@@ -99,9 +99,9 @@ Release gate check — issues a verdict based on existing QA report.
 3. Output verdict with justification
 4. **Record gate result in PM state** (if a TASK-ID is associated with this gate check):
    - Identify the task ID from the target (e.g. from report metadata or command argument).
-   - Read `_aegis-brain/tasks/{TASK-ID}/meta.json` to confirm task exists.
+   - Read `.aegis/brain/tasks/{TASK-ID}/meta.json` to confirm task exists.
    - Determine gate number: Gate 1 if this is a review gate (IN_REVIEW → QA), Gate 2 if QA gate (QA → DONE).
-   - Append to `_aegis-brain/tasks/{TASK-ID}/history.md`:
+   - Append to `.aegis/brain/tasks/{TASK-ID}/history.md`:
      - On PASS or CONDITIONAL:
        ```
        | {YYYY-MM-DD HH:MM} | war-machine | GATE_PASS | - | Gate {N} | {one-line summary} |
@@ -111,7 +111,7 @@ Release gate check — issues a verdict based on existing QA report.
        | {YYYY-MM-DD HH:MM} | war-machine | GATE_FAIL | - | Gate {N} | {one-line summary} |
        ```
    - If verdict is FAIL or CONDITIONAL with findings, append a comment to
-     `_aegis-brain/tasks/{TASK-ID}/comments.md` (use comment format from pm-state-protocol.md)
+     `.aegis/brain/tasks/{TASK-ID}/comments.md` (use comment format from pm-state-protocol.md)
      containing the key QA findings summary (max 10 bullet points).
    - Update task status in `meta.json` based on verdict:
      - PASS from Gate 2 (QA gate): set `status = "DONE"`, `updated` = now, then regenerate kanban.md.
@@ -175,11 +175,11 @@ _aegis-output/qa/sprint-N/
 **PM State Writes** (gate subcommand only, when TASK-ID is known):
 
 ```
-_aegis-brain/tasks/{TASK-ID}/
+.aegis/brain/tasks/{TASK-ID}/
   history.md        # Appended: GATE_PASS or GATE_FAIL row
   comments.md       # Appended: QA summary (FAIL/CONDITIONAL only)
   meta.json         # Updated: status field (PASS → DONE, FAIL → IN_PROGRESS)
-_aegis-brain/sprints/sprint-N/
+.aegis/brain/sprints/sprint-N/
   kanban.md         # Regenerated if status changed
   metrics.json      # Recomputed if status changed
 ```
@@ -190,7 +190,7 @@ Before running any subcommand, ensure the output directory exists:
 
 ```
 INITIALIZATION:
-  1. Determine sprint name from _aegis-brain/sprints/current/plan.md
+  1. Determine sprint name from .aegis/brain/sprints/current/plan.md
   2. Create directory: _aegis-output/qa/sprint-{N}/
   3. Create subdirectory: _aegis-output/qa/sprint-{N}/results/
   4. If directories already exist: skip (no-op)

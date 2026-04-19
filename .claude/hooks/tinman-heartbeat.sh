@@ -10,13 +10,13 @@
 # Manual run:
 #   ./.claude/hooks/tinman-heartbeat.sh
 #
-# Output: _aegis-brain/logs/heartbeat.log
+# Output: .aegis/brain/logs/heartbeat.log
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(cd "${SCRIPT_DIR}/../.." && pwd)"
-LOG="${PROJECT_DIR}/_aegis-brain/logs/heartbeat.log"
+LOG="${PROJECT_DIR}/.aegis/brain/logs/heartbeat.log"
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
 # ── Cron install ──────────────────────────────────────────────────────────────
@@ -47,14 +47,14 @@ if ! git diff --quiet 2>/dev/null; then
 fi
 
 # Check 2: Brain directories intact?
-for dir in "_aegis-brain/resonance" "_aegis-brain/tasks" "_aegis-brain/logs" "_aegis-brain/sprints/current"; do
+for dir in ".aegis/brain/resonance" ".aegis/brain/tasks" ".aegis/brain/logs" ".aegis/brain/sprints/current"; do
     if [[ ! -d "$dir" ]]; then
         ISSUES+=("MISSING_DIR:${dir}")
     fi
 done
 
 # Check 3: Kanban exists?
-if [[ ! -f "_aegis-brain/sprints/current/kanban.md" ]]; then
+if [[ ! -f ".aegis/brain/sprints/current/kanban.md" ]]; then
     ISSUES+=("NO_KANBAN:sprints/current/kanban.md_missing")
 fi
 
@@ -66,8 +66,8 @@ BLOCK0_MISSING=()
 [[ ${#BLOCK0_MISSING[@]} -gt 0 ]] && ISSUES+=("BLOCK0_MISSING:${BLOCK0_MISSING[*]}")
 
 # Check 5: Activity log last write (stale > 24h?)
-if [[ -f "_aegis-brain/logs/activity.log" ]]; then
-    LAST_MOD=$(stat -f "%m" "_aegis-brain/logs/activity.log" 2>/dev/null || stat -c "%Y" "_aegis-brain/logs/activity.log" 2>/dev/null || echo "0")
+if [[ -f ".aegis/brain/logs/activity.log" ]]; then
+    LAST_MOD=$(stat -f "%m" ".aegis/brain/logs/activity.log" 2>/dev/null || stat -c "%Y" ".aegis/brain/logs/activity.log" 2>/dev/null || echo "0")
     NOW=$(date +%s)
     AGE_H=$(( (NOW - LAST_MOD) / 3600 ))
     [[ $AGE_H -gt 24 ]] && ISSUES+=("STALE_LOG:last_activity_${AGE_H}h_ago")

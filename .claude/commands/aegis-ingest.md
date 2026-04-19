@@ -30,11 +30,11 @@ Use Beast to extract 3–5 key takeaways from the source.
 For each takeaway, classify it as one of:
 
 - **Resonance update** — project-level knowledge that should persist as a standing truth
-  - Action: update or create a page in `_aegis-brain/resonance/`
+  - Action: update or create a page in `.aegis/brain/resonance/`
 - **New instinct** — a pattern to learn and potentially enforce
-  - Action: create a new YAML file in `_aegis-brain/instincts/pending/` using the instinct schema from `_aegis-brain/instincts/README.md`
+  - Action: create a new YAML file in `.aegis/brain/instincts/pending/` using the instinct schema from `.aegis/brain/instincts/README.md`
 - **Learning** — a one-time lesson, not yet a repeating pattern
-  - Action: create a file in `_aegis-brain/learnings/`
+  - Action: create a file in `.aegis/brain/learnings/`
 
 ---
 
@@ -50,7 +50,7 @@ For each new or updated page:
 
 ## Step 4: Update index
 
-1. Read `_aegis-brain/index.md`
+1. Read `.aegis/brain/index.md`
 2. Add new entries under the correct section (Resonance, Instincts/Pending, Learnings, etc.)
 3. Update the `Last updated` timestamp to today's ISO date (YYYY-MM-DD)
 4. Write the updated index back
@@ -59,7 +59,7 @@ For each new or updated page:
 
 ## Step 5: Log
 
-Append one line to `_aegis-brain/logs/activity.log`:
+Append one line to `.aegis/brain/logs/activity.log`:
 
 ```
 [ISO-8601] [INGEST] SOURCE=<filename> | PAGES_CREATED=N | PAGES_UPDATED=N | INSTINCTS=N

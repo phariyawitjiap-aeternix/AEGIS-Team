@@ -81,7 +81,7 @@ for pattern in "${AEGIS_PATTERNS[@]}"; do
 done
 
 # Allow — log to activity.log (best-effort, don't fail if log missing)
-LOG="_aegis-brain/logs/activity.log"
+LOG=".aegis/brain/logs/activity.log"
 if [[ -f "$LOG" ]]; then
     TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || echo "unknown")
     SHORT_FILE=$(echo "$FILE" | head -c 120)

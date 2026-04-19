@@ -116,10 +116,10 @@ fi
 - If >20%, display warning and suggest `/compact`.
 
 ### Step 2: Load Brain
-- Read all files in `_aegis-brain/resonance/` (project identity, conventions, decisions).
-- Read latest 3 files in `_aegis-brain/learnings/`.
-- Read `_aegis-brain/logs/activity.log` for pending tasks.
-- Read `_aegis-brain/handoffs/` for last session's handoff.
+- Read all files in `.aegis/brain/resonance/` (project identity, conventions, decisions).
+- Read latest 3 files in `.aegis/brain/learnings/`.
+- Read `.aegis/brain/logs/activity.log` for pending tasks.
+- Read `.aegis/brain/handoffs/` for last session's handoff.
 
 ### Step 3: Display Dashboard (brief, 5 seconds max)
 
@@ -182,8 +182,8 @@ Agent tool call:
     - ALWAYS spawn sub-agents with run_in_background=true
     - ALWAYS include SUCCESS CRITERIA in sub-agent prompts
     - ALWAYS instruct sub-agents to SendMessage back when done
-    - Log every heartbeat pulse to _aegis-brain/logs/heartbeat.log
-    - Log every decision to _aegis-brain/logs/activity.log
+    - Log every heartbeat pulse to .aegis/brain/logs/heartbeat.log
+    - Log every decision to .aegis/brain/logs/activity.log
 ```
 
 #### 4b. Check Planning Artifacts — BLOCK 0 (MANDATORY)
@@ -193,8 +193,8 @@ Before ANY task enters IN_PROGRESS, verify all 5 BLOCK 0 checks pass:
 ```
 BLOCK 0A: PM.01 Project Plan    → ls _aegis-output/iso-docs/PM-01-project-plan/plan.md
 BLOCK 0B: SI.01 Requirements    → ls _aegis-output/iso-docs/SI-01-requirements-spec/spec.md
-BLOCK 0C: Epic/Task hierarchy   → ls _aegis-brain/tasks/*.md
-BLOCK 0D: Kanban initialized    → ls _aegis-brain/sprints/current/kanban.md
+BLOCK 0C: Epic/Task hierarchy   → ls .aegis/brain/tasks/*.md
+BLOCK 0D: Kanban initialized    → ls .aegis/brain/sprints/current/kanban.md
 BLOCK 0E: SI.02 Traceability    → ls _aegis-output/iso-docs/SI-02-traceability-matrix/matrix.md
 ```
 
@@ -315,7 +315,7 @@ After that single answer, she takes over completely.
 After loading the brain (Step 2), explicitly check for and load the latest handoff:
 
 1. **Find latest handoff:**
-   - List files in `_aegis-brain/handoffs/` (exclude .gitkeep)
+   - List files in `.aegis/brain/handoffs/` (exclude .gitkeep)
    - Sort by filename (date-based: YYYY-MM-DD_HH-MM.md)
    - Pick the most recent file
    - If no handoffs exist: skip to Step 3 (first session or clean start)

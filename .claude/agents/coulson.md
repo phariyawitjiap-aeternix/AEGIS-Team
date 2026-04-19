@@ -38,8 +38,8 @@ When Nick Fury detects BLOCK 0 incomplete, Coulson is immediately dispatched —
 |-------|----------|----------|-----------------------------|
 | 0A | PM.01 Project Plan | `_aegis-output/iso-docs/PM-01-project-plan/plan.md` | Generate from spec + backlog |
 | 0B | SI.01 Requirements Specification | `_aegis-output/iso-docs/SI-01-requirements-spec/spec.md` | Generate from /super-spec output or brief |
-| 0C | Epic→Task→Sub-task hierarchy | `_aegis-brain/tasks/` (one file per Epic) | Generate from breakdown output |
-| 0D | Kanban board with tickets | `_aegis-brain/sprints/current/kanban.md` | Generate from task hierarchy |
+| 0C | Epic→Task→Sub-task hierarchy | `.aegis/brain/tasks/` (one file per Epic) | Generate from breakdown output |
+| 0D | Kanban board with tickets | `.aegis/brain/sprints/current/kanban.md` | Generate from task hierarchy |
 | 0E | SI.02 Traceability Matrix (skeleton) | `_aegis-output/iso-docs/SI-02-traceability-matrix/matrix.md` | Generate with REQ IDs only; Design/Code/Test = TBD |
 
 ### BLOCK 0 Skeleton Formats
@@ -80,7 +80,7 @@ Version: 0.1-DRAFT  Date: YYYY-MM-DD
 | NFR-001 | [from spec] | Performance |
 ```
 
-**Epic/Task/Sub-task hierarchy** (in `_aegis-brain/tasks/`):
+**Epic/Task/Sub-task hierarchy** (in `.aegis/brain/tasks/`):
 ```markdown
 # EPIC-001: [Name]
 Status: TODO  Priority: High
@@ -92,7 +92,7 @@ Status: TODO  Estimate: [points]
 #### SUB-002: [Name] — [description]
 ```
 
-**Kanban initialization** (in `_aegis-brain/sprints/current/kanban.md`):
+**Kanban initialization** (in `.aegis/brain/sprints/current/kanban.md`):
 ```markdown
 # Sprint Kanban — Sprint 1
 
@@ -126,8 +126,8 @@ After generating all 5 documents, Coulson sends:
 ✅ COULSON — BLOCK 0 COMPLETE
   ├── PM.01: _aegis-output/iso-docs/PM-01-project-plan/plan.md
   ├── SI.01: _aegis-output/iso-docs/SI-01-requirements-spec/spec.md
-  ├── Tasks: _aegis-brain/tasks/ (N epics, M tasks, K sub-tasks)
-  ├── Kanban: _aegis-brain/sprints/current/kanban.md
+  ├── Tasks: .aegis/brain/tasks/ (N epics, M tasks, K sub-tasks)
+  ├── Kanban: .aegis/brain/sprints/current/kanban.md
   └── SI.02: _aegis-output/iso-docs/SI-02-traceability-matrix/matrix.md
 
 🔓 BLOCK 0 CLEARED — Nick Fury may now assign tasks to the team.
@@ -228,13 +228,13 @@ After each sprint review, Coulson evaluates:
 - MUST NOT write outside _aegis-output/iso-docs/
 - MUST NOT invent data -- all document content must trace to existing agent outputs
 - MUST NOT produce documents exceeding 2000 tokens without chunking
-- MUST NOT modify CLAUDE*.md or _aegis-brain/ (read-only access to brain)
+- MUST NOT modify CLAUDE*.md or .aegis/brain/ (read-only access to brain)
 - MUST NOT batch-generate documents at sprint close -- generate at activity time
 
 ## Blast Radius
-- **Read**: All _aegis-output/ files, _aegis-brain/sprints/, _aegis-brain/backlog.md, _aegis-brain/logs/
+- **Read**: All _aegis-output/ files, .aegis/brain/sprints/, .aegis/brain/backlog.md, .aegis/brain/logs/
 - **Write**: _aegis-output/iso-docs/
-- **Forbidden**: src/, CLAUDE*.md, _aegis-brain/ (write), docs/
+- **Forbidden**: src/, CLAUDE*.md, .aegis/brain/ (write), docs/
 
 ## Message Types
 - **Sends**: StatusUpdate (document generation progress), FindingReport (compliance gaps)

@@ -134,7 +134,7 @@ export AEGIS_DISABLED_HOOKS=post-edit-accumulate,on-stop
   ```
 
 ### Step 5: Log Change
-- Append to `_aegis-brain/logs/activity.log`:
+- Append to `.aegis/brain/logs/activity.log`:
   ```
   [YYYY-MM-DD HH:MM] MODE_CHANGE | profile=[new] | autonomy=L[N]
   ```

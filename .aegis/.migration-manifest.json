@@ -1,0 +1,12 @@
+{
+  "from_version": "8.4",
+  "to_version": "9.0-poc",
+  "migration_date": "2026-04-18T09:10:45Z",
+  "moved_paths": [
+    {"from": "_aegis-brain/", "to": ".aegis/brain/"}
+  ],
+  "gitignore_mode": "shared",
+  "gitignore_block_added": true,
+  "rollback_available": true,
+  "backup_path": "/Users/phariyawit.jiap/Documents/AEGIS-Team/.aegis-backup/_aegis-brain"
+}

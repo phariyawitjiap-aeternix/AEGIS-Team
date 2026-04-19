@@ -11,13 +11,13 @@ triggers:
 ## Quick Reference
 Knowledge distillation process. Counts learnings files, requires minimum 10 to proceed,
 groups learnings by topic/category, summarizes key patterns per group, promotes patterns
-appearing 3+ times to _aegis-brain/resonance/, creates a distillation report in
+appearing 3+ times to .aegis/brain/resonance/, creates a distillation report in
 _aegis-output/, and preserves originals via git. "Nothing is truly deleted."
 
 ## Full Instructions
 
 ### Step 1: Count Learnings
-- List all files in `_aegis-brain/learnings/`.
+- List all files in `.aegis/brain/learnings/`.
 - Count total number of learning files.
 - Display: "Found [N] learning files."
 
@@ -70,7 +70,7 @@ _aegis-output/, and preserves originals via git. "Nothing is truly deleted."
 ### Step 5: Promote Patterns to Resonance
 - Any pattern appearing in 3+ learnings is considered "proven" and gets promoted.
 - For each promoted pattern:
-  - Create or update a file in `_aegis-brain/resonance/`.
+  - Create or update a file in `.aegis/brain/resonance/`.
   - Format:
     ```markdown
     ---
@@ -124,6 +124,6 @@ _aegis-output/, and preserves originals via git. "Nothing is truly deleted."
 ### Step 7: Preserve Originals
 - Do NOT delete any original learning files.
 - Git preserves history — "Nothing is truly deleted."
-- The original files remain in `_aegis-brain/learnings/` as the source of truth.
+- The original files remain in `.aegis/brain/learnings/` as the source of truth.
 - Display: "Original learnings preserved. Git history is your archive."
-- Optionally suggest: `git add _aegis-brain/ && git commit -m "distill: promote [N] patterns to resonance"`
+- Optionally suggest: `git add .aegis/brain/ && git commit -m "distill: promote [N] patterns to resonance"`

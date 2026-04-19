@@ -13,7 +13,7 @@ INPUT=$(cat)
 STOP_HOOK_ACTIVE=$(echo "$INPUT" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('stop_hook_active', False))" 2>/dev/null || echo "False")
 
 # Log session end
-LOG="_aegis-brain/logs/activity.log"
+LOG=".aegis/brain/logs/activity.log"
 if [[ -f "$LOG" ]]; then
     TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || echo "unknown")
     echo "[${TIMESTAMP}] [HOOK:on-stop] SESSION_END — Claude stopping" >> "$LOG" 2>/dev/null || true

@@ -10,9 +10,9 @@ triggers:
 
 ## Quick Reference
 Manage the AEGIS instinct system — confidence-scored learned patterns that upgrade
-the freeform `_aegis-brain/learnings/` lessons into a self-enforcing immune system.
+the freeform `.aegis/brain/learnings/` lessons into a self-enforcing immune system.
 
-Instincts live in `_aegis-brain/instincts/<stage>/<id>.yaml` with 4 stages:
+Instincts live in `.aegis/brain/instincts/<stage>/<id>.yaml` with 4 stages:
 `pending` → `active` → `promoted` → `retired`.
 
 ## Subcommands
@@ -23,7 +23,7 @@ List all instincts grouped by stage with confidence bars.
 Implementation:
 ```bash
 for stage in promoted active pending retired; do
-  DIR="_aegis-brain/instincts/$stage"
+  DIR=".aegis/brain/instincts/$stage"
   [[ ! -d "$DIR" ]] && continue
   COUNT=$(ls "$DIR"/*.yaml 2>/dev/null | wc -l | tr -d ' ')
   echo "━━ $stage ($COUNT) ━━━━━━━━━━━━━━━━━━━"
@@ -51,7 +51,7 @@ Rules:
 - `active` → `promoted` when confidence ≥ 0.8
 - Moves the file between stage directories when promoted
 - Updates the YAML fields in place
-- Logs the reinforcement to `_aegis-brain/logs/activity.log`
+- Logs the reinforcement to `.aegis/brain/logs/activity.log`
 
 ### `/aegis-instinct retire <id>`
 Move instinct to `retired/` stage. Use when a pattern becomes obsolete
@@ -69,10 +69,10 @@ of their original stage (let this project re-validate them).
 ## Loki Integration
 
 Before every adversarial review, Loki loads:
-1. All files in `_aegis-brain/instincts/active/` → warnings
-2. All files in `_aegis-brain/instincts/promoted/` → hard rules (auto-REJECT on violation)
+1. All files in `.aegis/brain/instincts/active/` → warnings
+2. All files in `.aegis/brain/instincts/promoted/` → hard rules (auto-REJECT on violation)
 
 ## Related
 - [aegis-evolve](aegis-evolve.md) — cluster similar instincts + merge duplicates
 - [aegis-retro](aegis-retro.md) — lesson extraction that can promote to instincts
-- [_aegis-brain/instincts/README.md](../../_aegis-brain/instincts/README.md) — schema reference
+- [.aegis/brain/instincts/README.md](../../.aegis/brain/instincts/README.md) — schema reference

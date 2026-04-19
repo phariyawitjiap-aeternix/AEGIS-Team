@@ -158,5 +158,5 @@ Minimum score: 0
 
 ```
 _aegis-output/tech-debt-report.md
-_aegis-brain/learnings/debt-scan-YYYY-MM-DD.md  (for trend tracking)
+.aegis/brain/learnings/debt-scan-YYYY-MM-DD.md  (for trend tracking)
 ```

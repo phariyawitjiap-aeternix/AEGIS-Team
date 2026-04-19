@@ -9,11 +9,11 @@ triggers:
 
 ## Quick Reference
 Observability layer for AEGIS agent operations.
-- **Logging**: Structured JSON logs per session in `_aegis-brain/logs/`
+- **Logging**: Structured JSON logs per session in `.aegis/brain/logs/`
 - **Cost**: Token usage tracking per agent per session
 - **Traces**: Decision audit trail — why each agent made each choice
 - **Dashboard**: Real-time status summary of active agents
-- **Output**: `_aegis-brain/logs/` and `_aegis-output/observability/`
+- **Output**: `.aegis/brain/logs/` and `_aegis-output/observability/`
 - **Agent**: Beast (haiku) — data collection; Lumen (sonnet) — analysis
 
 ## Full Instructions
@@ -59,7 +59,7 @@ All agent activity is logged in structured format:
 
 #### Log File Naming
 ```
-_aegis-brain/logs/
+.aegis/brain/logs/
   activity.log              # Append-only human-readable log
   sessions/
     YYYY-MM-DD_<session-id>.json  # Structured JSON per session
@@ -176,7 +176,7 @@ Configurable alerts for anomalies:
 ### Output
 
 ```
-_aegis-brain/logs/
+.aegis/brain/logs/
   activity.log
   sessions/
     YYYY-MM-DD_<session-id>.json

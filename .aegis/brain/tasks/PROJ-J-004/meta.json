@@ -1,0 +1,29 @@
+{
+  "id": "PROJ-J-004",
+  "title": "Project management",
+  "type": "journey",
+  "task_type": null,
+  "parent": "PROJ-US-001",
+  "children": [
+    "PROJ-E-004"
+  ],
+  "status": "DONE",
+  "assignee": "unassigned",
+  "points": null,
+  "priority": "high",
+  "labels": [
+    "pm",
+    "sprint-management"
+  ],
+  "dependencies": {
+    "blocks": [],
+    "blocked_by": []
+  },
+  "created": "2026-03-24T10:00:00",
+  "updated": "2026-03-30T22:00:00",
+  "sprint": null,
+  "time_tracking": {
+    "estimated_hours": null,
+    "logged_hours": 0
+  }
+}

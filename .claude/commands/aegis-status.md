@@ -17,7 +17,7 @@ of what AEGIS is doing.
 ## Full Instructions
 
 ### Step 1: Check Mother Brain Heartbeat
-- Read `_aegis-brain/logs/heartbeat.log` for latest PULSE entry.
+- Read `.aegis/brain/logs/heartbeat.log` for latest PULSE entry.
 - Determine Mother Brain state:
   - If heartbeat.log has a PULSE within last 60 seconds: **ALIVE**
   - If heartbeat.log exists but last PULSE > 60 seconds ago: **STALE** (may need respawn)
@@ -84,7 +84,7 @@ of what AEGIS is doing.
   ```
 
 ### Step 5: Show Recent Activity
-- Read last 5 entries from `_aegis-brain/logs/activity.log`.
+- Read last 5 entries from `.aegis/brain/logs/activity.log`.
 - Display:
   ```
   Recent Activity:

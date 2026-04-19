@@ -10,7 +10,7 @@ triggers:
 
 ## Quick Reference
 Memory management inspired by Letta/MemGPT patterns. Subcommands: `status` (show loaded
-vs available memory), `recall <topic>` (search _aegis-brain/ for relevant context),
+vs available memory), `recall <topic>` (search .aegis/brain/ for relevant context),
 `save` (extract and persist current session learnings), `forget <id>` (archive a memory).
 Three tiers: core (always loaded from resonance/), archival (searchable in learnings/),
 working (current session state). Manages what the AI "remembers" across sessions.
@@ -46,8 +46,8 @@ Show the current state of all memory tiers:
 ╚══════════════════════════════════════════════════════════╝
 ```
 
-- **Core memory** = `_aegis-brain/resonance/` — loaded at session start, always available.
-- **Archival memory** = `_aegis-brain/learnings/`, `_aegis-brain/retrospectives/`, `_aegis-brain/handoffs/` — not loaded by default, but searchable.
+- **Core memory** = `.aegis/brain/resonance/` — loaded at session start, always available.
+- **Archival memory** = `.aegis/brain/learnings/`, `.aegis/brain/retrospectives/`, `.aegis/brain/handoffs/` — not loaded by default, but searchable.
 - **Working memory** = current conversation context, loaded files, active state.
 
 ### Subcommand: `/aegis-memory recall <topic>`
@@ -91,7 +91,7 @@ Extract learnings from the current session and persist them:
    - Workflow improvements identified
    - Tools/techniques that worked well
 
-2. **For each learning, create a file** in `_aegis-brain/learnings/`:
+2. **For each learning, create a file** in `.aegis/brain/learnings/`:
    ```markdown
    ---
    date: YYYY-MM-DD
@@ -125,11 +125,11 @@ Extract learnings from the current session and persist them:
 Archive a specific memory (move from active to deep archive):
 
 1. **Identify the memory** by filename or partial match:
-   - Search `_aegis-brain/learnings/` for the ID.
+   - Search `.aegis/brain/learnings/` for the ID.
    - If multiple matches, show options and ask user to clarify.
 
 2. **Archive, don't delete**:
-   - Move the file to `_aegis-brain/archive/learnings/`.
+   - Move the file to `.aegis/brain/archive/learnings/`.
    - Add a note to the file: `archived: YYYY-MM-DD, reason: user request`.
    - Git preserves the history — nothing is truly lost.
 

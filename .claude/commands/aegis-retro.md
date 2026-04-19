@@ -11,8 +11,8 @@ triggers:
 ## Quick Reference
 End-of-session retrospective inspired by Oracle's rrr pattern. Gathers git activity,
 writes a session summary, composes an honest AI diary (150+ words first-person reflection),
-documents friction points (3+ minimum), extracts lessons learned to _aegis-brain/learnings/,
-saves full retro to _aegis-brain/retrospectives/, and updates activity.log.
+documents friction points (3+ minimum), extracts lessons learned to .aegis/brain/learnings/,
+saves full retro to .aegis/brain/retrospectives/, and updates activity.log.
 IMPORTANT: Only the main agent (Captain America/Opus) writes this — never a subagent.
 
 ## Full Instructions
@@ -73,7 +73,7 @@ IMPORTANT: Only the main agent (Captain America/Opus) writes this — never a su
 - Each lesson should be:
   - Specific enough to be actionable
   - General enough to apply to future sessions
-- Save each lesson to `_aegis-brain/learnings/YYYY-MM-DD_slug.md` with format:
+- Save each lesson to `.aegis/brain/learnings/YYYY-MM-DD_slug.md` with format:
   ```markdown
   ---
   date: YYYY-MM-DD
@@ -93,7 +93,7 @@ IMPORTANT: Only the main agent (Captain America/Opus) writes this — never a su
   ```
 
 ### Step 6: Save Full Retrospective
-- Save the complete retro to `_aegis-brain/retrospectives/YYYY-MM/DD/HH.MM_slug.md`
+- Save the complete retro to `.aegis/brain/retrospectives/YYYY-MM/DD/HH.MM_slug.md`
 - Create directories as needed.
 - Full retro includes all sections: summary, diary, friction, lessons.
 - Format:
@@ -120,7 +120,7 @@ IMPORTANT: Only the main agent (Captain America/Opus) writes this — never a su
   ```
 
 ### Step 7: Update Activity Log
-- Append to `_aegis-brain/logs/activity.log`:
+- Append to `.aegis/brain/logs/activity.log`:
   ```
   [YYYY-MM-DD HH:MM] SESSION_END | commits=[N] | files_changed=[N] | lessons=[N] | friction_points=[N]
   ```
@@ -138,7 +138,7 @@ IMPORTANT: Only the main agent (Captain America/Opus) writes this — never a su
   │ • [item 2]                                   │
   │                                              │
   │ Top friction: [biggest pain point]           │
-  │ Saved to: _aegis-brain/retrospectives/...    │
+  │ Saved to: .aegis/brain/retrospectives/...    │
   └──────────────────────────────────────────────┘
   ```
 - Ask if user wants to run /aegis-handoff for next session.

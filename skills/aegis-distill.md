@@ -9,10 +9,10 @@ triggers:
 
 ## Quick Reference
 Compresses accumulated learnings into reusable knowledge patterns.
-- **Read**: Scan all files in `_aegis-brain/learnings/`
+- **Read**: Scan all files in `.aegis/brain/learnings/`
 - **Group**: Cluster learnings by topic/domain
 - **Compress**: Summarize each group into concise patterns
-- **Promote**: Patterns with 3+ occurrences → `_aegis-brain/resonance/`
+- **Promote**: Patterns with 3+ occurrences → `.aegis/brain/resonance/`
 - **Output**: Updated resonance files, compressed learnings archive
 - **Agent**: Iron Man (opus) — analysis and synthesis
 
@@ -30,7 +30,7 @@ Compresses accumulated learnings into reusable knowledge patterns.
 
 ### Phase 1: Scan Learnings
 
-Read all files in `_aegis-brain/learnings/`:
+Read all files in `.aegis/brain/learnings/`:
 
 ```markdown
 ## Learnings Inventory
@@ -106,18 +106,18 @@ For each group, generate a compressed summary:
    **Rationale**: <why this matters>
    ```
 3. Append to appropriate resonance file:
-   - Architecture patterns → `_aegis-brain/resonance/architecture-decisions.md`
-   - Code conventions → `_aegis-brain/resonance/team-conventions.md`
-   - Project-specific → `_aegis-brain/resonance/project-identity.md`
+   - Architecture patterns → `.aegis/brain/resonance/architecture-decisions.md`
+   - Code conventions → `.aegis/brain/resonance/team-conventions.md`
+   - Project-specific → `.aegis/brain/resonance/project-identity.md`
 4. Mark original learnings as "promoted" (do not delete)
 
 ### Phase 5: Archive
 
 After compression and promotion:
-1. Create archive: `_aegis-brain/learnings/archive/YYYY-MM-DD_distill.md`
+1. Create archive: `.aegis/brain/learnings/archive/YYYY-MM-DD_distill.md`
 2. Move compressed summaries to archive
 3. Keep original learning files (append `# DISTILLED: YYYY-MM-DD` header)
-4. Log the distillation event to `_aegis-brain/logs/activity.log`
+4. Log the distillation event to `.aegis/brain/logs/activity.log`
 
 ### Distillation Report
 

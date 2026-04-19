@@ -12,11 +12,11 @@ triggers:
 Full scrum lifecycle management: planning ceremonies, daily standups, reviews, retrospectives, velocity tracking, and carry-over.
 
 - **Plan**: Select stories from backlog, estimate capacity, assign to agents, initialize kanban
-- **Standup**: Auto-generated from agent activity logs in `_aegis-brain/logs/`
+- **Standup**: Auto-generated from agent activity logs in `.aegis/brain/logs/`
 - **Review**: Summarize completed work, link to outputs in `_aegis-output/`
 - **Retro**: What went well / what to improve / action items (integrates with `/aegis-retro`)
 - **Close**: Calculate velocity, carry over incomplete tasks, update rolling average
-- **Sprint data**: `_aegis-brain/sprints/sprint-<N>/`
+- **Sprint data**: `.aegis/brain/sprints/sprint-<N>/`
 - **Agent**: Captain America (opus) — ceremony facilitator and orchestrator
 
 ---
@@ -25,10 +25,10 @@ Full scrum lifecycle management: planning ceremonies, daily standups, reviews, r
 
 ### Sprint Directory Structure
 
-Each sprint lives in `_aegis-brain/sprints/sprint-<N>/`:
+Each sprint lives in `.aegis/brain/sprints/sprint-<N>/`:
 
 ```
-_aegis-brain/sprints/sprint-<N>/
+.aegis/brain/sprints/sprint-<N>/
   plan.md          # Sprint goal, stories, capacity, assignments
   kanban.md        # Kanban board state (source of truth for task status)
   daily/
@@ -43,8 +43,8 @@ _aegis-brain/sprints/sprint-<N>/
 ### Ceremony 1: Sprint Planning (Day 1)
 
 #### Inputs
-- `_aegis-brain/backlog.md` — prioritized product backlog
-- `_aegis-brain/sprints/sprint-<N-1>/close.md` — velocity from previous sprint (if exists)
+- `.aegis/brain/backlog.md` — prioritized product backlog
+- `.aegis/brain/sprints/sprint-<N-1>/close.md` — velocity from previous sprint (if exists)
 - Any carry-over tasks from the previous sprint
 
 #### Process
@@ -73,11 +73,11 @@ _aegis-brain/sprints/sprint-<N>/
   - Data / analytics → @beast
 
 **Step 4: Create Sprint Plan**
-- Write `_aegis-brain/sprints/sprint-<N>/plan.md` using the template below.
-- Initialize `_aegis-brain/sprints/sprint-<N>/kanban.md` with all sprint tasks in the TODO column (see kanban template in Ceremony 1 outputs).
+- Write `.aegis/brain/sprints/sprint-<N>/plan.md` using the template below.
+- Initialize `.aegis/brain/sprints/sprint-<N>/kanban.md` with all sprint tasks in the TODO column (see kanban template in Ceremony 1 outputs).
 
 **Step 5: Log and Notify**
-- Append to `_aegis-brain/logs/activity.log`:
+- Append to `.aegis/brain/logs/activity.log`:
   ```
   [YYYY-MM-DD HH:MM] SPRINT_START | sprint=<N> | capacity=<pts> | stories=<count> | load=<pct>%
   ```
@@ -181,7 +181,7 @@ The standup is auto-generated from agent activity. Captain America reads the log
 #### Process
 
 **Step 1: Read Activity Logs**
-- Read `_aegis-brain/logs/activity.log` — filter entries from the last 24 hours.
+- Read `.aegis/brain/logs/activity.log` — filter entries from the last 24 hours.
 - Read any StatusUpdate messages written by agents in the last 24 hours.
 - Check kanban.md for column transitions that happened since the last standup.
 
@@ -196,7 +196,7 @@ The standup is auto-generated from agent activity. Captain America reads the log
 - Determine on-track status.
 
 **Step 4: Write Standup File**
-- Write to `_aegis-brain/sprints/sprint-<N>/daily/YYYY-MM-DD.md`.
+- Write to `.aegis/brain/sprints/sprint-<N>/daily/YYYY-MM-DD.md`.
 
 #### Daily Standup Template
 
@@ -286,8 +286,8 @@ The sprint review summarizes completed work and links to all outputs produced. I
 - A PARTIAL is still valuable — document what was achieved vs what was not.
 
 **Step 4: Write Review**
-- Write to `_aegis-brain/sprints/sprint-<N>/review.md`.
-- Log to `_aegis-brain/logs/activity.log`:
+- Write to `.aegis/brain/sprints/sprint-<N>/review.md`.
+- Log to `.aegis/brain/logs/activity.log`:
   ```
   [YYYY-MM-DD HH:MM] SPRINT_REVIEW | sprint=<N> | completed=<pts>/<total> | goal=ACHIEVED/PARTIAL/NOT_ACHIEVED
   ```
@@ -351,8 +351,8 @@ The sprint retrospective is the process-improvement ceremony. It runs as part of
 #### Process
 
 **Step 1: Read Review and Activity Logs**
-- Read `_aegis-brain/sprints/sprint-<N>/review.md` for context.
-- Read `_aegis-brain/logs/activity.log` filtered to this sprint.
+- Read `.aegis/brain/sprints/sprint-<N>/review.md` for context.
+- Read `.aegis/brain/logs/activity.log` filtered to this sprint.
 - Read any friction points recorded during the sprint.
 
 **Step 2: Generate Retro Sections**
@@ -361,11 +361,11 @@ The sprint retrospective is the process-improvement ceremony. It runs as part of
 - **Action items**: Specific, assignable changes for the next sprint (not vague platitudes).
 
 **Step 3: Write Retrospective**
-- Write to `_aegis-brain/sprints/sprint-<N>/retro.md`.
-- Also feed the "What went wrong" and "Action items" sections into the `/aegis-retro` diary step so lessons are preserved in `_aegis-brain/learnings/`.
+- Write to `.aegis/brain/sprints/sprint-<N>/retro.md`.
+- Also feed the "What went wrong" and "Action items" sections into the `/aegis-retro` diary step so lessons are preserved in `.aegis/brain/learnings/`.
 
 **Step 4: Log**
-- Append to `_aegis-brain/logs/activity.log`:
+- Append to `.aegis/brain/logs/activity.log`:
   ```
   [YYYY-MM-DD HH:MM] SPRINT_RETRO | sprint=<N> | action_items=<count>
   ```
@@ -414,7 +414,7 @@ The sprint retrospective is the process-improvement ceremony. It runs as part of
 
 ## Carry Into /aegis-retro
 
-The following friction points and lessons from this sprint have been passed to `/aegis-retro` for long-term storage in `_aegis-brain/learnings/`:
+The following friction points and lessons from this sprint have been passed to `/aegis-retro` for long-term storage in `.aegis/brain/learnings/`:
 
 - <lesson 1>
 - <lesson 2>
@@ -436,15 +436,15 @@ The following friction points and lessons from this sprint have been passed to `
 - This rolling average becomes the recommended capacity for sprint N+1.
 
 **Step 3: Handle Carry-Over**
-- For each task NOT in DONE: add it back to `_aegis-brain/backlog.md` at the top of the appropriate priority tier.
+- For each task NOT in DONE: add it back to `.aegis/brain/backlog.md` at the top of the appropriate priority tier.
 - Mark it with a carry-over indicator: `[carried from sprint-<N>]`.
 - Do not lose carry-over tasks — they must be explicitly re-triaged or re-planned.
 
 **Step 4: Write Close Report**
-- Write to `_aegis-brain/sprints/sprint-<N>/close.md`.
+- Write to `.aegis/brain/sprints/sprint-<N>/close.md`.
 
 **Step 5: Log**
-- Append to `_aegis-brain/logs/activity.log`:
+- Append to `.aegis/brain/logs/activity.log`:
   ```
   [YYYY-MM-DD HH:MM] SPRINT_CLOSE | sprint=<N> | velocity=<pts> | rolling_avg=<pts> | carry_over=<count> tasks
   ```
@@ -499,11 +499,11 @@ The following friction points and lessons from this sprint have been passed to `
 
 ## Artifacts Produced This Sprint
 
-- `_aegis-brain/sprints/sprint-<N>/plan.md`
-- `_aegis-brain/sprints/sprint-<N>/kanban.md`
-- `_aegis-brain/sprints/sprint-<N>/daily/*.md` (<count> standup records)
-- `_aegis-brain/sprints/sprint-<N>/review.md`
-- `_aegis-brain/sprints/sprint-<N>/retro.md`
+- `.aegis/brain/sprints/sprint-<N>/plan.md`
+- `.aegis/brain/sprints/sprint-<N>/kanban.md`
+- `.aegis/brain/sprints/sprint-<N>/daily/*.md` (<count> standup records)
+- `.aegis/brain/sprints/sprint-<N>/review.md`
+- `.aegis/brain/sprints/sprint-<N>/retro.md`
 - <any additional outputs from `_aegis-output/`>
 ```
 

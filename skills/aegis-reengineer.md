@@ -224,7 +224,7 @@ minutes. Example:
 - "Scaffold the src/db/schema.ts per Section 1 CREATE manifest. Use Drizzle
    with the types defined in §4.1. Include row-level lock helper from §3.2."
 - "Implement the mongo-to-pg.ts migration per Section 2 Step 23. Batch size 500,
-   checkpoint file at _aegis-brain/migrations/mongo-pg-checkpoint.json, idempotent."
+   checkpoint file at .aegis/brain/migrations/mongo-pg-checkpoint.json, idempotent."
 - "Create contract tests for /api/v2/orders vs /api/v1/orders per §3 Test Strategy.
    Byte-equal response bodies for the same input."
 

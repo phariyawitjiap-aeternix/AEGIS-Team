@@ -103,7 +103,7 @@ When /aegis-launch runs (SI.6):
 
 #### PM.1 — Project Plan
 - **Content**: Task descriptions, effort estimates, schedule, milestones, resource assignments, risk identification, version control strategy, lifecycle selection
-- **Source data**: Sprint plan (_aegis-brain/sprints/), backlog (_aegis-brain/backlog.md), kanban assignments, Loki risk analysis
+- **Source data**: Sprint plan (.aegis/brain/sprints/), backlog (.aegis/brain/backlog.md), kanban assignments, Loki risk analysis
 - **Auto-trigger**: Generated at project start (PM.1), updated each sprint planning (PM.2)
 - **Location**: _aegis-output/iso-docs/PM-01-project-plan/
 
@@ -414,7 +414,7 @@ approver: captain-america
 ## Workflow
 
 1. Coulson receives TaskAssignment (from Captain America or triggered by pipeline event)
-2. Coulson reads source data from _aegis-output/ and _aegis-brain/
+2. Coulson reads source data from _aegis-output/ and .aegis/brain/
 3. Coulson generates or updates the target ISO document
 4. Coulson stamps document with version, date, and status=Draft
 5. If traceability matrix is affected, Coulson updates it (not regenerates — updates)
@@ -424,8 +424,8 @@ approver: captain-america
 
 ## Inputs
 - Agent outputs in _aegis-output/ (specs, reviews, QA results, breakdowns)
-- Sprint data in _aegis-brain/sprints/
-- Backlog in _aegis-brain/backlog.md
+- Sprint data in .aegis/brain/sprints/
+- Backlog in .aegis/brain/backlog.md
 
 ## Outputs
 - ISO 29110 documents in _aegis-output/iso-docs/

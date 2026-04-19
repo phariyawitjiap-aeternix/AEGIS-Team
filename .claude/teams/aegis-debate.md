@@ -23,5 +23,5 @@ Captain America → ApprovalRequest → All (vote)
 Captain America → ArchitectureDecision → All (final)
 
 ## Output
-_aegis-brain/resonance/architecture-decisions.md (append)
+.aegis/brain/resonance/architecture-decisions.md (append)
 _aegis-output/debates/YYYY-MM-DD_debate.md

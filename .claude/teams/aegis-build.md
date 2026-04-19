@@ -17,7 +17,7 @@ End-to-end build pipeline: Iron Man designs -> Spider-Man implements -> Black Pa
   "team": "build",
   "trigger": "task_status == TODO && task.sprint == active_sprint",
   "required_inputs": {
-    "task_meta": "_aegis-brain/tasks/{TASK-ID}/meta.json",
+    "task_meta": ".aegis/brain/tasks/{TASK-ID}/meta.json",
     "acceptance_criteria": "from meta.json or parent user story",
     "existing_spec": "optional -- _aegis-output/specs/{TASK-ID}-spec.md"
   }

@@ -12,7 +12,7 @@ Prevents "why did we choose X?" questions 3 months later.
 - Any decision that took >5 minutes to debate
 
 ## ADR Format
-File: `_aegis-brain/adrs/ADR-NNN-{slug}.md`
+File: `.aegis/brain/adrs/ADR-NNN-{slug}.md`
 
 ```markdown
 ---

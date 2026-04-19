@@ -1,0 +1,31 @@
+{
+  "id": "PROJ-E-001",
+  "title": "Installer works perfectly",
+  "type": "epic",
+  "task_type": null,
+  "parent": "PROJ-J-001",
+  "children": [
+    "PROJ-T-001",
+    "PROJ-T-002",
+    "PROJ-T-003"
+  ],
+  "status": "DONE",
+  "assignee": "unassigned",
+  "points": null,
+  "priority": "critical",
+  "labels": [
+    "installer",
+    "onboarding"
+  ],
+  "dependencies": {
+    "blocks": [],
+    "blocked_by": []
+  },
+  "created": "2026-03-24T10:00:00",
+  "updated": "2026-03-30T22:00:00",
+  "sprint": null,
+  "time_tracking": {
+    "estimated_hours": null,
+    "logged_hours": 0
+  }
+}

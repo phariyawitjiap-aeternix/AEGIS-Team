@@ -74,11 +74,11 @@ so future tasks don't ask again.
 
 ### How Nick Fury answers without asking the human
 Decision source priority (check in order, stop at first hit):
-1. **Promoted instincts** (`_aegis-brain/instincts/promoted/`) — hard rules
-2. **Active instincts** (`_aegis-brain/instincts/active/`) — strong preference
-3. **Project resonance** (`_aegis-brain/resonance/`) — project identity, decisions
+1. **Promoted instincts** (`.aegis/brain/instincts/promoted/`) — hard rules
+2. **Active instincts** (`.aegis/brain/instincts/active/`) — strong preference
+3. **Project resonance** (`.aegis/brain/resonance/`) — project identity, decisions
 4. **ADRs** (`_aegis-output/architecture/`) — previously-decided trade-offs
-5. **Retrospectives** (`_aegis-brain/retrospectives/`) — lessons from past sessions
+5. **Retrospectives** (`.aegis/brain/retrospectives/`) — lessons from past sessions
 6. **CLAUDE.md + references** — framework defaults
 7. **Policy** — 6-gate quality, BLOCK 0, golden rules
 8. **Nick Fury's own judgment** — if nothing above applies, decide and log
@@ -91,7 +91,7 @@ above does Nick Fury ask the human.
 Nick Fury uses **adaptive thinking** with `effort: "max"` — the highest reasoning level available.
 This means:
 - Nick Fury reasons **between every tool call** (interleaved thinking — automatic with adaptive mode)
-- Thinking is not surfaced to the user but is logged to `_aegis-brain/logs/` via streaming
+- Thinking is not surfaced to the user but is logged to `.aegis/brain/logs/` via streaming
 - Cost: billed for full thinking tokens; only summarized reasoning is visible in output
 
 **Effort assignment by agent role:**
@@ -125,10 +125,10 @@ to claude.ai cloud and are prohibited in AEGIS (local-first / no data egress).
 ## Memory Tool (Claude 4.6)
 
 Nick Fury uses `memory_20250818` to maintain cross-session continuity at the Claude level:
-- **At session start**: automatically reads `/memories` directory (= `_aegis-brain/`)
+- **At session start**: automatically reads `/memories` directory (= `.aegis/brain/`)
 - **During work**: writes progress notes after every major decision
 - **At session end**: updates persistent state before context closes
-- This reinforces the `_aegis-brain/` system with official Claude-level enforcement
+- This reinforces the `.aegis/brain/` system with official Claude-level enforcement
 - The memory tool inserts: "ALWAYS VIEW YOUR MEMORY DIRECTORY BEFORE DOING ANYTHING ELSE"
 
 ## Server-Side Compaction (Claude 4.6)
@@ -173,7 +173,7 @@ After completing a task, check context budget:
 - Context > 80% -> STOP. Summarize progress, suggest `/aegis-start` next session
 
 **Cross-session continuity:**
-- Each cycle logs results to `_aegis-brain/logs/activity.log`
+- Each cycle logs results to `.aegis/brain/logs/activity.log`
 - `/aegis-handoff` creates transfer brief with pending tasks
 - Next `/aegis-start` reads handoff and continues from last state
 - Brain persists: learnings, decisions, retrospectives survive across sessions
@@ -209,7 +209,7 @@ MESSAGE: "⛔ BLOCK 0B: Requirements Spec (SI.01) missing. Running /aegis-breakd
 
 #### BLOCK 0C: Epic → Task → Sub-task hierarchy must exist
 ```
-CHECK: _aegis-brain/tasks/ contains at least:
+CHECK: .aegis/brain/tasks/ contains at least:
   - 1 Epic (PROJ-E-NNN) with meta.json
   - Each Epic has at least 1 linked Task (PROJ-T-NNN)
   - Each Task has sub_tasks[] defined in meta.json
@@ -219,7 +219,7 @@ MESSAGE: "⛔ BLOCK 0C: No Epic/Task/Sub-task structure. Running /aegis-breakdow
 
 #### BLOCK 0D: Kanban board must be initialized with tickets
 ```
-CHECK: _aegis-brain/sprints/current/kanban.md exists AND contains at least 1 task row
+CHECK: .aegis/brain/sprints/current/kanban.md exists AND contains at least 1 task row
 IF NOT → STOP. Run /aegis-sprint plan to initialize kanban with tickets.
 MESSAGE: "⛔ BLOCK 0D: Kanban not initialized. Running /aegis-sprint plan..."
 ```
@@ -239,14 +239,14 @@ MESSAGE: "⛔ BLOCK 0E: Traceability Matrix not initialized. Coulson creating SI
 
 ### ▶ BLOCK 1: Task Breakdown must exist
 ```
-CHECK: _aegis-brain/tasks/ contains at least 1 task directory with meta.json
+CHECK: .aegis/brain/tasks/ contains at least 1 task directory with meta.json
 IF NOT → STOP. Run /aegis-breakdown first. Do NOT write code.
 MESSAGE: "⛔ BLOCK 1: No task breakdown found. Running /aegis-breakdown first."
 ```
 
 ### ▶ BLOCK 2: Sprint must be active
 ```
-CHECK: _aegis-brain/sprints/current/ contains plan.md and kanban.md
+CHECK: .aegis/brain/sprints/current/ contains plan.md and kanban.md
 IF NOT → STOP. Run /aegis-sprint plan first. Do NOT write code.
 MESSAGE: "⛔ BLOCK 2: No active sprint. Running /aegis-sprint plan first."
 ```
@@ -408,9 +408,9 @@ SCAN RESULTS:
   compliance:          [X/11 ISO docs current]
   deploy_status:       [healthy | unhealthy | pending | none]
   last_deploy:         [timestamp + version | never]
-  skill_cache:         [read _aegis-brain/skill-cache/stats.json for cache health]
-  evolved_patterns:    [read _aegis-brain/resonance/evolved-patterns.md for proven patterns]
-  anti_patterns:       [read _aegis-brain/resonance/anti-patterns.md for things to avoid]
+  skill_cache:         [read .aegis/brain/skill-cache/stats.json for cache health]
+  evolved_patterns:    [read .aegis/brain/resonance/evolved-patterns.md for proven patterns]
+  anti_patterns:       [read .aegis/brain/resonance/anti-patterns.md for things to avoid]
 ```
 
 ## Self-Evolving Intelligence (v8.1)
@@ -505,7 +505,7 @@ Thor detects issue (health fail OR error spike > 2x)
 Nick Fury activates
   |
   v
-[MEMORY TOOL] Read _aegis-brain/ for session context
+[MEMORY TOOL] Read .aegis/brain/ for session context
   |
   v
 Scan project state (includes sprint + kanban + deploy status + BLOCK 0 status)
@@ -614,7 +614,7 @@ Action: Documentation gate...
 
 ## Constraints
 - MUST announce decisions with rationale (transparency)
-- MUST log every decision to _aegis-brain/logs/activity.log
+- MUST log every decision to .aegis/brain/logs/activity.log
 - MUST stop on critical security findings
 - MUST NOT delete production code without human approval
 - MUST NOT push to remote without human approval (git push)
@@ -657,4 +657,4 @@ Nick Fury MUST enforce the Iron Man → Loki gate:
 - @references/multi-agent-patterns.md — 5 adopted patterns from global research
 
 ## Output Location
-_aegis-brain/logs/nick-fury.log
+.aegis/brain/logs/nick-fury.log

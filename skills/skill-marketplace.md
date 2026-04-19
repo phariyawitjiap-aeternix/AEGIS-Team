@@ -13,7 +13,7 @@ Community marketplace for discovering, sharing, and installing AEGIS skills.
 - **Install**: Download and configure community skills into local `skills/`
 - **Share**: Package and publish custom skills to the registry
 - **Rate**: Review and rate installed skills
-- **Output**: Installed skills in `skills/`, registry in `_aegis-brain/`
+- **Output**: Installed skills in `skills/`, registry in `.aegis/brain/`
 - **Agent**: Captain America (opus) — curation; Echo (sonnet) — documentation
 
 ## Full Instructions
@@ -163,7 +163,7 @@ tags: [<category tags>]
 
 ### Local Skill Inventory
 
-Maintained in `_aegis-brain/resonance/skill-inventory.md`:
+Maintained in `.aegis/brain/resonance/skill-inventory.md`:
 
 ```markdown
 # Installed Skills
@@ -180,4 +180,4 @@ Maintained in `_aegis-brain/resonance/skill-inventory.md`:
 ### Output
 
 - Installed skills: `skills/<skill-name>.md`
-- Inventory: `_aegis-brain/resonance/skill-inventory.md`
+- Inventory: `.aegis/brain/resonance/skill-inventory.md`

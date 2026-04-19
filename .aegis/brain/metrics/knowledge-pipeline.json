@@ -1,0 +1,25 @@
+{
+  "raw_captures_total": 11,
+  "patterns_extracted": 4,
+  "patterns_promoted": 2,
+  "cache_hit_rate": 0.35,
+  "sprints_tracked": 2,
+  "last_distill": "2026-03-30",
+  "last_propagation": "2026-03-30",
+  "details": {
+    "sprint-1": {
+      "tasks_completed": 8,
+      "learnings_captured": 8,
+      "patterns_found": 3,
+      "skills_evolved": 0
+    },
+    "sprint-2": {
+      "tasks_completed": 3,
+      "learnings_captured": 3,
+      "patterns_found": 1,
+      "skills_evolved": 0,
+      "note": "Sprint in progress"
+    }
+  },
+  "last_updated": "2026-03-30T20:10:00Z"
+}

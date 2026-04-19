@@ -18,7 +18,7 @@ documents from agent artifacts, and issues Gate 3 verdict.
   "team": "compliance",
   "trigger": "task_status == DONE (after Gate 2 PASS) OR sprint_close OR release",
   "required_inputs": {
-    "task_meta": "_aegis-brain/tasks/{TASK-ID}/meta.json",
+    "task_meta": ".aegis/brain/tasks/{TASK-ID}/meta.json",
     "spec": "_aegis-output/specs/{TASK-ID}-spec.md",
     "review": "_aegis-output/reviews/{TASK-ID}-review.md",
     "qa_report": "_aegis-output/qa/sprint-N/qa-report-{TASK-ID}.md",

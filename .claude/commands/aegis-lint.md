@@ -18,15 +18,15 @@ Run a full health check on the AEGIS Brain. Detects contradictions, stale claims
 
 ## Step 1: Load index
 
-1. Read `_aegis-brain/index.md`
-2. If the index is missing, rebuild it first by scanning all `_aegis-brain/` directories and generating the index (same logic as the index rebuild procedure)
+1. Read `.aegis/brain/index.md`
+2. If the index is missing, rebuild it first by scanning all `.aegis/brain/` directories and generating the index (same logic as the index rebuild procedure)
 3. Parse all linked file paths from the index as the known-good set
 
 ---
 
 ## Step 2: Contradiction scan
 
-1. Read all pages in `_aegis-brain/resonance/` and all instincts in `_aegis-brain/instincts/active/` and `_aegis-brain/instincts/promoted/`
+1. Read all pages in `.aegis/brain/resonance/` and all instincts in `.aegis/brain/instincts/active/` and `.aegis/brain/instincts/promoted/`
 2. Compare claims across pages — look for direct opposites (e.g., "always use X" vs. "avoid X", "DO: Y" vs. "DON'T: Y")
 3. Report each contradiction in this format:
 
@@ -54,8 +54,8 @@ Stale: <file> (last touched N days ago) -> Suggest: retire/update/verify
 
 ## Step 4: Orphan detection
 
-1. Glob all files under `_aegis-brain/` (exclude `logs/`, `index.md` itself, and `tasks/`)
-2. For each file, check whether it appears as a link in `_aegis-brain/index.md`
+1. Glob all files under `.aegis/brain/` (exclude `logs/`, `index.md` itself, and `tasks/`)
+2. For each file, check whether it appears as a link in `.aegis/brain/index.md`
 3. Files absent from the index are orphans
 
 Report format:
@@ -70,7 +70,7 @@ Orphan: <file> — not in index.md -> Suggest: add to index or delete
 
 1. Scan all brain pages (resonance, instincts, learnings) for:
    - Task ID mentions (pattern: `PROJ-[A-Z]+-\d+`)
-   - File path mentions (pattern: paths containing `/` or starting with `_aegis-brain/`)
+   - File path mentions (pattern: paths containing `/` or starting with `.aegis/brain/`)
    - Other brain page names mentioned by filename (e.g., `anti-patterns.md`)
 2. Check whether each mention is an actual markdown link `[text](url)` or a bare reference
 3. Bare references = missing cross-refs
@@ -121,8 +121,8 @@ Health score calculation:
 
 When the user runs `/aegis-lint --fix`, perform these safe fixes automatically:
 
-- **Orphans:** add each orphan file to the appropriate section in `_aegis-brain/index.md`
-- **Stale instincts:** move files from `active/` or `pending/` to `_aegis-brain/instincts/retired/` and update their `status` field to `retired`
+- **Orphans:** add each orphan file to the appropriate section in `.aegis/brain/index.md`
+- **Stale instincts:** move files from `active/` or `pending/` to `.aegis/brain/instincts/retired/` and update their `status` field to `retired`
 - **Missing cross-refs:** insert markdown links for bare references where the target file path is unambiguous
 
 DO NOT auto-resolve contradictions. Contradictions require human judgment and must be flagged for review only.

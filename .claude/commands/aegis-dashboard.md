@@ -37,32 +37,32 @@ Display only the 10 most recent activities across all tasks.
 
 | Data | Source File |
 |------|-------------|
-| Current sprint info | `_aegis-brain/sprints/sprint-N/metrics.json` |
-| Task details | `_aegis-brain/tasks/*/meta.json` (glob all) |
-| Recent activity | `_aegis-brain/tasks/*/history.md` (last 10 entries across all tasks) |
+| Current sprint info | `.aegis/brain/sprints/sprint-N/metrics.json` |
+| Task details | `.aegis/brain/tasks/*/meta.json` (glob all) |
+| Recent activity | `.aegis/brain/tasks/*/history.md` (last 10 entries across all tasks) |
 | Document status | `_aegis-output/iso-docs/doc-registry.json` |
-| ID counters | `_aegis-brain/counters.json` |
-| Token usage | `_aegis-brain/metrics/token-usage.json` |
-| Performance benchmarks | `_aegis-brain/metrics/benchmarks.json` |
-| Learning patterns | `_aegis-brain/learnings/patterns.json` (if exists) |
+| ID counters | `.aegis/brain/counters.json` |
+| Token usage | `.aegis/brain/metrics/token-usage.json` |
+| Performance benchmarks | `.aegis/brain/metrics/benchmarks.json` |
+| Learning patterns | `.aegis/brain/learnings/patterns.json` (if exists) |
 
 ---
 
 ## Full Instructions
 
 ### Step 1: Locate Current Sprint
-1. Read `_aegis-brain/sprints/current` symlink to find active sprint directory.
-2. If symlink does not exist, scan `_aegis-brain/sprints/` for the highest sprint-N directory.
+1. Read `.aegis/brain/sprints/current` symlink to find active sprint directory.
+2. If symlink does not exist, scan `.aegis/brain/sprints/` for the highest sprint-N directory.
 3. If no sprint directory exists, display "No active sprint found. Run /aegis-sprint plan first."
 
 ### Step 2: Read Sprint Metrics
-1. Read `_aegis-brain/sprints/sprint-N/metrics.json`.
+1. Read `.aegis/brain/sprints/sprint-N/metrics.json`.
 2. Extract: sprint name, started, planned_end, goal, capacity_pts, committed_pts, completed_pts, daily_burndown, tasks counts.
 3. Compute sprint day: `current_day = (today - started) + 1`.
 4. Compute total days: `total_days = (planned_end - started) + 1`.
 
 ### Step 3: Read All Task Metadata
-1. Glob `_aegis-brain/tasks/*/meta.json` and read all files.
+1. Glob `.aegis/brain/tasks/*/meta.json` and read all files.
 2. Filter to tasks where `sprint` matches current sprint for sprint-scoped views.
 3. Group tasks by: status, assignee.
 
@@ -80,7 +80,7 @@ Status:
 ```
 
 ### Step 5: Read Recent Activity
-1. Glob `_aegis-brain/tasks/*/history.md`.
+1. Glob `.aegis/brain/tasks/*/history.md`.
 2. Parse the last row from each file (timestamp, agent, action, from, to, note).
 3. Sort all entries by timestamp descending.
 4. Take the top 10.
@@ -186,19 +186,19 @@ AGENT WORKLOAD
 ---
 
 ### Step 8: Read Token Usage
-1. Read `_aegis-brain/metrics/token-usage.json` if it exists.
+1. Read `.aegis/brain/metrics/token-usage.json` if it exists.
 2. Extract current sprint token data: total_tokens, per_task_avg, per_agent, per_phase.
 3. Compare to previous sprint for trend arrow (up/down/flat).
 4. Identify most expensive agent and phase.
 
 ### Step 9: Read Performance Benchmarks
-1. Read `_aegis-brain/metrics/benchmarks.json` if it exists.
+1. Read `.aegis/brain/metrics/benchmarks.json` if it exists.
 2. Extract current sprint benchmarks: speed, quality, efficiency, learning.
 3. Calculate improvement_over_baseline percentages vs sprint-1.
 4. Compute overall improvement multiplier.
 
 ### Step 10: Read Learning Metrics
-1. Read `_aegis-brain/learnings/patterns.json` if it exists.
+1. Read `.aegis/brain/learnings/patterns.json` if it exists.
 2. Count evolved patterns with confidence = HIGH.
 3. Count anti-patterns.
 4. Count skill evolution entries from skill file modification dates.

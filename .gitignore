@@ -30,3 +30,37 @@ _aegis-brain/logs/
 # Next.js build
 dashboard/.next/
 dashboard/node_modules/
+
+# <<< AEGIS-V9-START >>>
+# Auto-managed by aegis-migrate-consolidate.sh (mode: shared) — 2026-04-18T09:10:45Z
+# Edit between these markers at your own risk; --apply will replace this block.
+
+# --- .aegis/brain: track knowledge, ignore runtime noise ---
+
+# Track (committed knowledge)
+!.aegis/
+!.aegis/brain/
+!.aegis/brain/instincts/
+!.aegis/brain/instincts/**
+!.aegis/brain/resonance/
+!.aegis/brain/resonance/**
+!.aegis/brain/sprints/
+!.aegis/brain/sprints/**
+!.aegis/brain/retrospectives/
+!.aegis/brain/retrospectives/**
+!.aegis/brain/handoffs/
+!.aegis/brain/handoffs/**
+!.aegis/brain/index.md
+!.aegis/brain/counters.json
+!.aegis/config/
+!.aegis/config/**
+
+# Ignore runtime noise
+.aegis/brain/logs/
+.aegis/brain/metrics/raw/
+.aegis/brain/skill-cache/
+.aegis/brain/learnings/raw/
+.aegis/logs/
+.aegis/brain/tasks/*/history.md
+
+# <<< AEGIS-V9-END >>>

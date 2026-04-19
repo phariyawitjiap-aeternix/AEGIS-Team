@@ -14,7 +14,7 @@ TOOL=$(echo "$INPUT" | python3 -c "import sys,json; d=json.load(sys.stdin); prin
 CMD=$(echo "$INPUT" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('tool_input',{}).get('command','')[:200])" 2>/dev/null || echo "")
 RESPONSE=$(echo "$INPUT" | python3 -c "import sys,json; d=json.load(sys.stdin); r=d.get('tool_response',{}); print(str(r)[:300])" 2>/dev/null || echo "")
 
-LOG="_aegis-brain/logs/activity.log"
+LOG=".aegis/brain/logs/activity.log"
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || echo "unknown")
 
 if [[ ! -f "$LOG" ]]; then

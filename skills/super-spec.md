@@ -372,7 +372,7 @@ From this point forward:
   **Mother Brain answers using the approved spec + her own research**.
 - Mother Brain does NOT ask the human for clarification on spec-covered topics.
 - Mother Brain CAN research (WebSearch, WebFetch) to fill technical gaps.
-- Mother Brain logs all "proxy answers" to `_aegis-brain/logs/spec-proxy.log`:
+- Mother Brain logs all "proxy answers" to `.aegis/brain/logs/spec-proxy.log`:
   ```
   [YYYY-MM-DD HH:MM] PROXY_ANSWER | from=bolt | question="should auth use JWT or session?" | answer="JWT per SRS NFR-S01" | source=SRS.md#section-3
   ```

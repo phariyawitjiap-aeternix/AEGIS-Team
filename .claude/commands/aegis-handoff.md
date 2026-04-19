@@ -11,16 +11,16 @@ triggers:
 ## Quick Reference
 Creates a structured handoff document for the next AEGIS session. Reads the current
 session's retro, summarizes completed and pending tasks, lists blockers, recommends
-what to do first next session, saves to _aegis-brain/handoffs/, and prints a copyable
+what to do first next session, saves to .aegis/brain/handoffs/, and prints a copyable
 handoff brief. Run this after /aegis-retro or as a standalone end-of-session command.
 
 ## Full Instructions
 
 ### Step 1: Read Current Session's Retro
-- Check `_aegis-brain/retrospectives/` for today's most recent retro file.
+- Check `.aegis/brain/retrospectives/` for today's most recent retro file.
 - If no retro exists, gather information directly:
   - Check `git log --oneline` for recent commits.
-  - Check `_aegis-brain/logs/activity.log` for session activity.
+  - Check `.aegis/brain/logs/activity.log` for session activity.
 - If retro exists, extract: summary, friction points, lessons.
 
 ### Step 2: Summarize Completed Tasks
@@ -74,7 +74,7 @@ handoff brief. Run this after /aegis-retro or as a standalone end-of-session com
   ```
 
 ### Step 6: Save Handoff File
-- Save to `_aegis-brain/handoffs/YYYY-MM-DD_HH-MM.md`
+- Save to `.aegis/brain/handoffs/YYYY-MM-DD_HH-MM.md`
 - Create directory if needed.
 - Full format:
   ```markdown
@@ -115,7 +115,7 @@ handoff brief. Run this after /aegis-retro or as a standalone end-of-session com
   ║                                                 ║
   ║  → Next: [recommended first action, 1 line]     ║
   ║                                                 ║
-  ║  Saved: _aegis-brain/handoffs/[filename]        ║
+  ║  Saved: .aegis/brain/handoffs/[filename]        ║
   ╚══════════════════════════════════════════════════╝
   ```
 - Inform the user: "Next session, run /aegis-start to load this handoff automatically."
@@ -125,8 +125,8 @@ handoff brief. Run this after /aegis-retro or as a standalone end-of-session com
 In addition to the human-readable summary, capture machine-readable state
 that Mother Brain can parse on the next /aegis-start:
 
-- Read the current sprint plan from `_aegis-brain/sprints/current/plan.md`
-- Read the current kanban from `_aegis-brain/sprints/current/kanban.md`
+- Read the current sprint plan from `.aegis/brain/sprints/current/plan.md`
+- Read the current kanban from `.aegis/brain/sprints/current/kanban.md`
 - Count tasks in each kanban column (TODO, IN_PROGRESS, IN_REVIEW, QA, DONE)
 - Read context zone from the latest activity.log entry
 
@@ -174,5 +174,5 @@ priority level, saving context budget on the new session.
 After saving the handoff file:
 1. Re-read the saved file to confirm it parses correctly
 2. Verify the frontmatter YAML is valid (no syntax errors)
-3. Confirm the file is in `_aegis-brain/handoffs/` with the correct date-based filename
+3. Confirm the file is in `.aegis/brain/handoffs/` with the correct date-based filename
 4. Display: "Handoff verified. Next session will auto-load from [filepath]."

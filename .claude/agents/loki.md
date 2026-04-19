@@ -60,9 +60,9 @@ See `skills/design-system-md.md` for DESIGN.md review criteria.
 Before ANY adversarial review, Loki MUST load the project's instinct registry:
 
 ```
-1. Read every file in _aegis-brain/instincts/promoted/ → HARD RULES
+1. Read every file in .aegis/brain/instincts/promoted/ → HARD RULES
    - Any spec violating a promoted instinct = automatic REJECT
-2. Read every file in _aegis-brain/instincts/active/ → WARNINGS
+2. Read every file in .aegis/brain/instincts/active/ → WARNINGS
    - Violations flagged as CONDITIONAL requirements
 3. Reinforce: if the reviewed spec addresses a known instinct (positively
    or negatively), call `/aegis-instinct reinforce <id>` afterwards
@@ -72,7 +72,7 @@ Instincts are confidence-scored learned patterns from past sessions —
 they are how AEGIS's lesson system becomes self-enforcing. Loki is the
 enforcement surface.
 
-See `_aegis-brain/instincts/README.md` for schema and lifecycle.
+See `.aegis/brain/instincts/README.md` for schema and lifecycle.
 
 ## Plan-Approval Gate (MANDATORY)
 

@@ -199,6 +199,6 @@ Append new risks to project risk tracking:
 _aegis-output/course-corrections/
   YYYY-MM-DD_correction.md
 
-_aegis-brain/learnings/
+.aegis/brain/learnings/
   course-correction-YYYY-MM-DD.md  (for retrospective)
 ```

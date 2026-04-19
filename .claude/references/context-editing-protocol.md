@@ -25,7 +25,7 @@ Before each significant new task, scan for tool results that:
 3. Are no longer referenced by the current task
 
 ### Step 2 — Summarize Before Clearing
-Write a 1-2 sentence summary of the cleared content to `_aegis-brain/logs/activity.log`:
+Write a 1-2 sentence summary of the cleared content to `.aegis/brain/logs/activity.log`:
 ```
 [YYYY-MM-DD HH:MM] CONTEXT_CLEAR | cleared=[tool_id] | summary=[1-sentence summary]
 ```

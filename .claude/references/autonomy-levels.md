@@ -88,7 +88,7 @@ Agent behavior at L4:
 - Default after `/aegis-start`: **L3 (Autonomous) — Nick Fury active**
 - Nick Fury scans project → decides → acts without asking human
 - Human can downgrade: `/aegis-mode --autonomy L1` (manual mode)
-- Captain America stores the current level in `_aegis-brain/config/autonomy.json`
+- Captain America stores the current level in `.aegis/brain/config/autonomy.json`
 
 ## Nick Fury (L3/L4 Autonomous Controller)
 
@@ -100,7 +100,7 @@ When autonomy is L3 or L4, Nick Fury (`🧬`) takes control:
 - Reports decisions with rationale (transparent, not secretive)
 - Human watches via **Shift+Down** (agent detail) and interrupts if needed
 - Only asks human for P10 (completely empty project with no identity)
-- Logs every pulse to `_aegis-brain/logs/heartbeat.log`
+- Logs every pulse to `.aegis/brain/logs/heartbeat.log`
 
 ### Two-Phase Autonomy (Spec Gate)
 
@@ -182,5 +182,5 @@ L1 ──[human confirms]──▶ L2 ──[human confirms]──▶ L3 ──[
 
 - Downgrade: automatic, immediate
 - Upgrade: requires explicit human confirmation
-- Level changes are logged in `_aegis-brain/logs/activity.log`
+- Level changes are logged in `.aegis/brain/logs/activity.log`
 - Captain America announces level changes to all agents via broadcast

@@ -21,7 +21,7 @@ Full sprint lifecycle management. Captain America (opus) orchestrates all ceremo
 | `/aegis-sprint status` | Show burndown: points done vs remaining |
 | `/aegis-sprint close` | Close sprint, calculate velocity, carry over incomplete tasks |
 
-- **Sprint data**: `_aegis-brain/sprints/sprint-<N>/`
+- **Sprint data**: `.aegis/brain/sprints/sprint-<N>/`
 - **Orchestrator**: Captain America (opus) — ceremony facilitator, single writer to kanban
 - **Skill reference**: `skills/sprint-tracker.md` (full templates and rules)
 
@@ -76,7 +76,7 @@ quick reference table above and ask which ceremony to run.
 
 Before any subcommand, detect the current sprint number:
 
-1. List directories in `_aegis-brain/sprints/` matching `sprint-*`.
+1. List directories in `.aegis/brain/sprints/` matching `sprint-*`.
 2. Sort numerically. The highest number is the current (or most recent) sprint.
 3. If no sprint directories exist, the next sprint is sprint-1.
 4. Store this as `CURRENT_SPRINT` for the subcommand to use.
@@ -93,15 +93,15 @@ Before any subcommand, detect the current sprint number:
 - Otherwise, new sprint number = `CURRENT_SPRINT + 1`.
 
 #### Step 2: Read Inputs
-- Read `_aegis-brain/tasks/*/meta.json` for all tasks with `status = BACKLOG` and `sprint = null`.
-  These are the candidates for the new sprint. Also read `_aegis-brain/backlog.md` if it exists
+- Read `.aegis/brain/tasks/*/meta.json` for all tasks with `status = BACKLOG` and `sprint = null`.
+  These are the candidates for the new sprint. Also read `.aegis/brain/backlog.md` if it exists
   (for any tasks not yet migrated to meta.json format).
-- Read `_aegis-brain/sprints/sprint-<N-1>/metrics.json` for `velocity_history` (if exists).
+- Read `.aegis/brain/sprints/sprint-<N-1>/metrics.json` for `velocity_history` (if exists).
 - Collect carry-over tasks: any meta.json with `sprint = null` and a note of "Carried over from sprint-<N-1>"
   in their history.md.
 
 #### Step 3: Calculate Capacity
-- Read `velocity_history` from `_aegis-brain/sprints/sprint-<N-1>/metrics.json`.
+- Read `velocity_history` from `.aegis/brain/sprints/sprint-<N-1>/metrics.json`.
   If no metrics.json exists, fall back to reading the last 5 `close.md` files.
 - If no history exists at all, use 20 points as default starting capacity.
 - Recommended capacity = rolling average of last 5 velocity_history values * 0.9 (10% buffer).
@@ -126,9 +126,9 @@ Map each task to the appropriate agent by type:
 - Data / analytics → @beast
 
 #### Step 6: Create Sprint Directory and Files
-- Create `_aegis-brain/sprints/sprint-<N>/` and `daily/` subdirectory.
+- Create `.aegis/brain/sprints/sprint-<N>/` and `daily/` subdirectory.
 - Write `plan.md` using the Sprint Plan Template from `skills/sprint-tracker.md`.
-- Write `_aegis-brain/sprints/sprint-<N>/metrics.json` with initial values:
+- Write `.aegis/brain/sprints/sprint-<N>/metrics.json` with initial values:
   - `sprint`: "sprint-<N>"
   - `started`: current date
   - `planned_end`: start + sprint duration
@@ -141,20 +141,20 @@ Map each task to the appropriate agent by type:
   - `velocity_history`: copied from previous metrics.json (or empty array)
   - `tasks`: counts by status (all TODO initially)
   - `carry_over`: { "count": 0, "points": 0, "task_ids": [] }
-- For each selected task, update `_aegis-brain/tasks/{ID}/meta.json`:
+- For each selected task, update `.aegis/brain/tasks/{ID}/meta.json`:
   - Set `sprint` to `"sprint-<N>"` and `status` to `"TODO"`.
   - Set `updated` to the current timestamp.
-- For each selected task, append to `_aegis-brain/tasks/{ID}/history.md`:
+- For each selected task, append to `.aegis/brain/tasks/{ID}/history.md`:
   ```
   | {timestamp} | captain-america | SPRINT_ASSIGNED | - | sprint-<N> | Sprint <N> planning |
   | {timestamp} | captain-america | MOVED | BACKLOG | TODO | Sprint <N> planning |
   ```
-- Generate `_aegis-brain/sprints/sprint-<N>/kanban.md` by reading all selected tasks'
+- Generate `.aegis/brain/sprints/sprint-<N>/kanban.md` by reading all selected tasks'
   meta.json files and rendering the board view (see pm-state-protocol.md "Regenerating Kanban Board").
-- Update the `current` symlink: `_aegis-brain/sprints/current` → `sprint-<N>/`.
+- Update the `current` symlink: `.aegis/brain/sprints/current` → `sprint-<N>/`.
 
 #### Step 7: Log
-Append to `_aegis-brain/logs/activity.log`:
+Append to `.aegis/brain/logs/activity.log`:
 ```
 [YYYY-MM-DD HH:MM] SPRINT_START | sprint=<N> | capacity=<pts> | stories=<count> | load=<pct>%
 ```
@@ -169,8 +169,8 @@ Sprint <N> Planning Complete
   Carry-over:   <count> tasks from sprint <N-1>
   Duration:     <start> to <end>
 
-  Sprint dir:   _aegis-brain/sprints/sprint-<N>/
-  Kanban:       _aegis-brain/sprints/sprint-<N>/kanban.md
+  Sprint dir:   .aegis/brain/sprints/sprint-<N>/
+  Kanban:       .aegis/brain/sprints/sprint-<N>/kanban.md
 ```
 
 ---
@@ -180,12 +180,12 @@ Sprint <N> Planning Complete
 **When**: Any time during an active sprint. Generates automatically from logs.
 
 #### Step 1: Read Activity Logs
-- Read `_aegis-brain/sprints/sprint-<N>/metrics.json` for sprint summary data.
+- Read `.aegis/brain/sprints/sprint-<N>/metrics.json` for sprint summary data.
 - Read all `meta.json` files where `sprint = "sprint-<N>"` for current task states.
-- Read `_aegis-brain/tasks/*/history.md` — collect entries from the last 24 hours
+- Read `.aegis/brain/tasks/*/history.md` — collect entries from the last 24 hours
   (filter rows where timestamp >= 24 hours ago). These replace activity.log as the
   source of state-change truth.
-- Also read `_aegis-brain/logs/activity.log` filtered to the last 24 hours for
+- Also read `.aegis/brain/logs/activity.log` filtered to the last 24 hours for
   any non-task events (reviews, deploys, etc.).
 
 #### Step 2: Identify Blockers
@@ -200,7 +200,7 @@ Sprint <N> Planning Complete
 - Determine status: ON_TRACK / AT_RISK / OFF_TRACK (see thresholds in skill).
 
 #### Step 4: Write Standup
-- Write to `_aegis-brain/sprints/sprint-<N>/daily/YYYY-MM-DD.md` using the
+- Write to `.aegis/brain/sprints/sprint-<N>/daily/YYYY-MM-DD.md` using the
   Daily Standup Template from `skills/sprint-tracker.md`.
 
 #### Step 5: Display Summary
@@ -212,7 +212,7 @@ Daily Standup: <YYYY-MM-DD> (Sprint <N>, Day <D>/<total>)
   Status:     ON_TRACK / AT_RISK / OFF_TRACK
   Blockers:   <count>
 
-  Full report: _aegis-brain/sprints/sprint-<N>/daily/<YYYY-MM-DD>.md
+  Full report: .aegis/brain/sprints/sprint-<N>/daily/<YYYY-MM-DD>.md
 ```
 
 ---
@@ -234,9 +234,9 @@ Daily Standup: <YYYY-MM-DD> (Sprint <N>, Day <D>/<total>)
 - Determine: YES / PARTIAL / NO — was the goal achieved?
 
 #### Step 4: Write Review
-- Write to `_aegis-brain/sprints/sprint-<N>/review.md` using the Sprint Review
+- Write to `.aegis/brain/sprints/sprint-<N>/review.md` using the Sprint Review
   Template from `skills/sprint-tracker.md`.
-- Log to `_aegis-brain/logs/activity.log`:
+- Log to `.aegis/brain/logs/activity.log`:
   ```
   [YYYY-MM-DD HH:MM] SPRINT_REVIEW | sprint=<N> | completed=<pts>/<total> | goal=ACHIEVED/PARTIAL/NOT_ACHIEVED
   ```
@@ -251,7 +251,7 @@ Sprint <N> Review
   Incomplete: <pts> pts (<count> tasks — carry-over candidates)
   Outputs:    <count> deliverables produced
 
-  Full report: _aegis-brain/sprints/sprint-<N>/review.md
+  Full report: .aegis/brain/sprints/sprint-<N>/review.md
 ```
 
 ---
@@ -261,8 +261,8 @@ Sprint <N> Review
 **When**: Last day of the sprint, after review. Integrates with `/aegis-retro`.
 
 #### Step 1: Read Context
-- Read `_aegis-brain/sprints/sprint-<N>/review.md`.
-- Read `_aegis-brain/logs/activity.log` filtered to this sprint's date range.
+- Read `.aegis/brain/sprints/sprint-<N>/review.md`.
+- Read `.aegis/brain/logs/activity.log` filtered to this sprint's date range.
 - Read any blocker entries from daily standups.
 
 #### Step 2: Generate Retro Sections
@@ -271,10 +271,10 @@ Sprint <N> Review
 - **Action items**: Specific, assignable changes for next sprint (not vague).
 
 #### Step 3: Write Retrospective
-- Write to `_aegis-brain/sprints/sprint-<N>/retro.md` using the Sprint
+- Write to `.aegis/brain/sprints/sprint-<N>/retro.md` using the Sprint
   Retrospective Template from `skills/sprint-tracker.md`.
 - Feed "What went wrong" and "Action items" into `/aegis-retro` for long-term
-  storage in `_aegis-brain/learnings/`.
+  storage in `.aegis/brain/learnings/`.
 
 #### Step 4: Log
 ```
@@ -289,8 +289,8 @@ Sprint <N> Retrospective
   Went wrong:   <count> items
   Action items: <count> (assigned for sprint <N+1>)
 
-  Lessons saved to _aegis-brain/learnings/
-  Full report:  _aegis-brain/sprints/sprint-<N>/retro.md
+  Lessons saved to .aegis/brain/learnings/
+  Full report:  .aegis/brain/sprints/sprint-<N>/retro.md
 ```
 
 ---
@@ -300,7 +300,7 @@ Sprint <N> Retrospective
 **When**: Any time during a sprint. Quick burndown check.
 
 #### Step 1: Read Current State
-- Read `_aegis-brain/sprints/sprint-<N>/metrics.json` for committed points, completed points,
+- Read `.aegis/brain/sprints/sprint-<N>/metrics.json` for committed points, completed points,
   daily_burndown history, and task status counts.
 - Read `plan.md` for sprint duration and goal (metrics.json is the primary source for numeric data).
 - Calculate the current sprint day from `metrics.json.started` and today's date.
@@ -335,7 +335,7 @@ No file is written for status — it is a read-only display. Do NOT write to met
 **When**: After review and retro are complete.
 
 #### Step 1: Calculate Velocity
-- Read `_aegis-brain/sprints/sprint-<N>/metrics.json` and all `meta.json` files where
+- Read `.aegis/brain/sprints/sprint-<N>/metrics.json` and all `meta.json` files where
   `sprint = "sprint-<N>"`.
 - Sum `points` of all tasks with `status = DONE`. This is the sprint velocity (`completed_pts`).
 
@@ -348,28 +348,28 @@ No file is written for status — it is a read-only display. Do NOT write to met
 
 #### Step 3: Handle Carry-Over
 - For each task NOT in DONE (read from meta.json where sprint = "sprint-<N>" and status != DONE and status != CANCELLED):
-  - Update `_aegis-brain/tasks/{ID}/meta.json`: set `sprint = null`, `status = "BACKLOG"`, `updated` to now.
-  - Append to `_aegis-brain/tasks/{ID}/history.md`:
+  - Update `.aegis/brain/tasks/{ID}/meta.json`: set `sprint = null`, `status = "BACKLOG"`, `updated` to now.
+  - Append to `.aegis/brain/tasks/{ID}/history.md`:
     ```
     | {timestamp} | captain-america | MOVED | {current_status} | BACKLOG | Carried over from sprint-<N> |
     ```
-  - Also add it back to `_aegis-brain/backlog.md` (if that file is still in use) at the top of its
+  - Also add it back to `.aegis/brain/backlog.md` (if that file is still in use) at the top of its
     priority tier, marked with `[carried from sprint-<N>]`.
 - Populate `carry_over` in `metrics.json`: count, total points, and list of task IDs.
 - Carry-over tasks must not be silently dropped.
 
 #### Step 4: Write Close Report and Finalize Metrics
-- Update `_aegis-brain/sprints/sprint-<N>/metrics.json`:
+- Update `.aegis/brain/sprints/sprint-<N>/metrics.json`:
   - Set `actual_end` to today's date.
   - Set `completed_pts` to final velocity.
   - Update `velocity_history` (last 5 sprints, step 2).
   - Set final `tasks` counts from meta.json files.
   - Set `carry_over` object (step 3).
-- Write to `_aegis-brain/sprints/sprint-<N>/close.md` using the Sprint Close
+- Write to `.aegis/brain/sprints/sprint-<N>/close.md` using the Sprint Close
   Template from `skills/sprint-tracker.md`.
 
 #### Step 5: Compute and Save Token Usage
-- Read `_aegis-brain/metrics/token-usage.json`.
+- Read `.aegis/brain/metrics/token-usage.json`.
 - For the closing sprint, compute:
   - `total_tokens`: sum of all task token estimates (from task history context % deltas x 200000).
   - `per_task_avg`: total_tokens / number_of_tasks.
@@ -379,10 +379,10 @@ No file is written for status — it is a read-only display. Do NOT write to met
 - Append sprint entry to `sprints` object.
 - Update `trend.tokens_per_point` array (append this sprint's avg tokens/point).
 - Compute `trend.improvement_pct` vs sprint-1 baseline: `(1 - current/baseline) * 100`.
-- Write updated `_aegis-brain/metrics/token-usage.json`.
+- Write updated `.aegis/brain/metrics/token-usage.json`.
 
 #### Step 6: Compute and Save Performance Benchmarks
-- Read `_aegis-brain/metrics/benchmarks.json`.
+- Read `.aegis/brain/metrics/benchmarks.json`.
 - For the closing sprint, compute:
   - **Speed**: time_per_point (from timestamps), gate_pass_rate (GATE_PASS / total gates), rework_rate (tasks sent back / total).
   - **Quality**: g1_first_pass (Black Panther first-pass %), g2_first_pass (War Machine first-pass %), critical_findings count, post_deploy_issues (PM.03 count).
@@ -394,7 +394,7 @@ No file is written for status — it is a read-only display. Do NOT write to met
   - quality: average improvement across quality metrics
   - efficiency: `((baseline.tokens_per_point - current.tokens_per_point) / baseline.tokens_per_point) * 100`
   - overall: geometric mean of improvements as multiplier (e.g., "4.1x")
-- Write updated `_aegis-brain/metrics/benchmarks.json`.
+- Write updated `.aegis/brain/metrics/benchmarks.json`.
 
 #### Step 7: Display Benchmark Report
 After saving metrics, display the benchmark comparison:
@@ -438,9 +438,9 @@ Sprint <N> Closed
   Recommended Next: <rolling_avg * 0.9> pts capacity
   Carry-Over:       <count> tasks (<pts> pts) added back to backlog
 
-  Close report: _aegis-brain/sprints/sprint-<N>/close.md
-  Token usage:  _aegis-brain/metrics/token-usage.json
-  Benchmarks:   _aegis-brain/metrics/benchmarks.json
+  Close report: .aegis/brain/sprints/sprint-<N>/close.md
+  Token usage:  .aegis/brain/metrics/token-usage.json
+  Benchmarks:   .aegis/brain/metrics/benchmarks.json
 
   Ready for: /aegis-sprint plan (to start sprint <N+1>)
 ```
@@ -449,9 +449,9 @@ Sprint <N> Closed
 
 ### Error Handling
 
-- **No backlog exists** (plan): Create `_aegis-brain/backlog.md` with a header and prompt the user to add stories.
+- **No backlog exists** (plan): Create `.aegis/brain/backlog.md` with a header and prompt the user to add stories.
 - **No active sprint** (standup/status/review/retro/close): Report "No active sprint found. Run `/aegis-sprint plan` first."
 - **Sprint already closed** (close): Report "Sprint <N> is already closed."
-- **Missing brain directory**: Create `_aegis-brain/sprints/` and `_aegis-brain/logs/` automatically.
+- **Missing brain directory**: Create `.aegis/brain/sprints/` and `.aegis/brain/logs/` automatically.
 - **Kanban write conflict**: Only Captain America writes to `kanban.md` and `meta.json` files. Other agents send StatusUpdate messages; Captain America performs the actual file writes.
 - **Missing metrics.json**: If `metrics.json` is absent, recompute it from all task `meta.json` files in the sprint (see pm-state-protocol.md "Recomputing Sprint Metrics").

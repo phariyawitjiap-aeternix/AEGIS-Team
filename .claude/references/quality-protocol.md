@@ -52,8 +52,8 @@ Consensus: at least 2 agents agree on PASS. Captain America arbitrates disagreem
 |-------|----------|-----------------|
 | 0A | PM.01 Project Plan | File exists at `_aegis-output/iso-docs/PM-01-project-plan/plan.md` |
 | 0B | SI.01 Requirements Spec | File exists at `_aegis-output/iso-docs/SI-01-requirements-spec/spec.md` |
-| 0C | Epic/Task/Sub-task hierarchy | Files exist in `_aegis-brain/tasks/` |
-| 0D | Kanban board with tickets | File exists at `_aegis-brain/sprints/current/kanban.md` |
+| 0C | Epic/Task/Sub-task hierarchy | Files exist in `.aegis/brain/tasks/` |
+| 0D | Kanban board with tickets | File exists at `.aegis/brain/sprints/current/kanban.md` |
 | 0E | SI.02 Traceability Matrix | File exists at `_aegis-output/iso-docs/SI-02-traceability-matrix/matrix.md` |
 
 Gate 0 owner: **Coulson**. Nick Fury enforces. Captain America arbitrates if Coulson is blocked.
@@ -118,7 +118,7 @@ Task ID: [reference]
 ### Rules
 
 - Report after each significant step (not every tool call).
-- Log destination: `_aegis-brain/logs/activity.log` (append-only).
+- Log destination: `.aegis/brain/logs/activity.log` (append-only).
 - If BLOCKED 2+ cycles -> auto-escalate to Captain America.
 - If context budget >60% -> notify Captain America.
 
@@ -149,7 +149,7 @@ Measured per sprint to prove improvement over time.
 | Learning | Evolved patterns (HIGH) | grow |
 | Learning | Anti-patterns detected | grow then plateau |
 
-Storage: `_aegis-brain/metrics/benchmarks.json`
+Storage: `.aegis/brain/metrics/benchmarks.json`
 
 ---
 
@@ -170,6 +170,6 @@ Every agent phase completion: log agent, task_id, phase (spec/build/review/qa/co
 - Sprint 1: baseline (e.g., 15K tokens/point)
 - Target: 46% reduction by sprint 3+
 
-Storage: `_aegis-brain/metrics/token-usage.json`
+Storage: `.aegis/brain/metrics/token-usage.json`
 
 Dashboard: `/aegis-dashboard` shows token usage trends, most expensive agent/phase.

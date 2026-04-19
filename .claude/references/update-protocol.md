@@ -27,16 +27,16 @@ Step 5: MIGRATE   → Handle breaking changes between versions
 BACKUP these directories/files BEFORE any changes:
 ```
 MUST BACKUP (user data — NEVER delete):
-  _aegis-brain/tasks/          → per-task history, comments
-  _aegis-brain/sprints/        → sprint plans, metrics
-  _aegis-brain/resonance/      → evolved patterns, project identity
-  _aegis-brain/learnings/      → auto-learned patterns
-  _aegis-brain/skill-cache/    → shared intelligence
-  _aegis-brain/metrics/        → token usage, benchmarks
-  _aegis-brain/counters.json   → sequential ID state
-  _aegis-brain/logs/           → activity history
-  _aegis-brain/handoffs/       → session handoffs
-  _aegis-brain/backlog/        → backlog items
+  .aegis/brain/tasks/          → per-task history, comments
+  .aegis/brain/sprints/        → sprint plans, metrics
+  .aegis/brain/resonance/      → evolved patterns, project identity
+  .aegis/brain/learnings/      → auto-learned patterns
+  .aegis/brain/skill-cache/    → shared intelligence
+  .aegis/brain/metrics/        → token usage, benchmarks
+  .aegis/brain/counters.json   → sequential ID state
+  .aegis/brain/logs/           → activity history
+  .aegis/brain/handoffs/       → session handoffs
+  .aegis/brain/backlog/        → backlog items
   _aegis-output/iso-docs/      → ISO 29110 versioned documents
   _aegis-output/breakdown/     → work breakdown artifacts
   CLAUDE_lessons.md            → user patterns + anti-patterns
@@ -46,7 +46,7 @@ Create backup:
 ```bash
 BACKUP_DIR="_aegis-backup/$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$BACKUP_DIR"
-cp -r _aegis-brain/ "$BACKUP_DIR/" 2>/dev/null
+cp -r .aegis/brain/ "$BACKUP_DIR/" 2>/dev/null
 cp -r _aegis-output/iso-docs/ "$BACKUP_DIR/" 2>/dev/null
 cp CLAUDE_lessons.md "$BACKUP_DIR/" 2>/dev/null
 ```
@@ -74,7 +74,7 @@ REMOVE (framework files — will be replaced):
 
 NEVER DELETE:
 ```
-  _aegis-brain/                → ALL user data
+  .aegis/brain/                → ALL user data
   _aegis-output/iso-docs/      → versioned ISO documents
   _aegis-output/breakdown/     → work breakdowns
   _aegis-output/qa/            → QA reports
@@ -136,10 +136,10 @@ chmod +x install.sh aegis-team.sh 2>/dev/null
 
 Create directories that may not exist:
 ```bash
-mkdir -p _aegis-brain/tasks _aegis-brain/sprints/current
-mkdir -p _aegis-brain/resonance _aegis-brain/learnings/raw
-mkdir -p _aegis-brain/skill-cache _aegis-brain/metrics
-mkdir -p _aegis-brain/logs _aegis-brain/handoffs _aegis-brain/backlog
+mkdir -p .aegis/brain/tasks .aegis/brain/sprints/current
+mkdir -p .aegis/brain/resonance .aegis/brain/learnings/raw
+mkdir -p .aegis/brain/skill-cache .aegis/brain/metrics
+mkdir -p .aegis/brain/logs .aegis/brain/handoffs .aegis/brain/backlog
 mkdir -p _aegis-output/specs _aegis-output/breakdown
 mkdir -p _aegis-output/qa/results _aegis-output/iso-docs
 mkdir -p _aegis-output/sessions _aegis-output/deployments
@@ -171,10 +171,10 @@ MUST EXIST after install:
   .claude/commands/aegis-start.md     → session start
   .claude/references/sdlc-pipeline.md → master workflow
   .claude/references/update-protocol.md → this file
-  _aegis-brain/counters.json          → ID counter (preserved)
+  .aegis/brain/counters.json          → ID counter (preserved)
 ```
 
-If `_aegis-brain/counters.json` doesn't exist (first install), create:
+If `.aegis/brain/counters.json` doesn't exist (first install), create:
 ```json
 {
   "project_key": "PROJ",
@@ -216,10 +216,10 @@ After update, Nick Fury should:
 1. ✅ Verify all 13 agent files exist
 2. ✅ Verify all 23 command files exist
 3. ✅ Verify counters.json preserved (not reset to 0)
-4. ✅ Verify _aegis-brain/tasks/ preserved (user data intact)
+4. ✅ Verify .aegis/brain/tasks/ preserved (user data intact)
 5. ✅ Verify _aegis-output/iso-docs/ preserved (versioned docs intact)
 6. ✅ Verify CLAUDE_lessons.md preserved (user patterns intact)
-7. ✅ Log update to _aegis-brain/logs/activity.log
+7. ✅ Log update to .aegis/brain/logs/activity.log
 8. ✅ Display: "AEGIS updated to v8.2.1 — all user data preserved"
 
 ## VERSION HISTORY (for migration reference)

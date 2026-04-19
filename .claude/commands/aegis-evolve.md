@@ -20,7 +20,7 @@ Run periodically (end of sprint or monthly) to keep the instinct system healthy.
 ## Full Instructions
 
 ### Step 1: Load all instincts
-Read every `*.yaml` in `_aegis-brain/instincts/{pending,active,promoted}/`.
+Read every `*.yaml` in `.aegis/brain/instincts/{pending,active,promoted}/`.
 
 ### Step 2: Cluster by `cluster` field
 Group instincts sharing the same `cluster` value. For each cluster with 2+ instincts:
@@ -68,7 +68,7 @@ Display summary:
 ## Implementation Notes
 
 - Use Python for YAML parsing (pyyaml) — bash alone is too fragile
-- Always back up `_aegis-brain/instincts/` before running (cp to `_aegis-output/backups/`)
+- Always back up `.aegis/brain/instincts/` before running (cp to `_aegis-output/backups/`)
 - Dry-run mode: `/aegis-evolve --dry-run` prints changes without applying
 
 ## When to Run
@@ -83,4 +83,4 @@ Display summary:
 ## Related
 - [aegis-instinct](aegis-instinct.md) — manual instinct management
 - [aegis-retro](aegis-retro.md) — lesson extraction pipeline that feeds instincts
-- [_aegis-brain/instincts/README.md](../../_aegis-brain/instincts/README.md) — schema reference
+- [.aegis/brain/instincts/README.md](../../.aegis/brain/instincts/README.md) — schema reference

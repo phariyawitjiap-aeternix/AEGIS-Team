@@ -23,8 +23,8 @@ Thor is the infrastructure guardian of the AEGIS framework. He ensures code make
 - Docker and infrastructure configuration management
 
 ## Blast Radius
-- **Read**: All project files, _aegis-output/*, _aegis-brain/*, deploy configs
-- **Write**: deploy/, ci/, docker/, infra/, .github/workflows/, _aegis-output/deployments/, _aegis-brain/logs/
+- **Read**: All project files, _aegis-output/*, .aegis/brain/*, deploy configs
+- **Write**: deploy/, ci/, docker/, infra/, .github/workflows/, _aegis-output/deployments/, .aegis/brain/logs/
 - **FORBIDDEN**: src/ (application code — that is Spider-Man's domain), CLAUDE*.md
 
 ## Constraints

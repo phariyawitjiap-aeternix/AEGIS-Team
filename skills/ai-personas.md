@@ -14,7 +14,7 @@ Manages 8 AEGIS AI personas, each specialized for different SDLC phases.
 - **Each persona** has: model routing, scope boundaries, allowed tools
 - **Auto-routing**: Orchestrator selects persona based on task type
 - **Output**: Current persona state stored in session context
-- Persona changes are logged to `_aegis-brain/logs/activity.log`
+- Persona changes are logged to `.aegis/brain/logs/activity.log`
 
 ## Full Instructions
 

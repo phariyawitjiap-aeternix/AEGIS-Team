@@ -34,7 +34,7 @@ Accept the user story text from the command argument.
 
 ### Step 2: Assign Story ID
 
-- Read `_aegis-brain/counters.json`. If it does not exist, create it (see `.claude/references/pm-state-protocol.md`).
+- Read `.aegis/brain/counters.json`. If it does not exist, create it (see `.claude/references/pm-state-protocol.md`).
 - Increment the `US` counter and write the updated `counters.json` with the current timestamp.
 - Derive the user story ID: `PROJ-US-NNN` (zero-padded to 3 digits).
 - Continue to also create the legacy `_aegis-output/breakdown/US-NNN/` output path for backward compatibility.
@@ -57,7 +57,7 @@ Follow the 5-step decomposition process:
 5. Optionally break tasks >= 5pts into subtasks (PROJ-ST-NNN) — increment ST counter per subtask
 
 For EACH entity created, after incrementing its counter:
-- Create directory: _aegis-brain/tasks/{ID}/
+- Create directory: .aegis/brain/tasks/{ID}/
 - Write meta.json with all required fields (follow .claude/references/pm-state-protocol.md)
   - parent: set to the direct parent entity's ID
   - children: populate on the parent's meta.json as each child is created
@@ -125,18 +125,18 @@ Next: Run sprint planning to pull tasks into backlog,
 
 ### Step 6: Log
 
-Append to `_aegis-brain/logs/activity.log`:
+Append to `.aegis/brain/logs/activity.log`:
 ```
 [YYYY-MM-DD HH:MM] BREAKDOWN | story=PROJ-US-NNN | journeys=<N> | epics=<N> | tasks=<N> | subtasks=<N> | total_pts=<pts>
 ```
 
 Verify PM state files were written correctly:
-- `_aegis-brain/counters.json` — reflects final counter values after all entities
-- `_aegis-brain/tasks/PROJ-US-NNN/` — user story meta.json, history.md, comments.md
-- `_aegis-brain/tasks/PROJ-J-NNN/` — one directory per journey
-- `_aegis-brain/tasks/PROJ-E-NNN/` — one directory per epic
-- `_aegis-brain/tasks/PROJ-T-NNN/` — one directory per task
-- `_aegis-brain/tasks/PROJ-ST-NNN/` — one directory per subtask (if any)
+- `.aegis/brain/counters.json` — reflects final counter values after all entities
+- `.aegis/brain/tasks/PROJ-US-NNN/` — user story meta.json, history.md, comments.md
+- `.aegis/brain/tasks/PROJ-J-NNN/` — one directory per journey
+- `.aegis/brain/tasks/PROJ-E-NNN/` — one directory per epic
+- `.aegis/brain/tasks/PROJ-T-NNN/` — one directory per task
+- `.aegis/brain/tasks/PROJ-ST-NNN/` — one directory per subtask (if any)
 
 ### Error Handling
 

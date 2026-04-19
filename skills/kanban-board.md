@@ -13,7 +13,7 @@ Visual task board for tracking work across a sprint. Six columns with WIP limits
 
 - **Columns**: BACKLOG | TODO | IN_PROGRESS | IN_REVIEW | QA | DONE
 - **WIP Limits**: IN_PROGRESS max 3, IN_REVIEW max 2
-- **Board file**: `_aegis-brain/sprints/current/kanban.md`
+- **Board file**: `.aegis/brain/sprints/current/kanban.md`
 - **Command**: `/aegis-kanban` to view and update
 - **Single writer rule**: Only Captain America writes to `kanban.md`; other agents send StatusUpdate messages
 
@@ -32,7 +32,7 @@ Checkbox values:
 - `[~]` — in progress (IN_PROGRESS, IN_REVIEW, QA)
 - `[x]` — done (DONE)
 
-Full board template (`_aegis-brain/sprints/current/kanban.md`):
+Full board template (`.aegis/brain/sprints/current/kanban.md`):
 
 ```markdown
 # Kanban Board: Sprint <N>
@@ -108,13 +108,13 @@ To find the next available ID, scan all kanban files and backlog for the highest
 
 When no board exists for the current sprint:
 
-1. Read `_aegis-brain/backlog.md` for all unassigned tasks
-2. Create `_aegis-brain/sprints/current/` directory if it does not exist
+1. Read `.aegis/brain/backlog.md` for all unassigned tasks
+2. Create `.aegis/brain/sprints/current/` directory if it does not exist
 3. Write a fresh `kanban.md` with all backlog items in the BACKLOG column
 4. Set `Last updated` timestamp to now
 5. Log: `[INIT] Kanban board created for Sprint <N>`
 
-If `_aegis-brain/sprints/current/` is a symlink, resolve to the actual sprint directory.
+If `.aegis/brain/sprints/current/` is a symlink, resolve to the actual sprint directory.
 
 ### Updating the Board
 
@@ -148,7 +148,7 @@ Column headers show current count and WIP limit where applicable.
 ### Output
 
 ```
-_aegis-brain/
+.aegis/brain/
   sprints/
     current -> sprint-<N>/        # symlink or directory
     sprint-<N>/

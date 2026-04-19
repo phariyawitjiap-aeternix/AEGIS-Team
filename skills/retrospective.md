@@ -12,7 +12,7 @@ Structured retrospective analysis for sprints and epics.
 - **Analyze**: What worked, what didn't, what to change
 - **Patterns**: Recognize recurring themes across retrospectives
 - **Actions**: Generate specific, assignable improvement items
-- **Archive**: Store in `_aegis-brain/retrospectives/`
+- **Archive**: Store in `.aegis/brain/retrospectives/`
 - **Output**: `_aegis-output/retrospectives/`
 - **Agent**: Captain America (opus) — facilitation; Lumen (sonnet) — analysis
 
@@ -152,9 +152,9 @@ Generate specific, actionable improvements:
 
 Extract learnings for the knowledge base:
 
-1. Write key learnings to `_aegis-brain/learnings/retro-sprint-<N>.md`
+1. Write key learnings to `.aegis/brain/learnings/retro-sprint-<N>.md`
 2. If pattern occurs 3+ times, trigger `/aegis-distill` recommendation
-3. Update `_aegis-brain/resonance/team-conventions.md` if process changes agreed
+3. Update `.aegis/brain/resonance/team-conventions.md` if process changes agreed
 
 ### Output
 
@@ -162,9 +162,9 @@ Extract learnings for the knowledge base:
 _aegis-output/retrospectives/
   sprint-<N>-retro.md
 
-_aegis-brain/retrospectives/
+.aegis/brain/retrospectives/
   sprint-<N>.md  (permanent archive)
 
-_aegis-brain/learnings/
+.aegis/brain/learnings/
   retro-sprint-<N>.md  (for distillation)
 ```

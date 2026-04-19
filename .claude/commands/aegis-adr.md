@@ -22,8 +22,8 @@ debated, and made searchable so the team never asks "why did we choose X?" again
 | `/aegis-adr deprecate ADR-NNN "reason"` | Mark as DEPRECATED with reason |
 | `/aegis-adr search "keyword"` | Search ADRs by keyword |
 
-- **ADR storage**: `_aegis-brain/adrs/ADR-NNN-{slug}.md`
-- **Counter**: `ADR` in `_aegis-brain/counters.json`
+- **ADR storage**: `.aegis/brain/adrs/ADR-NNN-{slug}.md`
+- **Counter**: `ADR` in `.aegis/brain/counters.json`
 - **Protocol reference**: `.claude/references/adr-protocol.md`
 
 ---
@@ -51,7 +51,7 @@ and ask which action to run.
 **When**: `/aegis-adr new "Use PostgreSQL for primary datastore"`
 
 #### Step 1: Increment Counter
-- Read `_aegis-brain/counters.json`.
+- Read `.aegis/brain/counters.json`.
 - Increment the `ADR` counter.
 - Write updated `counters.json` with current timestamp.
 - Derive ID: `ADR-NNN` (zero-padded to 3 digits).
@@ -62,7 +62,7 @@ and ask which action to run.
 
 #### Step 3: Iron Man Analyzes Options
 Spawn Iron Man (sub-agent) to:
-1. Read all existing ADRs in `_aegis-brain/adrs/` to check for contradictions.
+1. Read all existing ADRs in `.aegis/brain/adrs/` to check for contradictions.
 2. Identify at least 3 options for the decision.
 3. For each option, list pros, cons, and risk level (LOW/MEDIUM/HIGH).
 4. Recommend one option with rationale.
@@ -74,14 +74,14 @@ If any option has risk=HIGH, spawn Loki to:
 3. Add findings to the ADR's "Options Considered" table.
 
 #### Step 5: Write ADR File
-- Create directory `_aegis-brain/adrs/` if it does not exist.
-- Write `_aegis-brain/adrs/ADR-NNN-{slug}.md` using the format from `adr-protocol.md`.
+- Create directory `.aegis/brain/adrs/` if it does not exist.
+- Write `.aegis/brain/adrs/ADR-NNN-{slug}.md` using the format from `adr-protocol.md`.
 - Set status to `PROPOSED`.
 - Set date to today.
 - Set deciders to agents who participated (iron-man, loki if involved).
 
 #### Step 6: Log
-Append to `_aegis-brain/logs/activity.log`:
+Append to `.aegis/brain/logs/activity.log`:
 ```
 [YYYY-MM-DD HH:MM] ADR_CREATED | id=ADR-NNN | title={title} | status=PROPOSED
 ```
@@ -95,7 +95,7 @@ ADR-NNN Created: {title}
   Recommend:  {recommended option}
   Risk:       {overall risk level}
 
-  File: _aegis-brain/adrs/ADR-NNN-{slug}.md
+  File: .aegis/brain/adrs/ADR-NNN-{slug}.md
   Next: /aegis-adr review ADR-NNN (to debate)
         /aegis-adr accept ADR-NNN (to finalize)
 ```
@@ -106,7 +106,7 @@ ADR-NNN Created: {title}
 
 **When**: `/aegis-adr list`
 
-1. Read all files in `_aegis-brain/adrs/` matching `ADR-*.md`.
+1. Read all files in `.aegis/brain/adrs/` matching `ADR-*.md`.
 2. Parse frontmatter (id, title, status, date) from each file.
 3. Display table sorted by ID:
 
@@ -130,8 +130,8 @@ No files are written -- this is read-only.
 
 **When**: `/aegis-adr review ADR-001`
 
-1. Read `_aegis-brain/adrs/ADR-NNN-*.md` (find file by ID prefix).
-2. If not found, error: `ADR-NNN not found in _aegis-brain/adrs/`.
+1. Read `.aegis/brain/adrs/ADR-NNN-*.md` (find file by ID prefix).
+2. If not found, error: `ADR-NNN not found in .aegis/brain/adrs/`.
 3. Display the full ADR content.
 4. Spawn Loki to challenge the decision:
    - Question each "Pro" -- is it really a benefit?
@@ -199,7 +199,7 @@ No files are written -- this is read-only.
 
 **When**: `/aegis-adr search "database"`
 
-1. Read all files in `_aegis-brain/adrs/`.
+1. Read all files in `.aegis/brain/adrs/`.
 2. Search file contents (title, context, decision, options) for the keyword.
 3. Display matching ADRs with the matching context snippet:
 
@@ -219,7 +219,7 @@ No files are written -- this is read-only.
 
 ### Error Handling
 
-- **No ADRs directory**: Create `_aegis-brain/adrs/` automatically on first `new`.
+- **No ADRs directory**: Create `.aegis/brain/adrs/` automatically on first `new`.
 - **ADR not found**: Report `ADR-NNN not found. Run /aegis-adr list to see all ADRs.`
 - **Duplicate title**: Warn but allow (different decisions can have similar titles).
 - **Missing counters.json**: Create with `ADR: 0` and then increment.

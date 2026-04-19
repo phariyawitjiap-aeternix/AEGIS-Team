@@ -1,0 +1,41 @@
+{
+  "sprints": {
+    "sprint-1": {
+      "total_tokens_estimated": 850000,
+      "tasks_completed": 8,
+      "points_completed": 27,
+      "tokens_per_point": 31481,
+      "sessions": 3,
+      "avg_tokens_per_session": 283333,
+      "breakdown": {
+        "system_prompt": 30000,
+        "agent_prompts": 180000,
+        "file_reads": 250000,
+        "conversation": 320000,
+        "tool_outputs": 70000
+      }
+    },
+    "sprint-2": {
+      "total_tokens_estimated": 420000,
+      "tasks_completed": 3,
+      "points_completed": 18,
+      "tokens_per_point": 23333,
+      "sessions": 1,
+      "avg_tokens_per_session": 420000,
+      "breakdown": {
+        "system_prompt": 30000,
+        "agent_prompts": 60000,
+        "file_reads": 150000,
+        "conversation": 140000,
+        "tool_outputs": 40000
+      },
+      "note": "Sprint in progress. 1 task remaining (5pts)."
+    }
+  },
+  "trend": {
+    "tokens_per_point": [31481, 23333],
+    "improvement_pct": 25.9
+  },
+  "conversation": 140000,
+  "last_updated": "2026-03-30T20:10:00Z"
+}

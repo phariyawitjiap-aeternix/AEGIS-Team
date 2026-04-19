@@ -7,7 +7,7 @@
 
 ## Creating a Task
 
-1. Read `_aegis-brain/counters.json`. If the file does not exist, create it:
+1. Read `.aegis/brain/counters.json`. If the file does not exist, create it:
    ```json
    {
      "project_key": "PROJ",
@@ -18,7 +18,7 @@
 2. Increment the appropriate counter (US/J/E/T/ST/DOC).
 3. Write updated `counters.json` with `last_updated`.
 4. Derive ID: `{project_key}-{TYPE}-{NNN}` (zero-padded 3 digits, extends to 4 if >999).
-5. Create directory: `_aegis-brain/tasks/{ID}/`
+5. Create directory: `.aegis/brain/tasks/{ID}/`
 6. Write `meta.json` (see schema below).
 7. Write initial `history.md` with CREATED entry.
 8. Write empty `comments.md` with header block.
@@ -69,7 +69,7 @@ BACKLOG -> TODO -> IN_PROGRESS -> IN_REVIEW -> QA -> DONE
 
 ## Moving a Task (State Transition)
 
-1. Read `_aegis-brain/tasks/{ID}/meta.json`.
+1. Read `.aegis/brain/tasks/{ID}/meta.json`.
 2. Validate transition against the table above.
 3. Check WIP limits from all `meta.json` files in current sprint.
 4. Update `status` and `updated` in `meta.json`.
@@ -77,9 +77,9 @@ BACKLOG -> TODO -> IN_PROGRESS -> IN_REVIEW -> QA -> DONE
    ```
    | {timestamp} | {agent} | MOVED | {from_status} | {to_status} | {note} |
    ```
-6. Recompute `_aegis-brain/sprints/sprint-N/metrics.json`.
-7. Regenerate `_aegis-brain/sprints/sprint-N/kanban.md` (derived view).
-8. Append to `_aegis-brain/logs/activity.log`.
+6. Recompute `.aegis/brain/sprints/sprint-N/metrics.json`.
+7. Regenerate `.aegis/brain/sprints/sprint-N/kanban.md` (derived view).
+8. Append to `.aegis/brain/logs/activity.log`.
 
 ---
 
@@ -112,7 +112,7 @@ RULES:
 
 **Integrity check (run by Mother Brain on session start):**
 ```
-FOR each task in _aegis-brain/tasks/:
+FOR each task in .aegis/brain/tasks/:
   1. Read history.md last row → extract "To" status
   2. Read meta.json → extract "status"
   3. IF mismatch → append SYNC row to history.md, update meta.json timestamp
@@ -142,10 +142,10 @@ If gate produced findings, also append a comment to comments.md.
 
 ## Regenerating Kanban Board
 
-`_aegis-brain/sprints/current/kanban.md` is a DERIVED VIEW. After any state change:
+`.aegis/brain/sprints/current/kanban.md` is a DERIVED VIEW. After any state change:
 1. Read all `meta.json` where `sprint` = current sprint.
 2. Group by `status`.
-3. Write to `_aegis-brain/sprints/sprint-N/kanban.md`.
+3. Write to `.aegis/brain/sprints/sprint-N/kanban.md`.
 
 ---
 
@@ -195,14 +195,14 @@ Any stage can REJECT back to BUILD.
 
 ### Handoff Storage
 
-`_aegis-brain/handoffs/HO-NNN.json` — counter managed in `counters.json` under `HO` key.
+`.aegis/brain/handoffs/HO-NNN.json` — counter managed in `counters.json` under `HO` key.
 
 ### Creating a Handoff
 
 1. Validate route against routing table.
 2. Collect and verify all artifacts exist.
 3. Evaluate gate if crossing gate boundary.
-4. Write envelope to `_aegis-brain/handoffs/HO-{NNN}.json`.
+4. Write envelope to `.aegis/brain/handoffs/HO-{NNN}.json`.
 5. Update task history.md with HANDOFF action.
 6. Update task status in meta.json.
 7. Notify receiving team.
@@ -227,7 +227,7 @@ When a task's `meta.json` status changes to DONE (after all gates pass).
 
 1. **Pattern Detection**: Read task's `history.md`, extract time per phase, gate retry count, issue finder agent, fix type.
 2. **Skill Match**: Map task to skills via `task_type` and `labels`.
-3. **Auto-Write Learning**: Append to `_aegis-brain/learnings/auto-learned.md`:
+3. **Auto-Write Learning**: Append to `.aegis/brain/learnings/auto-learned.md`:
    ```
    ### LEARN-{counter} | {YYYY-MM-DD} | {task_id}
    - **Task**: {title} [{points}pts]
@@ -237,14 +237,14 @@ When a task's `meta.json` status changes to DONE (after all gates pass).
    - **Insight**: {auto-generated insight}
    - **Action**: {what to do differently}
    ```
-4. **Pattern Promotion**: Same pattern 3+ times -> promote to `_aegis-brain/resonance/evolved-patterns.md` as PROVEN.
-5. **Anti-Pattern Detection**: Gate fails 2+ times for similar reasons -> add to `_aegis-brain/resonance/anti-patterns.md`.
+4. **Pattern Promotion**: Same pattern 3+ times -> promote to `.aegis/brain/resonance/evolved-patterns.md` as PROVEN.
+5. **Anti-Pattern Detection**: Gate fails 2+ times for similar reasons -> add to `.aegis/brain/resonance/anti-patterns.md`.
 
 ---
 
 ## Shared Intelligence (Skill Cache)
 
-One agent learns -> ALL agents benefit. Location: `_aegis-brain/skill-cache/`
+One agent learns -> ALL agents benefit. Location: `.aegis/brain/skill-cache/`
 
 ### Write to Cache (after task completion)
 
@@ -252,11 +252,11 @@ Only cache generally applicable insights (not task-specific). Categories:
 
 | Category | File |
 |----------|------|
-| CODE_PATTERN | `_aegis-brain/skill-cache/CODE_PATTERN.md` |
-| REVIEW_PATTERN | `_aegis-brain/skill-cache/REVIEW_PATTERN.md` |
-| TEST_PATTERN | `_aegis-brain/skill-cache/TEST_PATTERN.md` |
-| ARCH_PATTERN | `_aegis-brain/skill-cache/ARCH_PATTERN.md` |
-| SECURITY_PATTERN | `_aegis-brain/skill-cache/SECURITY_PATTERN.md` |
+| CODE_PATTERN | `.aegis/brain/skill-cache/CODE_PATTERN.md` |
+| REVIEW_PATTERN | `.aegis/brain/skill-cache/REVIEW_PATTERN.md` |
+| TEST_PATTERN | `.aegis/brain/skill-cache/TEST_PATTERN.md` |
+| ARCH_PATTERN | `.aegis/brain/skill-cache/ARCH_PATTERN.md` |
+| SECURITY_PATTERN | `.aegis/brain/skill-cache/SECURITY_PATTERN.md` |
 
 Format: `### SC-{counter} | {date} | Source: {agent} | Task: {task_id}`
 
@@ -274,7 +274,7 @@ Contradiction (caused issue): DEMOTE by 1 level
 - `test` -> TEST_PATTERN, CODE_PATTERN
 - All tasks -> always read SECURITY_PATTERN
 
-Stats: `_aegis-brain/skill-cache/stats.json` (total_patterns, confidence counts, cache_hits/misses)
+Stats: `.aegis/brain/skill-cache/stats.json` (total_patterns, confidence counts, cache_hits/misses)
 
 ---
 
@@ -295,7 +295,7 @@ Skills evolve based on usage data. Triggered every 5 tasks that use a skill.
 1. NEVER remove safety-critical steps (security, gate validation, error handling).
 2. NEVER change ISO 29110 required outputs.
 3. MAX 3 changes per evolution.
-4. All evolutions logged to `_aegis-brain/skill-cache/evolution-log.md`.
+4. All evolutions logged to `.aegis/brain/skill-cache/evolution-log.md`.
 5. Human can freeze a skill: `<!-- FROZEN: do not evolve -->`
 
 ### Skill Usage Mapping
@@ -313,12 +313,12 @@ Skills evolve based on usage data. Triggered every 5 tasks that use a skill.
 TASK DONE -> AUTO-EXTRACT -> DISTILL -> PROPAGATE -> ALL AGENTS
 ```
 
-1. **Raw Capture** (every task): Write to `_aegis-brain/learnings/raw/YYYY-MM-DD.md`
+1. **Raw Capture** (every task): Write to `.aegis/brain/learnings/raw/YYYY-MM-DD.md`
 2. **Pattern Extraction** (every 3 tasks): Find recurring patterns -> write to skill-cache
-3. **Knowledge Distill** (sprint close): Merge sprint learnings into `_aegis-brain/resonance/`
+3. **Knowledge Distill** (sprint close): Merge sprint learnings into `.aegis/brain/resonance/`
 4. **Propagation** (session start): Load HIGH cache patterns + evolved/anti patterns into agent prompts
 
-Metrics: `_aegis-brain/metrics/knowledge-pipeline.json`
+Metrics: `.aegis/brain/metrics/knowledge-pipeline.json`
 
 ---
 

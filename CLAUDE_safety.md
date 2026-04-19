@@ -51,7 +51,7 @@ hotfix/<short-desc>
 ### Agent Communication
 - Agents communicate via structured message types only (see CLAUDE_agents.md)
 - No agent may directly invoke another agent -- all routing goes through Captain America
-- Agent reports must be <= 2000 tokens. If more detail is needed, write to `_aegis-brain/logs/` and reference the file path
+- Agent reports must be <= 2000 tokens. If more detail is needed, write to `.aegis/brain/logs/` and reference the file path
 
 ---
 
@@ -60,20 +60,20 @@ hotfix/<short-desc>
 ### Context Budget Rules
 - **Session start**: load <= 20% of available context window with CLAUDE.md + brain resonance
 - **Progressive disclosure**: load additional context files only when needed, not preemptively
-- **Agent reports**: <= 2000 tokens each. Longer outputs go to `_aegis-brain/logs/` with a summary reference
+- **Agent reports**: <= 2000 tokens each. Longer outputs go to `.aegis/brain/logs/` with a summary reference
 - **Use references, not duplication**: never copy large blocks of code into conversation. Reference file paths and line numbers instead
 - **Skill loading**: load only the skills needed for the current task. Never load all skills at once (wastes ~10K tokens)
 
 ### Context Monitoring
 - Track approximate token usage at each pipeline phase
-- If context exceeds 60%, trigger a distillation step: summarize conversation so far, archive to `_aegis-brain/logs/`
+- If context exceeds 60%, trigger a distillation step: summarize conversation so far, archive to `.aegis/brain/logs/`
 - If context exceeds 80%, enter emergency mode: complete current task, write retro, start new session
 
 ### Memory Tiers
 | Tier | Location | Lifetime | Access |
 |------|----------|----------|--------|
 | Core | CLAUDE.md, CLAUDE_*.md | Permanent | Every session |
-| Archival | _aegis-brain/ | Persistent | Search when needed |
+| Archival | .aegis/brain/ | Persistent | Search when needed |
 | Working | Conversation context | Session only | Always available |
 
 ---
@@ -85,18 +85,18 @@ Each agent operates within a defined set of directories and file patterns. Any a
 
 | Agent | Allowed Scope | Forbidden |
 |-------|--------------|-----------|
-| Captain America | CLAUDE*.md, _aegis-brain/, _aegis-output/ | Source code (delegates to others) |
+| Captain America | CLAUDE*.md, .aegis/brain/, _aegis-output/ | Source code (delegates to others) |
 | Iron Man | docs/, specs/, architecture/ | Direct code changes |
-| Spider-Man | src/, lib/, tests/, package.json, configs | CLAUDE*.md, _aegis-brain/ |
+| Spider-Man | src/, lib/, tests/, package.json, configs | CLAUDE*.md, .aegis/brain/ |
 | Black Panther | Read-only on all project files, _aegis-output/reviews/ | Write to src/ |
 | Loki | Read-only on all files, _aegis-output/adversarial/ | Write to src/, CLAUDE*.md |
-| Beast | Read-only on all files, _aegis-brain/logs/ | Write to src/, CLAUDE*.md |
+| Beast | Read-only on all files, .aegis/brain/logs/ | Write to src/, CLAUDE*.md |
 | Wasp | src/components/, src/styles/, public/assets/ | Backend code, CLAUDE*.md |
-| Songbird | docs/, README*, CHANGELOG*, _aegis-brain/ | Source code |
+| Songbird | docs/, README*, CHANGELOG*, .aegis/brain/ | Source code |
 
 ### Escalation Protocol
 1. Agent detects out-of-scope request
-2. Agent logs the request to `_aegis-brain/logs/escalation-<timestamp>.md`
+2. Agent logs the request to `.aegis/brain/logs/escalation-<timestamp>.md`
 3. Agent sends EscalationAlert message to Captain America
 4. Captain America evaluates: delegate to correct agent OR escalate to human
 5. Never silently proceed with out-of-scope work
@@ -149,9 +149,9 @@ Before every git commit, scan staged files for:
 - Environment variable files (`.env`, `.env.local`, `.env.production`)
 
 ### Storage Rules
-- **NEVER** store tokens, passwords, API keys, or secrets in `_aegis-brain/`
+- **NEVER** store tokens, passwords, API keys, or secrets in `.aegis/brain/`
 - **NEVER** store secrets in CLAUDE*.md files
-- **NEVER** log secrets in `_aegis-brain/logs/`
+- **NEVER** log secrets in `.aegis/brain/logs/`
 - Secrets belong in `.env` files (which must be in `.gitignore`)
 - If a secret is accidentally committed, immediately: (1) rotate the secret, (2) notify human, (3) use `git filter-branch` or BFG to remove from history
 

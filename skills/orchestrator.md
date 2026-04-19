@@ -15,7 +15,7 @@ Dual-mode multi-agent orchestration engine for AEGIS.
 - **Review gates**: Phase transitions require quality checks before proceeding
 - **Context budget**: Monitor token usage, compress when approaching limits
 - **Agent Teams**: Run as in-process background agents with Mother Brain heartbeat monitoring
-- **Output**: Task status logged to `_aegis-brain/logs/activity.log`
+- **Output**: Task status logged to `.aegis/brain/logs/activity.log`
 
 ## Full Instructions
 
@@ -106,7 +106,7 @@ Monitor token usage to prevent context overflow:
 1. **Track** cumulative tokens per session
 2. **Warn** at 60% capacity: compress non-essential context
 3. **Compress** at 80% capacity: summarize completed phases, drop raw data
-4. **Emergency** at 90%: archive to `_aegis-brain/learnings/`, start fresh sub-session
+4. **Emergency** at 90%: archive to `.aegis/brain/learnings/`, start fresh sub-session
 
 **Compression Strategy:**
 - Replace detailed code with file paths + line references
@@ -137,7 +137,7 @@ Agents communicate via structured message types:
 
 ### Logging
 
-All orchestration events are logged to `_aegis-brain/logs/activity.log`:
+All orchestration events are logged to `.aegis/brain/logs/activity.log`:
 ```
 [2026-03-20T10:00:00Z] [🧭] [START] — Orchestrating: <task description>
 [2026-03-20T10:00:01Z] [🧭] [MODE] — Selected: agent-team (3 agents)

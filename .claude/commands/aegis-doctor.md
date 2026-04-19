@@ -61,10 +61,10 @@ Check these files exist in `.claude/references/`:
 ### Step 5: Validate Brain Structure
 
 Check these paths exist:
-- `_aegis-brain/tasks/` (contains at least 1 file)
-- `_aegis-brain/sprints/current/kanban.md`
-- `_aegis-brain/logs/activity.log`
-- `_aegis-brain/resonance/`
+- `.aegis/brain/tasks/` (contains at least 1 file)
+- `.aegis/brain/sprints/current/kanban.md`
+- `.aegis/brain/logs/activity.log`
+- `.aegis/brain/resonance/`
 - `_aegis-output/iso-docs/PM-01-project-plan/`
 - `_aegis-output/iso-docs/SI-01-requirements-spec/`
 - `_aegis-output/iso-docs/SI-02-traceability-matrix/` (or SI-03-traceability)

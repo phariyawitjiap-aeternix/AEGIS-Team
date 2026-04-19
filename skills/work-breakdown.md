@@ -34,7 +34,7 @@ Structured decomposition of user-facing requirements into implementable work ite
 ### ID Assignment Rules
 
 - IDs are globally unique within the project. Never reuse an ID.
-- To find the next available ID for any prefix, scan all files in `_aegis-output/breakdown/` and `_aegis-brain/backlog.md` for the highest existing number in that prefix, then increment.
+- To find the next available ID for any prefix, scan all files in `_aegis-output/breakdown/` and `.aegis/brain/backlog.md` for the highest existing number in that prefix, then increment.
 - Zero-pad to 3 digits: `US-001`, `T-042`, `ST-117`.
 
 ### Decomposition Process
@@ -156,7 +156,7 @@ US-NNN: <story title>
 
 ## Ready for Backlog
 
-The flat task list in `tasks.md` can be appended to `_aegis-brain/backlog.md`
+The flat task list in `tasks.md` can be appended to `.aegis/brain/backlog.md`
 for sprint planning. Run `/aegis-kanban add` or let sprint planning pick them up.
 ```
 
@@ -165,7 +165,7 @@ for sprint planning. Run `/aegis-kanban add` or let sprint planning pick them up
 ```markdown
 # Tasks from US-NNN
 
-Ready to import into `_aegis-brain/backlog.md`.
+Ready to import into `.aegis/brain/backlog.md`.
 
 | ID | Task | Points | Type | Agent | Epic | Dependencies | Priority |
 |----|------|--------|------|-------|------|-------------|----------|
@@ -197,7 +197,7 @@ US-NNN: <story>
 
 - **Sprint Tracker** (`skills/sprint-tracker.md`): Tasks from `tasks.md` are imported into the backlog and selected during sprint planning.
 - **Kanban Board** (`skills/kanban-board.md`): Tasks use `T-NNN` IDs consistent with `TASK-NNN` kanban IDs. When importing, map `T-NNN` to `TASK-NNN`.
-- **Backlog**: Append tasks to `_aegis-brain/backlog.md` with their priority and dependencies intact.
+- **Backlog**: Append tasks to `.aegis/brain/backlog.md` with their priority and dependencies intact.
 
 ### Validation Rules
 
@@ -213,7 +213,7 @@ Before finalizing the breakdown:
 
 ### Logging
 
-After completing a breakdown, log to `_aegis-brain/logs/activity.log`:
+After completing a breakdown, log to `.aegis/brain/logs/activity.log`:
 ```
 [YYYY-MM-DD HH:MM] BREAKDOWN | story=US-NNN | journeys=<N> | epics=<N> | tasks=<N> | subtasks=<N> | total_pts=<pts>
 ```

@@ -18,7 +18,7 @@ Three hooks enforce Golden Rules at the machine level:
 | Stop | `on-stop.sh` | Remind human to run `/aegis-retro` (Golden Rule 6) |
 
 **How it works**: Hook scripts receive JSON on stdin, exit 2 to block, exit 0 to allow.
-**Logs**: All events append to `_aegis-brain/logs/activity.log`.
+**Logs**: All events append to `.aegis/brain/logs/activity.log`.
 
 ---
 
@@ -97,7 +97,7 @@ Zero-dependency health monitor runs on cron (every 5 minutes):
 bash .claude/hooks/tinman-heartbeat.sh --install-cron
 ```
 
-**Log**: `_aegis-brain/logs/heartbeat.log` (last 500 lines, auto-trimmed)
+**Log**: `.aegis/brain/logs/heartbeat.log` (last 500 lines, auto-trimmed)
 
 ---
 
@@ -157,9 +157,9 @@ Also protects AEGIS's own `settings.json` from mid-session edits.
 
 ### Pattern 9: Instinct Confidence Lifecycle (from ECC)
 **Source**: ECC's `continuous-learning-v2` skill
-**Status**: ✅ Implemented in `_aegis-brain/instincts/` + `/aegis-instinct` + `/aegis-evolve`
+**Status**: ✅ Implemented in `.aegis/brain/instincts/` + `/aegis-instinct` + `/aegis-evolve`
 
-Upgrades freeform `_aegis-brain/learnings/` lessons into confidence-scored
+Upgrades freeform `.aegis/brain/learnings/` lessons into confidence-scored
 YAML instincts with 4 lifecycle stages: `pending` → `active` → `promoted` → `retired`.
 
 - **Loki** loads `promoted/` as hard rules (auto-REJECT) and `active/` as warnings
@@ -254,7 +254,7 @@ for ambiguous decisions downstream.
 - `.claude/hooks/profiles.json` — Hook profile registry (minimal/standard/strict)
 - `.claude/hooks/tinman-heartbeat.sh` — Background monitor
 - `.claude/settings.json` — Hook wiring + env vars (AEGIS_HOOK_PROFILE)
-- `_aegis-brain/instincts/` — Instinct registry (pending/active/promoted/retired)
+- `.aegis/brain/instincts/` — Instinct registry (pending/active/promoted/retired)
 - `.claude/commands/aegis-instinct.md` — Instinct management command
 - `.claude/commands/aegis-evolve.md` — Cluster + merge + promote command
 - `skills/design-system-md.md` — DESIGN.md 9-section skeleton (Wasp-owned)

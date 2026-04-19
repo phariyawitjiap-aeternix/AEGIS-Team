@@ -8,7 +8,7 @@
 5. Sprint retro identifies improvement -> auto-logged
 
 ## Debt Registry
-File: `_aegis-brain/tech-debt/registry.md`
+File: `.aegis/brain/tech-debt/registry.md`
 
 | ID | Source | Severity | Category | Description | Effort | Sprint Found | Sprint Fixed |
 |----|--------|----------|----------|-------------|--------|-------------|-------------|

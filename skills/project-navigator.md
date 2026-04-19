@@ -156,6 +156,6 @@ When using `chain` mode, automatically invoke the highest-priority recommendatio
 
 ### Output
 
-Save scan results to `_aegis-brain/resonance/project-identity.md`:
+Save scan results to `.aegis/brain/resonance/project-identity.md`:
 - Update project name, stack, conventions
 - This becomes the persistent project context for all agents

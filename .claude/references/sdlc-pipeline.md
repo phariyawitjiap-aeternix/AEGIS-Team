@@ -67,7 +67,7 @@
 |-------|-------|
 | WHO | Human + Captain America (Nick Fury may detect via P8/P10 scan) |
 | INPUT | User request (text), feature idea, or scan finding |
-| OUTPUT | Captured requirement saved to `_aegis-brain/ideas/` |
+| OUTPUT | Captured requirement saved to `.aegis/brain/ideas/` |
 | GATE | None -- ideas are ungated |
 | ISO DOC | None |
 | COMMAND | Manual or auto-detected by Nick Fury |
@@ -83,7 +83,7 @@
 | OUTPUT | User Story -> Journeys -> Epics -> Tasks (meta.json + history.md for each) |
 | GATE | All entities have meta.json with valid schema + history.md with CREATED entry |
 | ISO DOC | Coulson generates SI.01 Requirements Spec, SI.03 Traceability (initial) |
-| STORAGE | `_aegis-brain/tasks/{ID}/meta.json`, `_aegis-brain/tasks/{ID}/history.md` |
+| STORAGE | `.aegis/brain/tasks/{ID}/meta.json`, `.aegis/brain/tasks/{ID}/history.md` |
 | ID FORMAT | `PROJ-{TYPE}-NNN` per pm-state-protocol.md |
 
 ---
@@ -97,7 +97,7 @@
 | OUTPUT | Sprint plan (plan.md), kanban board (kanban.md), metrics.json |
 | GATE | Committed points <= average velocity (capacity check) |
 | ISO DOC | Coulson updates PM.01 Project Plan, PM.04 Meeting Record |
-| STORAGE | `_aegis-brain/sprints/sprint-N/` |
+| STORAGE | `.aegis/brain/sprints/sprint-N/` |
 | TASK UPDATE | status: BACKLOG -> TODO, sprint: null -> sprint-N |
 
 ---
@@ -357,5 +357,5 @@ Hotfix enters PER-TASK CYCLE (stages 4-11)
 - Handoff envelope format: `handoff-protocol.md`
 - Agent definitions: `.claude/agents/*.md`
 - ISO 29110 doc templates: `_aegis-output/iso-docs/`
-- Sprint storage: `_aegis-brain/sprints/sprint-N/`
-- Task storage: `_aegis-brain/tasks/{ID}/`
+- Sprint storage: `.aegis/brain/sprints/sprint-N/`
+- Task storage: `.aegis/brain/tasks/{ID}/`

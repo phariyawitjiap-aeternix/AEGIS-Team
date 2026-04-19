@@ -62,7 +62,7 @@ if echo "$SAFE_CMD" | grep -qE 'git clean\s+-f'; then
 fi
 
 # Allow — log to activity.log (best-effort, don't fail if log missing)
-LOG="_aegis-brain/logs/activity.log"
+LOG=".aegis/brain/logs/activity.log"
 if [[ -f "$LOG" ]]; then
     TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || echo "unknown")
     SHORT_CMD=$(echo "$CMD" | head -c 120 | tr '\n' ' ')

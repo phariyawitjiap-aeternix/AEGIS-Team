@@ -39,7 +39,7 @@ Nick Fury will respond with:
 BRAIN_ANSWER
 Decision: A
 Rationale: Matches promoted instinct "prefer-single-db-per-service".
-           See _aegis-brain/instincts/promoted/prefer-single-db-per-service.yaml
+           See .aegis/brain/instincts/promoted/prefer-single-db-per-service.yaml
 Applies to: all similar tasks in this project
 ```
 
@@ -117,7 +117,7 @@ When Captain America triggers compaction:
 1. **Preserve**: Active task state, pending blockers, critical findings
 2. **Summarize**: Completed task results into 1-2 sentence summaries
 3. **Release**: Raw file contents, completed review details, resolved discussion threads
-4. **Archive**: Full details written to `_aegis-brain/logs/` before release
+4. **Archive**: Full details written to `.aegis/brain/logs/` before release
 
 ### Compaction Format
 ```
@@ -133,7 +133,7 @@ When Captain America triggers compaction:
 If context reaches 80% without planned compaction:
 
 1. Captain America immediately pauses all non-critical agent tasks
-2. All agents dump current state to `_aegis-brain/logs/emergency-dump.md`
+2. All agents dump current state to `.aegis/brain/logs/emergency-dump.md`
 3. Captain America produces a session checkpoint
 4. Context is aggressively compacted
 5. Only the highest-priority task resumes

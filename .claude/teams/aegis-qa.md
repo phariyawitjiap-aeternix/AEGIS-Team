@@ -17,7 +17,7 @@ Quality assurance pipeline: War Machine plans tests -> Vision executes -> War Ma
   "team": "qa",
   "trigger": "task_status == QA (set by Gate 1 PASS from build team)",
   "required_inputs": {
-    "task_meta": "_aegis-brain/tasks/{TASK-ID}/meta.json",
+    "task_meta": ".aegis/brain/tasks/{TASK-ID}/meta.json",
     "spec": "_aegis-output/specs/{TASK-ID}-spec.md",
     "code_files": "list from handoff envelope artifacts",
     "review_report": "_aegis-output/reviews/{TASK-ID}-review.md",

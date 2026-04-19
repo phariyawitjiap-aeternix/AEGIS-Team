@@ -34,7 +34,7 @@
 
 ### P005: Brain Resonance Files Bootstrap Context
 - **Discovery**: Session continuity testing
-- **Pattern**: At session end, write key decisions and state to `_aegis-brain/resonance/`. At next session start, load these files to restore context without replaying the full conversation.
+- **Pattern**: At session end, write key decisions and state to `.aegis/brain/resonance/`. At next session start, load these files to restore context without replaying the full conversation.
 - **Impact**: New sessions reach productive state in <30 seconds instead of 5+ minutes of re-reading.
 - **Rule**: Always run /aegis-retro before ending a session. The resonance files it produces are critical for continuity.
 

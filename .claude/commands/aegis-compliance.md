@@ -13,10 +13,10 @@ Generate all missing or outdated ISO 29110 documents from current project state.
 
 **Flow**:
 1. Scan _aegis-output/iso-docs/ for existing documents
-2. Scan _aegis-output/ and _aegis-brain/ for source data
+2. Scan _aegis-output/ and .aegis/brain/ for source data
 3. Identify which documents can be generated (source data exists)
 4. Read `_aegis-output/iso-docs/doc-registry.json` (create with empty array if missing)
-5. Read `_aegis-brain/counters.json` (create with counters at 0 if missing)
+5. Read `.aegis/brain/counters.json` (create with counters at 0 if missing)
 6. For each document to generate, follow the **Versioning Protocol**:
    - **New document** (not in doc-registry):
      a. Generate `PROJ-DOC-NNN` ID via counter protocol (increment DOC counter)
