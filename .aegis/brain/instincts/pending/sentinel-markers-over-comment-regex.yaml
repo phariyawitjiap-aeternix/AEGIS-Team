@@ -1,0 +1,31 @@
+id: sentinel-markers-over-comment-regex
+status: pending
+confidence: 0.6
+observations: 1
+first_seen: 2026-04-19
+last_reinforced: 2026-04-19
+cluster: idempotent-file-edits
+pattern: |
+  When auto-managing a block inside a user-editable file (e.g., .gitignore,
+  .env, CLAUDE.md), use sentinel markers (# <<< NAME-START >>> / # <<< NAME-END >>>)
+  for delimitation, not comment regex matching.
+
+  - DON'T: grep -q "AEGIS Framework" file → fragile, breaks if user removes comment
+  - DO: sed between sentinel markers → robust against user edits inside block
+
+rationale: |
+  Loki adversarial review (2026-04-19) flagged that comment-based regex matching
+  for idempotent gitignore management is fragile. User can remove the comment but
+  keep the entries, causing duplicate adds on re-run.
+
+  Sentinel markers provide unambiguous block boundaries. Even if user edits
+  content between markers, --apply will replace the whole block cleanly.
+
+  Implementation: tools/aegis-migrate-consolidate.sh uses
+  "# <<< AEGIS-V9-START >>>" / "# <<< AEGIS-V9-END >>>" markers and works
+  correctly across re-runs.
+
+reinforcement_triggers:
+  - "auto-manage block in user file"
+  - "idempotent file edit"
+  - "gitignore template"

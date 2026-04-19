@@ -2,7 +2,7 @@
 > Auto-maintained content catalog. Updated by agents on every brain write.
 > Pattern: Karpathy's LLM Wiki index.md
 
-Last updated: 2026-04-16
+Last updated: 2026-04-19
 
 ## Resonance
 
@@ -17,6 +17,9 @@ Last updated: 2026-04-16
 ### Pending
 
 - [example-quality-over-speed.yaml](instincts/pending/example-quality-over-speed.yaml) — Seed instinct: always fix the code to pass quality rules rather than suppressing them
+- [sentinel-markers-over-comment-regex.yaml](instincts/pending/sentinel-markers-over-comment-regex.yaml) — Use `<<< NAME-START >>>` markers for auto-managed blocks, not comment regex
+- [file-as-source-of-truth-over-dual-write.yaml](instincts/pending/file-as-source-of-truth-over-dual-write.yaml) — File system = truth, external services = read-through cache (avoid dual-write peer)
+- [dogfood-validates-design.yaml](instincts/pending/dogfood-validates-design.yaml) — Apply infrastructure changes to framework's own repo before shipping to users
 
 ### Active
 

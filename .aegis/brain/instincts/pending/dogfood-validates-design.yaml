@@ -1,0 +1,33 @@
+id: dogfood-validates-design
+status: pending
+confidence: 0.65
+observations: 1
+first_seen: 2026-04-19
+last_reinforced: 2026-04-19
+cluster: validation-strategy
+pattern: |
+  When designing infrastructure changes for a framework, dogfood on the
+  framework's own repository before shipping to users.
+
+  - DON'T: ship "v9 architecture" to users without running it on AEGIS itself
+  - DO: apply migration tool to AEGIS-Team repo first, document gotchas, then ship
+
+rationale: |
+  AEGIS v9 dogfood session (2026-04-19) revealed:
+  - 60 stale references in active code (not just .claude/references)
+  - .aegis-backup/ needs gitignore exclusion (not in original spec)
+  - Brain content itself has stale refs (3 files in instinct/sprint READMEs)
+  - 3 distinct atomic checkpoints emerge naturally from dogfood (POC tool,
+    migration apply, cleanup) -- inform v9 user migration UX
+
+  Dogfood exposes integration issues that pure unit testing or paper review
+  miss. Cost: 1 extra session. Benefit: ship to users with known-clean state.
+
+  Cold-start dogfood (testing in fresh session) catches what same-session
+  hides because tool/cache state may be stale.
+
+reinforcement_triggers:
+  - "infrastructure migration"
+  - "framework upgrade"
+  - "user-facing tool change"
+  - "before shipping migration"

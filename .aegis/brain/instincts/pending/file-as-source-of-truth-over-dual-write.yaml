@@ -1,0 +1,33 @@
+id: file-as-source-of-truth-over-dual-write
+status: pending
+confidence: 0.7
+observations: 1
+first_seen: 2026-04-19
+last_reinforced: 2026-04-19
+cluster: persistence-architecture
+pattern: |
+  When integrating with an external persistence service (e.g., memory_20250818,
+  external KV stores) alongside file-based storage, designate ONE as source of
+  truth. Avoid dual-write peer architectures where both services are equal.
+
+  - DON'T: write to memory tool AND file as peers, then hope they stay in sync
+  - DO: file = authoritative, external service = read-through cache that re-syncs from file
+
+rationale: |
+  Nick Fury Decision 2 (2026-04-19, AEGIS v9 plan) post-Loki challenge:
+  Plan v3.0 had memory_20250818 + file as dual-write peers. Loki flagged
+  this as same anti-pattern as bypassPermissions (paper safety).
+
+  File system advantages as truth:
+  - Stable substrate (independent of Claude API changes)
+  - Diffable, git-trackable, human-readable, debuggable
+  - External tool API may change/deprecate (memory_20250818 is beta)
+
+  Conflict protocol: on divergence, file wins. Cache re-syncs from file at
+  session start. Cache writes are best-effort.
+
+reinforcement_triggers:
+  - "memory tool integration"
+  - "dual-write architecture"
+  - "source of truth question"
+  - "persistence layer choice"
