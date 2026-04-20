@@ -70,12 +70,15 @@ Requires:
 - Implementation: 13 pts (Sprint v9-04 remaining) -- session 3 (2026-04-20 AM)
 - Implementation: 21 pts (S4-05, S4-06, v9-05 merge) -- session 4 (2026-04-20 PM, part 1)
 - Implementation: 11 pts (S4-02 proxy 3pt + S5-04b quirks fix 5pt + ADR-004 proposed + Scenario H 3pt) -- session 4 (part 2)
-- **Total throughput**: 527 pts across 4 sessions
+- Implementation: 19 pts (ADR-004 Phase 2 15pt + v9-05 spawn-from-HEAD investigation 4pt) -- session 5 (post-compact, 2026-04-20 late PM)
+- **Total throughput**: 546 pts across 5 sessions
 
 ## Notes
 - Framework self-protection (guard-write.sh) blocked own settings edit -- correct behavior
 - guard-write also blocks: .claude/agents/*.md, .claude/references/*.md mid-session
-- Workaround: guidance docs in tools/ with apply-between-sessions pattern
+- Workaround: guidance docs in tools/ with apply-between-sessions pattern (superseded by ADR-004 Phase 2 -- principled override channel)
 - All deferred sprints have clear acceptance criteria + effort estimates
 - S4-02 memory_20250818: BLOCKED on SDK -- tool not available as callable API in agent runtime
+- v9-05 spawn-from-current-HEAD: BLOCKED on SDK -- no base-ref parameter; rebase-onto-HEAD in merge script is permanent
+- ADR-004: both phases SHIPPED (observation + authorization); test matrix 23/23 green
 - Tracker: AEGIS_v9_PROGRESS_TRACKER.md
