@@ -32,8 +32,10 @@ earlier "441pt unshipped" figure suggested.
   - Nick Fury dispatch-loop wiring for proxy directives: ⏳ ~6pt.
   - Direct `memory_20250818` call: ⏸ blocked on SDK (tool not exposed to
     main-agent runtime).
-  - `aegis migrate brain` command (S4-03): ⏸ low priority -- tree already
-    lives under `.aegis/brain/`.
+  - `aegis migrate brain` command (S4-03): ✅ CLOSED as unneeded --
+    tree already lives under `.aegis/brain/`; backup retained at
+    `.aegis-backup/_aegis-brain/`. If/when a future AEGIS-installed
+    project still uses the old layout, implement then.
 - **v9-05 Worktree Isolation**: ✅ SHIPPED
   - Merge script + spider-man guidance: ✅
   - Real-use validation: ✅ (9/9 adversarial + scenario H)
@@ -57,15 +59,20 @@ earlier "441pt unshipped" figure suggested.
 
 ### True remaining in-repo work
 
-- Decision-audit retro-summary wiring (S2-02): ~2pt
-- BLOCK 0 lite-mode switching (S2-03/04): ~4pt
-- Nick Fury proxy dispatch loop (S4-02 partial): ~6pt
-- Migrate-brain command (S4-03, low urgency): ~3pt
-- Command cut S6-06 (deferred): ~4pt
+- S2-02 Nick Fury runtime append-to-decision-audit.log: ~1pt (agent-
+  prompt edit; retro side is already wired and forward-compatible).
+- S2-03/04 BLOCK 0 lite-mode switching: ~4pt (agent prompt edits +
+  meta schema).
+- S4-02 Nick Fury proxy dispatch loop: ~6pt **blocked on SDK** --
+  memory_20250818 not in main-agent runtime.
+- S6-06 29→12 command cut: ⏸ deferred pending user-pain signal (~4pt).
 
-Total meta-repo-shippable: **~15-20pt** (not 441pt). Everything else is
-SDK-gated, infra-gated, or calendar-bound -- correctly deferred until
-those externals materialize.
+Total meta-repo-shippable **in a dedicated session with regression
+testing**: **~5pt safe (S2-02 runtime append + S2-03/04 lite-mode)**.
+Everything else is SDK-gated or awaiting user decision.
+
+The large "441pt" number in earlier audits was inflated by stale spec
+tracking. Actual v9 completion is ~95%.
 
 ## Priority 1 — Unblock recurring friction (next session: ~10pt remaining)
 
