@@ -107,13 +107,17 @@ Recurring judgment topics (consider creating instincts):
 
 ## Acceptance Criteria (S2-02)
 
-- [ ] Reference doc explains audit format (this file)
-- [ ] Counter file schema defined
-- [ ] Auto-escalation trigger documented
-- [ ] Nick Fury agent updated to write audit entries
-- [ ] Aegis-retro command updated to summarize audit
-- [ ] Tested: 5 simulated decisions logged correctly
-- [ ] Tested: judgment counter triggers Captain defer at threshold
+- [x] Reference doc explains audit format (this file)
+- [x] Counter file schema defined (above)
+- [x] Auto-escalation trigger documented (above)
+- [x] Nick Fury agent updated to write audit entries (`@references/decision-audit-protocol.md` + QUESTION_TO_BRAIN format referenced in `.claude/agents/nick-fury.md`)
+- [ ] Aegis-retro command updated to summarize audit (not yet -- no references to decision-audit.log in `.claude/commands/aegis-retro.md`; ~2pt follow-up)
+- [ ] Tested: 5 simulated decisions logged correctly (not run -- requires live Nick Fury session with instrumented decisions)
+- [ ] Tested: judgment counter triggers Captain defer at threshold (not run -- same as above)
+
+**Audit note (2026-04-20)**: doc + agent integration are in place. Remaining
+work is retro-summary wiring (~2pt) and the behavioral tests that require a
+running multi-session Nick Fury flow.
 
 ## Privacy Note
 

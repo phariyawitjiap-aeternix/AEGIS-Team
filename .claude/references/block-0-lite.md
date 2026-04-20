@@ -137,14 +137,25 @@ All modes log to `.aegis/brain/logs/block0-decisions.log`:
 
 ## Acceptance Criteria (S2-03 + S2-04)
 
-- [ ] Reference doc explains 3 modes (this file)
-- [ ] Decision logic documented (Python pseudocode above)
-- [ ] meta.json schema includes `block0_mode` field
-- [ ] Nick Fury agent updated to call `determine_block0_mode()` on task creation
-- [ ] Coulson agent updated to skip artifacts based on mode
-- [ ] Audit log appends per task
-- [ ] Tested: 1pt typo fix uses lite mode (no SI.01)
-- [ ] Tested: 8pt feature uses full mode (all artifacts)
+- [x] Reference doc explains 3 modes (this file)
+- [x] Decision logic documented (Python pseudocode above)
+- [~] General BLOCK 0 gate integrated into Nick Fury + Coulson (36 matches in
+  nick-fury.md, 9 in coulson.md) -- BUT only the `full` mode is wired.
+- [ ] meta.json schema includes `block0_mode` field (not yet -- `block0_mode`
+  appears only in this spec, not in any task meta files)
+- [ ] Nick Fury calls `determine_block0_mode()` per task (not yet -- current
+  BLOCK 0 flow always enforces full-mode gates; no mode-switch branch)
+- [ ] Coulson skips artifacts based on mode (not yet -- full-mode only)
+- [ ] Audit log appends per task (partial -- BLOCK 0 activity logs exist but
+  no `block0_mode` field)
+- [ ] Tested: 1pt typo fix uses lite mode (not run)
+- [ ] Tested: 8pt feature uses full mode (not run)
+
+**Audit note (2026-04-20)**: the BLOCK 0 gate itself is fully shipped and
+live. What remains is the **lite / skip mode switching** for small tasks,
+which requires: (a) `block0_mode` field in task meta schema, (b) the
+`determine_block0_mode()` branch in Nick Fury's pre-work check, and (c)
+Coulson skipping SI.01/SI.02 when mode=lite. Scope estimate: ~4pt.
 
 ## Loki Counter to Lite Mode
 

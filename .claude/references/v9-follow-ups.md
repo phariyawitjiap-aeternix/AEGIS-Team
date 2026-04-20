@@ -1,27 +1,67 @@
 # AEGIS v9 Follow-Ups Backlog
 
-> Last updated: 2026-04-20 (after PR #8 close-out session)
+> Last updated: 2026-04-20 (post spec-freshness audit)
 > Purpose: single-page pickup point for the next session. Each item has a clear
 > entry criterion ("start when…") and a defined done condition.
 
-## Active Sprint State
+## Active Sprint State (post-audit 2026-04-20 late PM)
+
+A full spec-freshness audit found substantial drift: several sprints'
+acceptance criteria were written as "pending" long after the work
+shipped. The true remaining in-repo backlog is far smaller than the
+earlier "441pt unshipped" figure suggested.
 
 - **v9-01 Foundation Hardening**: ✅ SHIPPED (13pt)
-- **v9-02 Resilience design**: ✅ SPEC COMPLETE (29pt)
+- **v9-02 Resilience**: ✅ MOSTLY SHIPPED
+  - S2-01 Captain America fallback: spec + doc done; behavioral tests unrun.
+  - S2-02 Decision audit: doc ✅, Nick Fury integration ✅, **retro-summary
+    wiring still pending** (~2pt).
+  - S2-03/04 BLOCK 0: general gate is **live** in Nick Fury (36 refs) +
+    Coulson (9 refs). **Lite-mode switching is NOT implemented** (no
+    `block0_mode` field in meta, no `determine_block0_mode()` branch);
+    ~4pt follow-up.
 - **v9-03 Brain Seeding**: ✅ SHIPPED (28pt, brain populated + seeded)
-- **v9-04 Memory Tool Integration**:
-  - File layer: ✅ SHIPPED (sync, write, adversarial test, benchmarks)
-  - Proxy pattern: ✅ SHIPPED (brain_write emits `AEGIS_MEMORY_WRITE` directive)
-  - Main-agent proxy WIRING: ⏳ NOT WIRED (Nick Fury dispatch loop needs to
-    parse directives after subagent returns)
-  - Direct `memory_20250818` call: ⏸ DEFERRED (SDK gap; proxy pattern is the
-    workaround until Anthropic exposes the tool in subagent runtimes)
-- **v9-05 Worktree Isolation**:
-  - Merge script + spider-man guidance: ✅ SHIPPED
-  - Real-use validation: ✅ PASSED (9/9 adversarial, Scenario H via isolated Spider-Man)
-  - Quirks fix (stale-ancestor rebase + process-lock double-force): ✅ SHIPPED
-  - Investigate spawn-from-current-HEAD SDK option: ⏳ OPEN (may make rebase unnecessary)
-- **v9-06 through v9-15**: ⏸ SPEC ONLY (441pt unshipped)
+- **v9-04 Memory Tool Integration**: ✅ SHIPPED (previously marked partial)
+  - File layer (sync, write, adversarial test, benchmarks): ✅ all shipped
+    and tested (audit surfaced this — spec was stale).
+  - Proxy pattern: ✅ shipped (brain_write emits `AEGIS_MEMORY_WRITE`).
+  - Nick Fury dispatch-loop wiring for proxy directives: ⏳ ~6pt.
+  - Direct `memory_20250818` call: ⏸ blocked on SDK (tool not exposed to
+    main-agent runtime).
+  - `aegis migrate brain` command (S4-03): ⏸ low priority -- tree already
+    lives under `.aegis/brain/`.
+- **v9-05 Worktree Isolation**: ✅ SHIPPED
+  - Merge script + spider-man guidance: ✅
+  - Real-use validation: ✅ (9/9 adversarial + scenario H)
+  - Quirks fix (stale-ancestor rebase + process-lock double-force): ✅
+  - Spawn-from-current-HEAD investigation: ✅ CLOSED (no SDK option exists;
+    rebase step is permanent).
+- **v9-06 Schedule + ToolSearch + Agent Consolidation**: ✅ MOSTLY SHIPPED
+  - S6-01 distill reminder (Pattern A): ✅ shipped this session.
+  - S6-02 tools.deferred: ❌ closed -- SDK has no such key.
+  - S6-03/04/05/07 agent merger + retirements + docs: ✅ all in place
+    (audit surfaced this — spec was stale).
+  - S6-06 29→12 command cut: ⏸ deferred pending user-pain signal.
+- **v9-07/08/09 Brain-tier** (94pt): ⏸ ACCURATELY DEFERRED -- requires real
+  S3/git backend, multi-machine testing, adversarial security review.
+- **v9-10/11 Plugin** (83pt): ⏸ ACCURATELY DEFERRED -- requires Plugin SDK,
+  marketplace access, 4-6wk real engineering.
+- **v9-12/13 MCP** (66pt): ⏸ ACCURATELY DEFERRED -- requires Node.js
+  project, real backend infra, 3-5wk real engineering.
+- **v9-14/15 Migration + GA** (73pt): ⏸ ACCURATELY CALENDAR-BOUND -- 6mo
+  wall time (beta, GA, bridge).
+
+### True remaining in-repo work
+
+- Decision-audit retro-summary wiring (S2-02): ~2pt
+- BLOCK 0 lite-mode switching (S2-03/04): ~4pt
+- Nick Fury proxy dispatch loop (S4-02 partial): ~6pt
+- Migrate-brain command (S4-03, low urgency): ~3pt
+- Command cut S6-06 (deferred): ~4pt
+
+Total meta-repo-shippable: **~15-20pt** (not 441pt). Everything else is
+SDK-gated, infra-gated, or calendar-bound -- correctly deferred until
+those externals materialize.
 
 ## Priority 1 — Unblock recurring friction (next session: ~10pt remaining)
 
