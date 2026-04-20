@@ -301,6 +301,31 @@ else
 fi
 
 # ============================================
+# Scenario G: zsh sourcing (shell-compat regression guard)
+# macOS default shell is zsh; library mode must work there.
+# Expectation: `source` succeeds under `set -u`, brain_write writes the file.
+# ============================================
+echo ""
+echo "--- Scenario G: zsh sourcing ---"
+
+if ! command -v zsh >/dev/null 2>&1; then
+    skip "G: zsh sourcing" "zsh not installed"
+else
+    ZSH_TARGET="resonance/zsh-sourced.md"
+    rm -f "${FAKE_BRAIN}/${ZSH_TARGET}"
+
+    ZSH_OUT=$(zsh -c "set -u; source '${TEST_BRAIN_WRITE}' && brain_write '${ZSH_TARGET}' 'content from zsh'" 2>&1)
+    ZSH_EXIT=$?
+
+    if [[ $ZSH_EXIT -eq 0 ]] && [[ -f "${FAKE_BRAIN}/${ZSH_TARGET}" ]] \
+       && grep -qF 'content from zsh' "${FAKE_BRAIN}/${ZSH_TARGET}"; then
+        pass "G: zsh sourcing -- source + brain_write work under zsh set -u"
+    else
+        fail "G: zsh sourcing" "exit=${ZSH_EXIT}, stderr=${ZSH_OUT}"
+    fi
+fi
+
+# ============================================
 # Summary
 # ============================================
 echo ""

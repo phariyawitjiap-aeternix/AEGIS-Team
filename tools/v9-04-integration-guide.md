@@ -63,6 +63,18 @@ After installation, every Claude Code session will:
 | `tools/aegis-brain-write.sh <path> <content>` | Write to brain | Write file + regenerate MEMORY.md + log |
 | `source tools/aegis-brain-write.sh` | Library mode | Provides brain_write() and brain_append() functions |
 
+### Supported shells
+
+CLI mode always runs under `bash` via the shebang, regardless of the caller's
+shell. Library mode (`source tools/aegis-brain-write.sh`) is tested under both
+`bash` and `zsh` — the script detects the host shell and avoids bash-only
+constructs (`BASH_SOURCE`) in the zsh path. Regression guard lives in
+`tools/aegis-brain-adversarial-test.sh` Scenario G.
+
+Note: sourcing the script also applies `set -euo pipefail` to the caller's
+shell as a side effect. For one-shot invocations (`source ... && brain_append ...`)
+this is harmless; avoid sourcing it into long-lived interactive shells.
+
 ## S4-02 SDK Availability -- Honest Blocker Assessment (2026-04-20)
 
 ### What we tried

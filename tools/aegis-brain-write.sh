@@ -128,8 +128,21 @@ path_to_subtype() {
 
 # --- CLI mode (when run directly, not sourced) ---
 
-# Detect if being sourced or run directly
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+# Detect sourced vs executed across bash and zsh.
+# bash: BASH_SOURCE[0] differs from $0 when sourced.
+# zsh:  BASH_SOURCE is unset (nounset would fire) — use ZSH_EVAL_CONTEXT,
+#       which gains a ":file" segment when the current context is a sourced file.
+_aegis_run_cli=0
+if [[ -n "${ZSH_VERSION:-}" ]]; then
+    case "${ZSH_EVAL_CONTEXT:-}" in
+        *:file*) _aegis_run_cli=0 ;;
+        *)       _aegis_run_cli=1 ;;
+    esac
+elif [[ "${BASH_SOURCE[0]:-$0}" == "${0}" ]]; then
+    _aegis_run_cli=1
+fi
+
+if [[ "$_aegis_run_cli" == "1" ]]; then
     # Running directly
     if [[ $# -lt 2 ]]; then
         echo "Usage: aegis-brain-write.sh <brain-relative-path> <content|->" >&2
