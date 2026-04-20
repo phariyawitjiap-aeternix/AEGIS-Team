@@ -111,13 +111,23 @@ Recurring judgment topics (consider creating instincts):
 - [x] Counter file schema defined (above)
 - [x] Auto-escalation trigger documented (above)
 - [x] Nick Fury agent updated to write audit entries (`@references/decision-audit-protocol.md` + QUESTION_TO_BRAIN format referenced in `.claude/agents/nick-fury.md`)
-- [ ] Aegis-retro command updated to summarize audit (not yet -- no references to decision-audit.log in `.claude/commands/aegis-retro.md`; ~2pt follow-up)
-- [ ] Tested: 5 simulated decisions logged correctly (not run -- requires live Nick Fury session with instrumented decisions)
-- [ ] Tested: judgment counter triggers Captain defer at threshold (not run -- same as above)
+- [x] Aegis-retro command updated to summarize audit (Step 1b added in
+  `.claude/commands/aegis-retro.md`: reads `.aegis/brain/logs/decision-audit.log`
+  if present, summarizes decisions by source / confidence / judgment-level
+  count / escalation count. Silently skips if log missing, so it's forward-
+  compatible with Nick Fury's future runtime write-integration.)
+- [ ] Nick Fury runtime actually appends to decision-audit.log per decision
+  (agent-prompt wiring step -- DEFERRED to dedicated session with regression
+  testing; this is the chicken-and-egg dependency)
+- [ ] Tested: 5 simulated decisions logged correctly (not run -- requires
+  live Nick Fury session with instrumented decisions)
+- [ ] Tested: judgment counter triggers Captain defer at threshold (not run
+  -- same as above)
 
-**Audit note (2026-04-20)**: doc + agent integration are in place. Remaining
-work is retro-summary wiring (~2pt) and the behavioral tests that require a
-running multi-session Nick Fury flow.
+**Audit note (2026-04-20)**: doc + Nick Fury reference + retro-summary
+wiring are in place. The chicken-and-egg is now just on Nick Fury's
+runtime write step (agent prompt edit). When that lands, the retro step
+activates automatically -- no second deployment needed.
 
 ## Privacy Note
 

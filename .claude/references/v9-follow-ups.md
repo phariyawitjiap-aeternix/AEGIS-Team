@@ -14,8 +14,12 @@ earlier "441pt unshipped" figure suggested.
 - **v9-01 Foundation Hardening**: ✅ SHIPPED (13pt)
 - **v9-02 Resilience**: ✅ MOSTLY SHIPPED
   - S2-01 Captain America fallback: spec + doc done; behavioral tests unrun.
-  - S2-02 Decision audit: doc ✅, Nick Fury integration ✅, **retro-summary
-    wiring still pending** (~2pt).
+  - S2-02 Decision audit: doc ✅, Nick Fury integration ✅, retro-summary
+    wiring ✅ (Step 1b in aegis-retro.md reads decision-audit.log if
+    present, silently skips otherwise). Only remaining gap: Nick Fury's
+    runtime *append-on-each-decision* (~1pt agent-prompt edit, deferred
+    to a dedicated session with regression testing -- chicken-and-egg
+    resolves automatically once that lands).
   - S2-03/04 BLOCK 0: general gate is **live** in Nick Fury (36 refs) +
     Coulson (9 refs). **Lite-mode switching is NOT implemented** (no
     `block0_mode` field in meta, no `determine_block0_mode()` branch);

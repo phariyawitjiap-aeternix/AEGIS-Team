@@ -28,6 +28,35 @@ IMPORTANT: Only the main agent (Captain America/Opus) writes this — never a su
 - Collect: number of commits, files changed, insertions, deletions.
 - Also review activity.log entries from this session.
 
+### Step 1b: Decision Audit Summary (if log exists)
+- Check if `.aegis/brain/logs/decision-audit.log` exists.
+- If it exists AND has entries from this session's timeframe (filter by
+  session-start timestamp), summarize:
+  - Total decisions logged
+  - Breakdown by source (instinct, resonance, plan, judgment)
+  - Count of lvl-8 "judgment" decisions (potential hallucination risk per
+    ADR / decision-audit-protocol spec)
+  - Top 3 decisions by confidence (highest) and bottom 3 (lowest)
+  - Any decisions flagged as escalated to Captain America
+- If the log does NOT exist or has no session-timeframe entries, skip this
+  step silently. Do NOT create a bogus summary -- the log being empty means
+  Nick Fury hasn't wired the write step yet (see
+  `.claude/references/decision-audit-protocol.md` S2-02 acceptance
+  criteria). This step is forward-compatible: once Nick Fury logs
+  decisions at runtime, this summary populates automatically.
+- Parse format per `.claude/references/decision-audit-protocol.md`: each
+  line is JSONL with `{ts, decision_id, question, source, confidence, answer}`.
+- Example summary output:
+  ```
+  ## Decision Audit (this session)
+  Total decisions: 12
+  Sources: instinct=4, resonance=3, plan=2, judgment=3
+  Judgment-level (lvl-8) decisions: 3 (25%)
+  Top confidence: D-001 (1.0, instinct), D-005 (0.95, resonance)
+  Low confidence: D-008 (0.45, judgment), D-011 (0.50, judgment)
+  Escalated to Captain America: 0
+  ```
+
 ### Step 2: Write Session Summary
 - Summarize what was accomplished in this session.
 - Format as a bulleted list of completed items.
