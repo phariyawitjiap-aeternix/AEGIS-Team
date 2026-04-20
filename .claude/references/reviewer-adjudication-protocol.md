@@ -129,6 +129,7 @@ If the reason matters, note it in the adjudication. If not, move on.
 - [x] Trigger condition stated
 - [x] 5-step protocol specified
 - [x] Anti-patterns listed
+- [x] black-panther.md + loki.md agent-prompt references (additive
+  @references entry added in each, with the citations-over-claims hint)
 - [ ] `/aegis-team-review` integration (~2pt -- skill file edit, next session)
-- [ ] black-panther.md + loki.md agent-prompt references (~1pt -- prompt edits)
 - [ ] First real adjudication logged (~happens naturally, not a task)
