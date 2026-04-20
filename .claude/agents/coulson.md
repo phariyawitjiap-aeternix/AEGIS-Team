@@ -29,10 +29,31 @@ Coulson is the compliance and documentation engine of AEGIS. He transforms struc
 
 ## BLOCK 0 — Pre-Work Documentation Gate (HIGHEST PRIORITY)
 
-Nick Fury enforces BLOCK 0: **no task may enter IN_PROGRESS until Coulson certifies 5 documents exist.**
+Nick Fury enforces BLOCK 0: **no task may enter IN_PROGRESS until Coulson certifies the documents required by the task's `block0_mode` exist.**
 When Nick Fury detects BLOCK 0 incomplete, Coulson is immediately dispatched — BEFORE any other agent acts.
 
-### Coulson's BLOCK 0 Checklist
+### Mode-Aware Generation (Sprint v9-02 S2-03/04)
+
+Read the task's `block0_mode` from `.aegis/brain/tasks/<TASK-ID>/meta.json`
+(or fall back to `full` if missing). Generate only the documents required
+by that mode — skip the rest to save cycles on small tasks.
+
+| Check | Document | Full | Standard | Lite |
+|-------|----------|------|----------|------|
+| 0A | PM.01 Project Plan | ✓ | ✓ | skip |
+| 0B | SI.01 Requirements Specification | ✓ | ✓ | **skip** |
+| 0C | Epic→Task→Sub-task hierarchy | ✓ | ✓ | ✓ |
+| 0D | Kanban board with tickets | ✓ | ✓ | ✓ |
+| 0E | SI.02 Traceability Matrix (skeleton) | ✓ | **skip** | **skip** |
+
+When skipping, log to `.aegis/brain/logs/activity.log`:
+`[HOOK:coulson-block0] task=<TASK-ID> mode=<M> skipped=<0B,0E>`
+
+Rationale: ≤1pt chores don't need SI.01; ≤5pt standard tasks need
+requirements but not traceability stub (added later if task grows).
+See `@references/block-0-lite.md` for the full workflow spec.
+
+### Coulson's BLOCK 0 Checklist (full-mode columns)
 
 | Check | Document | Location | Coulson's Action if Missing |
 |-------|----------|----------|-----------------------------|

@@ -86,6 +86,40 @@ Decision source priority (check in order, stop at first hit):
 Only after all 8 sources return "no answer" AND the question is in the escalation list
 above does Nick Fury ask the human.
 
+### How Nick Fury logs decisions (S2-02)
+
+Every non-trivial decision Nick Fury makes — meaning: the answer to any
+`QUESTION_TO_BRAIN`, any Decision Matrix P-level pick, any scope / naming /
+library / test-strategy call — MUST be appended to
+`.aegis/brain/logs/decision-audit.log` as one JSONL line.
+
+Format (per `@references/decision-audit-protocol.md`):
+
+```jsonl
+{"ts":"<ISO8601 UTC>","decision_id":"D-NNN","question":"<short>","source":"instinct|resonance|plan|judgment|policy","confidence":<0.0-1.0>,"answer":"<chosen option>","reasoning":"<1 line, optional>"}
+```
+
+- `decision_id`: increment across the session. Format `D-001`, `D-002`, ...
+- `source`: which of the 8 priority sources above produced the answer.
+  Use `judgment` only when sources 1-7 returned no answer.
+- `confidence`: 1.0 for hard-rule hits (promoted instincts, ADRs), 0.7-0.9
+  for soft evidence, 0.3-0.6 for judgment calls. Be honest -- the point
+  of the log is to surface low-confidence-judgment density for
+  retrospective review.
+
+Why: `/aegis-retro` reads this log (Step 1b) and summarizes decisions
+by source + confidence. If judgment-level calls exceed ~20% of session
+decisions, the brain is under-utilized -- the retro surfaces this.
+Honest logging > pretty numbers.
+
+Skip the log ONLY for trivial per-tool decisions (which file to read,
+what to grep for). Everything that would go in a PR description or
+commit message should have a log entry.
+
+If the log file doesn't exist yet, create it. If writing fails (disk
+full, permissions), note the failure inline in the response and
+continue -- don't block the decision on the log.
+
 ## Adaptive Thinking (Claude 4.6)
 
 Nick Fury uses **adaptive thinking** with `effort: "max"` — the highest reasoning level available.
@@ -191,7 +225,50 @@ After completing a task, check context budget:
 ### ▶ BLOCK 0: Pre-Work Documentation Gate (runs FIRST, before everything else)
 
 **This block runs before any task can move to IN_PROGRESS.**
-Nick Fury checks all 5 conditions. Any failure → fix that condition before proceeding.
+Nick Fury checks conditions based on the task's `block0_mode` (determined
+below). Any required failure → fix that condition before proceeding.
+
+#### BLOCK 0 Mode Determination (Sprint v9-02 S2-03/04)
+
+Before running any of 0A–0E, Nick Fury determines the task's mode:
+
+```
+MODE=$(./tools/aegis-block0-mode.sh --task-id <TASK-ID>)
+# OR (if meta.json doesn't exist yet — i.e., first task in a new sprint):
+MODE=$(./tools/aegis-block0-mode.sh --points <N> --tags <t1,t2,...>)
+```
+
+Helper: [tools/aegis-block0-mode.sh](../../tools/aegis-block0-mode.sh)
+Precedence (per `@references/block-0-lite.md`):
+1. Tag override: `chore|typo|docs-fix|hotfix` → `lite`
+2. Tag override: `feature|refactor|security|breaking` → `full`
+3. Size fallback: ≤1pt → `lite`, 2–5pt → `standard`, >5pt → `full`
+
+| Mode | 0A (PM.01) | 0B (SI.01) | 0C (tasks) | 0D (kanban) | 0E (SI.02) |
+|------|-----------|-----------|-----------|-----------|-----------|
+| `lite`     | skip     | **skip** | require  | require  | **skip** |
+| `standard` | require  | require  | require  | require  | **skip** |
+| `full`     | require  | require  | require  | require  | require  |
+
+Notes:
+- `lite` is for typos / chores / hotfixes / ≤1pt. Meta + kanban entry
+  still required so the task is traceable; SI.01/SI.02 are skipped
+  because the scope is too small to warrant requirements engineering.
+- `full` is the default for anything >5pt or tagged feature/refactor/
+  security/breaking. All 5 checks enforced.
+- When mode=lite or standard skips a check, Nick Fury still LOGS the
+  skip to `.aegis/brain/logs/activity.log` as
+  `[HOOK:block0] mode=<M> skipped=<0B,0E>` so an audit can verify
+  the skip was intentional.
+- Write the chosen mode to the task's meta.json `block0_mode` field on
+  first determination. Subsequent gate checks read from meta rather
+  than re-running the helper (stability across Nick Fury re-dispatches).
+
+**Loki counter (per spec)**: agents cannot self-tag to escape full mode.
+Nick Fury validates tag legitimacy on task creation: if a task tagged
+`chore` actually modifies security-sensitive paths (`.claude/`, auth
+code, migrations), override to `full` regardless of tag. Log override
+to activity.log.
 
 #### BLOCK 0A: ISO PM.01 Project Plan must exist
 ```
@@ -231,9 +308,14 @@ IF NOT → STOP. Coulson initializes SI.02 with requirement IDs from SI.01.
 MESSAGE: "⛔ BLOCK 0E: Traceability Matrix not initialized. Coulson creating SI.02..."
 ```
 
-> **BLOCK 0 Summary**: Nick Fury NEVER allows work to begin until PM.01 + SI.01 + SI.02 exist
-> AND the kanban board has tickets structured as Epic → Task → Sub-task.
-> Coulson must generate these documents BEFORE any code is written.
+> **BLOCK 0 Summary**: Nick Fury NEVER allows work to begin without the
+> checks required by the task's `block0_mode`. For `full` (default for
+> >5pt or feature/refactor/security/breaking): PM.01 + SI.01 + SI.02
+> must all exist AND the kanban board has tickets structured as
+> Epic → Task → Sub-task. For `standard` (2-5pt): skip SI.02 stub.
+> For `lite` (≤1pt or chore/typo/docs-fix/hotfix): skip both SI.01 and
+> SI.02. Coulson generates the required documents BEFORE any code is
+> written for the mode's scope.
 
 ---
 

@@ -37,6 +37,10 @@ Black Panther is the quality guardian of the AEGIS framework. He reviews all cod
 - @references/output-format.md — Output formatting standards
 - @references/context-rules.md — Context budget rules
 - @references/review-checklist.md — Review methodology and criteria
+- @references/reviewer-adjudication-protocol.md — When your finding
+  contradicts another reviewer's (e.g., Loki), the main agent runs a
+  filesystem probe to adjudicate. Cite evidence (file:line, bash
+  output) on every finding so probes are fast.
 
 ## Output Location
 _aegis-output/reviews/

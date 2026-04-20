@@ -127,3 +127,18 @@ _aegis-output/, and preserves originals via git. "Nothing is truly deleted."
 - The original files remain in `.aegis/brain/learnings/` as the source of truth.
 - Display: "Original learnings preserved. Git history is your archive."
 - Optionally suggest: `git add .aegis/brain/ && git commit -m "distill: promote [N] patterns to resonance"`
+
+### Step 8: Reset Distill Counter (Sprint v9-06 S6-01)
+- Reset `.aegis/brain/state/distill-state.json` so the session-start reminder stops firing.
+- The recommended way is to call the helper:
+  ```bash
+  ./tools/aegis-distill-reset.sh
+  ```
+- If the helper is missing, fall back to writing the JSON directly:
+  ```bash
+  mkdir -p .aegis/brain/state
+  THRESHOLD="${AEGIS_DISTILL_THRESHOLD:-3}"
+  NOW=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+  printf '{\n  "sessions_since_last_distill": 0,\n  "last_distill_at": "%s",\n  "threshold": %s\n}\n' "$NOW" "$THRESHOLD" > .aegis/brain/state/distill-state.json
+  ```
+- Confirm: "Distill counter reset. Session-start reminder is off until 3 more sessions pass."

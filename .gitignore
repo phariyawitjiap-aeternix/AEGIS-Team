@@ -28,6 +28,13 @@ venv/
 
 # AEGIS v9 migration backup (POC -- do not commit safety net)
 .aegis-backup/
+.claude/settings.json.v8-backup
+
+# Claude Code worktrees (Sprint v9-05 isolation -- transient; merged via aegis-merge-worktree.sh)
+.claude/worktrees/
+
+# ADR-004 Phase 2: maintainer-mode grant state (transient one-shot consume markers)
+.aegis/brain/state/
 
 # Next.js build
 dashboard/.next/

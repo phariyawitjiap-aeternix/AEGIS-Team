@@ -28,6 +28,60 @@ block() {
     exit 2
 }
 
+# ── ADR-004 Phase 2: Maintainer-mode AUTHORIZATION ────────────────────────
+# Token format: AEGIS_MAINTAINER_MODE="<path>|<nonce>|<expiry-epoch>"
+# Generated via tools/aegis-maintainer-grant.sh, one-shot, 60s TTL.
+# If the grant is valid AND the target file matches, skip all blocking checks.
+# Audit every outcome (allow + deny reasons) to .aegis/brain/logs/maintainer-mode.log.
+MM_LOG=".aegis/brain/logs/maintainer-mode.log"
+MM_STATE_DIR=".aegis/brain/state/maintainer-grants"
+
+mm_audit() {
+    local decision="$1"
+    local reason="$2"
+    local nonce_short="$3"
+    [[ -d "$(dirname "$MM_LOG")" ]] || return 0
+    local ts
+    ts=$(date -u +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || echo "unknown")
+    echo "[${ts}] [PHASE2-${decision}] nonce=${nonce_short} tool=${TOOL} file=${FILE} reason=\"${reason}\"" >> "$MM_LOG" 2>/dev/null || true
+}
+
+if [[ -n "${AEGIS_MAINTAINER_MODE:-}" ]]; then
+    # Parse token: split on '|' into path, nonce, expiry
+    IFS='|' read -r MM_PATH MM_NONCE MM_EXPIRY <<< "${AEGIS_MAINTAINER_MODE}"
+    MM_NONCE_SHORT="${MM_NONCE:0:8}"
+
+    if [[ -z "${MM_PATH:-}" || -z "${MM_NONCE:-}" || -z "${MM_EXPIRY:-}" ]]; then
+        # Malformed grant -- fail closed, fall through to normal blocking
+        mm_audit "DENY" "malformed grant (expected <path>|<nonce>|<expiry>)" "${MM_NONCE_SHORT:-none}"
+    elif ! [[ "$MM_EXPIRY" =~ ^[0-9]+$ ]]; then
+        mm_audit "DENY" "malformed expiry (not epoch seconds)" "${MM_NONCE_SHORT}"
+    else
+        MM_NOW=$(date -u +%s 2>/dev/null || echo 0)
+        MM_STATE_FILE="${MM_STATE_DIR}/${MM_NONCE}.used"
+
+        # Derive repo-relative target for comparison against grant path
+        # FILE may be absolute (e.g. /Users/.../AEGIS-Team/.claude/...) or relative.
+        MM_REPO_ROOT="$(pwd)"
+        MM_TARGET_REL="${FILE#${MM_REPO_ROOT}/}"
+
+        if [[ "$MM_NOW" -gt "$MM_EXPIRY" ]]; then
+            mm_audit "DENY" "grant expired ($((MM_NOW - MM_EXPIRY))s past expiry)" "${MM_NONCE_SHORT}"
+        elif [[ -f "$MM_STATE_FILE" ]]; then
+            mm_audit "DENY" "grant already consumed (one-shot)" "${MM_NONCE_SHORT}"
+        elif [[ "$MM_TARGET_REL" != "$MM_PATH" && "$FILE" != "$MM_PATH" ]]; then
+            mm_audit "DENY" "path mismatch (grant=${MM_PATH}, target=${MM_TARGET_REL})" "${MM_NONCE_SHORT}"
+        else
+            # All checks passed -- consume grant and allow write
+            mkdir -p "$MM_STATE_DIR" 2>/dev/null || true
+            echo "consumed=$(date -u +%s) tool=${TOOL} file=${FILE}" > "$MM_STATE_FILE" 2>/dev/null || true
+            mm_audit "ALLOW" "grant consumed for ${MM_PATH}" "${MM_NONCE_SHORT}"
+            # Skip all subsequent blocking categories -- maintainer authorized
+            exit 0
+        fi
+    fi
+fi
+
 # ── Protected config patterns ─────────────────────────────────────────────
 # Category 1: JavaScript/TypeScript lint + format configs
 JS_PATTERNS=(

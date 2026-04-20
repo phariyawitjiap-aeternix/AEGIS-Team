@@ -152,10 +152,24 @@ This ensures auto-learned patterns are immediately available in next agent's con
 - [x] MEMORY.md format specified
 - [x] Read/write protocol defined
 - [x] Conflict resolution rule (file wins)
-- [ ] aegis migrate brain command implemented (S4-03 -- design done, impl deferred)
-- [ ] memory_20250818 wrapper in Nick Fury (S4-02 -- design done, impl deferred)
-- [ ] Auto-Learn updated to use brain_write (S4-04 -- design done, impl deferred)
-- [ ] Adversarial test cases (S4-05 -- design done, impl deferred)
-- [ ] Benchmarks (S4-06 -- script TBD)
+- [x] brain_write library + CLI shipped (`tools/aegis-brain-write.sh`, atomic write, zsh-compatible sourcing)
+- [x] Session-start brain sync shipped (`tools/aegis-brain-sync.sh` + `.claude/hooks/session-start.sh`)
+- [x] Adversarial test cases shipped (S4-05 -- `tools/aegis-brain-adversarial-test.sh`, 9/9 scenarios pass)
+- [x] Benchmarks shipped (S4-06 -- `tools/aegis-brain-benchmark.sh`, write ~10-13ms, sync ~50ms)
+- [x] S4-02 main-agent proxy pattern shipped (brain_write emits `AEGIS_MEMORY_WRITE: {...}` directive)
+- [ ] Nick Fury dispatch loop wires the proxy directives into `memory_20250818.write` — blocked on `memory_20250818` not being available in main-agent runtime. Documented workaround: proxy directive, replayed manually if needed.
+- [~] aegis migrate brain command (S4-03) -- **closed as UNNEEDED** for
+  this repo: `.aegis/brain/` already exists as the authoritative tree,
+  migration from `_aegis-brain/` was completed in an earlier session.
+  Backup is retained at `.aegis-backup/_aegis-brain/` (untracked). If
+  a future AEGIS-installed project still uses the old layout, implement
+  this command at that time; don't pre-build it for an empty audience.
 
-**Sprint 4 Status**: Design complete. Implementation deferred to real engineering session (requires Claude Code SDK access for memory_20250818 tool wiring + test infrastructure).
+**Sprint 4 Status**: Shipped (Tier 1 file layer complete + proxy pattern). The
+only remaining direct-wire of `memory_20250818` is gated on Anthropic exposing
+the tool in the subagent / main-agent runtime. Until then, `MEMORY.md` +
+`brain_write` provide the same observable properties.
+
+**Audit note (2026-04-20)**: earlier versions of this spec listed
+S4-05/S4-06 as "design done, impl deferred". Both are implemented and tested.
+Drift was purely tracking, not work.

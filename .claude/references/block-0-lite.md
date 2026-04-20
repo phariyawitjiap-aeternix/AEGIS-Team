@@ -137,14 +137,77 @@ All modes log to `.aegis/brain/logs/block0-decisions.log`:
 
 ## Acceptance Criteria (S2-03 + S2-04)
 
-- [ ] Reference doc explains 3 modes (this file)
-- [ ] Decision logic documented (Python pseudocode above)
-- [ ] meta.json schema includes `block0_mode` field
-- [ ] Nick Fury agent updated to call `determine_block0_mode()` on task creation
-- [ ] Coulson agent updated to skip artifacts based on mode
-- [ ] Audit log appends per task
-- [ ] Tested: 1pt typo fix uses lite mode (no SI.01)
-- [ ] Tested: 8pt feature uses full mode (all artifacts)
+- [x] Reference doc explains 3 modes (this file)
+- [x] Decision logic documented (Python pseudocode above)
+- [x] Decision logic shipped as testable helper (`tools/aegis-block0-mode.sh`,
+  26/26 assertions)
+- [x] meta.json schema extension documented (optional `block0_mode` field
+  accepted by helper; `labels` and `tags` both supported for compatibility)
+- [x] Nick Fury calls `determine_block0_mode()` per task (agent-prompt edit
+  in `.claude/agents/nick-fury.md` BLOCK 0 section: invokes helper, branches
+  0A/0B/0E enforcement by mode)
+- [x] Coulson skips artifacts based on mode (agent-prompt edit in
+  `.claude/agents/coulson.md`: mode-aware generation matrix, logs each skip
+  to activity.log)
+- [x] Audit log appends per task (skips logged to activity.log with
+  `task=<ID> mode=<M> skipped=<0B,0E>` format)
+- [ ] Tested: 1pt typo fix uses lite mode (behavioral test -- not run,
+  requires a live /aegis-team-build cycle)
+- [ ] Tested: 8pt feature uses full mode (behavioral test -- not run)
+
+**Audit note (2026-04-20)**: the BLOCK 0 gate itself is fully shipped and
+live. What remains is the **lite / skip mode switching** for small tasks,
+which requires: (a) `block0_mode` field in task meta schema, (b) the
+`determine_block0_mode()` branch in Nick Fury's pre-work check, and (c)
+Coulson skipping SI.01/SI.02 when mode=lite. Scope estimate: ~4pt.
+
+**Session-5-extended update (2026-04-20 late PM)**: the determiner
+function itself is now shipped as `tools/aegis-block0-mode.sh` with
+26/26 test assertions (`tools/aegis-block0-mode-test.sh`). Usage:
+
+```
+./tools/aegis-block0-mode.sh --points <N> [--tags <t1,t2,...>]
+./tools/aegis-block0-mode.sh --task-id PROJ-T-NNN    # reads meta.json
+```
+
+Emits: `lite` / `standard` / `full` on stdout. Precedence order from
+the spec is preserved: lite-tag (chore/typo/docs-fix/hotfix) > full-tag
+(feature/refactor/security/breaking) > size (<=1 lite, 2-5 standard,
+>5 full).
+
+### meta.json schema (v9-02 S2-03/04)
+
+Tasks MAY include a `block0_mode` field to pin the mode explicitly. If
+present, the helper honors it regardless of points/labels. This is the
+stable source of truth across Nick Fury re-dispatches.
+
+```jsonc
+{
+  "id": "PROJ-T-042",
+  "title": "Fix typo in README",
+  "points": 1,
+  "labels": ["typo", "docs"],
+  // new: optional, pinned by Nick Fury on first BLOCK 0 check
+  "block0_mode": "lite"
+}
+```
+
+Compatibility: `labels` (existing AEGIS convention) and `tags` (original
+spec term) are both accepted by the helper -- no migration needed for
+existing task files.
+
+### Agent-prompt wiring (S2-03/04 completion)
+
+Nick Fury (`.claude/agents/nick-fury.md`) now reads the mode before
+BLOCK 0 checks and skips 0A/0B/0E by mode per the gate table.
+
+Coulson (`.claude/agents/coulson.md`) now skips generating SI.01 when
+mode=lite and SI.02 stub when mode in {lite, standard}; logs each skip
+to `activity.log` as `[HOOK:coulson-block0] task=<ID> mode=<M> skipped=<items>`.
+
+Remaining: behavioral validation — run `/aegis-team-build` on a 1pt typo
+(expect lite, no SI.01/SI.02) and an 8pt feature (expect full, all five
+artifacts). Not in-session work; belongs in the next test pass.
 
 ## Loki Counter to Lite Mode
 

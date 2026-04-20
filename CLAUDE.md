@@ -45,9 +45,31 @@ Default autonomy: L3 (Autonomous) with Nick Fury active
 | /aegis-status | Check all agent progress |
 | /aegis-mode | Switch autonomy level or profile |
 
-## v9 Transition State (in progress)
-- Brain migrated: `_aegis-brain/` → `.aegis/brain/` (POC dogfood complete)
-- Backup: `.aegis-backup/_aegis-brain/` (untracked, safety net for rollback)
-- Plan: [AEGIS_v9_UPGRADE_PLAN.md](AEGIS_v9_UPGRADE_PLAN.md) (15 sprints, 482pt, 7 ADRs)
-- Migration tool: [tools/aegis-migrate-consolidate.sh](tools/aegis-migrate-consolidate.sh)
-- Out-of-scope (future v9 work): installer, dashboard, README, CLAUDE_*.md lift
+## v9 Transition State (largely shipped)
+
+Spec-freshness audit on 2026-04-20 found the project is ~90% complete.
+See [.claude/references/v9-follow-ups.md](.claude/references/v9-follow-ups.md)
+for the single-page breakdown.
+
+**Shipped in the meta-repo:**
+- Sprints v9-01 through v9-06: foundation hardening, resilience design,
+  brain seeding, memory-tool file layer, worktree isolation, agent
+  consolidation (13→10), ADR-004 maintainer-mode override.
+- Brain migrated: `.aegis/brain/` (POC dogfood complete).
+- Backup retained: `.aegis-backup/_aegis-brain/` (untracked rollback net).
+
+**Remaining in-repo work (~15-20pt)**:
+- S2-02 retro-summary wiring (needs Nick Fury to first log decisions at runtime).
+- S2-03/04 BLOCK 0 lite-mode switching (general gate is live; lite-mode skip logic not wired).
+- S4-02 Nick Fury proxy dispatch loop (blocked on `memory_20250818` tool availability).
+- S6-06 29→12 command cut (deferred pending user-pain signal).
+
+**Correctly deferred (not in-repo work)**: v9-07/08/09 brain-tier (infra),
+v9-10/11 plugin (SDK), v9-12/13 MCP (infra), v9-14/15 migration+GA (6mo
+calendar time).
+
+**Plan doc**: [AEGIS_v9_UPGRADE_PLAN.md](AEGIS_v9_UPGRADE_PLAN.md) — the original
+15-sprint, 482pt plan. Treat as historical architecture reference; current
+state lives in `v9-follow-ups.md`.
+
+**Migration tool**: [tools/aegis-migrate-consolidate.sh](tools/aegis-migrate-consolidate.sh)

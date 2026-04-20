@@ -107,13 +107,30 @@ Recurring judgment topics (consider creating instincts):
 
 ## Acceptance Criteria (S2-02)
 
-- [ ] Reference doc explains audit format (this file)
-- [ ] Counter file schema defined
-- [ ] Auto-escalation trigger documented
-- [ ] Nick Fury agent updated to write audit entries
-- [ ] Aegis-retro command updated to summarize audit
-- [ ] Tested: 5 simulated decisions logged correctly
-- [ ] Tested: judgment counter triggers Captain defer at threshold
+- [x] Reference doc explains audit format (this file)
+- [x] Counter file schema defined (above)
+- [x] Auto-escalation trigger documented (above)
+- [x] Nick Fury agent updated to write audit entries (`@references/decision-audit-protocol.md` + QUESTION_TO_BRAIN format referenced in `.claude/agents/nick-fury.md`)
+- [x] Aegis-retro command updated to summarize audit (Step 1b added in
+  `.claude/commands/aegis-retro.md`: reads `.aegis/brain/logs/decision-audit.log`
+  if present, summarizes decisions by source / confidence / judgment-level
+  count / escalation count. Silently skips if log missing, so it's forward-
+  compatible with Nick Fury's future runtime write-integration.)
+- [x] Nick Fury runtime appends to decision-audit.log per decision
+  (agent-prompt instruction added in `.claude/agents/nick-fury.md`
+  under "How Nick Fury logs decisions (S2-02)": JSONL format,
+  decision_id convention, source + confidence taxonomy, skip rule for
+  trivial calls, graceful failure if disk write fails. Additive-only
+  -- doesn't override existing decision logic, only adds the log step.)
+- [ ] Tested: 5 simulated decisions logged correctly (not run -- requires
+  live Nick Fury session with instrumented decisions)
+- [ ] Tested: judgment counter triggers Captain defer at threshold (not run
+  -- same as above)
+
+**Audit note (2026-04-20)**: doc + Nick Fury reference + retro-summary
+wiring are in place. The chicken-and-egg is now just on Nick Fury's
+runtime write step (agent prompt edit). When that lands, the retro step
+activates automatically -- no second deployment needed.
 
 ## Privacy Note
 

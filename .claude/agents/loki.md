@@ -109,6 +109,10 @@ Loki does NOT review: hotfixes (P0/P1), trivial typo fixes, documentation-only P
 - @references/quality-protocol.md — Review checklist, severity tags, gate criteria
 - @references/context-rules.md — Context budget rules
 - @references/adaptive-thinking-guide.md — Use `effort: max` for adversarial review
+- @references/reviewer-adjudication-protocol.md — When your finding
+  contradicts another reviewer's (e.g., Black Panther), the main agent
+  runs a filesystem probe to adjudicate. Cite evidence (file:line,
+  bash output) on every finding so probes are fast.
 
 ## Output Location
 _aegis-output/adversarial/ (critiques), _aegis-output/reviews/ (approval records)
