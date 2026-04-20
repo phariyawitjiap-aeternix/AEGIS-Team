@@ -326,6 +326,67 @@ else
 fi
 
 # ============================================
+# Scenario H: Deep-nested path creation
+# brain_write must create all missing parent directories when writing
+# to a path several levels deep that does not yet exist.
+# Target: instincts/pending/nested/deep/subdir/new-instinct.yaml
+# At test start only instincts/pending/ exists in the fake brain.
+# ============================================
+echo ""
+echo "--- Scenario H: Deep-nested path creation ---"
+
+H_REL="instincts/pending/nested/deep/subdir/new-instinct.yaml"
+H_CONTENT="name: deep-test
+confidence: 0.5"
+H_FULL="${FAKE_BRAIN}/${H_REL}"
+
+# Confirm the intermediate directories do NOT yet exist before the write
+rm -rf "${FAKE_BRAIN}/instincts/pending/nested"
+
+bash "$TEST_BRAIN_WRITE" "$H_REL" "$H_CONTENT"
+
+H_PASS=true
+H_ISSUES=""
+
+# Check 1: target file exists
+if [[ ! -f "$H_FULL" ]]; then
+    H_PASS=false
+    H_ISSUES="${H_ISSUES} file-missing"
+fi
+
+# Check 2: every intermediate directory was created
+for H_DIR in \
+    "${FAKE_BRAIN}/instincts/pending/nested" \
+    "${FAKE_BRAIN}/instincts/pending/nested/deep" \
+    "${FAKE_BRAIN}/instincts/pending/nested/deep/subdir"; do
+    if [[ ! -d "$H_DIR" ]]; then
+        H_PASS=false
+        H_ISSUES="${H_ISSUES} dir-missing:$(basename "$H_DIR")"
+    fi
+done
+
+# Check 3: file contents match exactly (printf appends a newline, so compare accordingly)
+H_EXPECTED=$(printf '%s\n' "$H_CONTENT")
+H_ACTUAL=$(cat "$H_FULL" 2>/dev/null || echo "MISSING")
+if [[ "$H_ACTUAL" != "$H_EXPECTED" ]]; then
+    H_PASS=false
+    H_ISSUES="${H_ISSUES} content-mismatch(expected=$(printf '%s' "$H_EXPECTED" | wc -c | tr -d ' ')b,got=$(printf '%s' "$H_ACTUAL" | wc -c | tr -d ' ')b)"
+fi
+
+# Check 4: no .tmp files left behind anywhere under the new path
+H_TMP_COUNT=$(find "${FAKE_BRAIN}/instincts/pending/nested" -name "*.tmp" 2>/dev/null | wc -l | tr -d ' ')
+if [[ "$H_TMP_COUNT" -gt 0 ]]; then
+    H_PASS=false
+    H_ISSUES="${H_ISSUES} tmp-files-left:${H_TMP_COUNT}"
+fi
+
+if $H_PASS; then
+    pass "H: deep-nested path creation -- all dirs created, file written correctly, no .tmp residue"
+else
+    fail "H: deep-nested path creation" "issues:${H_ISSUES}"
+fi
+
+# ============================================
 # Summary
 # ============================================
 echo ""
