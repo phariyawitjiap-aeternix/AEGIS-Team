@@ -90,6 +90,57 @@ echo "Unrelated tags:"
 assert_mode 3 "backend" "standard"
 assert_mode 8 "frontend,ui" "full"
 
+# --- --task-id reading from meta.json (behavioral scenarios) ---
+echo ""
+echo "Task-id meta.json scenarios:"
+SCRATCH_TASKS=$(mktemp -d -t aegis-block0-tasks.XXXXXX)
+cleanup_tasks() { rm -rf "$SCRATCH_TASKS"; }
+trap cleanup_tasks EXIT
+
+# Build a throwaway .aegis/brain/tasks layout under SCRATCH_TASKS so --task-id
+# doesn't touch real repo state. We temporarily chdir for the test.
+ORIG_PWD="$PWD"
+mkdir -p "${SCRATCH_TASKS}/.aegis/brain/tasks/TA" "${SCRATCH_TASKS}/.aegis/brain/tasks/TB" "${SCRATCH_TASKS}/.aegis/brain/tasks/TC" "${SCRATCH_TASKS}/.aegis/brain/tasks/TD" "${SCRATCH_TASKS}/.aegis/brain/tasks/TE"
+# Copy helper + sibling tools expected structure
+cp -R "$REPO_ROOT/tools" "$SCRATCH_TASKS/tools"
+
+cat > "${SCRATCH_TASKS}/.aegis/brain/tasks/TA/meta.json" <<EOF_TA
+{"id":"TA","points":1,"labels":["typo","docs"]}
+EOF_TA
+cat > "${SCRATCH_TASKS}/.aegis/brain/tasks/TB/meta.json" <<EOF_TB
+{"id":"TB","points":8,"labels":["feature","backend"]}
+EOF_TB
+cat > "${SCRATCH_TASKS}/.aegis/brain/tasks/TC/meta.json" <<EOF_TC
+{"id":"TC","points":3,"labels":["cleanup"]}
+EOF_TC
+cat > "${SCRATCH_TASKS}/.aegis/brain/tasks/TD/meta.json" <<EOF_TD
+{"id":"TD","points":10,"labels":["feature"],"block0_mode":"lite"}
+EOF_TD
+cat > "${SCRATCH_TASKS}/.aegis/brain/tasks/TE/meta.json" <<EOF_TE
+{"id":"TE","points":10,"labels":["chore"]}
+EOF_TE
+
+assert_task_mode() {
+    local task="$1"
+    local expected="$2"
+    local actual
+    # Invoke the COPIED helper (its SCRIPT_DIR resolves to SCRATCH_TASKS/tools,
+    # so REPO_ROOT resolves to SCRATCH_TASKS). The --task-id lookup then hits
+    # the scratch meta.json, not the real repo.
+    actual=$("$SCRATCH_TASKS/tools/aegis-block0-mode.sh" --task-id "$task" 2>/dev/null)
+    if [[ "$actual" == "$expected" ]]; then
+        pass "--task-id $task -> $expected"
+    else
+        fail "--task-id $task -> got '$actual', expected '$expected'"
+    fi
+}
+
+assert_task_mode "TA" "lite"       # 1pt typo
+assert_task_mode "TB" "full"       # 8pt feature
+assert_task_mode "TC" "standard"   # 3pt cleanup (no tag override)
+assert_task_mode "TD" "lite"       # pinned block0_mode wins
+assert_task_mode "TE" "lite"       # chore tag beats size
+
 # --- Error cases ---
 echo ""
 echo "Error handling:"
