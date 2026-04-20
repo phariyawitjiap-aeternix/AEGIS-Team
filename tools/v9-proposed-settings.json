@@ -1,0 +1,134 @@
+{
+  "_README": "AEGIS v9 hardened permissions (S1-04 + S1-05). Apply BETWEEN sessions: cp tools/v9-proposed-settings.json .claude/settings.json. Do NOT apply mid-session (guard-write.sh blocks). After apply, restart Claude Code. Backup current first: cp .claude/settings.json .claude/settings.json.v8-backup",
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "CLAUDE_CODE_TASK_LIST_ID": "aegis-shared-tasks",
+    "AEGIS_HOOK_PROFILE": "standard"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/run-with-flags.sh guard-bash .claude/hooks/guard-bash.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/run-with-flags.sh guard-write .claude/hooks/guard-write.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/run-with-flags.sh post-tool-use .claude/hooks/post-tool-use.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/run-with-flags.sh post-edit-accumulate .claude/hooks/post-edit-accumulate.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/run-with-flags.sh on-stop .claude/hooks/on-stop.sh"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/aegis-version-check.sh"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "_comment_design": "AEGIS v9 hardened permission model (S1-04 + S1-05). defaultMode acceptEdits auto-approves Edit/Write only. Bash requires explicit allow. Removed wildcards on rm/curl/docker/kubectl/terraform that previously bypassed safety. Allow list = 20 safe commands (down from 60+). Deny list = 26 dangerous patterns (up from 8).",
+    "defaultMode": "acceptEdits",
+    "allow": [
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
+      "Agent",
+      "TeamCreate",
+      "TeamDelete",
+      "SendMessage",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(wc:*)",
+      "Bash(grep:*)",
+      "Bash(rg:*)",
+      "Bash(find:*)",
+      "Bash(echo:*)",
+      "Bash(date:*)",
+      "Bash(pwd:*)",
+      "Bash(diff:*)",
+      "Bash(test:*)",
+      "Bash(jq:*)",
+      "Bash(mkdir:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(./tools/*)"
+    ],
+    "deny": [
+      "Bash(rm -rf /:*)",
+      "Bash(rm -rf /*:*)",
+      "Bash(rm -rf ~:*)",
+      "Bash(rm -rf .:*)",
+      "Bash(rm -rf ./:*)",
+      "Bash(rm -rf ../:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git push --force-with-lease:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git clean -f:*)",
+      "Bash(git clean -fd:*)",
+      "Bash(git commit --amend:*)",
+      "Bash(git filter-branch:*)",
+      "Bash(kubectl delete:*)",
+      "Bash(docker rm -f:*)",
+      "Bash(docker system prune:*)",
+      "Bash(terraform destroy:*)",
+      "Bash(curl * | bash:*)",
+      "Bash(curl * | sh:*)",
+      "Bash(wget * | bash:*)",
+      "Bash(wget * | sh:*)",
+      "Bash(eval *:*)",
+      "Bash(sudo:*)",
+      "Bash(chmod 777*:*)",
+      "Bash(chmod -R 777*:*)"
+    ]
+  }
+}

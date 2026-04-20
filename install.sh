@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 # ============================================================================
-# AEGIS v8.2.1 Installer
+# AEGIS Installer
 # Creates/updates the AEGIS framework. See .claude/references/update-protocol.md
+# Version is read from VERSION file at repo root (single source of truth, S1-01).
 # ============================================================================
 
 set -euo pipefail
 
-VERSION="8.2.1"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+VERSION="$(cat "${SCRIPT_DIR}/VERSION" 2>/dev/null | tr -d '[:space:]' || echo "unknown")"
 
 # --------------------------------------------------------------------------
 # Verify source files exist

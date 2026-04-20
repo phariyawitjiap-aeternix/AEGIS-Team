@@ -1,4 +1,4 @@
-# AEGIS Skills Catalog v8.2
+# AEGIS Skills Catalog v8.4
 
 ## Profiles
 | Profile | Skills | Context |

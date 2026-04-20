@@ -1,7 +1,7 @@
 # Project Identity
 
 ## Name
-AEGIS v8.3 — AI Agent Team Framework for Claude Code
+AEGIS v8.4 — AI Agent Team Framework for Claude Code (v9 in progress)
 
 ## Stack
 - Language: Markdown (skill/command definitions), Bash (installer)

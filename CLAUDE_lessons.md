@@ -1,8 +1,8 @@
-# AEGIS v8.2.1 -- Lessons Learned
+# AEGIS v8.4 -- Lessons Learned
 
 > This file is a living document. Updated via /aegis-retro at the end of each session.
 > New entries are appended at the top of each section.
-> Last updated: 2026-03-30 (v8.2.1 upgrade audit)
+> Last updated: 2026-04-20 (v9 dogfood + Sprint 1)
 
 ---
 

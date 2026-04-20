@@ -13,7 +13,9 @@
 
 set -euo pipefail
 
-VERSION="8.4"
+# VERSION is set after git clone (read from VERSION file in repo).
+# Initial value used for early "Downloading AEGIS v..." message before clone.
+VERSION="(loading…)"
 REPO_URL="https://github.com/phariyawitjiap-aeternix/AEGIS-Team.git"
 TMP_DIR="/tmp/aegis-install-$$"
 TARGET_DIR="$(pwd)"
@@ -141,10 +143,14 @@ else
 fi
 
 # Clone to temp
-info "Downloading AEGIS v${VERSION}..."
+info "Downloading AEGIS..."
 rm -rf "$TMP_DIR"
 git clone --depth 1 --quiet "$REPO_URL" "$TMP_DIR"
-success "Downloaded to temp"
+# Read VERSION from cloned repo (single source of truth, S1-01)
+if [[ -f "${TMP_DIR}/VERSION" ]]; then
+    VERSION="$(cat "${TMP_DIR}/VERSION" | tr -d '[:space:]')"
+fi
+success "Downloaded AEGIS v${VERSION}"
 
 # ── UPGRADE: backup + remove old files ───────────────────────────────────────
 if [[ "$UPGRADE" == true ]] && [[ -f "${TARGET_DIR}/CLAUDE.md" ]]; then

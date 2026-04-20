@@ -1,4 +1,4 @@
-# AEGIS v8.2.1 -- Safety Rules
+# AEGIS v8.4 -- Safety Rules
 
 > Trigger: "safety rules" | Thai trigger: "กฎความปลอดภัย"
 
