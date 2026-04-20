@@ -86,6 +86,40 @@ Decision source priority (check in order, stop at first hit):
 Only after all 8 sources return "no answer" AND the question is in the escalation list
 above does Nick Fury ask the human.
 
+### How Nick Fury logs decisions (S2-02)
+
+Every non-trivial decision Nick Fury makes — meaning: the answer to any
+`QUESTION_TO_BRAIN`, any Decision Matrix P-level pick, any scope / naming /
+library / test-strategy call — MUST be appended to
+`.aegis/brain/logs/decision-audit.log` as one JSONL line.
+
+Format (per `@references/decision-audit-protocol.md`):
+
+```jsonl
+{"ts":"<ISO8601 UTC>","decision_id":"D-NNN","question":"<short>","source":"instinct|resonance|plan|judgment|policy","confidence":<0.0-1.0>,"answer":"<chosen option>","reasoning":"<1 line, optional>"}
+```
+
+- `decision_id`: increment across the session. Format `D-001`, `D-002`, ...
+- `source`: which of the 8 priority sources above produced the answer.
+  Use `judgment` only when sources 1-7 returned no answer.
+- `confidence`: 1.0 for hard-rule hits (promoted instincts, ADRs), 0.7-0.9
+  for soft evidence, 0.3-0.6 for judgment calls. Be honest -- the point
+  of the log is to surface low-confidence-judgment density for
+  retrospective review.
+
+Why: `/aegis-retro` reads this log (Step 1b) and summarizes decisions
+by source + confidence. If judgment-level calls exceed ~20% of session
+decisions, the brain is under-utilized -- the retro surfaces this.
+Honest logging > pretty numbers.
+
+Skip the log ONLY for trivial per-tool decisions (which file to read,
+what to grep for). Everything that would go in a PR description or
+commit message should have a log entry.
+
+If the log file doesn't exist yet, create it. If writing fails (disk
+full, permissions), note the failure inline in the response and
+continue -- don't block the decision on the log.
+
 ## Adaptive Thinking (Claude 4.6)
 
 Nick Fury uses **adaptive thinking** with `effort: "max"` — the highest reasoning level available.

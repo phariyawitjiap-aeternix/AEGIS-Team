@@ -116,9 +116,12 @@ Recurring judgment topics (consider creating instincts):
   if present, summarizes decisions by source / confidence / judgment-level
   count / escalation count. Silently skips if log missing, so it's forward-
   compatible with Nick Fury's future runtime write-integration.)
-- [ ] Nick Fury runtime actually appends to decision-audit.log per decision
-  (agent-prompt wiring step -- DEFERRED to dedicated session with regression
-  testing; this is the chicken-and-egg dependency)
+- [x] Nick Fury runtime appends to decision-audit.log per decision
+  (agent-prompt instruction added in `.claude/agents/nick-fury.md`
+  under "How Nick Fury logs decisions (S2-02)": JSONL format,
+  decision_id convention, source + confidence taxonomy, skip rule for
+  trivial calls, graceful failure if disk write fails. Additive-only
+  -- doesn't override existing decision logic, only adds the log step.)
 - [ ] Tested: 5 simulated decisions logged correctly (not run -- requires
   live Nick Fury session with instrumented decisions)
 - [ ] Tested: judgment counter triggers Captain defer at threshold (not run

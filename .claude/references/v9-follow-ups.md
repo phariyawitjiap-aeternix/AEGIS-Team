@@ -14,12 +14,11 @@ earlier "441pt unshipped" figure suggested.
 - **v9-01 Foundation Hardening**: ✅ SHIPPED (13pt)
 - **v9-02 Resilience**: ✅ MOSTLY SHIPPED
   - S2-01 Captain America fallback: spec + doc done; behavioral tests unrun.
-  - S2-02 Decision audit: doc ✅, Nick Fury integration ✅, retro-summary
-    wiring ✅ (Step 1b in aegis-retro.md reads decision-audit.log if
-    present, silently skips otherwise). Only remaining gap: Nick Fury's
-    runtime *append-on-each-decision* (~1pt agent-prompt edit, deferred
-    to a dedicated session with regression testing -- chicken-and-egg
-    resolves automatically once that lands).
+  - S2-02 Decision audit: ✅ FULLY SHIPPED (doc + Nick Fury reference +
+    retro-summary wiring + Nick Fury runtime append-on-each-decision
+    instruction added to nick-fury.md). Behavioral tests (5 simulated
+    decisions, judgment-counter triggers Captain defer) still require a
+    multi-session run to validate.
   - S2-03/04 BLOCK 0: general gate is **live** in Nick Fury (36 refs) +
     Coulson (9 refs). **Lite-mode switching is NOT implemented** (no
     `block0_mode` field in meta, no `determine_block0_mode()` branch);
@@ -59,20 +58,20 @@ earlier "441pt unshipped" figure suggested.
 
 ### True remaining in-repo work
 
-- S2-02 Nick Fury runtime append-to-decision-audit.log: ~1pt (agent-
-  prompt edit; retro side is already wired and forward-compatible).
+- ~~S2-02 Nick Fury runtime append~~: ✅ SHIPPED this session.
 - S2-03/04 BLOCK 0 lite-mode switching: ~4pt (agent prompt edits +
-  meta schema).
+  meta schema). Next session's call.
 - S4-02 Nick Fury proxy dispatch loop: ~6pt **blocked on SDK** --
   memory_20250818 not in main-agent runtime.
 - S6-06 29→12 command cut: ⏸ deferred pending user-pain signal (~4pt).
 
 Total meta-repo-shippable **in a dedicated session with regression
-testing**: **~5pt safe (S2-02 runtime append + S2-03/04 lite-mode)**.
-Everything else is SDK-gated or awaiting user decision.
+testing**: **~4pt (S2-03/04 lite-mode)**. Everything else is SDK-gated
+or awaiting user decision.
 
+Actual v9 completion is **~96%** (up from 95% after S2-02 close).
 The large "441pt" number in earlier audits was inflated by stale spec
-tracking. Actual v9 completion is ~95%.
+tracking.
 
 ## Priority 1 — Unblock recurring friction (next session: ~10pt remaining)
 
