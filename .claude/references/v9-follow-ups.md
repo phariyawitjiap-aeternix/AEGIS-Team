@@ -155,20 +155,28 @@ sessions with the relevant external dependencies loaded.
 
 ## Dogfood Observations (candidates for future work)
 
-From the 2026-04-20 retrospective and session work:
+From the 2026-04-20 retrospective and session work. Session-5 extended
+closed three of the four at the tool/doc level; integration into agent
+prompts and skill flows is a future session's call.
 
-1. **Reviewer-disagreement adjudication protocol**. When Black Panther and Loki
-   return contradictory findings on the same file, main agent must verify with
-   filesystem evidence. Consider formalizing as `/aegis-team-review` step:
-   require citations (file:line, bash output) on every finding.
-2. **Subagent tool availability pre-flight**. Every spec that assumes a subagent
-   can call tool X should grep that agent's `tools:` frontmatter before
-   committing. Consider a pre-flight script that cross-checks specs against
-   agent definitions.
-3. **Spec freshness audit** (quarterly): 441pt of unshipped specs will rot. An
-   automated "specs older than N months, re-review" check would help.
-4. **Out-of-repo dogfood**. Every session so far has been AEGIS-improving-AEGIS.
-   Running AEGIS on an external real app would surface richer failure modes.
+1. **Reviewer-disagreement adjudication protocol** — ✅ DOC SHIPPED
+   (`.claude/references/reviewer-adjudication-protocol.md`). 5-step
+   protocol with claim-to-probe mapping, anti-patterns, integration
+   points. Remaining: `/aegis-team-review` skill integration (~2pt),
+   black-panther.md + loki.md prompt refs (~1pt).
+2. **Subagent tool availability pre-flight** — ✅ TOOL SHIPPED
+   (`tools/aegis-agent-tools-matrix.sh` with `--check <tool>` /
+   `--agent <name>` / `--json` modes). Spec authors can now run
+   `./tools/aegis-agent-tools-matrix.sh --check memory_20250818` before
+   writing "subagent X calls tool Y". No integration gap.
+3. **Spec freshness audit** — ✅ PRIMITIVE SHIPPED
+   (`tools/aegis-pending-items.sh`, three modes). Reports 46 unchecked
+   items across 10 spec files (most correctly deferred). Heuristic
+   drift-detector (comparing claims against filesystem) is a future
+   build on top of this primitive.
+4. **Out-of-repo dogfood** — ⏸ STILL OPEN. Not in-repo work; requires
+   a real external project to apply AEGIS to. All session-5 work so
+   far is meta (AEGIS-improving-AEGIS).
 
 ## Pending Manual Steps
 
