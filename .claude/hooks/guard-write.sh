@@ -23,6 +23,20 @@ esac
 
 BASENAME=$(basename "$FILE")
 
+# ── ADR-004 Phase 1: Maintainer-mode OBSERVATION hook ─────────────────────
+# Reads AEGIS_MAINTAINER_MODE env and logs when it's set. Phase 1 does NOT
+# change blocking behavior -- it plants the read point so Phase 2 (allowlist
+# parse, time-bounded grant, audit) can activate it without restructuring.
+# See ADR-004 in .aegis/brain/resonance/architecture-decisions.md for the
+# full decision and the Phase 2 scope.
+if [[ -n "${AEGIS_MAINTAINER_MODE:-}" ]]; then
+    MM_LOG=".aegis/brain/logs/maintainer-mode.log"
+    if [[ -d "$(dirname "$MM_LOG")" ]]; then
+        MM_TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || echo "unknown")
+        echo "[${MM_TS}] [PHASE1-OBSERVE] env=\"${AEGIS_MAINTAINER_MODE}\" tool=${TOOL} file=${FILE}" >> "$MM_LOG" 2>/dev/null || true
+    fi
+fi
+
 block() {
     echo "{\"decision\":\"block\",\"reason\":\"$1\"}"
     exit 2
