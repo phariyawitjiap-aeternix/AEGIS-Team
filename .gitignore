@@ -28,6 +28,7 @@ venv/
 
 # AEGIS v9 migration backup (POC -- do not commit safety net)
 .aegis-backup/
+.claude/settings.json.v8-backup
 
 # Next.js build
 dashboard/.next/

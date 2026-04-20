@@ -20,12 +20,21 @@
 - [~] S3-04 Hook test suite — design only (no test infra)
 - [~] S3-05 BLOCK 0 integration test — design only
 
-## 📐 SPEC COMPLETE -- Sprints v9-02 + v9-04 to v9-15 (441 pts)
+## ✅ DONE -- Brain Infrastructure (Sprint v9-04 partial, ~13pt of 31pt)
+- [x] S4-01 MEMORY.md index generation (3pt) -- tools/aegis-brain-sync.sh
+- [x] S4-03 brain_write() helper (5pt) -- tools/aegis-brain-write.sh (write + append + subtype mapping)
+- [x] S4-01b Session-start hook (3pt) -- tools/v9-session-start-hook.sh (version check + brain sync)
+- [x] S4-04 Integration guide (2pt) -- tools/v9-04-integration-guide.md
+- [ ] S4-02 memory_20250818 wiring (8pt) -- DEFERRED (needs SDK access)
+- [ ] S4-05 Adversarial cache test (5pt) -- DEFERRED (needs working cache)
+- [ ] S4-06 Benchmarks (5pt) -- DEFERRED (needs working integration)
+
+## 📐 SPEC COMPLETE -- Sprints v9-02 + v9-04 (remaining) to v9-15 (428 pts)
 
 | Sprint | Reference Doc | Pts |
 |--------|---------------|-----|
 | v9-02 | captain-america-fallback.md + decision-audit-protocol.md + block-0-lite.md | 29 |
-| v9-04 | memory-tool-integration.md | 31 |
+| v9-04 | memory-tool-integration.md (remaining: S4-02, S4-05, S4-06) | 18 |
 | v9-05 | worktree-isolation.md | 24 |
 | v9-06 | schedule-toolsearch-consolidation.md | 22 |
 | v9-07/08/09 | brain-tier-architecture.md (combined) | 94 |
