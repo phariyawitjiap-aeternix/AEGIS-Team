@@ -20,6 +20,7 @@ SUITES=(
     "brain-adversarial:tools/aegis-brain-adversarial-test.sh"
     "maintainer-mode:tools/aegis-maintainer-test.sh"
     "distill-counter:tools/aegis-distill-counter-test.sh"
+    "block0-mode:tools/aegis-block0-mode-test.sh"
 )
 
 GREEN='\033[0;32m'

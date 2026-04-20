@@ -157,6 +157,25 @@ which requires: (a) `block0_mode` field in task meta schema, (b) the
 `determine_block0_mode()` branch in Nick Fury's pre-work check, and (c)
 Coulson skipping SI.01/SI.02 when mode=lite. Scope estimate: ~4pt.
 
+**Session-5-extended update (2026-04-20 late PM)**: the determiner
+function itself is now shipped as `tools/aegis-block0-mode.sh` with
+26/26 test assertions (`tools/aegis-block0-mode-test.sh`). Usage:
+
+```
+./tools/aegis-block0-mode.sh --points <N> [--tags <t1,t2,...>]
+./tools/aegis-block0-mode.sh --task-id PROJ-T-NNN    # reads meta.json
+```
+
+Emits: `lite` / `standard` / `full` on stdout. Precedence order from
+the spec is preserved: lite-tag (chore/typo/docs-fix/hotfix) > full-tag
+(feature/refactor/security/breaking) > size (<=1 lite, 2-5 standard,
+>5 full).
+
+Remaining after this session: Nick Fury agent prompt edit to actually
+call the helper + branch BLOCK 0 (~2pt), meta.json schema note, and
+Coulson artifact-skip branch (~2pt). Agent prompt edits deserve their
+own regression-tested session.
+
 ## Loki Counter to Lite Mode
 
 > "Lite mode could be abused -- agent tags everything as 'chore' to skip docs"
