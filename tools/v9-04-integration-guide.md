@@ -130,3 +130,55 @@ The file-based system already provides 90% of the value:
 Mark S4-02 as **BLOCKED (SDK dependency)** with Option C (current MEMORY.md system)
 as the de facto implementation. The file-based approach works. The memory_20250818
 wiring is a nice-to-have optimization, not a functional gap.
+
+## S4-02 Proxy Pattern (thin implementation, 2026-04-20)
+
+Since `memory_20250818` is unreachable from subagent runtimes, `brain_write` emits a
+structured directive on stdout that the main orchestrator (which DOES have the tool)
+can parse and action on the subagent's behalf.
+
+### Directive format
+
+Every `brain_write` call emits exactly one line of the form:
+
+```
+AEGIS_MEMORY_WRITE: {"path":"<brain-relative>","subtype":"<mapped>","bytes":<n>,"timestamp":"<iso8601>"}
+```
+
+The subtype comes from `path_to_subtype()` (e.g., `learning`, `resonance`,
+`instinct-promoted`, `handoff`). Unknown paths map to `unknown`.
+
+### Main-agent processing (orchestration pseudocode)
+
+When the main agent spawns a subagent and the subagent uses `brain_write`, the
+subagent's final result will contain these directive lines. To replay them into
+`memory_20250818`:
+
+```bash
+# Extract all directives from a subagent's stdout result
+echo "$SUBAGENT_OUTPUT" | grep -oE 'AEGIS_MEMORY_WRITE: \{[^}]*\}' | while read -r line; do
+    payload=$(echo "$line" | sed 's|^AEGIS_MEMORY_WRITE: ||')
+    path=$(echo "$payload"    | python3 -c 'import sys,json;print(json.loads(sys.stdin.read())["path"])')
+    subtype=$(echo "$payload" | python3 -c 'import sys,json;print(json.loads(sys.stdin.read())["subtype"])')
+    content=$(cat ".aegis/brain/${path}")
+    # Pseudocode for the actual write -- the main agent calls memory_20250818 directly:
+    #   memory_20250818.write(content, type='project', subtype=subtype)
+done
+```
+
+### What this is and isn't
+
+- **Is**: a stable protocol for subagent → main-agent memory propagation, usable today
+  without SDK access in subagents. Directives are harmless when ignored (extra stdout
+  lines) and actionable when parsed.
+- **Isn't**: a full cache implementation. The main agent still has to do the
+  `memory_20250818.write` call itself; this pattern just routes the intent.
+- **Isn't**: used automatically yet. Nick Fury's dispatch loop would need an opt-in
+  "process memory directives" step after each subagent returns. That wiring is a
+  future session's work.
+
+### Additive, not replacing the file layer
+
+The file is still authoritative (per ADR-002). The directive is a hint to warm the
+cache; losing the hint costs nothing (next `/aegis-start` regenerates MEMORY.md from
+the file system).

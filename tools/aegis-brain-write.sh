@@ -67,11 +67,16 @@ brain_write() {
         echo "[${timestamp}] [TOOL:brain-write] Wrote: .aegis/brain/${rel_path} ($(printf '%s' "$content" | wc -c | tr -d ' ') bytes)" >> "${LOG_FILE}" 2>/dev/null || true
     fi
 
-    # Step 4: memory_20250818 cache update (DEFERRED -- S4-02)
-    # When SDK is wired, this will call:
-    #   memory_subtype=$(path_to_subtype "$rel_path")
-    #   memory_tool.write(content, type='project', subtype=memory_subtype)
-    # For now, file write is sufficient (cache populated on next session start)
+    # Step 4: memory_20250818 cache update via main-agent proxy (S4-02 proxy pattern).
+    # Subagents lack memory_20250818 in their tool set (see learning
+    # 2026-04-20_subagent-tool-availability). Instead, emit a structured directive
+    # on stdout that the main orchestrator parses and actions via its own memory tool.
+    # Harmless when unparsed (just an extra log line); actionable when a main agent reads it.
+    local subtype
+    subtype=$(path_to_subtype "$rel_path" 2>/dev/null || echo "unknown")
+    local bytes
+    bytes=$(printf '%s' "$content" | wc -c | tr -d ' ')
+    echo "AEGIS_MEMORY_WRITE: {\"path\":\"${rel_path}\",\"subtype\":\"${subtype}\",\"bytes\":${bytes},\"timestamp\":\"${timestamp}\"}"
 
     echo "brain_write: .aegis/brain/${rel_path} (${timestamp})"
 }
