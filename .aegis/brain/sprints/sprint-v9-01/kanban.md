@@ -25,14 +25,17 @@
 - [x] S4-03 brain_write() helper (5pt) -- tools/aegis-brain-write.sh (write + append + subtype mapping)
 - [x] S4-01b Session-start hook (3pt) -- tools/v9-session-start-hook.sh + .claude/hooks/session-start.sh
 - [x] S4-04 Integration guide (2pt) -- tools/v9-04-integration-guide.md (updated with SDK blocker)
-- [x] S4-05 Adversarial corruption test (5pt) -- tools/aegis-brain-adversarial-test.sh (7/7 pass)
+- [x] S4-05 Adversarial corruption test (5pt) -- tools/aegis-brain-adversarial-test.sh (9/9 pass: A-G + scenario H deep-nested + zsh)
 - [x] S4-06 Benchmarks (5pt) -- tools/aegis-brain-benchmark.sh (write: 10-13ms, sync: ~50ms)
-- [~] S4-02 memory_20250818 wiring (8pt) -- BLOCKED: SDK not available as callable tool. MEMORY.md file-based approach is de facto impl. Honest blocker documented.
+- [x] S4-02 proxy pattern (3pt of 8pt) -- brain_write emits `AEGIS_MEMORY_WRITE: {...}` directive for main-agent replay (see v9-04-integration-guide.md)
+- [~] S4-02 direct memory_20250818 wiring (5pt remaining) -- BLOCKED on SDK, proxy pattern is the documented workaround
 
-## ✅ DONE -- Worktree Isolation (Sprint v9-05 partial, ~8pt of 24pt)
-- [x] S5-04 Merge script (5pt) -- tools/aegis-merge-worktree.sh (tested: dry-run + real merge)
-- [x] S5-02 Spider-Man guidance (3pt) -- tools/v9-05-spider-man-worktree-guidance.md (agent file blocked by guard-write)
+## ✅ DONE -- Worktree Isolation (Sprint v9-05 partial, ~13pt of 24pt)
+- [x] S5-04 Merge script (5pt) -- tools/aegis-merge-worktree.sh (tested: dry-run + real merge + quirks fix applied)
+- [x] S5-02 Spider-Man guidance (3pt) -- applied to .claude/agents/spider-man.md (worktree isolation section + reference)
+- [x] S5-04b Known-quirks fix (5pt) -- rebase-onto-HEAD before merge, -f -f cleanup escalation, Known Quirks section in spec
 - [x] S5-07 GC script -- tools/aegis-worktree-gc.sh (already existed from prior sprint)
+- [x] Real-use validation -- Spider-Man spawned with isolation=worktree; Scenario H added to adversarial test; merge verified end-to-end
 - [ ] S5-01 Naming convention enforcement -- DEFERRED (runtime needed)
 - [ ] S5-03 Per-agent defaults wiring -- DEFERRED (requires Agent tool isolation param testing)
 - [ ] S5-05 Background agents -- DEFERRED (design complete, impl needs real workload)
@@ -65,8 +68,9 @@ Requires:
 - Implementation: 41 pts (Sprints 1, 3 + portions of 9-01) -- session 1-2
 - Specification: 441 pts (Sprints 2, 4-15) -- session 1
 - Implementation: 13 pts (Sprint v9-04 remaining) -- session 3 (2026-04-20 AM)
-- Implementation: 21 pts (S4-05, S4-06, v9-05 merge) -- session 4 (2026-04-20 PM, this session)
-- **Total throughput**: 516 pts across 4 sessions
+- Implementation: 21 pts (S4-05, S4-06, v9-05 merge) -- session 4 (2026-04-20 PM, part 1)
+- Implementation: 11 pts (S4-02 proxy 3pt + S5-04b quirks fix 5pt + ADR-004 proposed + Scenario H 3pt) -- session 4 (part 2)
+- **Total throughput**: 527 pts across 4 sessions
 
 ## Notes
 - Framework self-protection (guard-write.sh) blocked own settings edit -- correct behavior
