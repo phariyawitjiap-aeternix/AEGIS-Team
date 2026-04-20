@@ -63,8 +63,58 @@ After installation, every Claude Code session will:
 | `tools/aegis-brain-write.sh <path> <content>` | Write to brain | Write file + regenerate MEMORY.md + log |
 | `source tools/aegis-brain-write.sh` | Library mode | Provides brain_write() and brain_append() functions |
 
-## Still Deferred (S4-02)
+## S4-02 SDK Availability -- Honest Blocker Assessment (2026-04-20)
 
-The `memory_20250818` cache layer integration requires Claude Code SDK access.
-When available, the brain_write() function in aegis-brain-write.sh has a clearly
-marked Step 4 placeholder for adding the cache write call.
+### What we tried
+
+1. **Agent definition declares it**: `.claude/agents/nick-fury.md` frontmatter lists
+   `memory_20250818` in the `tools:` array. This is aspirational -- it tells Claude Code
+   "this agent should have memory access" but does not guarantee the runtime surfaces it.
+
+2. **Runtime check**: The top-level agent (Nick Fury running as the human's direct session)
+   has access to: Read, Write, Edit, Bash, Glob, Grep, WebFetch, WebSearch, Agent, and
+   MCP tools (computer-use). `memory_20250818` is NOT in the available tool set.
+
+3. **No MCP server exists**: `.claude/settings.json` and `.claude/settings.local.json`
+   contain no MCP configuration for a memory server. There is no `mcp__memory__*` tool.
+
+4. **Claude's internal memory**: Claude does have a `/memories` directory concept at the
+   model level, but this is NOT exposed as a callable tool in Claude Code CLI. The
+   `memory_20250818` identifier appears in Anthropic documentation as a model-level
+   feature, not a tool-use API that agents can invoke via JSON schema.
+
+### Why it can't be wired right now
+
+`memory_20250818` is a **model-level capability** (Claude's built-in cross-session memory),
+not a **tool-use API** that can be called from bash scripts or agent tool invocations.
+The brain-write.sh Step 4 placeholder envisions calling it as a tool, but no such tool
+endpoint exists in the current Claude Code SDK.
+
+### What would need to change
+
+For S4-02 to complete, ONE of these must happen:
+
+- **Option A**: Anthropic exposes `memory_20250818` as a callable tool in Claude Code's
+  agent runtime (not just a model feature). The agent would then call it like any other tool.
+- **Option B**: An MCP server wraps the memory system and exposes read/write operations.
+  We would add this to settings.json as an MCP endpoint.
+- **Option C**: We implement our own file-based memory cache that mimics the memory tool's
+  behavior (read-through cache of .aegis/brain/ files at session start). This is what
+  MEMORY.md already accomplishes -- the "cache" is just the index file that gets read
+  on session start.
+
+### Current state (what works today)
+
+The file-based system already provides 90% of the value:
+- MEMORY.md is regenerated on every brain write and session start
+- Agents read MEMORY.md to get the brain index
+- File system is authoritative (per ADR-002)
+- The only missing piece is cross-session in-memory warmth (pre-loading brain into
+  Claude's context without explicit file reads). This happens naturally when agents
+  read MEMORY.md at session start.
+
+### Recommendation
+
+Mark S4-02 as **BLOCKED (SDK dependency)** with Option C (current MEMORY.md system)
+as the de facto implementation. The file-based approach works. The memory_20250818
+wiring is a nice-to-have optimization, not a functional gap.
