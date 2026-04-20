@@ -19,10 +19,16 @@ earlier "441pt unshipped" figure suggested.
     instruction added to nick-fury.md). Behavioral tests (5 simulated
     decisions, judgment-counter triggers Captain defer) still require a
     multi-session run to validate.
-  - S2-03/04 BLOCK 0: general gate is **live** in Nick Fury (36 refs) +
-    Coulson (9 refs). **Lite-mode switching is NOT implemented** (no
-    `block0_mode` field in meta, no `determine_block0_mode()` branch);
-    ~4pt follow-up.
+  - S2-03/04 BLOCK 0: ✅ FULLY SHIPPED (session-5-extended). General
+    gate + lite-mode switching both live:
+    - Determiner helper + 26 tests
+    - meta.json schema: optional `block0_mode` field
+    - Nick Fury: mode check before gates, per-mode skip table, skip
+      logging
+    - Coulson: mode-aware generation, skip logging
+    - Loki-counter: security-path override documented
+    Only remaining: behavioral validation (run /aegis-team-build on
+    1pt typo + 8pt feature, verify artifacts). Next session.
 - **v9-03 Brain Seeding**: ✅ SHIPPED (28pt, brain populated + seeded)
 - **v9-04 Memory Tool Integration**: ✅ SHIPPED (previously marked partial)
   - File layer (sync, write, adversarial test, benchmarks): ✅ all shipped
@@ -59,17 +65,18 @@ earlier "441pt unshipped" figure suggested.
 ### True remaining in-repo work
 
 - ~~S2-02 Nick Fury runtime append~~: ✅ SHIPPED this session.
-- S2-03/04 BLOCK 0 lite-mode switching: ~4pt (agent prompt edits +
-  meta schema). Next session's call.
+- ~~S2-03/04 BLOCK 0 lite-mode switching~~: ✅ SHIPPED this session
+  (helper + tests + nick-fury.md + coulson.md + schema doc).
+  Behavioral validation pending (run a real /aegis-team-build).
 - S4-02 Nick Fury proxy dispatch loop: ~6pt **blocked on SDK** --
   memory_20250818 not in main-agent runtime.
 - S6-06 29→12 command cut: ⏸ deferred pending user-pain signal (~4pt).
 
-Total meta-repo-shippable **in a dedicated session with regression
-testing**: **~4pt (S2-03/04 lite-mode)**. Everything else is SDK-gated
-or awaiting user decision.
+Total meta-repo-shippable **right now**: **~0pt**. All in-repo
+addressable work is done. Remaining is SDK-blocked, user-decision-
+gated, or out-of-repo-only (behavioral testing on a real sprint).
 
-Actual v9 completion is **~96%** (up from 95% after S2-02 close).
+Actual v9 completion is **~98%** (up from 96% after S2-03/04 close).
 The large "441pt" number in earlier audits was inflated by stale spec
 tracking.
 

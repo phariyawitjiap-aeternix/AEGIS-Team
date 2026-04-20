@@ -64,11 +64,23 @@ try:
 except Exception as e:
     print('ERROR', e, file=sys.stderr); sys.exit(1)
 pts = m.get('story_points') or m.get('points') or m.get('size') or 0
-tags = m.get('tags') or []
+# AEGIS meta.json uses 'labels'; spec uses 'tags'. Accept both.
+tags = m.get('tags') or m.get('labels') or []
 if isinstance(tags, list):
     tags = ','.join(str(t) for t in tags)
-print(f'{pts}|{tags}')
+# If block0_mode is already pinned on the task, emit it directly
+# (caller can override by passing --points/--tags explicitly; --task-id
+# trusts the meta-recorded mode for stability across re-dispatches).
+pinned = m.get('block0_mode')
+if pinned:
+    print(f'__PINNED__{pinned}')
+else:
+    print(f'{pts}|{tags}')
 " 2>/dev/null) || { echo "ERROR: failed to parse $META" >&2; exit 1; }
+    if [[ "$PARSED" == __PINNED__* ]]; then
+        echo "${PARSED#__PINNED__}"
+        exit 0
+    fi
     POINTS="${PARSED%%|*}"
     TAGS="${PARSED##*|}"
 fi

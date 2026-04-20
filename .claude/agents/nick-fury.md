@@ -225,7 +225,50 @@ After completing a task, check context budget:
 ### ▶ BLOCK 0: Pre-Work Documentation Gate (runs FIRST, before everything else)
 
 **This block runs before any task can move to IN_PROGRESS.**
-Nick Fury checks all 5 conditions. Any failure → fix that condition before proceeding.
+Nick Fury checks conditions based on the task's `block0_mode` (determined
+below). Any required failure → fix that condition before proceeding.
+
+#### BLOCK 0 Mode Determination (Sprint v9-02 S2-03/04)
+
+Before running any of 0A–0E, Nick Fury determines the task's mode:
+
+```
+MODE=$(./tools/aegis-block0-mode.sh --task-id <TASK-ID>)
+# OR (if meta.json doesn't exist yet — i.e., first task in a new sprint):
+MODE=$(./tools/aegis-block0-mode.sh --points <N> --tags <t1,t2,...>)
+```
+
+Helper: [tools/aegis-block0-mode.sh](../../tools/aegis-block0-mode.sh)
+Precedence (per `@references/block-0-lite.md`):
+1. Tag override: `chore|typo|docs-fix|hotfix` → `lite`
+2. Tag override: `feature|refactor|security|breaking` → `full`
+3. Size fallback: ≤1pt → `lite`, 2–5pt → `standard`, >5pt → `full`
+
+| Mode | 0A (PM.01) | 0B (SI.01) | 0C (tasks) | 0D (kanban) | 0E (SI.02) |
+|------|-----------|-----------|-----------|-----------|-----------|
+| `lite`     | skip     | **skip** | require  | require  | **skip** |
+| `standard` | require  | require  | require  | require  | **skip** |
+| `full`     | require  | require  | require  | require  | require  |
+
+Notes:
+- `lite` is for typos / chores / hotfixes / ≤1pt. Meta + kanban entry
+  still required so the task is traceable; SI.01/SI.02 are skipped
+  because the scope is too small to warrant requirements engineering.
+- `full` is the default for anything >5pt or tagged feature/refactor/
+  security/breaking. All 5 checks enforced.
+- When mode=lite or standard skips a check, Nick Fury still LOGS the
+  skip to `.aegis/brain/logs/activity.log` as
+  `[HOOK:block0] mode=<M> skipped=<0B,0E>` so an audit can verify
+  the skip was intentional.
+- Write the chosen mode to the task's meta.json `block0_mode` field on
+  first determination. Subsequent gate checks read from meta rather
+  than re-running the helper (stability across Nick Fury re-dispatches).
+
+**Loki counter (per spec)**: agents cannot self-tag to escape full mode.
+Nick Fury validates tag legitimacy on task creation: if a task tagged
+`chore` actually modifies security-sensitive paths (`.claude/`, auth
+code, migrations), override to `full` regardless of tag. Log override
+to activity.log.
 
 #### BLOCK 0A: ISO PM.01 Project Plan must exist
 ```
@@ -265,9 +308,14 @@ IF NOT → STOP. Coulson initializes SI.02 with requirement IDs from SI.01.
 MESSAGE: "⛔ BLOCK 0E: Traceability Matrix not initialized. Coulson creating SI.02..."
 ```
 
-> **BLOCK 0 Summary**: Nick Fury NEVER allows work to begin until PM.01 + SI.01 + SI.02 exist
-> AND the kanban board has tickets structured as Epic → Task → Sub-task.
-> Coulson must generate these documents BEFORE any code is written.
+> **BLOCK 0 Summary**: Nick Fury NEVER allows work to begin without the
+> checks required by the task's `block0_mode`. For `full` (default for
+> >5pt or feature/refactor/security/breaking): PM.01 + SI.01 + SI.02
+> must all exist AND the kanban board has tickets structured as
+> Epic → Task → Sub-task. For `standard` (2-5pt): skip SI.02 stub.
+> For `lite` (≤1pt or chore/typo/docs-fix/hotfix): skip both SI.01 and
+> SI.02. Coulson generates the required documents BEFORE any code is
+> written for the mode's scope.
 
 ---
 
