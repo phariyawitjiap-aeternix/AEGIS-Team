@@ -184,7 +184,7 @@ Scheduled: ScheduleWakeup hook on sprint close + weekly fallback.
 
 **Mitigation (implemented in `aegis-merge-worktree.sh`):** before merging, rebase the worktree branch onto current `main` HEAD. If rebase is clean, the subsequent merge becomes a fast-forward (or a clean `--no-ff`). If rebase fails, that failure is the REAL conflict — abort rebase, fall through to the normal merge path, and surface it for human resolution.
 
-**Open question for future investigation:** does Claude Code expose a spawn-from-current-HEAD option? If yes, the rebase step becomes unnecessary.
+**Investigation closed (2026-04-20):** no spawn-from-current-HEAD option exists. Empirical probe spawned `Agent({subagent_type: "beast", isolation: "worktree"})` while `HEAD=f940591` and the worktree reported `HEAD=1d5da1d` — 20 commits behind. The `Agent` tool schema's `isolation` param is `enum: ["worktree"]` (single value, no base/ref sub-parameter), and `EnterWorktree` only accepts `name` / `path` (no base selection either). Conclusion: the rebase-onto-HEAD step in `aegis-merge-worktree.sh` is a permanent requirement of the current SDK, not a workaround. If Anthropic later adds a base parameter, revisit this note — but don't wait for it.
 
 ### Quirk 2: Agent process holds the worktree lock past tool-call return
 

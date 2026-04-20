@@ -54,17 +54,18 @@ Done condition:
 - Logs replayed directives to `.aegis/brain/logs/memory-replay.log`
 - Tested with a real subagent spawn + verify memory tool updated
 
-### v9-05 spawn-from-HEAD investigation (~4pt)
+### v9-05 spawn-from-HEAD investigation — ✅ CLOSED (2026-04-20)
 
-Open question in `.claude/references/worktree-isolation.md` Known Quirks.
+Empirical probe + schema inspection confirmed no spawn-from-current-HEAD option
+exists. `Agent({isolation: "worktree"})` spawned with `HEAD=f940591` produced a
+worktree at `HEAD=1d5da1d` (20 commits behind). The `isolation` parameter is
+`enum: ["worktree"]` -- single value, no base/ref sub-parameter -- and
+`EnterWorktree` only accepts `name` / `path`. The rebase-onto-HEAD step in
+`tools/aegis-merge-worktree.sh` is permanent until/unless Anthropic adds a
+base-ref parameter to the Agent tool. Finding recorded in
+`.claude/references/worktree-isolation.md` Known Quirks.
 
-Entry criterion: any session with 30 min of research budget.
-Done condition:
-- Read current Claude Code Agent tool docs/schema for isolation params
-- Either: confirm no spawn-from-HEAD option exists → document in spec, remove
-  investigation item from backlog; OR: confirm it exists → remove rebase step
-  from `aegis-merge-worktree.sh` and test the simpler path
-- Update `.claude/references/worktree-isolation.md` Known Quirks with the finding
+Learning: `.aegis/brain/learnings/2026-04-20_worktree-base-is-session-start-HEAD.md`.
 
 ## Priority 2 — Next architectural moves (2-4 sessions each)
 
