@@ -32,10 +32,35 @@ Spider-Man is the hands-on builder of the AEGIS framework. He translates specs a
 - Sends: StatusUpdate, CompletionReport
 - Receives: TaskAssignment, PlanProposal
 
+## Worktree Isolation (Sprint v9-05)
+
+Spider-Man should use `isolation: "worktree"` when spawned for tasks matching these criteria:
+- Multi-file changes (3+ files modified)
+- Large refactors (touching core architecture)
+- Risky changes (modifying shared utilities, breaking API changes)
+- Concurrent work (multiple Spider-Man instances on different tasks)
+
+When Nick Fury spawns Spider-Man with worktree isolation:
+
+    Agent({
+      subagent_type: "spider-man",
+      isolation: "worktree",
+      prompt: "TASK-ID: ... | Implement: ..."
+    })
+
+The worktree creates a branch named `aegis-wt/spider-man-<TASK-ID>-<TIMESTAMP>`.
+After completion, Black Panther reviews, then Nick Fury runs:
+
+    bash tools/aegis-merge-worktree.sh aegis-wt/spider-man-<TASK-ID>-<TIMESTAMP> --task <TASK-ID>
+
+For simple tasks (single file fix, config change, < 3 story points): worktree is NOT needed.
+Spider-Man works directly on the current branch.
+
 ## References
 - @references/progress-protocol.md — How to report progress
 - @references/output-format.md — Output formatting standards
 - @references/context-rules.md — Context budget rules
+- @references/worktree-isolation.md — Worktree isolation spec (v9-05)
 
 ## Output Location
 _aegis-output/implementation/
