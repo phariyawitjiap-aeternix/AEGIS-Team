@@ -173,11 +173,34 @@ if [[ -d "${BRAIN_DIR}/handoffs" ]]; then
     done < <(find "${BRAIN_DIR}/handoffs" -name "*.md" -not -name "TEMPLATE.md" 2>/dev/null | sort -r | head -3)
 fi
 
-# Retrospectives
+# Retrospectives (most recent 3)
 RETRO_COUNT=0
 RETRO_LIST=""
 if [[ -d "${BRAIN_DIR}/retrospectives" ]]; then
     RETRO_COUNT=$(find "${BRAIN_DIR}/retrospectives" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+    while IFS= read -r f; do
+        [[ -z "$f" ]] && continue
+        # Path relative to brain/
+        rel="${f#${BRAIN_DIR}/}"
+        name=$(basename "$f")
+        RETRO_LIST="${RETRO_LIST}\n- [${name}](${rel})"
+    done < <(find "${BRAIN_DIR}/retrospectives" -name "*.md" -type f 2>/dev/null | sort -r | head -3)
+fi
+
+# Learnings (most recent 5, top-level only -- ignore raw/)
+LEARNING_COUNT=0
+LEARNING_LIST=""
+if [[ -d "${BRAIN_DIR}/learnings" ]]; then
+    LEARNING_COUNT=$(find "${BRAIN_DIR}/learnings" -maxdepth 1 -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+    while IFS= read -r f; do
+        [[ -z "$f" ]] && continue
+        [[ "$(basename "$f")" == ".gitkeep" ]] && continue
+        name=$(basename "$f")
+        # Extract first H1 as description, fall back to name stem
+        desc=$(grep -m1 "^# " "$f" 2>/dev/null | sed 's/^# //' || true)
+        [[ -z "$desc" ]] && desc=$(echo "${name%.md}" | tr '_' ' ')
+        LEARNING_LIST="${LEARNING_LIST}\n- [${name}](learnings/${name}) -- ${desc}"
+    done < <(find "${BRAIN_DIR}/learnings" -maxdepth 1 -name "*.md" -type f 2>/dev/null | sort -r | head -5)
 fi
 
 # Resonance file listing
@@ -218,6 +241,7 @@ CONTENT="# AEGIS Project Brain Memory Index
 | Architecture Decisions | ${ADR_COUNT}${ADR_RANGE} |
 | Retrospectives | ${RETRO_COUNT} |
 | Handoffs | ${HANDOFF_COUNT} |
+| Learnings | ${LEARNING_COUNT} |
 
 ## Promoted Instincts (always load)
 $(echo -e "${PROMOTED_LIST:-\n(none)}")
@@ -237,9 +261,13 @@ $(echo -e "${RESONANCE_LIST}")
 ## Recent Handoffs
 $(echo -e "${HANDOFF_LIST:-\n(none)}")
 
-## Learnings
+## Recent Retrospectives (top 3)
+$(echo -e "${RETRO_LIST:-\n(none)}")
 
-- **Raw**: [learnings/raw/](learnings/raw/)
+## Recent Learnings (top 5)
+$(echo -e "${LEARNING_LIST:-\n(none)}")
+
+- **Raw (one-liners)**: [learnings/raw/](learnings/raw/)
 
 ## Logs (not cached -- file only)
 
