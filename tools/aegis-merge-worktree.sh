@@ -230,6 +230,26 @@ git checkout "$MAIN_BRANCH" 2>/dev/null || {
     exit 1
 }
 
+# Rebase worktree branch onto current HEAD if its base is stale.
+# Why: Claude Code's isolation feature snapshots from session-start HEAD, not spawn HEAD.
+# Without this, every worktree merge is non-ff and phantom add/add conflicts are likely
+# even when the semantic changes don't overlap (see learning 2026-04-20_worktree-isolation-runtime-quirks).
+# If the rebase itself fails, we abort it cleanly and fall through to the original merge
+# path — that merge will surface the REAL conflict for manual resolution.
+MAIN_HEAD=$(git rev-parse "$MAIN_BRANCH")
+WORKTREE_BASE_SHA=$(git merge-base "$MAIN_BRANCH" "$WORKTREE_BRANCH")
+if [[ "$WORKTREE_BASE_SHA" != "$MAIN_HEAD" ]]; then
+    BEHIND_COUNT=$(git rev-list --count "${WORKTREE_BASE_SHA}..${MAIN_HEAD}" 2>/dev/null || echo "?")
+    log_info "Worktree base is ${BEHIND_COUNT} commits behind ${MAIN_BRANCH}; rebasing before merge..."
+    if git rebase "$MAIN_BRANCH" "$WORKTREE_BRANCH" > /dev/null 2>&1; then
+        log_info "Rebase successful; merge will be fast-forward."
+    else
+        log_warn "Rebase failed (real conflict). Aborting rebase; merge step will surface it."
+        git rebase --abort 2>/dev/null || true
+        git checkout "$MAIN_BRANCH" 2>/dev/null || true
+    fi
+fi
+
 # Extract agent name and task from branch for commit message
 AGENT_NAME=$(echo "$WORKTREE_BRANCH" | sed 's|aegis-wt/||' | cut -d'-' -f1-2 2>/dev/null || echo "agent")
 MERGE_TASK=${TASK_ID:-$(echo "$WORKTREE_BRANCH" | grep -oE '[A-Z][0-9]+-[0-9]+' 2>/dev/null || echo "unknown")}
@@ -263,9 +283,19 @@ fi
 log_info "Cleaning up worktree..."
 
 if [[ -n "$WORKTREE_PATH" ]] && [[ -d "$WORKTREE_PATH" ]]; then
-    git worktree remove "$WORKTREE_PATH" 2>/dev/null || {
-        log_warn "Could not remove worktree at $WORKTREE_PATH. Try: git worktree remove --force $WORKTREE_PATH"
-    }
+    # Escalate force levels: plain → -f (dirty worktree) → -f -f (process-held lock).
+    # Why -f -f: Claude Code's agent process can retain the git worktree lock past
+    # tool-call return; plain --force is rejected with "cannot remove a locked working tree".
+    # See learning 2026-04-20_worktree-isolation-runtime-quirks.
+    if ! git worktree remove "$WORKTREE_PATH" 2>/dev/null; then
+        if ! git worktree remove -f "$WORKTREE_PATH" 2>/dev/null; then
+            if git worktree remove -f -f "$WORKTREE_PATH" 2>/dev/null; then
+                log_info "Removed worktree (required -f -f for process-held lock)"
+            else
+                log_warn "Could not remove worktree at $WORKTREE_PATH. Manual cleanup needed: rm -rf $WORKTREE_PATH && git worktree prune"
+            fi
+        fi
+    fi
 fi
 
 # Delete the branch (it's merged now)

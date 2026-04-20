@@ -175,3 +175,21 @@ Scheduled: ScheduleWakeup hook on sprint close + weekly fallback.
 - [ ] Real implementation: requires Claude Code Agent tool with `isolation` param available
 
 **Sprint 5 Status**: Design complete. Implementation requires Claude Code Agent tool isolation feature (already available per system docs, but actual integration with AEGIS workflow needs real engineering session).
+
+## Known Quirks (discovered during first real-use validation, 2026-04-20)
+
+### Quirk 1: Worktrees spawn from stale ancestor, not current HEAD
+
+`Agent({isolation: "worktree"})` snapshots its worktree base from the session-start HEAD, not the caller's current HEAD at spawn time. A worktree spawned mid-session may be rooted several commits behind `main`, making every merge non-fast-forward and producing phantom add/add conflicts even when the semantic changes don't overlap.
+
+**Mitigation (implemented in `aegis-merge-worktree.sh`):** before merging, rebase the worktree branch onto current `main` HEAD. If rebase is clean, the subsequent merge becomes a fast-forward (or a clean `--no-ff`). If rebase fails, that failure is the REAL conflict — abort rebase, fall through to the normal merge path, and surface it for human resolution.
+
+**Open question for future investigation:** does Claude Code expose a spawn-from-current-HEAD option? If yes, the rebase step becomes unnecessary.
+
+### Quirk 2: Agent process holds the worktree lock past tool-call return
+
+When a spawned agent returns its result, the underlying agent process may still hold the git worktree lock. Plain `git worktree remove --force` is rejected with `fatal: cannot remove a locked working tree`. Only `git worktree remove -f -f` (double-force) succeeds — this is a "unlock-and-remove" escalation, not a "destroy harder" force.
+
+**Mitigation (implemented in `aegis-merge-worktree.sh`):** cleanup step escalates through plain remove → `-f` → `-f -f` automatically. If all three fail, log manual-cleanup guidance (`rm -rf <path> && git worktree prune`).
+
+**Open question:** is there a clean way for Claude Code to signal "agent fully released" separate from "tool-call returned"? If yes, the double-force becomes unnecessary.
