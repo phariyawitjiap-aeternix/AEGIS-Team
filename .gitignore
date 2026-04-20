@@ -30,6 +30,9 @@ venv/
 .aegis-backup/
 .claude/settings.json.v8-backup
 
+# Claude Code worktrees (Sprint v9-05 isolation -- transient; merged via aegis-merge-worktree.sh)
+.claude/worktrees/
+
 # Next.js build
 dashboard/.next/
 dashboard/node_modules/
