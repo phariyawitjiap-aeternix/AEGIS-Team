@@ -61,6 +61,15 @@ if echo "$SAFE_CMD" | grep -qE 'git clean\s+-f'; then
     block "AEGIS Safety: git clean -f permanently deletes untracked files. Operation blocked."
 fi
 
+# ── ADR-004 Phase 2: block agent-originated AEGIS_MAINTAINER_MODE= sets ──
+# The grant MUST be set by the human in their own terminal before Claude Code starts.
+# Any agent-invoked bash that tries to export/inline-set the flag is an attempted
+# self-grant and is denied. Matches: `AEGIS_MAINTAINER_MODE=...`, `export AEGIS_MAINTAINER_MODE=...`,
+# `env AEGIS_MAINTAINER_MODE=...`. Does NOT block reads (echo/grep/cat).
+if echo "$SAFE_CMD" | grep -qE '(^|[;&|()]\s*|\s)(export\s+|env\s+)?AEGIS_MAINTAINER_MODE='; then
+    block "AEGIS ADR-004: agents may not set AEGIS_MAINTAINER_MODE. The grant must be issued by the human via tools/aegis-maintainer-grant.sh in their own terminal before launching Claude Code."
+fi
+
 # Allow — log to activity.log (best-effort, don't fail if log missing)
 LOG=".aegis/brain/logs/activity.log"
 if [[ -f "$LOG" ]]; then

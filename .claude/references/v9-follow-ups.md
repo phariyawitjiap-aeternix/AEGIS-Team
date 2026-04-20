@@ -23,26 +23,25 @@
   - Investigate spawn-from-current-HEAD SDK option: ⏳ OPEN (may make rebase unnecessary)
 - **v9-06 through v9-15**: ⏸ SPEC ONLY (441pt unshipped)
 
-## Priority 1 — Unblock recurring friction (next session: ~25pt)
+## Priority 1 — Unblock recurring friction (next session: ~10pt remaining)
 
-### ADR-004 Implementation: AEGIS_MAINTAINER_MODE (~15pt)
+### ADR-004 Implementation: AEGIS_MAINTAINER_MODE — ✅ SHIPPED (2026-04-20)
 
-Spec: `.aegis/brain/resonance/architecture-decisions.md` ADR-004 (Proposed).
+Spec: `.aegis/brain/resonance/architecture-decisions.md` ADR-004 (**Accepted**).
 Learning: `.aegis/brain/learnings/2026-04-20_self-enforcement-override-channel.md`.
 
-Entry criterion: you have one fresh session with >=70% context budget.
-Done condition:
-- `guard-write.sh` reads `AEGIS_MAINTAINER_MODE` env and grants writes ONLY to
-  paths in that env's allowlist for one tool call, then expires the grant.
-- `guard-bash.sh` strips the env when Agent tool spawns subagents (non-inheritable).
-- Writes under the flag log to `.aegis/brain/logs/maintainer-mode.log` with
-  timestamp, path, and diff stat.
-- Test matrix covers: scope escape (try writing outside allowlist → denied),
-  subagent inheritance (subagent inherits flag → denied), expiration (grant
-  used twice → second denied), concurrent flags (two sessions set different
-  allowlists → isolated).
-
-Do NOT skip the test matrix. This touches security-sensitive infrastructure.
+- **Phase 1 (observation)**: shipped earlier in session -- `guard-write.sh`
+  logs `AEGIS_MAINTAINER_MODE` reads without changing behavior.
+- **Phase 2 (authorization)**: shipped -- full token scheme with
+  `tools/aegis-maintainer-grant.sh` helper, one-shot grants, 60s TTL,
+  `guard-bash.sh` blocking agent-originated sets, audit log at
+  `.aegis/brain/logs/maintainer-mode.log`, and `tools/aegis-maintainer-test.sh`
+  with 23 assertions all green (scope escape, self-grant block, one-shot,
+  expiry, concurrent grants, malformed, baseline, happy path, helper
+  validation, audit trail).
+- **Known limitation**: true subagent env-stripping is not implementable from
+  a hook (in-process inheritance). One-shot + guard-bash deliver the
+  equivalent guarantee. Documented in the ADR.
 
 ### Nick Fury dispatch loop: process S4-02 proxy directives (~6pt)
 

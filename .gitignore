@@ -33,6 +33,9 @@ venv/
 # Claude Code worktrees (Sprint v9-05 isolation -- transient; merged via aegis-merge-worktree.sh)
 .claude/worktrees/
 
+# ADR-004 Phase 2: maintainer-mode grant state (transient one-shot consume markers)
+.aegis/brain/state/
+
 # Next.js build
 dashboard/.next/
 dashboard/node_modules/
