@@ -69,12 +69,30 @@ Learning: `.aegis/brain/learnings/2026-04-20_worktree-base-is-session-start-HEAD
 
 ## Priority 2 — Next architectural moves (2-4 sessions each)
 
-### Sprint v9-06: Schedule + ToolSearch Consolidation (22pt)
+### Sprint v9-06: Schedule + ToolSearch Consolidation (22pt, verification done 2026-04-20)
 
 Spec: `.claude/references/schedule-toolsearch-consolidation.md`.
 
-Entry criterion: ADR-004 implemented (because this sprint touches agent defs).
-Done condition per the spec's acceptance criteria.
+Entry criterion: ADR-004 implemented ✅ (done).
+
+**SDK verification (2026-04-20) surfaced design issues -- spec updated with
+corrections.** Summary:
+
+- **S6-01 ScheduleWakeup** redesigned to Pattern A (counter + session-start
+  marker, no external scheduler). ~5pt. Ready to implement.
+- **S6-02 `tools.deferred`**: ❌ blocked on SDK. Settings.json has no `tools`
+  key. Closed as spec-only.
+- **S6-03** Vision → War Machine merger: ~5pt, one session.
+- **S6-04** Wasp retirement: ~3pt, one session.
+- **S6-05** Songbird retirement: ~3pt, one session.
+- **S6-06** command consolidation via filesystem moves (not settings): ~4pt.
+- **S6-07** docs: folded into each of S6-03/04/05.
+
+Revised total: ~20pt actually shippable (down from 22pt once S6-02 removed).
+Each sub-sprint is one session with regression testing per the spec's
+staged-execution rule.
+
+Learning: `.aegis/brain/learnings/2026-04-20_verify-primitives-before-speccing.md`.
 
 ### Sprints v9-07/08/09: Brain-tier Architecture (94pt combined)
 

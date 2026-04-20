@@ -1,6 +1,11 @@
 # ScheduleWakeup + ToolSearch + Agent Consolidation (Sprint v9-06)
 
 > **Purpose**: Self-paced loops, lazy-load tools, reduce 13 agents → 10.
+>
+> **Status (2026-04-20 verification pass)**: Parts 1 + 2 rest on primitives
+> that don't exist as specified. See "SDK Verification Findings" at the end of
+> this doc before implementing anything. Part 3 (agent consolidation) is
+> sound but requires staged execution.
 
 ## Part 1: ScheduleWakeup for Brain Maintenance (S6-01)
 
@@ -171,3 +176,104 @@ Update files to reflect 10-agent + 12-command model:
 - [ ] CLAUDE.md/agents/skills updates (deferred to incremental refactor)
 
 **Sprint 6 Status**: Design complete. Agent removals deferred to staged execution (one agent per session, with regression testing) to avoid breaking workflows mid-Sprint.
+
+---
+
+## SDK Verification Findings (2026-04-20)
+
+Verified against Claude Code's current tool schemas + settings.json docs
+(https://code.claude.com/docs/en/settings.md). The spec above was written
+against aspirational / misremembered primitives; treat the below as the
+corrections.
+
+### Finding A — S6-01 "ScheduleWakeup for brain maintenance" is design-flawed
+
+Two independent issues:
+
+1. **ScheduleWakeup only fires in `/loop dynamic` mode.** From the tool
+   description: "Schedule when to resume work in /loop dynamic mode." It does
+   NOT run in normal sessions. The "post-task hook → ScheduleWakeup(...)"
+   pattern in the spec cannot fire.
+2. **Hooks cannot call Claude Code tools at all.** Hooks are subprocesses
+   that run to completion and exit; they have no access to the tool-use
+   API. A hook can write a counter file, but it cannot schedule anything.
+
+**Nearest real primitive**: `CronCreate`. Session-only by default;
+`durable: true` persists to `.claude/scheduled_tasks.json` and survives
+restarts, but recurring jobs still auto-expire after 7 days, so any
+long-term automation needs to be re-armed periodically.
+
+**Redesigned S6-01 (Pattern A, simplest)**:
+- A hook (e.g. `post-tool-use`) increments a counter in
+  `.aegis/brain/state/distill-counter.txt` on task completion.
+- At session start, the session-start hook reads the counter. If >=3, it
+  writes a marker file `.aegis/brain/state/distill-due.flag`.
+- Main agent, on its first turn, reads the marker (or MEMORY.md surfaces
+  it) and runs `/aegis-distill` before other work. After distill,
+  counter resets and marker is removed.
+- **No external scheduler required**; the "schedule" is folded into the
+  session's natural start-of-work inspection.
+
+**Redesigned S6-01 (Pattern B, if the user wants wall-clock cadence)**:
+- Main agent runs `CronCreate({cron: "13 22 * * *", prompt: "/aegis-distill",
+  durable: true})` explicitly (e.g. as a one-liner during `/aegis-start`).
+- Re-armed weekly because recurring crons expire after 7 days.
+- Still single-machine, single-user -- cron state lives in the project's
+  `.claude/scheduled_tasks.json`.
+
+Pattern A is cheaper and more robust. Recommended.
+
+### Finding B — S6-02 "`tools.deferred` / `tools.always_load` in settings.json" does not exist
+
+`.claude/settings.json` supports only: `env`, `hooks`, `permissions`,
+`skipDangerousModePermissionPrompt`. There is no `tools` key. The
+schema does NOT support declaring which slash commands to lazy-load.
+
+The existing `ToolSearch` primitive defers **API-level tools** (MCP tools
++ built-ins like `WebFetch`, `CronCreate`, etc.), not slash commands.
+Slash commands auto-load based on file presence in `.claude/skills/` and
+`~/.claude/skills/`. The only way to "defer" a slash command is to move
+its file out of the skills directory.
+
+**Implication**: the 4.8k-token-per-session savings estimated in the spec
+is not reachable via a config change. To approximate it, we would need
+to either:
+- **Filesystem move** (skill files into a `.claude/skills-deferred/` dir)
+  -- this removes them from the session entirely, not lazy-loads. Users
+  lose tab-completion. Not equivalent to deferred loading.
+- **Wait for Anthropic** to add a `skills.deferred` settings key. This
+  is a feature request, not a change we can ship.
+
+**Action**: close S6-02 as "blocked on SDK". Record as a feature request
+candidate. Do NOT spend further implementation effort.
+
+### Finding C — Agent consolidation (S6-03 to S6-07) is sound
+
+Unlike Parts 1 + 2, Part 3 is purely a filesystem + docs change:
+- Merge Vision → War Machine: concatenate agent definitions.
+- Retire Wasp, Songbird: move to `.claude/agents/_archived/`, update any
+  references in specs + CLAUDE_agents.md.
+- Command consolidation: the 31→12 split is aspirational IF presented as
+  "settings-driven", but operationally achievable by moving skill files
+  between `.claude/skills/` and `.claude/skills/_archived/`.
+
+Staged execution still applies: one agent per session with regression
+testing, per the original spec's warning.
+
+### Recommendation
+
+- **S6-01**: redesign per Pattern A (counter + marker + session-start
+  handoff). No new primitives needed. Estimate: ~5pt implementation.
+- **S6-02**: close as "blocked on SDK". Estimate: 0pt (spec-only note).
+- **S6-03**: Vision → War Machine merge. Estimate: ~5pt, one session.
+- **S6-04**: Wasp retirement. Estimate: ~3pt, one session.
+- **S6-05**: Songbird retirement. Estimate: ~3pt, one session.
+- **S6-06**: approach as "skill file moves", not settings config.
+  Estimate: ~4pt, one session.
+- **S6-07**: incremental docs updates as each agent ships. Estimate:
+  ~2pt, folded into each of S6-03/04/05.
+
+Revised Sprint v9-06 total: **~22pt** (unchanged headline), but
+re-distributed. Down from 22pt + the unreachable 4.8k-token saving.
+
+Lesson: `2026-04-20_verify-primitives-before-speccing.md`.
