@@ -277,3 +277,40 @@ Revised Sprint v9-06 total: **~22pt** (unchanged headline), but
 re-distributed. Down from 22pt + the unreachable 4.8k-token saving.
 
 Lesson: `2026-04-20_verify-primitives-before-speccing.md`.
+
+---
+
+## Spec-vs-Reality Audit (2026-04-20 late PM)
+
+Inventory of the filesystem found that most of Part 3 is already shipped.
+The spec was written as "to do" but the moves happened in an unrecorded
+prior session.
+
+| Sub-sprint | Spec wrote | Actual state | Evidence |
+|-----------|-----------|-------------|----------|
+| S6-03 Vision → War Machine | "to merge" | ✅ DONE | `.claude/agents/_archived/vision.md` + `war-machine.md` line "QA Lead + Executor (absorbed Vision in v9)" |
+| S6-04 Wasp retire | "to retire" | ✅ DONE | `.claude/agents/_archived/wasp.md`, not in active dir |
+| S6-05 Songbird retire | "to retire" | ✅ DONE | `.claude/agents/_archived/songbird.md`, `coulson.md` notes "absorbed Songbird's content role" |
+| S6-07 CLAUDE_agents.md | "to update" | ✅ DONE | Top of file reads "v9 Model: 10 agents", active table lists exactly 10 |
+| S6-06 command consolidation | "31 → 12" | ⚠ partial | 29 commands in `.claude/commands/`, `_archived/` dir does not exist |
+| S6-01 ScheduleWakeup auto-distill | "to implement" | ❌ not started | `post-tool-use.sh` does not increment a distill counter; no marker file logic |
+| S6-02 tools.deferred | "to add to settings" | ❌ closed | SDK verification -- not a real schema key |
+
+**True remaining work for Sprint v9-06**: only S6-01 (Pattern A) and
+potentially S6-06 (if we actually want the 29 → 12 command cut). Everything
+else in Part 3 landed; this spec just didn't record it. **Do not redo
+S6-03/04/05/07 -- they are complete.**
+
+**S6-06 decision point**: cutting 17 commands is user-facing; it breaks
+workflows that typed e.g. `/aegis-flow` or `/aegis-launch`. The spec's
+12-command target was aspirational and assumed the settings-based
+deferral (S6-02). With S6-02 blocked, we have two options:
+1. Leave all 29 commands active. User discovers via tab-completion.
+   No token saving, but no breakage.
+2. Move rarely-used commands to `_archived/` with a "deprecated" note
+   at the top of each. Users typing the old name get a skill-not-found
+   error -- mild friction, reversible.
+
+Recommend option 1 until we have evidence of real user pain from 29
+commands. The earlier "save 4.8k tokens" motivation was based on a
+feature that doesn't exist, so the cost/benefit flipped.

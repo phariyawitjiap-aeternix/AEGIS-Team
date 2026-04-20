@@ -69,28 +69,30 @@ Learning: `.aegis/brain/learnings/2026-04-20_worktree-base-is-session-start-HEAD
 
 ## Priority 2 — Next architectural moves (2-4 sessions each)
 
-### Sprint v9-06: Schedule + ToolSearch Consolidation (22pt, verification done 2026-04-20)
+### Sprint v9-06: Schedule + ToolSearch Consolidation (mostly DONE, ~5pt remaining)
 
 Spec: `.claude/references/schedule-toolsearch-consolidation.md`.
 
-Entry criterion: ADR-004 implemented ✅ (done).
+**Spec-vs-reality audit (2026-04-20 late PM) surfaced that most of Part 3 is
+already shipped** -- the spec was written as "to do" but the moves happened
+in an unrecorded prior session.
 
-**SDK verification (2026-04-20) surfaced design issues -- spec updated with
-corrections.** Summary:
+- **S6-01 ScheduleWakeup auto-distill**: ❌ NOT STARTED -- Pattern A redesign
+  ready to implement (~5pt). This is the real remaining work.
+- **S6-02 `tools.deferred`**: ❌ CLOSED -- blocked on SDK.
+- **S6-03 Vision → War Machine**: ✅ DONE -- war-machine.md absorbed Vision,
+  vision.md archived.
+- **S6-04 Wasp retire**: ✅ DONE -- archived.
+- **S6-05 Songbird retire**: ✅ DONE -- Coulson absorbed content role,
+  songbird.md archived.
+- **S6-06 command consolidation (29 → 12)**: ⚠ PARTIAL -- 29 commands still
+  active; target of 12 requires user-facing breakage. Deferred pending
+  actual user pain signal. See spec's "S6-06 decision point" section.
+- **S6-07 CLAUDE_agents.md updates**: ✅ DONE -- top of file declares "v9
+  Model: 10 agents", table matches reality.
 
-- **S6-01 ScheduleWakeup** redesigned to Pattern A (counter + session-start
-  marker, no external scheduler). ~5pt. Ready to implement.
-- **S6-02 `tools.deferred`**: ❌ blocked on SDK. Settings.json has no `tools`
-  key. Closed as spec-only.
-- **S6-03** Vision → War Machine merger: ~5pt, one session.
-- **S6-04** Wasp retirement: ~3pt, one session.
-- **S6-05** Songbird retirement: ~3pt, one session.
-- **S6-06** command consolidation via filesystem moves (not settings): ~4pt.
-- **S6-07** docs: folded into each of S6-03/04/05.
-
-Revised total: ~20pt actually shippable (down from 22pt once S6-02 removed).
-Each sub-sprint is one session with regression testing per the spec's
-staged-execution rule.
+Entry criterion for S6-01 impl: any session. No blockers.
+Done condition for S6-01: see "Redesigned S6-01 (Pattern A)" in spec.
 
 Learning: `.aegis/brain/learnings/2026-04-20_verify-primitives-before-speccing.md`.
 
