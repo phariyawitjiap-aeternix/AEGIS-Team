@@ -445,11 +445,42 @@ Sprint <N> Closed
   Ready for: /aegis-sprint plan (to start sprint <N+1>)
 ```
 
+#### Step 10: Re-enter Nick Fury's Decision Loop (autonomous rollover)
+
+**Do not return control to the human here.** The close is complete; the
+next sprint's planning must start without a user prompt. Per
+`@references/sprint-continuation-protocol.md`:
+
+1. Announce: "Sprint N closed. Re-scanning project state..."
+2. Nick Fury runs a fresh scan (git, tests, specs, deps, kanban, backlog).
+3. Decision Matrix re-evaluates. Expected pick: **P7.4 (sprint just closed)**.
+   - If backlog has items or carry-over > 0 -> auto-run `/aegis-sprint plan`
+   - If backlog empty but SI.01 has unmapped requirements -> Iron Man drafts
+     3-5 candidate stories, then loop to the plan step
+   - If SI.01 fully mapped and no carry-over -> escalate to human as
+     Master Brain Protocol category 4 (explicit approval gate):
+     "Spec fully delivered. Close project or expand SI.01?"
+4. Announce the chosen action BEFORE dispatching, so the human observer
+   can Ctrl+C if they disagree.
+5. Log the rollover decision to `.aegis/brain/logs/decision-audit.log`
+   with source=judgment and a confidence reflecting how unambiguous the
+   state was (0.9 for clear carry-over, 0.6-0.8 for story-draft branch,
+   1.0 for the "project done" escalation).
+
+The human never types `/aegis-sprint plan` manually under L3 autonomy.
+If they want to interrupt, Ctrl+C; if they want to override, `/aegis-mode
+--autonomy L1` before the next scan.
+
 ---
 
 ### Error Handling
 
-- **No backlog exists** (plan): Create `.aegis/brain/backlog.md` with a header and prompt the user to add stories.
+- **No backlog exists** (plan): **Do NOT prompt the user.** Return to
+  the orchestrator with a structured "backlog empty" state and let Nick
+  Fury decide via P7.4 step 3 (draft from SI.01 via Iron Man) or step 4
+  (escalate as approval-gate if SI.01 is fully mapped). The Master Brain
+  Protocol forbids skills asking the human directly except via Nick Fury's
+  four allowed escalation categories.
 - **No active sprint** (standup/status/review/retro/close): Report "No active sprint found. Run `/aegis-sprint plan` first."
 - **Sprint already closed** (close): Report "Sprint <N> is already closed."
 - **Missing brain directory**: Create `.aegis/brain/sprints/` and `.aegis/brain/logs/` automatically.
