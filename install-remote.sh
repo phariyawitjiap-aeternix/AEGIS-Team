@@ -103,7 +103,7 @@ echo -e "${CYAN}    ╠═══════════════════
 echo -e "${CYAN}    ║                   ║${NC}${BOLD}${YELLOW} ◆ ◆ ◆ ${NC}${CYAN}║                   ║${NC}"
 echo -e "${CYAN}    ╚═══════════════════╩═══════╩═══════════════════╝${NC}"
 echo ""
-echo -e "        ${BOLD}${YELLOW}⚡  v${VERSION}  ·  13 Marvel Agents  ⚡${NC}"
+echo -e "        ${BOLD}${YELLOW}⚡  v${VERSION}  ·  10 Marvel Agents  ⚡${NC}"
 echo -e "       ${CYAN} \"Context is King, Memory is Soul\"${NC}"
 echo ""
 if [[ "$UPGRADE" == true ]]; then
@@ -230,7 +230,13 @@ cp "${TMP_DIR}/CLAUDE_skills.md" "${TARGET_DIR}/"
 if [[ "$UPGRADE" != true ]] || [[ ! -f "${TARGET_DIR}/CLAUDE_lessons.md" ]]; then
     cp "${TMP_DIR}/CLAUDE_lessons.md" "${TARGET_DIR}/" 2>/dev/null || true
 fi
-success "Core docs installed"
+# VERSION file -- pin the installed AEGIS version so session-start hook can
+# detect drift. Always overwrite on install/upgrade because VERSION tracks
+# the installed framework, not project state.
+if [[ -f "${TMP_DIR}/VERSION" ]]; then
+    cp "${TMP_DIR}/VERSION" "${TARGET_DIR}/VERSION"
+fi
+success "Core docs + VERSION file installed"
 
 # Agents — 10 active Marvel characters (v9 consolidation: Vision -> War Machine,
 # Songbird -> Coulson, Wasp retired). Archived prompts preserved under _archived/.
