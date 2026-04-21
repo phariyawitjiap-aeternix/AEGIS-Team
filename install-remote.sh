@@ -79,7 +79,9 @@ done
 
 # On upgrade: auto-detect existing profile from project-identity.md (unless --profile given)
 if [[ "$UPGRADE" == true ]] && [[ "$PROFILE_EXPLICIT" == false ]]; then
-    IDENTITY_FILE="${TARGET_DIR}/_aegis-brain/resonance/project-identity.md"
+    # Prefer v9 path; fall back to v8 for legacy installs mid-migration.
+    IDENTITY_FILE="${TARGET_DIR}/.aegis/brain/resonance/project-identity.md"
+    [[ ! -f "$IDENTITY_FILE" ]] && IDENTITY_FILE="${TARGET_DIR}/_aegis-brain/resonance/project-identity.md"
     if [[ -f "$IDENTITY_FILE" ]]; then
         DETECTED=$(grep -i "^- Profile:" "$IDENTITY_FILE" | head -1 | sed 's/.*: *//' | tr -d '[:space:]')
         if [[ "$DETECTED" == "full" || "$DETECTED" == "standard" || "$DETECTED" == "minimal" ]]; then
@@ -157,10 +159,37 @@ if [[ "$UPGRADE" == true ]] && [[ -f "${TARGET_DIR}/CLAUDE.md" ]]; then
     BACKUP_DIR="${TARGET_DIR}/_aegis-backup/$(date +%Y%m%d-%H%M%S)"
     info "Backing up user data to ${BACKUP_DIR}..."
     mkdir -p "$BACKUP_DIR"
+    # Back up both legacy and v9 brain paths so rollback works regardless of state.
     cp -r "${TARGET_DIR}/_aegis-brain/"     "$BACKUP_DIR/" 2>/dev/null || true
+    cp -r "${TARGET_DIR}/.aegis/brain/"     "$BACKUP_DIR/aegis-brain/" 2>/dev/null || true
     cp -r "${TARGET_DIR}/_aegis-output/iso-docs/" "$BACKUP_DIR/" 2>/dev/null || true
     cp    "${TARGET_DIR}/CLAUDE_lessons.md" "$BACKUP_DIR/" 2>/dev/null || true
+    # v8 settings.json side-copy so the user can diff against v9's scoped model.
+    cp    "${TARGET_DIR}/.claude/settings.json" "$BACKUP_DIR/settings.json.v8" 2>/dev/null || true
     success "Backup complete"
+
+    # v8 -> v9 auto-migration of brain path. Move the tree BEFORE install
+    # reshapes the rest of the repo so brain-relative writes land in the
+    # right spot from step one. Original preserved in $BACKUP_DIR.
+    if [[ -d "${TARGET_DIR}/_aegis-brain" ]] && [[ ! -d "${TARGET_DIR}/.aegis/brain" ]]; then
+        info "v8 brain detected at _aegis-brain/ -- auto-migrating to .aegis/brain/"
+        mkdir -p "${TARGET_DIR}/.aegis"
+        # Copy (not move) so the backup still has the original on disk if
+        # the user wants to diff or roll back without touching $BACKUP_DIR.
+        cp -r "${TARGET_DIR}/_aegis-brain" "${TARGET_DIR}/.aegis/brain"
+        # Remove the v8 tree once the copy is verified by presence of a known file.
+        if [[ -f "${TARGET_DIR}/.aegis/brain/resonance/project-identity.md" ]] \
+          || [[ -d "${TARGET_DIR}/.aegis/brain/resonance" ]]; then
+            rm -rf "${TARGET_DIR}/_aegis-brain"
+            success "Brain migrated to .aegis/brain/ (v8 path removed; backup retained)"
+        else
+            # Sanity-check failed -- leave both in place, let the user decide.
+            info "Migration copy made but identity check failed; keeping _aegis-brain/ in place"
+        fi
+    elif [[ -d "${TARGET_DIR}/_aegis-brain" ]] && [[ -d "${TARGET_DIR}/.aegis/brain" ]]; then
+        info "Both _aegis-brain/ and .aegis/brain/ present; leaving both untouched"
+        info "After install, verify .aegis/brain/ is complete and remove _aegis-brain/ manually"
+    fi
 
     info "Removing old framework files..."
     rm -rf "${TARGET_DIR}/.claude/agents/"
@@ -203,11 +232,17 @@ if [[ "$UPGRADE" != true ]] || [[ ! -f "${TARGET_DIR}/CLAUDE_lessons.md" ]]; the
 fi
 success "Core docs installed"
 
-# Agents — all 13 Marvel characters
+# Agents — 10 active Marvel characters (v9 consolidation: Vision -> War Machine,
+# Songbird -> Coulson, Wasp retired). Archived prompts preserved under _archived/.
 mkdir -p "${TARGET_DIR}/.claude/agents/"
-cp "${TMP_DIR}/.claude/agents/"*.md "${TARGET_DIR}/.claude/agents/"
-AGENT_COUNT=$(ls "${TARGET_DIR}/.claude/agents/"*.md | wc -l | tr -d ' ')
-success "${AGENT_COUNT} agents installed (Nick Fury, Iron Man, Spider-Man, Black Panther, Loki, Beast, Wasp, Songbird, War Machine, Vision, Coulson, Thor, Captain America)"
+cp "${TMP_DIR}/.claude/agents/"*.md "${TARGET_DIR}/.claude/agents/" 2>/dev/null || true
+if [[ -d "${TMP_DIR}/.claude/agents/_archived" ]]; then
+    mkdir -p "${TARGET_DIR}/.claude/agents/_archived"
+    cp "${TMP_DIR}/.claude/agents/_archived/"*.md "${TARGET_DIR}/.claude/agents/_archived/" 2>/dev/null || true
+fi
+AGENT_COUNT=$(ls "${TARGET_DIR}/.claude/agents/"*.md 2>/dev/null | wc -l | tr -d ' ')
+ARCHIVED_COUNT=$(ls "${TARGET_DIR}/.claude/agents/_archived/"*.md 2>/dev/null | wc -l | tr -d ' ')
+success "${AGENT_COUNT} active agents installed (Nick Fury, Iron Man, Spider-Man, Black Panther, Loki, Beast, War Machine, Thor, Coulson, Captain America) + ${ARCHIVED_COUNT} archived in _archived/"
 
 # Commands
 mkdir -p "${TARGET_DIR}/.claude/commands/"
@@ -233,7 +268,7 @@ cp "${TMP_DIR}/.claude/hooks/"*.sh "${TARGET_DIR}/.claude/hooks/" 2>/dev/null ||
 cp "${TMP_DIR}/.claude/hooks/profiles.json" "${TARGET_DIR}/.claude/hooks/" 2>/dev/null || true
 chmod +x "${TARGET_DIR}/.claude/hooks/"*.sh 2>/dev/null || true
 HOOK_COUNT=$(ls "${TARGET_DIR}/.claude/hooks/"*.sh 2>/dev/null | wc -l | tr -d ' ')
-success "${HOOK_COUNT} hooks installed (guard-bash, guard-write, post-tool-use, post-edit-accumulate, on-stop, run-with-flags, tinman-heartbeat)"
+success "${HOOK_COUNT} hooks installed (guard-bash, guard-write, session-start, aegis-version-check, post-tool-use, post-edit-accumulate, on-stop, run-with-flags, tinman-heartbeat)"
 
 # Settings
 cp "${TMP_DIR}/.claude/settings.json" "${TARGET_DIR}/.claude/" 2>/dev/null || true
@@ -301,21 +336,23 @@ success "${SKILL_COUNT} skills installed (profile: ${PROFILE})"
 # ── DIRECTORY STRUCTURE ───────────────────────────────────────────────────────
 info "Creating directory structure..."
 
-# Brain
-mkdir -p "${TARGET_DIR}/_aegis-brain/tasks"
-mkdir -p "${TARGET_DIR}/_aegis-brain/sprints/current"
-mkdir -p "${TARGET_DIR}/_aegis-brain/resonance"
-mkdir -p "${TARGET_DIR}/_aegis-brain/learnings/raw"
-mkdir -p "${TARGET_DIR}/_aegis-brain/skill-cache"
-mkdir -p "${TARGET_DIR}/_aegis-brain/metrics"
-mkdir -p "${TARGET_DIR}/_aegis-brain/logs"
-mkdir -p "${TARGET_DIR}/_aegis-brain/handoffs"
-mkdir -p "${TARGET_DIR}/_aegis-brain/backlog"
-mkdir -p "${TARGET_DIR}/_aegis-brain/retrospectives"
-mkdir -p "${TARGET_DIR}/_aegis-brain/instincts/pending"
-mkdir -p "${TARGET_DIR}/_aegis-brain/instincts/active"
-mkdir -p "${TARGET_DIR}/_aegis-brain/instincts/promoted"
-mkdir -p "${TARGET_DIR}/_aegis-brain/instincts/retired"
+# Brain (v9 single-folder layout: .aegis/brain/)
+mkdir -p "${TARGET_DIR}/.aegis/brain/tasks"
+mkdir -p "${TARGET_DIR}/.aegis/brain/sprints/current"
+mkdir -p "${TARGET_DIR}/.aegis/brain/resonance"
+mkdir -p "${TARGET_DIR}/.aegis/brain/learnings/raw"
+mkdir -p "${TARGET_DIR}/.aegis/brain/skill-cache"
+mkdir -p "${TARGET_DIR}/.aegis/brain/metrics"
+mkdir -p "${TARGET_DIR}/.aegis/brain/logs"
+mkdir -p "${TARGET_DIR}/.aegis/brain/handoffs"
+mkdir -p "${TARGET_DIR}/.aegis/brain/backlog"
+mkdir -p "${TARGET_DIR}/.aegis/brain/retrospectives"
+mkdir -p "${TARGET_DIR}/.aegis/brain/state"
+mkdir -p "${TARGET_DIR}/.aegis/brain/state/maintainer-grants"
+mkdir -p "${TARGET_DIR}/.aegis/brain/instincts/pending"
+mkdir -p "${TARGET_DIR}/.aegis/brain/instincts/active"
+mkdir -p "${TARGET_DIR}/.aegis/brain/instincts/promoted"
+mkdir -p "${TARGET_DIR}/.aegis/brain/instincts/retired"
 
 # Output
 mkdir -p "${TARGET_DIR}/_aegis-output/specs"
@@ -348,8 +385,8 @@ success "Directory structure created"
 # ── INITIALIZE FILES ──────────────────────────────────────────────────────────
 
 # counters.json
-if [[ ! -f "${TARGET_DIR}/_aegis-brain/counters.json" ]]; then
-    cat > "${TARGET_DIR}/_aegis-brain/counters.json" << 'COUNTERS'
+if [[ ! -f "${TARGET_DIR}/.aegis/brain/counters.json" ]]; then
+    cat > "${TARGET_DIR}/.aegis/brain/counters.json" << 'COUNTERS'
 {
   "project_key": "PROJ",
   "counters": {"US":0,"J":0,"E":0,"T":0,"ST":0,"DOC":0,"ADR":0,"TD":0,"REL":0,"HO":0},
@@ -360,22 +397,27 @@ COUNTERS
 fi
 
 # activity.log
-if [[ ! -f "${TARGET_DIR}/_aegis-brain/logs/activity.log" ]]; then
-    echo "# AEGIS Activity Log — Append Only" > "${TARGET_DIR}/_aegis-brain/logs/activity.log"
-    echo "# Format: [ISO-8601] [AGENT] [STATUS] — [message]" >> "${TARGET_DIR}/_aegis-brain/logs/activity.log"
-    echo "# ---" >> "${TARGET_DIR}/_aegis-brain/logs/activity.log"
+if [[ ! -f "${TARGET_DIR}/.aegis/brain/logs/activity.log" ]]; then
+    echo "# AEGIS Activity Log — Append Only" > "${TARGET_DIR}/.aegis/brain/logs/activity.log"
+    echo "# Format: [ISO-8601] [AGENT] [STATUS] — [message]" >> "${TARGET_DIR}/.aegis/brain/logs/activity.log"
+    echo "# ---" >> "${TARGET_DIR}/.aegis/brain/logs/activity.log"
     success "activity.log initialized"
 fi
 
-# project-identity.md — create on new install, update version+profile on upgrade
-IDENTITY_FILE="${TARGET_DIR}/_aegis-brain/resonance/project-identity.md"
+# project-identity.md — create on new install, update version+profile on upgrade.
+# Prefer v9 path; fall back to v8 only if v9 doesn't exist (mid-migration edge case).
+IDENTITY_FILE="${TARGET_DIR}/.aegis/brain/resonance/project-identity.md"
+[[ ! -f "$IDENTITY_FILE" ]] && [[ -f "${TARGET_DIR}/_aegis-brain/resonance/project-identity.md" ]] \
+    && IDENTITY_FILE="${TARGET_DIR}/_aegis-brain/resonance/project-identity.md"
 if [[ ! -f "$IDENTITY_FILE" ]] && [[ -n "$PROJECT_NAME" ]]; then
+    # New install path -- no identity file exists yet, create at v9 location
+    IDENTITY_FILE="${TARGET_DIR}/.aegis/brain/resonance/project-identity.md"
     cat > "$IDENTITY_FILE" << IDENTITY
 # Project Identity
 - Name: ${PROJECT_NAME}
 - Created: $(date +%Y-%m-%d)
 - Framework: AEGIS v${VERSION}
-- Agents: 13 Marvel characters
+- Agents: 10 Marvel characters (v9 consolidation)
 - Profile: ${PROFILE}
 IDENTITY
     success "Project identity created"
@@ -387,11 +429,15 @@ elif [[ -f "$IDENTITY_FILE" ]] && [[ "$UPGRADE" == true ]]; then
     success "Project identity updated (v${VERSION}, profile: ${PROFILE})"
 fi
 
-# .gitignore
+# .gitignore -- create fresh on new install; patch missing v9 patterns on upgrade.
 if [[ ! -f "${TARGET_DIR}/.gitignore" ]]; then
     cat > "${TARGET_DIR}/.gitignore" << 'GITIGNORE'
 _aegis-output/
 _aegis-backup/
+.aegis/brain/logs/
+.aegis/brain/state/
+.claude/settings.json.v8-backup
+.claude/worktrees/
 .env
 .env.*
 *.key
@@ -401,9 +447,19 @@ _aegis-backup/
 node_modules/
 __pycache__/
 *.log
-!_aegis-brain/logs/activity.log
+!.aegis/brain/logs/activity.log
 GITIGNORE
     success ".gitignore created"
+elif [[ "$UPGRADE" == true ]]; then
+    # Ensure v9-specific patterns are present. Append only what's missing so
+    # we don't clobber project-specific entries the user added.
+    GI="${TARGET_DIR}/.gitignore"
+    for pat in "_aegis-backup/" ".aegis/brain/logs/" ".aegis/brain/state/" ".claude/settings.json.v8-backup" ".claude/worktrees/"; do
+        if ! grep -qxF "$pat" "$GI"; then
+            echo "$pat" >> "$GI"
+        fi
+    done
+    success ".gitignore patched with v9 patterns (existing entries preserved)"
 fi
 
 # Git init if needed
@@ -431,48 +487,53 @@ echo -e "  ${BOLD}Commands:${NC}  ${CMD_COUNT}"
 echo ""
 
 if [[ "$UPGRADE" == true ]]; then
-    echo -e "${BOLD}What's new in v9.0 (vs v8.4):${NC}"
-    echo "  ${BOLD}Agent consolidation (13 → 10):${NC}"
+    # Use printf (or echo -e) so ${BOLD}/${NC} escape codes render, not print literally.
+    printf "%b\n" "${BOLD}What's new in v9.0 (vs v8.4):${NC}"
+    printf "%b\n" "  ${BOLD}Agent consolidation (13 → 10):${NC}"
     echo "  • Vision merged into War Machine (QA Lead + Executor combined)"
     echo "  • Songbird absorbed by Coulson (content role merged with compliance docs)"
     echo "  • Wasp retired (UX tasks → Spider-Man + style guide)"
     echo "  • Archived agent prompts preserved in .claude/agents/_archived/"
     echo ""
-    echo "  ${BOLD}Brain consolidation + Tier 1 memory layer:${NC}"
+    printf "%b\n" "  ${BOLD}Brain consolidation + Tier 1 memory layer:${NC}"
     echo "  • New home: .aegis/brain/ (single folder, easy uninstall)"
     echo "  • tools/aegis-brain-sync.sh regenerates MEMORY.md index"
     echo "  • tools/aegis-brain-write.sh atomic write + S4-02 proxy directive"
     echo "  • Session-start hook combines version check + brain sync"
+    echo "  • AUTO-MIGRATION: _aegis-brain/ copied to .aegis/brain/ during upgrade"
     echo ""
-    echo "  ${BOLD}Worktree isolation (Sprint v9-05):${NC}"
+    printf "%b\n" "  ${BOLD}Worktree isolation (Sprint v9-05):${NC}"
     echo "  • tools/aegis-merge-worktree.sh with stale-ancestor rebase"
     echo "  • Spider-Man default: isolation=worktree for code edits"
     echo ""
-    echo "  ${BOLD}ADR-004: AEGIS_MAINTAINER_MODE override channel:${NC}"
+    printf "%b\n" "  ${BOLD}ADR-004: AEGIS_MAINTAINER_MODE override channel:${NC}"
     echo "  • tools/aegis-maintainer-grant.sh (human-run, one-shot, 60s TTL)"
     echo "  • guard-write honors valid grants; guard-bash blocks agent self-grants"
     echo ""
-    echo "  ${BOLD}BLOCK 0 lite mode (Sprint v9-02):${NC}"
+    printf "%b\n" "  ${BOLD}BLOCK 0 lite mode (Sprint v9-02):${NC}"
     echo "  • tools/aegis-block0-mode.sh branches lite/standard/full per task"
     echo "  • 1pt chores skip SI.01/SI.02; security/features force full gate"
     echo ""
-    echo "  ${BOLD}Hardened permissions (Sprint v9-01):${NC}"
+    printf "%b\n" "  ${BOLD}Hardened permissions (Sprint v9-01):${NC}"
     echo "  • defaultMode acceptEdits (was bypassPermissions)"
     echo "  • 26 deny patterns (was 8), 20 scoped allow (was 60+ wildcards)"
     echo ""
-    echo "  ${BOLD}New ops tools:${NC} aegis-status-brief, aegis-test-all,"
+    printf "%b\n" "  ${BOLD}New ops tools:${NC} aegis-status-brief, aegis-test-all,"
     echo "                    aegis-agent-tools-matrix, aegis-pending-items,"
     echo "                    aegis-distill-reset, aegis-block0-mode"
     echo ""
-    echo -e "  ${YELLOW}${BOLD}UPGRADE CHECKLIST (v8 → v9):${NC}"
-    echo "    1. Backup .claude/settings.json before install overwrites it"
-    echo "       (installer auto-saves to .claude/settings.json.v8-backup)"
+    printf "%b\n" "  ${YELLOW}${BOLD}UPGRADE CHECKLIST (v8 → v9):${NC}"
+    echo "    1. Review .claude/settings.json changes"
+    echo "       (v8 version backed up to ${BACKUP_DIR:-_aegis-backup/...}/settings.json.v8)"
     echo "    2. Vision/Wasp/Songbird references in your custom specs still work"
     echo "       (agent files moved to _archived/, not deleted)"
-    echo "    3. If you have _aegis-brain/, move to .aegis/brain/ manually"
-    echo "       OR: mv _aegis-brain .aegis/brain && rm -rf _aegis-brain"
+    echo "    3. Brain auto-migrated: _aegis-brain/ -> .aegis/brain/"
+    echo "       (if both paths still exist, verify .aegis/brain/ is complete"
+    echo "        then: rm -rf _aegis-brain)"
     echo "    4. Run /aegis-doctor after upgrade to verify all 10 agents load"
     echo "    5. First /aegis-start will populate brain resonance + re-scan"
+    echo "    6. Backup _aegis-backup/<timestamp>/ is gitignored -- keep for rollback"
+    echo "       or delete manually when confident"
     echo ""
 fi
 
