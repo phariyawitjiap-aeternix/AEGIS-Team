@@ -1,52 +1,84 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/version-8.4-blue?style=for-the-badge" alt="Version 8.4"/>
-  <img src="https://img.shields.io/badge/agents-13-green?style=for-the-badge" alt="13 Agents"/>
+  <img src="https://img.shields.io/badge/version-9.0-blue?style=for-the-badge" alt="Version 9.0"/>
+  <img src="https://img.shields.io/badge/agents-10-green?style=for-the-badge" alt="10 Agents"/>
   <img src="https://img.shields.io/badge/skills-30-orange?style=for-the-badge" alt="30 Skills"/>
-  <img src="https://img.shields.io/badge/commands-27-yellow?style=for-the-badge" alt="27 Commands"/>
+  <img src="https://img.shields.io/badge/commands-29-yellow?style=for-the-badge" alt="29 Commands"/>
   <img src="https://img.shields.io/badge/gates-6-red?style=for-the-badge" alt="6 Gates"/>
-  <img src="https://img.shields.io/badge/hooks-6-teal?style=for-the-badge" alt="6 Hooks"/>
+  <img src="https://img.shields.io/badge/hooks-9-teal?style=for-the-badge" alt="9 Hooks"/>
+  <img src="https://img.shields.io/badge/tools-20+-slategray?style=for-the-badge" alt="20+ Helper Tools"/>
+  <img src="https://img.shields.io/badge/tests-76%2F76-brightgreen?style=for-the-badge" alt="Test Suite"/>
   <img src="https://img.shields.io/badge/ISO--29110-compliant-brightgreen?style=for-the-badge" alt="ISO 29110"/>
   <img src="https://img.shields.io/badge/Claude_4.x-1M_context-blueviolet?style=for-the-badge" alt="Claude 4.x"/>
   <img src="https://img.shields.io/badge/license-MIT-purple?style=for-the-badge" alt="MIT License"/>
 </p>
 
-# :shield: AEGIS v8.4 — AI Agent Team Framework for Claude Code
+# :shield: AEGIS v9.0 — AI Agent Team Framework for Claude Code
 
 > **"Context is King, Memory is Soul"**
 >
-> :dna: Nick Fury · 13 Marvel Agents · 30 Skills · 27 Commands · 6-Gate Quality · 6 Hooks · ISO 29110 · Claude 4.x 1M Context
+> :dna: Nick Fury · 10 Marvel Agents · 30 Skills · 29 Commands · 6-Gate Quality · 9 Hooks · 20+ Helper Tools · ISO 29110 · Claude 4.x 1M Context
 
 ---
 
-## :sparkles: What's new in v8.4
+## :sparkles: What's new in v9.0
 
-**9 patterns adopted from global research** — zero cloud uploads, all local.
+**Framework hardening + brain layer + ecosystem prep.** 482-point plan, ~99% of in-repo work shipped. Full audit in [.claude/references/v9-follow-ups.md](.claude/references/v9-follow-ups.md).
 
-### 4 patterns from [affaan-m/everything-claude-code](https://github.com/affaan-m/everything-claude-code) (145k ⭐)
-- **Runtime hook profile switching** — `AEGIS_HOOK_PROFILE=minimal|standard|strict`, live-tunable without editing files
-- **Batched Stop-time format/typecheck** — 10 edits = 1 `tsc` run (was 10), via accumulator pattern
-- **Config protection hook** — blocks agents from editing `.eslintrc`/`biome`/`tsconfig` to "fix" lint errors
-- **Instinct lifecycle** — confidence-scored learned patterns (`pending → active → promoted → retired`), enforced by Loki
+### Agent consolidation (13 → 10)
+- **War Machine absorbed Vision** (QA Lead + Executor combined)
+- **Coulson absorbed Songbird** (docs + content merged)
+- **Wasp retired** (UX → Spider-Man + style guide)
+- Archived prompts preserved in `.claude/agents/_archived/` for reference
 
-### 5 patterns from [VoltAgent/awesome-design-md](https://github.com/VoltAgent/awesome-design-md) (35k ⭐)
-- **DESIGN.md 9-section visual design system** — new `design-system-md` skill (Wasp-owned)
-- **Do's and Don'ts** mandatory in every spec — Loki auto-CONDITIONAL if missing
-- **Agent Prompt Guide footer** — every master spec ends with copy-paste prompts for Spider-Man/Thor
-- **Locked H2 skeletons** for all 9 ISO 29110 document types — Coulson validates before write
-- **Matrix tables + soul paragraphs** — Iron Man specs open with intent, use tables for 3+ discrete values
+### Brain layer (Sprint v9-03 / v9-04)
+- `.aegis/brain/` single-folder home (was `_aegis-brain/`)
+- `tools/aegis-brain-sync.sh` regenerates `MEMORY.md` index atomically
+- `tools/aegis-brain-write.sh` library/CLI for atomic brain writes + S4-02 proxy directive for `memory_20250818`
+- Session-start hook combines version check + brain sync
+- Adversarial test suite (`aegis-brain-adversarial-test.sh`, 9/9 green)
 
-### New artifacts
-- `/aegis-instinct` · `/aegis-evolve` commands
-- `skills/design-system-md.md`
-- `.claude/hooks/guard-write.sh` · `post-edit-accumulate.sh` · `run-with-flags.sh`
-- `_aegis-brain/instincts/` (pending/active/promoted/retired)
-- `_aegis-output/design/` (for `DESIGN.md`)
+### Worktree isolation (Sprint v9-05)
+- `tools/aegis-merge-worktree.sh` — rebase-onto-HEAD + `-f -f` cleanup escalation
+- Spider-Man default: `isolation: worktree` for code edits
+- Real blast-radius via git boundaries, not just markdown rules
+
+### ADR-004: `AEGIS_MAINTAINER_MODE` (Sprint v9-02)
+Principled override channel so the framework can evolve in-session when the human explicitly authorizes:
+- `tools/aegis-maintainer-grant.sh` — human-run token generator
+- Token format: `<path>|<nonce>|<expiry-epoch>`, one-shot, 60s TTL
+- `guard-write.sh` honors valid grants; `guard-bash.sh` blocks agent self-grants
+- 23/23 test assertions across scope escape, one-shot consume, expiry, concurrent grants
+
+### BLOCK 0 lite mode (Sprint v9-02)
+- `tools/aegis-block0-mode.sh` — lite/standard/full mode per task
+- 1pt chores skip SI.01/SI.02; security/breaking tags force full gate
+- Nick Fury + Coulson agent prompts wired; 31/31 test assertions
+
+### S6-01 distill reminder (Sprint v9-06)
+- Session-start counter + auto-reminder at threshold
+- `/aegis-distill` resets via `tools/aegis-distill-reset.sh`
+- 13/13 test assertions; no external scheduler needed
+
+### Hardened permissions (Sprint v9-01)
+- `defaultMode: acceptEdits` (was `bypassPermissions` — security-sensitive change)
+- 26 deny patterns (was 8), 20 scoped allow (was 60+ wildcards)
+- `guard-bash.sh` blocks Golden Rule violations + dangerous ops
+
+### New ops tools
+- `aegis-status-brief.sh` — single-command repo dashboard
+- `aegis-test-all.sh` — unified runner across 4 test suites (76/76 green)
+- `aegis-agent-tools-matrix.sh` — subagent tool availability pre-flight
+- `aegis-pending-items.sh` — spec-freshness audit primitive
+
+### Ecosystem handoff docs
+- [AEGIS_v9_ECOSYSTEM_GUIDE.md](AEGIS_v9_ECOSYSTEM_GUIDE.md) — bootstrap for v9-07 through v9-15 (brain-tier, MCP, plugin, migration+GA) as separate engineering streams
+- [AEGIS_EXTERNAL_ADOPTION.md](AEGIS_EXTERNAL_ADOPTION.md) — apply AEGIS to a non-meta target project
 
 ---
 
 ## What is AEGIS?
 
-AEGIS (**A**utonomous **E**nhanced **G**roup **I**ntelligence **S**ystem) — production-grade AI agent team framework for Claude Code. 13 Marvel-character agents, 14-stage SDLC pipeline, 6-gate quality (including a mandatory pre-work gate), ISO 29110 compliance, JIRA-like PM, self-enforcing instinct system, visual design discipline. :dna: ยิ่งใช้ยิ่งเก่ง.
+AEGIS (**A**utonomous **E**nhanced **G**roup **I**ntelligence **S**ystem) — production-grade AI agent team framework for Claude Code. 10 Marvel-character agents, 14-stage SDLC pipeline, 6-gate quality (including a mandatory pre-work gate), ISO 29110 compliance, JIRA-like PM, self-enforcing instinct system, principled maintainer-override channel, real worktree isolation. :dna: ยิ่งใช้ยิ่งเก่ง.
 
 ---
 
@@ -121,36 +153,28 @@ claude --dangerously-skip-permissions
 
 | Step | Action |
 |:----:|--------|
-| 1 | :lock: **Backup** `_aegis-brain/`, `iso-docs/`, `CLAUDE_lessons.md` → `_aegis-backup/` |
-| 2 | :wastebasket: **Remove** old agents, commands, references, teams, skills |
-| 3 | :arrow_down: **Download** latest AEGIS from GitHub (to `/tmp/`, auto-cleaned) |
-| 4 | :package: **Install** 13 Marvel agents, 27 commands, 14 references, 7 teams, 30 skills, 6 hooks |
-| 5 | :mag: **Verify** all files present + migrate old versions (v6→v8, v7→v8, v8.2→v8.3→v8.4) + auto-detect profile from project-identity.md |
+| 1 | :lock: **Backup** `.aegis/brain/` (plus `_aegis-brain/` for v8 users), `iso-docs/`, `CLAUDE_lessons.md`, and `.claude/settings.json` → `_aegis-backup-<timestamp>/` |
+| 2 | :arrows_counterclockwise: **Migrate** (v8→v9 only) `_aegis-brain/` → `.aegis/brain/` if the new path doesn't exist yet |
+| 3 | :wastebasket: **Remove** old agents, commands, references, teams, skills |
+| 4 | :arrow_down: **Download** latest AEGIS from GitHub (to `/tmp/`, auto-cleaned) |
+| 5 | :package: **Install** 10 Marvel agents, 29 commands, 25+ references, 7 teams, 30 skills, 9 hooks, 20+ helper tools |
+| 6 | :mag: **Verify** all files present + auto-detect profile from project-identity.md |
 
-**What's new in v8.4:**
-
-| Change | Details |
-|--------|---------|
-| :zap: Hook profiles | Runtime switching via `AEGIS_HOOK_PROFILE` env var (minimal/standard/strict) |
-| :stopwatch: Batched check | `post-edit-accumulate` + Stop-time `tsc`/`biome` — 10× speedup on multi-file edits |
-| :lock: Config protection | `guard-write.sh` blocks agent edits to `.eslintrc`/`biome`/`tsconfig`/`pyproject.toml` |
-| :brain: Instinct lifecycle | Confidence-scored patterns enforced by Loki (new `/aegis-instinct`, `/aegis-evolve`) |
-| :art: DESIGN.md skill | New `design-system-md` skill — 9-section visual design system (Wasp-owned) |
-| :bookmark: Do's/Don'ts | Mandatory in every spec — Loki auto-CONDITIONAL if missing |
-| :rocket: Agent Prompt Guide | Every master spec ends with copy-paste prompts for downstream agents |
-| :clipboard: Locked ISO H2 | Coulson validates frozen H2 skeletons for all 9 ISO 29110 doc types |
-| :bar_chart: Matrix tables | Iron Man specs use tables for 3+ discrete values, open with "soul paragraph" |
-
-**Previous v8.3 changes (still in effect):**
+**What's new in v9.0 (vs v8.4):**
 
 | Change | Details |
 |--------|---------|
-| :superhero: Agent renames | All 13 agents renamed to Marvel characters matching their behavior |
-| :lock: BLOCK 0 gate | Coulson enforced as mandatory pre-work checkpoint before any task starts |
-| :brain: Claude 4.x models | Haiku agents updated to `claude-haiku-4-5-20251001`; Opus/Sonnet get 1M context |
-| :6: Gate 0 added | Quality pipeline is now 6 gates (Gate 0 = pre-work docs) |
+| :busts_in_silhouette: Agent consolidation | 13 → 10 agents. War Machine absorbed Vision, Coulson absorbed Songbird, Wasp retired. Archived in `.claude/agents/_archived/` |
+| :brain: Brain folder move | `_aegis-brain/` → `.aegis/brain/`. Single-folder home; installer auto-migrates on upgrade |
+| :floppy_disk: Brain sync/write | `tools/aegis-brain-sync.sh` (atomic MEMORY.md regen) + `tools/aegis-brain-write.sh` (atomic write + S4-02 `memory_20250818` proxy directive) |
+| :twisted_rightwards_arrows: Worktree isolation | `tools/aegis-merge-worktree.sh` with stale-ancestor rebase + process-lock escalation. Spider-Man default: `isolation: worktree` |
+| :key: ADR-004 override | `AEGIS_MAINTAINER_MODE` scoped, time-bounded, one-shot grant for principled framework evolution. `tools/aegis-maintainer-grant.sh` |
+| :white_check_mark: BLOCK 0 lite mode | Per-task mode (lite/standard/full). 1pt chores skip SI.01/SI.02; security forces full. `tools/aegis-block0-mode.sh` |
+| :lock: Hardened permissions | `defaultMode: acceptEdits` (was bypassPermissions); 26 deny patterns, 20 scoped allow |
+| :chart_with_upwards_trend: 76/76 test suite | `tools/aegis-test-all.sh` runs 4 suites: brain-adversarial, maintainer-mode, distill-counter, block0-mode |
+| :scroll: Ecosystem docs | [AEGIS_v9_ECOSYSTEM_GUIDE.md](AEGIS_v9_ECOSYSTEM_GUIDE.md) + [AEGIS_EXTERNAL_ADOPTION.md](AEGIS_EXTERNAL_ADOPTION.md) |
 
-**:lock: NEVER touched by upgrade:** `_aegis-brain/` (tasks, sprints, patterns, learnings), `iso-docs/`, `CLAUDE_lessons.md`, project source code
+**:lock: NEVER touched by upgrade:** `.aegis/brain/` (tasks, sprints, patterns, learnings), `iso-docs/`, `CLAUDE_lessons.md`, project source code. The old `_aegis-brain/` is preserved in the backup dir.
 
 ---
 
@@ -160,7 +184,7 @@ claude --dangerously-skip-permissions
 
 ```
 🛡️ ═══════════════════════════════════════════════════
-🛡️  AEGIS v8.4 — Session Started
+🛡️  AEGIS v9.0 — Session Started
 🛡️  "Context is King, Memory is Soul"
 🛡️ ═══════════════════════════════════════════════════
 
@@ -208,7 +232,7 @@ claude --dangerously-skip-permissions
 
 ```
 ╔══════════════════════════════════════════════════════════════════╗
-║  AEGIS Team Status                              v8.4            ║
+║  AEGIS Team Status                              v9.0            ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║                                                                 ║
 ║  💓 Mother Brain: ALIVE (last pulse: 8s ago)                    ║
@@ -265,7 +289,7 @@ Before I write the spec, I need your input:
 
 ---
 
-## :busts_in_silhouette: The 13 Agents
+## :busts_in_silhouette: The 10 Agents (v9 consolidated)
 
 | # | Agent | Model | Role |
 |:-:|:------|:-----:|:-----|
@@ -315,7 +339,7 @@ BLOCK 0 (Coulson) → BREAKDOWN → SPRINT PLAN
 
 ---
 
-## :keyboard: Commands (23)
+## :keyboard: Commands (29)
 
 | Command | Purpose |
 |:--------|:--------|
@@ -408,7 +432,7 @@ your-project/
 │   ├── teams/                   # Team configurations
 │   └── settings.json            # Permissions + env
 ├── skills/                      # 29 skill definitions
-└── _aegis-brain/                # Persistent memory (never overwritten by upgrade)
+└── .aegis/brain/                # Persistent memory (never overwritten by upgrade)
     ├── resonance/               # Project identity + conventions + ADRs
     ├── learnings/               # Accumulated lessons
     ├── tasks/                   # Epic/Task/Sub-task hierarchy (BLOCK 0)
@@ -420,7 +444,21 @@ your-project/
 
 ## :sparkles: Version History
 
-### v8.4 (current) — Global Patterns Adopted
+### v9.0 (current) — Framework Hardening + Brain Layer + Ecosystem Prep
+
+| Feature | Before (v8.4) | After (v9.0) |
+|---------|---------------|--------------|
+| Agent roster | 13 Marvel characters | 10 (Vision→War Machine, Songbird→Coulson, Wasp retired) |
+| Brain home | `_aegis-brain/` | `.aegis/brain/` (single-folder, easy uninstall) |
+| Brain tooling | manual file ops | `aegis-brain-sync`, `aegis-brain-write` (atomic + S4-02 proxy) |
+| Blast radius | markdown rule | Real git worktrees via `aegis-merge-worktree` |
+| Framework self-protection | rigid (3 sessions of blocked edits) | ADR-004 override channel (scoped, one-shot, audited) |
+| BLOCK 0 | always full gate | lite/standard/full per task (`aegis-block0-mode`) |
+| Permissions | `bypassPermissions`, 8 deny | `acceptEdits`, 26 deny, 20 scoped allow |
+| Test suite | none | 76/76 assertions across 4 suites |
+| Ecosystem plan | buried in 482-pt roadmap | [ECOSYSTEM_GUIDE.md](AEGIS_v9_ECOSYSTEM_GUIDE.md) + [EXTERNAL_ADOPTION.md](AEGIS_EXTERNAL_ADOPTION.md) |
+
+### v8.4 — Global Patterns Adopted
 
 | Feature | Before (v8.3) | After (v8.4) |
 |:--------|:-------------|:-------------|
