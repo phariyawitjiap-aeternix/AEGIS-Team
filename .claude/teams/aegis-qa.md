@@ -8,7 +8,10 @@ requires: tmux
 ---
 
 ## Team Purpose
-Quality assurance pipeline: War Machine plans tests -> Vision executes -> War Machine issues verdict.
+Quality assurance pipeline: War Machine plans tests, executes them, and issues the
+verdict. (Pre-v9 this was a two-agent pipe -- War Machine planned, Vision executed,
+War Machine verdicted. Sprint v9-06 merged Vision into War Machine, so War Machine
+now owns all three phases solo.)
 
 ## Input Contract
 
@@ -33,23 +36,24 @@ Quality assurance pipeline: War Machine plans tests -> Vision executes -> War Ma
 - Produces: `_aegis-output/qa/sprint-N/test-plan-{TASK-ID}.md`
 - Each test case includes: ID, description, preconditions, steps, expected result, priority (P0-P3)
 
-### 2. Vision (haiku): Execute test cases
-- Reads: Test plan from War Machine
+### 2. War Machine (sonnet): Execute test cases
+- Reads: Own test plan from step 1
 - Executes: Test cases via shell commands, manual verification steps
 - Produces: `_aegis-output/qa/sprint-N/raw-results-{TASK-ID}.md`
 - Per-test: ID, status (PASS/FAIL/SKIP/ERROR), actual result, duration, evidence
-- Parallelism: Multiple Vision instances can run independent test batches
+- Parallelism: if Nick Fury dispatches multiple QA tasks, War Machine can be
+  spawned with `isolation: worktree` in parallel for independent test batches
 
 ### 3. War Machine (sonnet): Analyze results and issue verdict
-- Reads: Raw results from Vision, original test plan
+- Reads: Own raw results from step 2, original test plan from step 1
 - Produces: `_aegis-output/qa/sprint-N/qa-report-{TASK-ID}.md`
 - Verdict: PASS, CONDITIONAL, or FAIL
 - Gate 2 criteria: P0 tests 100%, overall >= 95%, 0 regressions
 
 ## Communication Flow
-War Machine -> test plan -> Vision
-Vision -> raw results -> War Machine
-War Machine -> QA verdict -> Captain America / next team
+War Machine plan -> War Machine execution -> War Machine verdict -> Captain America / next team
+
+(Internal phase handoffs are in-agent since v9-06; no inter-agent messages needed.)
 
 ## Output Contract
 
