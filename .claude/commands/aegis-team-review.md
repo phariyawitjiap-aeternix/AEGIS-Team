@@ -65,11 +65,25 @@ View agents: Shift+Down | Back to main: Shift+Up
 1. Read Black Panther's verdict from _aegis-output/reviews/
 2. Present unified findings table:
    | ID | Source | Severity | File | Description |
-3. If PASS → "Codebase looks good. N minor suggestions."
-4. If CONDITIONAL → list required fixes before proceeding
-5. If FAIL → list critical issues that must be addressed
-6. Run `git diff {baseline_commit}` to confirm no accidental changes during review
-7. Send shutdown_request to each teammate, then TeamDelete
+3. **Check for reviewer disagreement** (see
+   `.claude/references/reviewer-adjudication-protocol.md`):
+   - Scan the findings table. If any row from Black Panther contradicts a
+     row from Loki on the same file:line (mutually exclusive claims like
+     "this import is broken" vs "this import is fine"), the protocol
+     activates.
+   - Name the disagreement in one sentence.
+   - Identify the one-shot probe (`ls`, `grep`, `git diff`, test run).
+   - Run the probe, paste the raw output as evidence.
+   - Adjudicate in favor of the reviewer whose claim matches the probe.
+   - Append one line to `.aegis/brain/logs/adjudication.log`:
+     `[<ISO-UTC>] adjudicated: black-panther vs loki re: <claim> -- <winner> correct per <probe>`
+   - Proceed with the winning claim.
+   - If no contradictions, skip this step silently.
+4. If PASS → "Codebase looks good. N minor suggestions."
+5. If CONDITIONAL → list required fixes before proceeding
+6. If FAIL → list critical issues that must be addressed
+7. Run `git diff {baseline_commit}` to confirm no accidental changes during review
+8. Send shutdown_request to each teammate, then TeamDelete
 
 ## Failure Handling
 

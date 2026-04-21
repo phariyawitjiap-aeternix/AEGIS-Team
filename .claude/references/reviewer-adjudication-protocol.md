@@ -131,5 +131,10 @@ If the reason matters, note it in the adjudication. If not, move on.
 - [x] Anti-patterns listed
 - [x] black-panther.md + loki.md agent-prompt references (additive
   @references entry added in each, with the citations-over-claims hint)
-- [ ] `/aegis-team-review` integration (~2pt -- skill file edit, next session)
-- [ ] First real adjudication logged (~happens naturally, not a task)
+- [x] `/aegis-team-review` integration (Step 7.3 added in
+  `.claude/commands/aegis-team-review.md`: scans findings for
+  contradictions, runs probe, appends decision to
+  `.aegis/brain/logs/adjudication.log`, proceeds with winning claim)
+- [ ] First real adjudication logged (happens naturally on the next
+  review cycle where reviewers actually disagree; not a task to
+  schedule)

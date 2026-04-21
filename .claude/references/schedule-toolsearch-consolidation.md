@@ -172,10 +172,19 @@ Update files to reflect 10-agent + 12-command model:
 - [x] Merge: Vision → War Machine specified
 - [x] Retire: Wasp, Songbird specified
 - [x] Command consolidation (31→12 core + 19 deferred)
-- [ ] Implementation: actual file changes (deferred -- requires careful testing of each agent removal)
-- [ ] CLAUDE.md/agents/skills updates (deferred to incremental refactor)
+- [x] Implementation: actual file changes shipped. Vision → War Machine
+  merge, Wasp retirement, Songbird retirement all landed (audit 2026-04-20
+  confirmed via `.claude/agents/_archived/` vs `.claude/agents/` diff).
+- [x] CLAUDE.md/agents/skills updates shipped. `CLAUDE_agents.md` top-of-
+  file declares "v9 Model: 10 agents"; active table matches the 10-agent
+  reality. CLAUDE.md v9 transition block reflects post-audit state.
 
-**Sprint 6 Status**: Design complete. Agent removals deferred to staged execution (one agent per session, with regression testing) to avoid breaking workflows mid-Sprint.
+**Sprint 6 Status**: SHIPPED (2026-04-20). S6-01 Pattern A distill
+reminder live + tested; S6-02 closed on SDK (no `tools.deferred` in
+settings schema); S6-03/04/05/07 confirmed shipped via filesystem audit;
+only S6-06 (29→12 command cut) remains deferred pending user-pain signal.
+Per the "S6-06 decision point" section: no evidence of user pain yet, so
+leave 29 commands active.
 
 ---
 

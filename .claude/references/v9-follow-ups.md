@@ -64,21 +64,25 @@ earlier "441pt unshipped" figure suggested.
 
 ### True remaining in-repo work
 
-- ~~S2-02 Nick Fury runtime append~~: ✅ SHIPPED this session.
-- ~~S2-03/04 BLOCK 0 lite-mode switching~~: ✅ SHIPPED this session
+- ~~S2-02 Nick Fury runtime append~~: ✅ SHIPPED.
+- ~~S2-03/04 BLOCK 0 lite-mode switching~~: ✅ SHIPPED
   (helper + tests + nick-fury.md + coulson.md + schema doc).
-  Behavioral validation pending (run a real /aegis-team-build).
+  Behavioral validation pending (run a real /aegis-team-build on a
+  1pt typo + 8pt feature, verify artifact set matches the mode).
+- ~~Reviewer-adjudication `/aegis-team-review` integration~~: ✅ SHIPPED
+  (Step 7.3 scans findings for contradictions, runs probe, logs to
+  `.aegis/brain/logs/adjudication.log`).
 - S4-02 Nick Fury proxy dispatch loop: ~6pt **blocked on SDK** --
   memory_20250818 not in main-agent runtime.
 - S6-06 29→12 command cut: ⏸ deferred pending user-pain signal (~4pt).
 
-Total meta-repo-shippable **right now**: **~0pt**. All in-repo
+Total meta-repo-shippable **right now**: **0pt**. All in-repo
 addressable work is done. Remaining is SDK-blocked, user-decision-
 gated, or out-of-repo-only (behavioral testing on a real sprint).
 
-Actual v9 completion is **~98%** (up from 96% after S2-03/04 close).
-The large "441pt" number in earlier audits was inflated by stale spec
-tracking.
+Actual v9 completion is **~99%** (up from 98% after reviewer-adjudication
+`/aegis-team-review` wiring). The large "441pt" number in earlier audits
+was inflated by stale spec tracking.
 
 ## Priority 1 — Unblock recurring friction (next session: ~10pt remaining)
 
