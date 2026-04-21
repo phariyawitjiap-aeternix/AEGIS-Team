@@ -1,4 +1,4 @@
-# AEGIS v8.4 -- Agent Team Framework
+# AEGIS v9.0 -- Agent Team Framework
 
 > "Context is King, Memory is Soul"
 
@@ -18,7 +18,7 @@
 4. NEVER end turn before agents finish (false-ready guard)
 5. Run /aegis-start at session begin
 6. Run /aegis-retro at session end
-7. **Agents ask Nick Fury, not the human** -- Master Brain Protocol (v8.4)
+7. **Agents ask Nick Fury, not the human** -- Master Brain Protocol (v9.0)
    See `.claude/references/context-rules.md` for QUESTION_TO_BRAIN format
    and the four allowed escalation categories. Only Nick Fury escalates to human.
 
