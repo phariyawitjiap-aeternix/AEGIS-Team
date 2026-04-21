@@ -226,9 +226,30 @@ cp "${TMP_DIR}/CLAUDE.md"        "${TARGET_DIR}/"
 cp "${TMP_DIR}/CLAUDE_agents.md" "${TARGET_DIR}/"
 cp "${TMP_DIR}/CLAUDE_safety.md" "${TARGET_DIR}/"
 cp "${TMP_DIR}/CLAUDE_skills.md" "${TARGET_DIR}/"
-# Preserve CLAUDE_lessons.md on upgrade
+# Preserve CLAUDE_lessons.md on upgrade -- this is a user-accumulated file.
+# BUT v8 versions contain patterns referencing _aegis-brain/* subpaths that
+# instruct agents to write to the legacy location. Without patching, agents
+# keep creating _aegis-brain/ orphans post-migration. Fix: sed-in-place
+# substitute the 8 known brain subpath patterns. Safe because the
+# transformation is lossless (v8 path -> v9 path; no content deletion).
 if [[ "$UPGRADE" != true ]] || [[ ! -f "${TARGET_DIR}/CLAUDE_lessons.md" ]]; then
     cp "${TMP_DIR}/CLAUDE_lessons.md" "${TARGET_DIR}/" 2>/dev/null || true
+elif [[ "$UPGRADE" == true ]] && [[ -f "${TARGET_DIR}/CLAUDE_lessons.md" ]]; then
+    # Detect + patch stale v8 brain path refs without clobbering user content
+    if grep -q "_aegis-brain/" "${TARGET_DIR}/CLAUDE_lessons.md" 2>/dev/null; then
+        info "Patching stale _aegis-brain/ refs in CLAUDE_lessons.md -> .aegis/brain/..."
+        cp "${TARGET_DIR}/CLAUDE_lessons.md" "$BACKUP_DIR/CLAUDE_lessons.md.pre-patch" 2>/dev/null || true
+        for sub in resonance handoffs learnings tasks sprints retrospectives instincts logs state; do
+            sed -i.bak "s|_aegis-brain/${sub}/|.aegis/brain/${sub}/|g" "${TARGET_DIR}/CLAUDE_lessons.md"
+        done
+        rm -f "${TARGET_DIR}/CLAUDE_lessons.md.bak"
+        REMAINING=$(grep -c "_aegis-brain/" "${TARGET_DIR}/CLAUDE_lessons.md" 2>/dev/null || echo "0")
+        if [[ "$REMAINING" == "0" ]]; then
+            success "CLAUDE_lessons.md path refs migrated to v9 (backup: \$BACKUP_DIR/CLAUDE_lessons.md.pre-patch)"
+        else
+            info "CLAUDE_lessons.md still contains ${REMAINING} _aegis-brain/ refs (non-path mentions -- left intact)"
+        fi
+    fi
 fi
 # VERSION file -- pin the installed AEGIS version so session-start hook can
 # detect drift. Always overwrite on install/upgrade because VERSION tracks
