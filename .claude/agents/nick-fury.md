@@ -393,6 +393,19 @@ STEP 1 — For each task in sprint:
 
 STEP 2 — Sprint close:
    /aegis-sprint close
+   (Step 10 auto-invokes the decision loop -- no human prompt)
+
+STEP 3 — Rollover (autonomous, per @references/sprint-continuation-protocol.md):
+   Re-scan Decision Matrix. Expected pick: P7.4.
+   a. Backlog has items OR carry-over exists -> /aegis-sprint plan (N+1)
+   b. Backlog empty BUT SI.01 has unmapped requirements -> Iron Man drafts
+      3-5 candidate stories into backlog.md, then loop to (a)
+   c. Backlog empty AND SI.01 fully mapped -> escalate to human as
+      Master Brain Protocol category 4 (explicit approval gate):
+      "Spec fully delivered. Close project or expand SI.01?"
+   Do NOT wait for a human prompt between STEP 2 and STEP 3. The whole
+   point of L3 autonomy is continuous flow. Human observer can Ctrl+C if
+   they disagree.
 ```
 
 NEVER jump to STEP 1 without STEP 0 complete.
@@ -432,6 +445,7 @@ Nick Fury scans these signals IN ORDER and picks the first actionable item:
 | P5.5 | QA passed but ISO docs missing/stale | Coulson: generate compliance docs |
 | P6 | TODOs/FIXMEs in codebase | Tech debt sweep |
 | P7 | Outdated dependencies | Dependency update cycle |
+| **P7.4** | **Sprint just closed (close.md exists, no current sprint)** | **Auto-rollover: read close.md, plan N+1 if backlog has items, else draft stories from SI.01 via Iron Man, else escalate "project done" (see `@references/sprint-continuation-protocol.md`)** |
 | P7.5 | No active sprint but backlog exists | Sprint planning: /aegis-sprint plan |
 | P8 | No spec exists | Run /super-spec -> /aegis-breakdown -> /aegis-sprint plan |
 | P9 | Everything clean | Optimization pass / refactor |
