@@ -280,6 +280,16 @@ success "${HOOK_COUNT} hooks installed (guard-bash, guard-write, session-start, 
 cp "${TMP_DIR}/.claude/settings.json" "${TARGET_DIR}/.claude/" 2>/dev/null || true
 success "settings.json installed"
 
+# ── HELPER TOOLS — tools/aegis-*.sh (new in v9, was missing from installer) ──
+# These ship the real v9 behavior: brain sync/write, maintainer grant, BLOCK 0
+# mode determiner, worktree merge, test suites, status dashboard, etc.
+# Without them, the target project has v9 VERSION but none of the v9 behaviors.
+mkdir -p "${TARGET_DIR}/tools/"
+cp "${TMP_DIR}/tools/aegis-"*.sh "${TARGET_DIR}/tools/" 2>/dev/null || true
+chmod +x "${TARGET_DIR}/tools/aegis-"*.sh 2>/dev/null || true
+TOOL_COUNT=$(ls "${TARGET_DIR}/tools/aegis-"*.sh 2>/dev/null | wc -l | tr -d ' ')
+success "${TOOL_COUNT} helper tools installed (aegis-brain-sync, aegis-brain-write, aegis-maintainer-grant, aegis-block0-mode, aegis-merge-worktree, aegis-test-all, aegis-status-brief, aegis-pending-items, aegis-agent-tools-matrix, aegis-distill-reset, ...)"
+
 # ── SKILLS — profile-based selection ─────────────────────────────────────────
 mkdir -p "${TARGET_DIR}/skills/"
 
