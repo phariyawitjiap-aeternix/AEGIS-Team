@@ -172,9 +172,9 @@ Scheduled: ScheduleWakeup hook on sprint close + weekly fallback.
 - [x] Background agent guidance
 - [x] mark_chapter integration plan
 - [x] GC hook design
-- [ ] Real implementation: requires Claude Code Agent tool with `isolation` param available
+- [x] Real implementation: shipped and validated end-to-end. `Agent({isolation: "worktree"})` spawns tested in real use (scenario H + ongoing); `tools/aegis-merge-worktree.sh` handles stale-ancestor rebase + process-lock double-force; spawn-from-HEAD investigation closed (no SDK option; rebase step permanent per findings in Known Quirks below).
 
-**Sprint 5 Status**: Design complete. Implementation requires Claude Code Agent tool isolation feature (already available per system docs, but actual integration with AEGIS workflow needs real engineering session).
+**Sprint 5 Status**: SHIPPED (2026-04-20). Worktree isolation is live: Agent tool `isolation` param tested, merge-script quirks handled, spider-man.md + spec Known Quirks updated. Remaining items are Anthropic-SDK-side (e.g., spawn-from-current-HEAD primitive).
 
 ## Known Quirks (discovered during first real-use validation, 2026-04-20)
 
