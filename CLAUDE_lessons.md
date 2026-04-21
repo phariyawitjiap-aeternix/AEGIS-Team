@@ -1,4 +1,4 @@
-# AEGIS v8.4 -- Lessons Learned
+# AEGIS v9.0 -- Lessons Learned
 
 > This file is a living document. Updated via /aegis-retro at the end of each session.
 > New entries are appended at the top of each section.
