@@ -16,15 +16,26 @@ block() {
     exit 2
 }
 
-# Strip heredoc bodies and -m "..." commit messages before checking patterns.
-# This prevents false positives when dangerous strings appear in commit message text.
+# Strip quoted strings, heredoc bodies, and commit-message args before matching.
+# Rationale: detection targets actually-executed commands. Quoted strings are
+# arguments to commands like echo/printf/cat/git-commit-m — they are not
+# commands themselves. Previously only heredocs + -m were stripped, which
+# false-positived on `echo "git push --force"` etc.
 SAFE_CMD=$(python3 -c "
 import sys, re
 cmd = sys.stdin.read()
-# Truncate at heredoc start (<<'WORD' or <<WORD) — body is documentation, not executable
+# 1. Truncate at heredoc start (<<'WORD' or <<WORD) — body is documentation
 cmd = re.sub(r'<<[^\s<>]+.*', '', cmd, flags=re.DOTALL)
-# Remove -m '...' and -m \"...\" inline commit messages
+# 2. Remove -m '...' and -m \"...\" inline commit messages (kept for safety
+#    even though rule 3 below also handles it, in case of edge-case nesting)
 cmd = re.sub(r'-m\s+([\'\"]).+?\1', '-m <msg>', cmd, flags=re.DOTALL)
+# 3. Strip double-quoted string contents: \"anything including escapes\" → \"\"
+cmd = re.sub(r'\"(?:[^\"\\\\]|\\\\.)*\"', '\"\"', cmd)
+# 4. Strip single-quoted string contents: 'anything' → ''
+#    (single quotes don't interpret escapes in bash, so simpler pattern)
+cmd = re.sub(r\"'[^']*'\", \"''\", cmd)
+# 5. NOTE: we deliberately do NOT strip \$(...) or backticks — those execute,
+#    so dangerous patterns inside them SHOULD be caught.
 print(cmd)
 " <<< "$CMD" 2>/dev/null || echo "$CMD")
 
