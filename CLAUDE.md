@@ -20,9 +20,11 @@
 6. Run /aegis-retro at session end
 7. **Agents ask Nick Fury, not the human** -- Master Brain Protocol (v9.0)
    - ❌ NEVER end a response with "Options: A/B/C — what do you want?" (the classic violation pattern — this is the #1 observed MBP failure mode)
+   - ❌ NEVER end a command with "run retro? handoff? start?" — follow the chain in [`.claude/references/command-chain.md`](.claude/references/command-chain.md)
    - ❌ NEVER present a menu of choices back to the human mid-task
    - ❌ NEVER call `AskUserQuestion` unless you are Nick Fury escalating one of the 4 allowed categories
    - ✅ When you need a decision: send `QUESTION_TO_BRAIN` to Nick Fury (see `.claude/references/context-rules.md`)
+   - ✅ When a command finishes: apply the chain in [`.claude/references/command-chain.md`](.claude/references/command-chain.md) — no "what next?" menus
    - ✅ Only 4 categories ever reach the human (Identity / Irreversible scope / External access / Explicit approval gate) — and only Nick Fury escalates
    - ✅ If Nick Fury is offline (no heartbeat): make the best call from brain/instincts/ADRs, log it to `.aegis/brain/logs/activity.log`, continue — do NOT fall back to asking the human
    - 🛡️ Loki auto-REJECTs any spec or response that violates this rule

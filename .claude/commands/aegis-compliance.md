@@ -226,3 +226,11 @@ This command feeds into Gate 3 (Compliance) of the 3-gate quality system:
 Sprint close is blocked until Gate 3 passes (/aegis-compliance check shows all required docs current for the current lifecycle stage).
 
 **Important**: Documents are generated AT ACTIVITY TIME by Coulson, not batch-generated at sprint close. Sprint close only VERIFIES all required docs exist -- it does not generate them. If docs are missing at sprint close, the sprint is blocked and the team must identify which activity was not properly documented.
+
+---
+
+## Continuation Protocol (MBP / Golden Rule #7)
+
+When this command finishes, do NOT pause to ask the human "what next?" — follow the chain defined in [command-chain.md](../references/command-chain.md). Only stop for MBP escalation categories: **Identity** / **Irreversible scope** / **External access** / **Explicit approval gate**.
+
+If Nick Fury is offline, apply the chain directly and log the decision. Never fall back to asking the human as a substitute for the chain.

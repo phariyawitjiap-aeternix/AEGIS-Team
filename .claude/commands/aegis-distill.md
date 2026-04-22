@@ -142,3 +142,11 @@ _aegis-output/, and preserves originals via git. "Nothing is truly deleted."
   printf '{\n  "sessions_since_last_distill": 0,\n  "last_distill_at": "%s",\n  "threshold": %s\n}\n' "$NOW" "$THRESHOLD" > .aegis/brain/state/distill-state.json
   ```
 - Confirm: "Distill counter reset. Session-start reminder is off until 3 more sessions pass."
+
+---
+
+## Continuation Protocol (MBP / Golden Rule #7)
+
+When this command finishes, do NOT pause to ask the human "what next?" — follow the chain defined in [command-chain.md](../references/command-chain.md). Only stop for MBP escalation categories: **Identity** / **Irreversible scope** / **External access** / **Explicit approval gate**.
+
+If Nick Fury is offline, apply the chain directly and log the decision. Never fall back to asking the human as a substitute for the chain.

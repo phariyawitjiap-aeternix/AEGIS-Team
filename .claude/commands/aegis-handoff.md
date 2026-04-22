@@ -176,3 +176,11 @@ After saving the handoff file:
 2. Verify the frontmatter YAML is valid (no syntax errors)
 3. Confirm the file is in `.aegis/brain/handoffs/` with the correct date-based filename
 4. Display: "Handoff verified. Next session will auto-load from [filepath]."
+
+---
+
+## Continuation Protocol (MBP / Golden Rule #7)
+
+When this command finishes, do NOT pause to ask the human "what next?" — follow the chain defined in [command-chain.md](../references/command-chain.md). Only stop for MBP escalation categories: **Identity** / **Irreversible scope** / **External access** / **Explicit approval gate**.
+
+If Nick Fury is offline, apply the chain directly and log the decision. Never fall back to asking the human as a substitute for the chain.

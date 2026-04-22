@@ -135,3 +135,11 @@ by the 4-zone system (GREEN/YELLOW/ORANGE/RED) for consistency across all AEGIS 
 - YELLOW (40-60%): "Context getting warm. Be mindful of large file reads."
 - ORANGE (60-80%): "Context high. Wrap up current work. One more small task max."
 - RED (>80%): "Context critical. Stop all new work. Write handoff."
+
+---
+
+## Continuation Protocol (MBP / Golden Rule #7)
+
+When this command finishes, do NOT pause to ask the human "what next?" — follow the chain defined in [command-chain.md](../references/command-chain.md). Only stop for MBP escalation categories: **Identity** / **Irreversible scope** / **External access** / **Explicit approval gate**.
+
+If Nick Fury is offline, apply the chain directly and log the decision. Never fall back to asking the human as a substitute for the chain.

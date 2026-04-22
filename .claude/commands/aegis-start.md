@@ -352,3 +352,11 @@ After loading the brain (Step 2), explicitly check for and load the latest hando
 - Log warning: "Handoff is [N] days old, may be outdated"
 - Still load it but tell Mother Brain to do a full scan anyway
 - Do not auto-delete old handoffs (git preserves history)
+
+---
+
+## Continuation Protocol (MBP / Golden Rule #7)
+
+When this command finishes, do NOT pause to ask the human "what next?" — follow the chain defined in [command-chain.md](../references/command-chain.md). Only stop for MBP escalation categories: **Identity** / **Irreversible scope** / **External access** / **Explicit approval gate**.
+
+If Nick Fury is offline, apply the chain directly and log the decision. Never fall back to asking the human as a substitute for the chain.
