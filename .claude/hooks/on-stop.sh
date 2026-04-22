@@ -71,6 +71,86 @@ if [[ "$STOP_HOOK_ACTIVE" == "True" ]]; then
     exit 0
 fi
 
+# ── Master Brain Protocol violation scan ──────────────────────────────────────
+# Scans the last assistant message in the transcript for the classic MBP
+# violation pattern: option menu handed back to the user instead of routed
+# through Nick Fury. Pattern signatures:
+#   - "Options:" followed by A) / B) / C) or "- quoted-word"
+#   - Message ending in "?" or "what do you want/prefer/think"
+# If detected, logs to activity.log and shows a reminder to the user.
+TRANSCRIPT_PATH=$(echo "$INPUT" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('transcript_path', ''))" 2>/dev/null || echo "")
+
+if [[ -n "$TRANSCRIPT_PATH" && -f "$TRANSCRIPT_PATH" ]]; then
+    MBP_VIOLATION=$(python3 -c "
+import sys, json, re
+try:
+    with open('$TRANSCRIPT_PATH') as f:
+        lines = f.readlines()
+    # Find the very last assistant text turn
+    last_text = ''
+    for line in reversed(lines):
+        try:
+            e = json.loads(line)
+        except Exception:
+            continue
+        if e.get('type') == 'assistant' or (e.get('message', {}).get('role') == 'assistant'):
+            msg = e.get('message', {})
+            content = msg.get('content', [])
+            if isinstance(content, list):
+                for block in content:
+                    if isinstance(block, dict) and block.get('type') == 'text':
+                        last_text = block.get('text', '')
+                        break
+            elif isinstance(content, str):
+                last_text = content
+            if last_text:
+                break
+    if not last_text:
+        print('no_text')
+        sys.exit(0)
+    # Scan last 2000 chars for option-menu patterns
+    tail = last_text[-2000:]
+    option_patterns = [
+        r'Options?:\s*\n\s*[-\*]\s*[\"\\']',
+        r'Options?:\s*\n\s*A\s*[\)\.]',
+        r'\n\s*A\)\s*.+?\n\s*B\)',
+        r'\n\s*1\.\s*.+?\n\s*2\.\s*.+?\n\s*3\.',
+    ]
+    open_patterns = [
+        r'\?\s*\$',
+        r'(what|which|how).{0,40}(do you|would you|should).{0,60}\?',
+        r'(let me know|tell me|your call)',
+    ]
+    has_option = any(re.search(p, tail, re.IGNORECASE|re.MULTILINE) for p in option_patterns)
+    has_open = any(re.search(p, tail.strip(), re.IGNORECASE|re.MULTILINE) for p in open_patterns)
+    if has_option and has_open:
+        print('violation')
+    else:
+        print('clean')
+except Exception as ex:
+    print('error:' + str(ex)[:80])
+" 2>/dev/null || echo "error")
+
+    if [[ "$MBP_VIOLATION" == "violation" ]]; then
+        if [[ -f "$LOG" ]]; then
+            TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || echo "unknown")
+            echo "[${TS}] [HOOK:on-stop] MBP_VIOLATION — last response ended with option menu + open question (Golden Rule #7)" >> "$LOG" 2>/dev/null || true
+        fi
+        echo ""
+        echo "┌─────────────────────────────────────────────────────────────┐"
+        echo "│  ⚠️  AEGIS MBP CHECK — Golden Rule #7 violation detected     │"
+        echo "│                                                             │"
+        echo "│  The last response ended with an option menu (A/B/C) +      │"
+        echo "│  an open question to you. Per Master Brain Protocol,        │"
+        echo "│  decisions should route through Nick Fury via               │"
+        echo "│  QUESTION_TO_BRAIN — not handed back to the human.          │"
+        echo "│                                                             │"
+        echo "│  See: .claude/references/context-rules.md §MBP              │"
+        echo "│  Logged to: .aegis/brain/logs/activity.log                  │"
+        echo "└─────────────────────────────────────────────────────────────┘"
+    fi
+fi
+
 # Remind human
 echo ""
 echo "┌─────────────────────────────────────────────────────┐"
