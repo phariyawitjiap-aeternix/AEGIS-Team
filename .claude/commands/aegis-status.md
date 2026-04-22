@@ -16,12 +16,12 @@ of what AEGIS is doing.
 
 ## Full Instructions
 
-### Step 1: Check Mother Brain Heartbeat
+### Step 1: Check Nick Fury Heartbeat
 - Read `.aegis/brain/logs/heartbeat.log` for latest PULSE entry.
-- Determine Mother Brain state:
+- Determine Nick Fury state:
   - If heartbeat.log has a PULSE within last 60 seconds: **ALIVE**
   - If heartbeat.log exists but last PULSE > 60 seconds ago: **STALE** (may need respawn)
-  - If heartbeat.log doesn't exist: **OFFLINE** (Mother Brain not running)
+  - If heartbeat.log doesn't exist: **OFFLINE** (Nick Fury not running)
 - Display heartbeat status prominently at top of dashboard.
 
 ### Step 2: Check Active Agents
@@ -44,7 +44,7 @@ of what AEGIS is doing.
   ║  AEGIS Team Status                              v8.2.1         ║
   ╠══════════════════════════════════════════════════════════════════╣
   ║                                                                 ║
-  ║  💓 Mother Brain: ALIVE (last pulse: 12s ago)                   ║
+  ║  💓 Nick Fury: ALIVE (last pulse: 12s ago)                   ║
   ║     Cycle: #7 | Agents spawned: 3 | Tasks done: 2              ║
   ║                                                                 ║
   ║  Agent          Task                    Status      Progress    ║
@@ -60,9 +60,9 @@ of what AEGIS is doing.
   ╚══════════════════════════════════════════════════════════════════╝
   ```
 - Only show agents relevant to the current session/profile.
-- If Mother Brain is OFFLINE, show warning:
+- If Nick Fury is OFFLINE, show warning:
   ```
-  ⚠️ Mother Brain: OFFLINE — run /aegis-start to activate
+  ⚠️ Nick Fury: OFFLINE — run /aegis-start to activate
   ```
 
 ### Step 3: Show Pipeline Progress

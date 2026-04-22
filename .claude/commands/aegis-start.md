@@ -143,16 +143,16 @@ fi
 **This is the critical step.** Do NOT display "What would you like to do?" or
 present options. Instead, immediately execute the Nick Fury scan loop:
 
-**Spawn Mother Brain:**
+**Spawn Nick Fury:**
 ```
 Agent tool call:
-  subagent_type: "mother-brain"
-  name: "mother-brain"
+  subagent_type: "nick-fury"
+  name: "nick-fury"
   mode: "bypassPermissions"
   run_in_background: true
   prompt: |
-    You are 🧬 Mother Brain — the autonomous controller of AEGIS.
-    Read .claude/agents/mother-brain.md for your full protocol.
+    You are 🧬 Nick Fury — the autonomous controller of AEGIS.
+    Read .claude/agents/nick-fury.md for your full protocol.
 
     SESSION CONTEXT:
     - Date: [current date]
@@ -278,7 +278,7 @@ Ask/Analyze → /super-spec → /aegis-breakdown → /aegis-sprint plan → buil
 - When complete, report results and loop back to scan
 
 ### Step 5: Log Session
-Mother Brain logs automatically, but the main session should also log:
+Nick Fury logs automatically, but the main session should also log:
 ```
 [YYYY-MM-DD HH:MM] SESSION_START | autonomy=L3 | mode=nick-fury | context=[X]%
 [YYYY-MM-DD HH:MM] SCAN | git=[status] | tests=[status] | spec=[status]
@@ -305,10 +305,10 @@ After that single answer, she takes over completely.
 
 ### Error Handling
 - If scan finds nothing actionable: report "Project healthy, no action needed"
-- If Mother Brain spawn fails: fall back to inline mode with warning
+- If Nick Fury spawn fails: fall back to inline mode with warning
 - If brain directory missing: create it, then scan
 - If 2+ consecutive failures: downgrade to L1, ask human for guidance
-- If agent unresponsive > 300s: Mother Brain auto-respawns it
+- If agent unresponsive > 300s: Nick Fury auto-respawns it
 
 ### Step 2.5: Load Latest Handoff (NEW -- cross-session pickup)
 
@@ -325,7 +325,7 @@ After loading the brain (Step 2), explicitly check for and load the latest hando
    - Extract: sprint, kanban counts, context info, tasks done, last decision
    - If frontmatter is missing or malformed: fall back to reading the body text
 
-3. **Build handoff summary for Mother Brain:**
+3. **Build handoff summary for Nick Fury:**
    - Create a structured summary string:
      ```
      HANDOFF FROM PREVIOUS SESSION:
@@ -337,10 +337,10 @@ After loading the brain (Step 2), explicitly check for and load the latest hando
      - Blockers: [from handoff body]
      ```
 
-4. **Pass to Mother Brain spawn prompt:**
+4. **Pass to Nick Fury spawn prompt:**
    - Include the handoff summary in the SESSION CONTEXT section
    - Set `Handoff data: [summary]` instead of "none"
-   - This allows Mother Brain to skip redundant scans and jump to P2
+   - This allows Nick Fury to skip redundant scans and jump to P2
      (Pending handoff tasks) in her Decision Matrix
 
 5. **Log:**
@@ -350,7 +350,7 @@ After loading the brain (Step 2), explicitly check for and load the latest hando
 
 **If handoff is stale (> 7 days old):**
 - Log warning: "Handoff is [N] days old, may be outdated"
-- Still load it but tell Mother Brain to do a full scan anyway
+- Still load it but tell Nick Fury to do a full scan anyway
 - Do not auto-delete old handoffs (git preserves history)
 
 ---

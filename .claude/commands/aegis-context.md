@@ -94,12 +94,12 @@ actions when high, and shows cost estimates for common pipeline operations.
   ```
 - Based on remaining budget, note which operations are feasible and which would risk overflow.
 
-### Step 6: Mother Brain Integration (Programmatic Mode)
+### Step 6: Nick Fury Integration (Programmatic Mode)
 
-When Mother Brain calls /aegis-context as part of her heartbeat BUDGET step,
+When Nick Fury calls /aegis-context as part of her heartbeat BUDGET step,
 she does NOT need the full visual display. Instead, she uses this quick-check protocol:
 
-**Quick-Check Protocol (for Mother Brain's internal use):**
+**Quick-Check Protocol (for Nick Fury's internal use):**
 ```
 CONTEXT QUICK-CHECK:
   1. Count conversation turns (user + assistant messages)
@@ -116,18 +116,18 @@ CONTEXT QUICK-CHECK:
   7. Return: { estimate: N, zone: "ZONE", remaining: 100-N }
 ```
 
-**Mother Brain reads this result and applies the Context Budget Protocol
-defined in `.claude/agents/mother-brain.md` -- specifically the threshold
+**Nick Fury reads this result and applies the Context Budget Protocol
+defined in `.claude/agents/nick-fury.md` -- specifically the threshold
 actions table and budget-aware decision override.**
 
-**Zone-to-Action Mapping (aligned with Mother Brain):**
+**Zone-to-Action Mapping (aligned with Nick Fury):**
 - GREEN: No restrictions. Continue normal heartbeat cycle.
 - YELLOW: Caution mode. Limit concurrent agents to 2, prefer targeted reads.
 - ORANGE: Wrap-up mode. Complete current task, one more small task max, write handoff.
 - RED: Hard stop. Write handoff immediately, no new work.
 
 **Note:** The traffic light thresholds in this command (Step 3) have been aligned
-with Mother Brain's four-zone system. The old 3-zone (green/yellow/red) is replaced
+with Nick Fury's four-zone system. The old 3-zone (green/yellow/red) is replaced
 by the 4-zone system (GREEN/YELLOW/ORANGE/RED) for consistency across all AEGIS components.
 
 **Updated Traffic Light (4-zone):**

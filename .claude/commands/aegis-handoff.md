@@ -120,10 +120,10 @@ handoff brief. Run this after /aegis-retro or as a standalone end-of-session com
   ```
 - Inform the user: "Next session, run /aegis-start to load this handoff automatically."
 
-### Step 5.5: Capture Mother Brain State (NEW -- for cross-session continuity)
+### Step 5.5: Capture Nick Fury State (NEW -- for cross-session continuity)
 
 In addition to the human-readable summary, capture machine-readable state
-that Mother Brain can parse on the next /aegis-start:
+that Nick Fury can parse on the next /aegis-start:
 
 - Read the current sprint plan from `.aegis/brain/sprints/current/plan.md`
 - Read the current kanban from `.aegis/brain/sprints/current/kanban.md`
@@ -156,7 +156,7 @@ mother_brain_state:
 
 And add a new section to the body:
 ```markdown
-## Mother Brain State
+## Nick Fury State
 - Sprint: [sprint-N] (day [N] of [M])
 - Kanban: [N] TODO, [N] IN_PROGRESS, [N] IN_REVIEW, [N] QA, [N] DONE
 - Context was at ~[X]% ([ZONE]) when this handoff was written
@@ -165,7 +165,7 @@ And add a new section to the body:
 - Decision Matrix was at: [P-level and signal description]
 ```
 
-**Why this matters:** When the next /aegis-start loads this handoff, Mother Brain
+**Why this matters:** When the next /aegis-start loads this handoff, Nick Fury
 can skip redundant scanning and immediately resume from the right Decision Matrix
 priority level, saving context budget on the new session.
 
