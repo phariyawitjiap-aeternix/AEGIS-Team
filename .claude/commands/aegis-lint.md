@@ -128,3 +128,11 @@ When the user runs `/aegis-lint --fix`, perform these safe fixes automatically:
 DO NOT auto-resolve contradictions. Contradictions require human judgment and must be flagged for review only.
 
 After auto-fix, re-run Steps 2–6 and print an updated report showing the new health score.
+
+---
+
+## Continuation Protocol (MBP / Golden Rule #7)
+
+When this command finishes, do NOT pause to ask the human "what next?" — follow the chain defined in [command-chain.md](../references/command-chain.md). Only stop for MBP escalation categories: **Identity** / **Irreversible scope** / **External access** / **Explicit approval gate**.
+
+If Nick Fury is offline, apply the chain directly and log the decision. Never fall back to asking the human as a substitute for the chain.

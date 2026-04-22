@@ -145,3 +145,11 @@ Verify PM state files were written correctly:
 - **Output directory conflict**: The counter protocol prevents ID collisions. If a task directory already exists (recovery scenario), increment the counter past the conflicting ID.
 - **Validation failure**: Report specific issues, retry decomposition with corrections.
 - **Very large story (> 100 estimated points)**: Suggest splitting into multiple user stories before breakdown.
+
+---
+
+## Continuation Protocol (MBP / Golden Rule #7)
+
+When this command finishes, do NOT pause to ask the human "what next?" — follow the chain defined in [command-chain.md](../references/command-chain.md). Only stop for MBP escalation categories: **Identity** / **Irreversible scope** / **External access** / **Explicit approval gate**.
+
+If Nick Fury is offline, apply the chain directly and log the decision. Never fall back to asking the human as a substitute for the chain.

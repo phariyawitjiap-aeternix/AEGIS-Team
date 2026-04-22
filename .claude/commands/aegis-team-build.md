@@ -84,3 +84,11 @@ Never wait indefinitely. If an agent has not responded after its predecessor com
 ---
 
 > Use **Shift+Down** to view agent activity in-process. **Shift+Up** to return to main.
+
+---
+
+## Continuation Protocol (MBP / Golden Rule #7)
+
+When this command finishes, do NOT pause to ask the human "what next?" — follow the chain defined in [command-chain.md](../references/command-chain.md). Only stop for MBP escalation categories: **Identity** / **Irreversible scope** / **External access** / **Explicit approval gate**.
+
+If Nick Fury is offline, apply the chain directly and log the decision. Never fall back to asking the human as a substitute for the chain.

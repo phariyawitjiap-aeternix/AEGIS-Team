@@ -136,3 +136,11 @@ budget checks between every phase. Requires sufficient context budget to complet
 - Save to `_aegis-output/analysis-YYYY-MM-DD.md`.
 - Present executive summary to user.
 - Offer to dive deeper into any section.
+
+---
+
+## Continuation Protocol (MBP / Golden Rule #7)
+
+When this command finishes, do NOT pause to ask the human "what next?" — follow the chain defined in [command-chain.md](../references/command-chain.md). Only stop for MBP escalation categories: **Identity** / **Irreversible scope** / **External access** / **Explicit approval gate**.
+
+If Nick Fury is offline, apply the chain directly and log the decision. Never fall back to asking the human as a substitute for the chain.

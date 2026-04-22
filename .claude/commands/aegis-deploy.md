@@ -222,3 +222,11 @@ On any deploy failure, health check failure, or rollback, automatically generate
 
 ## Output Location
 `_aegis-output/deployments/deploy-YYYY-MM-DD.md`
+
+---
+
+## Continuation Protocol (MBP / Golden Rule #7)
+
+When this command finishes, do NOT pause to ask the human "what next?" — follow the chain defined in [command-chain.md](../references/command-chain.md). Only stop for MBP escalation categories: **Identity** / **Irreversible scope** / **External access** / **Explicit approval gate**.
+
+If Nick Fury is offline, apply the chain directly and log the decision. Never fall back to asking the human as a substitute for the chain.

@@ -223,3 +223,11 @@ No files are written -- this is read-only.
 - **ADR not found**: Report `ADR-NNN not found. Run /aegis-adr list to see all ADRs.`
 - **Duplicate title**: Warn but allow (different decisions can have similar titles).
 - **Missing counters.json**: Create with `ADR: 0` and then increment.
+
+---
+
+## Continuation Protocol (MBP / Golden Rule #7)
+
+When this command finishes, do NOT pause to ask the human "what next?" — follow the chain defined in [command-chain.md](../references/command-chain.md). Only stop for MBP escalation categories: **Identity** / **Irreversible scope** / **External access** / **Explicit approval gate**.
+
+If Nick Fury is offline, apply the chain directly and log the decision. Never fall back to asking the human as a substitute for the chain.

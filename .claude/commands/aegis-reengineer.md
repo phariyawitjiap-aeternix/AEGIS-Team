@@ -69,3 +69,11 @@ for the full local-first policy.
 - [skills/aegis-reengineer.md](../../skills/aegis-reengineer.md) — full agent dispatch contracts
 - [/aegis-breakdown](aegis-breakdown.md) — narrower scope alternative for single-module refactors
 - [/super-spec](https://) — used inside Phase 4 if no SRS/BRD exists yet
+
+---
+
+## Continuation Protocol (MBP / Golden Rule #7)
+
+When this command finishes, do NOT pause to ask the human "what next?" — follow the chain defined in [command-chain.md](../references/command-chain.md). Only stop for MBP escalation categories: **Identity** / **Irreversible scope** / **External access** / **Explicit approval gate**.
+
+If Nick Fury is offline, apply the chain directly and log the decision. Never fall back to asking the human as a substitute for the chain.
