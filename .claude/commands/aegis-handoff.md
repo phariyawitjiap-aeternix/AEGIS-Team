@@ -50,6 +50,25 @@ handoff brief. Run this after /aegis-retro or as a standalone end-of-session com
         remaining: /users, /projects endpoints
   ```
 
+### Step 3.5: Pull Human Queue into Handoff (bilingual)
+
+Read the pending section of `.aegis/brain/human-queue.md`. For each pending
+entry, add a bullet to the handoff's Pending section in BOTH languages:
+
+```markdown
+- [ ] **[CATEGORY]** <english-title> / <thai-title>
+      EN: <english description>
+      TH: <thai description>
+      Raised by: <agent> · Blocks: <what blocks> · Raised: <timestamp>
+      → Full detail: .aegis/brain/human-queue.md
+```
+
+If the queue is empty, add a one-liner to Context Notes:
+`Human queue clean at handoff time / คิว human ว่างตอน handoff`
+
+Also add `human_queue_pending: [N]` to the handoff frontmatter so
+`/aegis-start` Step 2.4 can surface it on the next load.
+
 ### Step 4: List Blockers
 - Anything preventing progress that the next session needs to know about.
 - Types of blockers:
