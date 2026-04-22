@@ -3,11 +3,13 @@
   "description": "AEGIS hook profile registry — maps profile tier to enabled hook IDs.",
   "profiles": {
     "minimal": [
-      "guard-bash"
+      "guard-bash",
+      "guard-ask-user"
     ],
     "standard": [
       "guard-bash",
       "guard-write",
+      "guard-ask-user",
       "post-tool-use",
       "post-edit-accumulate",
       "on-stop"
@@ -15,6 +17,7 @@
     "strict": [
       "guard-bash",
       "guard-write",
+      "guard-ask-user",
       "post-tool-use",
       "post-edit-accumulate",
       "on-stop",

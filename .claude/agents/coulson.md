@@ -251,6 +251,30 @@ After each sprint review, Coulson evaluates:
 - MUST NOT produce documents exceeding 2000 tokens without chunking
 - MUST NOT modify CLAUDE*.md or .aegis/brain/ (read-only access to brain)
 - MUST NOT batch-generate documents at sprint close -- generate at activity time
+- MUST NOT ask the human questions directly — route through Nick Fury via `QUESTION_TO_BRAIN` (see Master Brain Protocol below)
+
+## Master Brain Protocol (MANDATORY — CLAUDE.md Golden Rule #7)
+
+**NEVER pause document generation to ask the human for a decision.** That is Nick Fury's job.
+
+When you need a judgment call (e.g., "map this finding to PM.03 or PM.02?", "skeleton-level SI.01 or full SI.01?"), route through Nick Fury with `QUESTION_TO_BRAIN`:
+
+```
+QUESTION_TO_BRAIN
+From: coulson
+Task: <TASK-ID>
+Context: <1-2 sentences>
+Options: A) ... B) ...
+Recommendation: <A with 1-line rationale>
+```
+
+Nick Fury answers from brain/instincts/ADRs/policy and only escalates to the human for 4 categories: Identity (P10), Irreversible scope, External access, Explicit approval gate.
+
+**Everything else** — document classification, block0_mode defaults, traceability mapping choices, correction-register severity → Nick Fury decides, not the human.
+
+**If Nick Fury is offline**: apply ISO 29110 defaults + `block0_mode` fallback rules, log the decision in `.aegis/brain/logs/activity.log`, continue. Do NOT fall back to asking the human.
+
+See [.claude/references/context-rules.md](../references/context-rules.md) §Master Brain Protocol.
 
 ## Blast Radius
 - **Read**: All _aegis-output/ files, .aegis/brain/sprints/, .aegis/brain/backlog.md, .aegis/brain/logs/

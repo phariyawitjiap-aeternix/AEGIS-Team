@@ -1,5 +1,5 @@
 {
-  "_README": "AEGIS v9 hardened permissions (S1-04 + S1-05). Apply BETWEEN sessions: cp tools/v9-proposed-settings.json .claude/settings.json. Do NOT apply mid-session (guard-write.sh blocks). After apply, restart Claude Code. Backup current first: cp .claude/settings.json .claude/settings.json.v8-backup",
+  "_README": "MBP-guard patch applied 2026-04-22. Identical to current .claude/settings.json plus a PreToolUse matcher on AskUserQuestion wired to guard-ask-user.sh. Apply BETWEEN sessions: cp tools/settings-mbp-guard.json .claude/settings.json. After apply, restart Claude Code. Backup first: cp .claude/settings.json .claude/settings.json.pre-mbp-backup",
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "CLAUDE_CODE_TASK_LIST_ID": "aegis-shared-tasks",
@@ -70,7 +70,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/aegis-version-check.sh"
+            "command": "bash .claude/hooks/session-start.sh"
           }
         ]
       }
