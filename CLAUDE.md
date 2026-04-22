@@ -30,6 +30,7 @@
    - 🛡️ Loki auto-REJECTs any spec or response that violates this rule
    - 🛡️ `guard-ask-user.sh` hook blocks `AskUserQuestion` calls from non-Nick-Fury callers at the tool level
    - 🛡️ `on-stop.sh` hook scans the last response for the option-menu pattern and logs violations
+   - 👤 **Human-required items go to [`.aegis/brain/human-queue.md`](.aegis/brain/human-queue.md)** — bilingual EN/TH, surfaces at `/aegis-start`, `/aegis-status`, `/aegis-handoff`, session end. Use `tools/aegis-queue-human.sh` to append, `tools/aegis-queue-resolve.sh` to resolve.
 
 ## Nick Fury (🧬)
 After /aegis-start, Nick Fury takes full control:

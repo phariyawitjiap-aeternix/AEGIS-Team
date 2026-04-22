@@ -83,6 +83,26 @@ of what AEGIS is doing.
   Context: 45% used 🟡 | ~55% remaining
   ```
 
+### Step 4.5: Show Human Queue Status
+
+Read `.aegis/brain/human-queue.md` and count pending entries between the
+`<!-- PENDING_START -->` / `<!-- PENDING_END -->` sentinels.
+
+```
+Human Queue: [N] pending / [N] รอ
+```
+
+If N > 0, list the first 3 titles bilingually:
+```
+Human Queue: 2 pending / 2 รอ
+  [EXPLICIT] Approve prod deploy v2.3.0 / อนุมัติ deploy v2.3.0
+  [EXTERNAL] Provide STAGING_API_KEY / ขอ key STAGING_API
+```
+
+If N == 0: `Human Queue: clean ✓ / ไม่มีคิวค้าง ✓`
+
+Full queue: `.aegis/brain/human-queue.md`.
+
 ### Step 5: Show Recent Activity
 - Read last 5 entries from `.aegis/brain/logs/activity.log`.
 - Display:

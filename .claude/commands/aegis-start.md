@@ -310,6 +310,25 @@ After that single answer, she takes over completely.
 - If 2+ consecutive failures: downgrade to L1, ask human for guidance
 - If agent unresponsive > 300s: Nick Fury auto-respawns it
 
+### Step 2.4: Check Human Queue (surface pending before Nick Fury loop)
+
+Before activating Nick Fury, read `.aegis/brain/human-queue.md` and count
+pending items (entries between `<!-- PENDING_START -->` and `<!-- PENDING_END -->`).
+
+If pending count > 0:
+1. Display the pending items bilingually at the top of the session:
+   ```
+   ┌─ 👤 HUMAN QUEUE / คิวรอ human — [N] pending ───────────────┐
+   │  [CATEGORY] <english-title>                                │
+   │  [CATEGORY] <thai-title>                                   │
+   │  Full detail: .aegis/brain/human-queue.md                  │
+   └────────────────────────────────────────────────────────────┘
+   ```
+2. Pass a summary into Nick Fury's SESSION CONTEXT via `Human queue: [N] pending`.
+3. Do NOT block — Nick Fury continues autonomously; the human reads the queue when ready.
+
+If pending count == 0: skip silently (no banner noise for clean state).
+
 ### Step 2.5: Load Latest Handoff (NEW -- cross-session pickup)
 
 After loading the brain (Step 2), explicitly check for and load the latest handoff:

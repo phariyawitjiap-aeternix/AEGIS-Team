@@ -250,6 +250,48 @@ except Exception as ex:
     esac
 fi
 
+# ── Human Action Queue — bilingual banner ─────────────────────────────────
+# Show pending items from .aegis/brain/human-queue.md so the user doesn't
+# have to hunt through retros/handoffs to find what genuinely needs them.
+# Only surfaces when pending count > 0.
+QUEUE=".aegis/brain/human-queue.md"
+if [[ -f "$QUEUE" ]]; then
+    PENDING_COUNT=$(python3 -c "
+import re
+with open('$QUEUE') as f:
+    c = f.read()
+m = re.search(r'<!-- PENDING_START -->(.*?)<!-- PENDING_END -->', c, re.DOTALL)
+if m:
+    inner = m.group(1)
+    print(len(re.findall(r'^### \[', inner, re.MULTILINE)))
+else:
+    print(0)
+" 2>/dev/null || echo "0")
+
+    if [[ "$PENDING_COUNT" -gt 0 ]]; then
+        echo ""
+        echo "┌─────────────────────────────────────────────────────────────┐"
+        echo "│  👤 HUMAN QUEUE / คิวรอ human — ${PENDING_COUNT} pending item(s)          │"
+        echo "├─────────────────────────────────────────────────────────────┤"
+        python3 <<PYEOF
+import re
+with open('$QUEUE') as f:
+    c = f.read()
+m = re.search(r'<!-- PENDING_START -->(.*?)<!-- PENDING_END -->', c, re.DOTALL)
+if m:
+    for entry in re.finditer(r'### \[(\d{4}-\d{2}-\d{2})\] (\w+) — (.+?) / (.+?)$', m.group(1), re.MULTILINE):
+        date, cat, en, th = entry.groups()
+        line_en = f"│  [{cat}] {en}"
+        line_th = f"│  [{cat}] {th}"
+        print(line_en[:63].ljust(63) + "│")
+        print(line_th[:63].ljust(63) + "│")
+        print("│" + " " * 61 + "│")
+PYEOF
+        echo "│  See: .aegis/brain/human-queue.md                           │"
+        echo "└─────────────────────────────────────────────────────────────┘"
+    fi
+fi
+
 # Remind human
 echo ""
 echo "┌─────────────────────────────────────────────────────┐"
