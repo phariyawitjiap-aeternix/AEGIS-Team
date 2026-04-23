@@ -45,6 +45,21 @@ by that mode — skip the rest to save cycles on small tasks.
 | 0C | Epic→Task→Sub-task hierarchy | ✓ | ✓ | ✓ |
 | 0D | Kanban board with tickets | ✓ | ✓ | ✓ |
 | 0E | SI.02 Traceability Matrix (skeleton) | ✓ | **skip** | **skip** |
+| 0F | DESIGN.md (if UI task) | conditional | conditional | conditional |
+
+Note: 0F is **conditional** — activated when task file paths match UI patterns
+(`*.tsx`, `*.jsx`, `*.css`, `*.scss`, `*.vue`, `*.svelte`, `src/components/`,
+`src/pages/`, `src/styles/`, `src/ui/`, `app/components/`) AND task priority >= P3.
+EXCLUDE patterns are checked FIRST: `*.test.*`, `*.spec.*`, `*.stories.*`,
+`*.config.*`, `**/__tests__/**`, `**/__mocks__/**`, `**/setupTests.*`.
+"conditional" applies equally to Full, Standard, and Lite — mode does NOT gate 0F;
+path detection does (per ADR-S3-02). Lite is the only mode where 0F is path-sensitive
+vs skipped; for Lite tasks hitting UI paths, 0F still fires.
+
+Coulson does NOT generate DESIGN.md. Unlike SI.01/PM.01, design systems require human
+or Iron Man authorship. Coulson only verifies presence and lint status (via
+`bash tools/aegis-design-lint.sh --strict DESIGN.md`). If 0F fails, Coulson
+reports FAIL to Nick Fury who surfaces `tools/aegis-design-init.sh`.
 
 When skipping, log to `.aegis/brain/logs/activity.log`:
 `[HOOK:block0] task=<TASK-ID> mode=<M> skipped=<0B,0E>`
@@ -78,7 +93,25 @@ COULSON_BLOCK0(task):
          ELSE:
            Doc already exists — no action required for this check
 
-  3. After all required docs are generated/verified:
+  3. Check 0F (DESIGN.md — conditional, runs in all modes):
+     Collect task file paths (meta.json "files" field, PR diff, or task description).
+     Filter out EXCLUDE patterns (*.test.*, *.spec.*, *.stories.*, *.config.*,
+       **/__tests__/**, **/__mocks__/**, **/setupTests.*) FIRST.
+     IF remaining paths match UI patterns (*.tsx, *.jsx, *.css, *.scss, *.vue,
+       *.svelte, src/components/**, src/pages/**, src/styles/**, src/ui/**,
+       app/components/**) AND task priority >= P3:
+       IF DESIGN.md does NOT exist at project root:
+         Report 0F FAIL to Nick Fury. Do NOT generate DESIGN.md.
+         Log: "[HOOK:block0] task=<TASK-ID> check=0F result=FAIL reason=missing"
+       ELSE:
+         Run: bash tools/aegis-design-lint.sh --strict DESIGN.md
+         IF lint fails: Report 0F FAIL with lint output to Nick Fury.
+           Log: "[HOOK:block0] task=<TASK-ID> check=0F result=FAIL reason=lint"
+         ELSE: Log: "[HOOK:block0] task=<TASK-ID> check=0F result=PASS"
+     ELSE:
+       Log: "[HOOK:block0] task=<TASK-ID> check=0F result=NOT_APPLICABLE"
+
+  4. After all required docs are generated/verified:
      Emit BLOCK 0 COMPLETE signal (see §Completion Signal below)
 ```
 

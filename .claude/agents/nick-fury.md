@@ -384,6 +384,58 @@ IF NOT → STOP. Coulson initializes SI.02 with requirement IDs from SI.01.
 MESSAGE: "⛔ BLOCK 0E: Traceability Matrix not initialized. Coulson creating SI.02..."
 ```
 
+#### BLOCK 0F: DESIGN.md required for UI tasks (S3-03)
+```
+BLOCK_0F_CHECK(task):
+  -- Evaluation order: EXCLUDE patterns checked FIRST (fail-safe).
+  -- If any EXCLUDE matches, file is non-UI regardless of INCLUDE matches.
+
+  EXCLUDE patterns (check each file path against these FIRST):
+    *.test.tsx  *.test.jsx  *.test.css  *.test.scss
+    *.spec.tsx  *.spec.jsx
+    *.stories.tsx  *.stories.jsx
+    *.config.tsx  *.config.js  *.config.ts
+    **/__tests__/**
+    **/__mocks__/**
+    **/setupTests.*
+
+  INCLUDE UI patterns (only checked after EXCLUDE passes):
+    *.tsx  *.jsx  *.css  *.scss  *.vue  *.svelte
+    src/components/**  src/pages/**  src/styles/**  src/ui/**
+    app/components/**
+
+  1. Collect task file paths from:
+     - PR changed-file list (if PR exists)
+     - Task description file mentions
+     - meta.json "files" field (if present)
+
+  2. Filter: remove any file matching EXCLUDE patterns.
+     Match remaining files against INCLUDE patterns.
+     IF no INCLUDE matches remain: 0F = NOT_APPLICABLE, skip.
+     Log: "[HOOK:block0] task=<ID> mode=<M> 0F=not_applicable reason=no-ui-files"
+     IF matches found AND task priority < P3: 0F = NOT_APPLICABLE, skip.
+     Log: "[HOOK:block0] task=<ID> mode=<M> 0F=not_applicable reason=below-p3-threshold"
+
+  3. Check for DESIGN.md:
+     IF file NOT exists at project root (DESIGN.md):
+       Dispatch: "bash tools/aegis-design-init.sh --blank --output DESIGN.md"
+       Append to activity.log:
+         "[HOOK:block0] task=<ID> mode=<M> 0F=triggered action=init-dispatched"
+       BLOCK until DESIGN.md exists.
+     ELSE:
+       Run: bash tools/aegis-design-lint.sh --strict DESIGN.md
+       IF fails: 0F = FAIL, BLOCK, emit finding:
+         "⛔ BLOCK 0F: DESIGN.md exists but fails strict lint. Fix before proceeding."
+       ELSE: 0F = PASS
+
+  4. Log result:
+     Append to .aegis/brain/logs/activity.log:
+       "[HOOK:block0] task=<ID> check=0F result=<PASS|FAIL|NOT_APPLICABLE> files=<matched-count>"
+```
+
+Note: 0F runs in ALL modes (lite/standard/full) whenever UI paths are detected.
+Mode does not gate 0F — path detection does (per ADR-S3-02).
+
 > **BLOCK 0 Summary**: Nick Fury NEVER allows work to begin without the
 > checks required by the task's `block0_mode`. For `full` (default for
 > >5pt or feature/refactor/security/breaking): PM.01 + SI.01 + SI.02

@@ -196,6 +196,28 @@ Summary: [1-2 sentences]
 | CONDITIONAL | Minor issues; list conditions | Iron Man acknowledges conditions → Spider-Man builds with caveats |
 | REJECT | Critical design flaw | Iron Man revises spec, resubmits to Loki |
 
+### UI Spec Design Contract Criterion (S3-03)
+
+Any spec claiming UI work — meaning stories that modify `*.tsx`, `*.jsx`, `*.css`,
+`*.scss`, `*.vue`, `*.svelte`, or paths under `src/components/`, `src/pages/`,
+`src/styles/`, `src/ui/`, or `app/components/` — MUST cite specific DESIGN.md
+sections by name (e.g., "per DESIGN.md section 2 Colors, use `--primary` token").
+
+A spec that mentions UI work without citing DESIGN.md sections receives an automatic
+finding:
+
+```
+S-DESIGN: UI spec without design contract reference.
+Verdict: CONDITIONAL
+Condition: Cite specific DESIGN.md sections (Colors, Typography, Components, Layout)
+for each UI story. If DESIGN.md does not yet exist, create it first via
+tools/aegis-design-init.sh and reference it in the spec.
+```
+
+This criterion fires only on INCLUDE UI path matches, after EXCLUDE patterns
+(`*.test.*`, `*.spec.*`, `*.stories.*`, `*.config.*`, `__tests__/`, `__mocks__/`,
+`setupTests.*`) are checked first. Pure-logic specs with no UI file touches are exempt.
+
 ### Scope
 Loki reviews: specs, architecture decisions, major refactors, new agent designs.
 Loki does NOT review: hotfixes (P0/P1), trivial typo fixes, documentation-only PRs.
