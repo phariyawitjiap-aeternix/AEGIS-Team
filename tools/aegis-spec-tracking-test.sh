@@ -63,6 +63,7 @@ if git -C "$REPO_ROOT" check-ignore -q "_aegis-output/deployments/tc2-test.txt" 
     tc2_result="pass"
 fi
 rm -f "$DEPLOY_FILE"
+rmdir "${REPO_ROOT}/_aegis-output/deployments" 2>/dev/null || true
 run_test 2 "_aegis-output/deployments/foo.txt IS gitignored (deployments not tracked)" "$tc2_result"
 
 # TC-3: _aegis-output/research/bar.md IS gitignored (exit 0)
@@ -74,6 +75,7 @@ if git -C "$REPO_ROOT" check-ignore -q "_aegis-output/research/tc3-test.md" 2>/d
     tc3_result="pass"
 fi
 rm -f "$RESEARCH_FILE"
+rmdir "${REPO_ROOT}/_aegis-output/research" 2>/dev/null || true
 run_test 3 "_aegis-output/research/bar.md IS gitignored (research not tracked)" "$tc3_result"
 
 # TC-4: Nested spec _aegis-output/specs/nested/deep.md is NOT gitignored

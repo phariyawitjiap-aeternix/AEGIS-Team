@@ -2,7 +2,7 @@
 # AEGIS Test — aegis-instinct-promote-test.sh (S2-05)
 #
 # Tests tools/aegis-instinct-promote.sh lifecycle commands.
-# 9 test cases per spec §5.7.
+# 10 test cases per spec §5.7 + S-01 validation (TC-10).
 # Exit 0: all pass  |  Exit 1: one or more failures
 #
 # Uses AEGIS_INSTINCT_ROOT env override to redirect to a temp directory.
@@ -70,7 +70,7 @@ get_field() {
     grep "^${field}:" "$file" 2>/dev/null | sed "s/^${field}: *//" | tr -d '"' | tr -d "'" | head -1
 }
 
-echo "aegis-instinct-promote.sh — 9 Test Cases"
+echo "aegis-instinct-promote.sh — 10 Test Cases"
 echo "==========================================="
 
 # TC-1: create --from produces valid YAML in pending/
@@ -191,6 +191,21 @@ if echo "$list_output" | grep -q "tc3-low-conf" && \
     tc8_result="pass"
 fi
 run_test 8 "list --tier pending shows only pending instincts (not active/promoted)" "$tc8_result"
+
+# TC-10: malformed --id (path traversal / uppercase / spaces) rejected with exit 2
+tc10_result="fail"
+set +e
+bash "$TOOL" activate --id "../../etc/malicious" > /dev/null 2>&1
+exit_code_a=$?
+bash "$TOOL" activate --id "Bad_ID" > /dev/null 2>&1
+exit_code_b=$?
+bash "$TOOL" reinforce --id "../escape" > /dev/null 2>&1
+exit_code_c=$?
+set -e
+if [[ $exit_code_a -eq 2 && $exit_code_b -eq 2 && $exit_code_c -eq 2 ]]; then
+    tc10_result="pass"
+fi
+run_test 10 "malformed --id (path traversal / uppercase / slashes) rejected with exit 2" "$tc10_result"
 
 # TC-9: reinforce increments observations +1, updates last_reinforced, confidence unchanged
 tc9_result="fail"

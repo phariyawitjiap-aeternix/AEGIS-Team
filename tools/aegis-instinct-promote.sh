@@ -12,7 +12,7 @@
 # Usage:
 #   aegis-instinct-promote.sh create    --from <resonance-file> [--id <id>] [--cluster <c>]
 #   aegis-instinct-promote.sh activate  --id <instinct-id>
-#   aegis-instinct-promote.sh promote   --id <instinct-id> [--adr <adr-file>]
+#   aegis-instinct-promote.sh promote   --id <instinct-id>
 #   aegis-instinct-promote.sh reinforce --id <instinct-id>
 #   aegis-instinct-promote.sh retire    --id <instinct-id> --reason <text>
 #   aegis-instinct-promote.sh list      [--tier pending|active|promoted|retired|all]
@@ -30,6 +30,15 @@ INSTINCT_ROOT="${AEGIS_INSTINCT_ROOT:-${REPO_ROOT}/.aegis/brain/instincts}"
 ACTIVITY_LOG="${AEGIS_ACTIVITY_LOG:-${REPO_ROOT}/.aegis/brain/logs/activity.log}"
 
 TIERS=("pending" "active" "promoted" "retired")
+
+# ── Input validation ───────────────────────────────────────────────────────
+validate_id() {
+    local id="$1"
+    if [[ ! "$id" =~ ^[a-z0-9][a-z0-9-]*$ ]]; then
+        echo "ERROR: --id must be kebab-case (lowercase alphanumeric + hyphens, starting with a letter/digit): '${id}'" >&2
+        exit 2
+    fi
+}
 
 # ── Utility functions ──────────────────────────────────────────────────────
 now_iso() {
@@ -118,6 +127,16 @@ cmd_create() {
         exit 1
     fi
 
+    # Validate --from path: must not be a symlink that escapes outside the repository root
+    if [[ -L "$from_file" ]]; then
+        local resolved_from
+        resolved_from=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$from_file" 2>/dev/null || true)
+        if [[ -z "$resolved_from" ]] || [[ "${resolved_from#${REPO_ROOT}/}" == "$resolved_from" && "$resolved_from" != "$REPO_ROOT" ]]; then
+            echo "ERROR: --from symlink resolves outside the repository root: '$from_file'" >&2
+            exit 2
+        fi
+    fi
+
     # Generate ID from filename if not provided
     if [[ -z "$id" ]]; then
         local basename
@@ -125,6 +144,8 @@ cmd_create() {
         # Convert to kebab-case: lowercase, replace spaces/underscores with hyphens, strip non-alnum-hyphen
         id=$(echo "$basename" | tr '[:upper:]' '[:lower:]' | tr ' _' '-' | tr -cd '[:alnum:]-')
     fi
+
+    validate_id "$id"
 
     ensure_dirs
     local dest="${INSTINCT_ROOT}/pending/${id}.yaml"
@@ -196,6 +217,7 @@ cmd_activate() {
     done
 
     [[ -z "$id" ]] && { echo "ERROR: --id <instinct-id> required" >&2; exit 1; }
+    validate_id "$id"
 
     local src="${INSTINCT_ROOT}/pending/${id}.yaml"
     if [[ ! -f "$src" ]]; then
@@ -233,17 +255,16 @@ cmd_activate() {
 # ── Command: promote ──────────────────────────────────────────────────────
 cmd_promote() {
     local id=""
-    local adr_file=""
 
     while [[ $# -gt 0 ]]; do
         case "$1" in
-            --id)  id="$2";       shift 2 ;;
-            --adr) adr_file="$2"; shift 2 ;;
+            --id)  id="$2"; shift 2 ;;
             *) echo "ERROR: unknown option: $1" >&2; exit 1 ;;
         esac
     done
 
     [[ -z "$id" ]] && { echo "ERROR: --id <instinct-id> required" >&2; exit 1; }
+    validate_id "$id"
 
     local src="${INSTINCT_ROOT}/active/${id}.yaml"
     if [[ ! -f "$src" ]]; then
@@ -265,15 +286,6 @@ cmd_promote() {
     mv "$src" "$dest"
     set_yaml_field "$dest" "status" "promoted"
 
-    # Optional ADR enrichment
-    if [[ -n "$adr_file" ]]; then
-        # Append to adr_refs list (simple sed approach)
-        local tmp
-        tmp=$(mktemp)
-        sed "s|^adr_refs: \[\]|adr_refs: [\"${adr_file}\"]|;s|^adr_refs: \[|adr_refs: [\"${adr_file}\", |" "$dest" > "$tmp"
-        mv "$tmp" "$dest"
-    fi
-
     log_activity "PROMOTE active/${id} -> promoted/${id} (confidence=${confidence})"
     echo "Promoted: ${dest}"
 }
@@ -290,6 +302,7 @@ cmd_reinforce() {
     done
 
     [[ -z "$id" ]] && { echo "ERROR: --id <instinct-id> required" >&2; exit 1; }
+    validate_id "$id"
 
     local location
     location=$(find_instinct "$id") || {
@@ -329,6 +342,7 @@ cmd_retire() {
 
     [[ -z "$id" ]] && { echo "ERROR: --id <instinct-id> required" >&2; exit 1; }
     [[ -z "$reason" ]] && { echo "ERROR: --reason <text> required for audit trail" >&2; exit 1; }
+    validate_id "$id"
 
     local location
     location=$(find_instinct "$id") || {
@@ -424,7 +438,7 @@ Usage: aegis-instinct-promote.sh <command> [options]
 Commands:
   create    --from <resonance-file> [--id <kebab-id>] [--cluster <name>]
   activate  --id <instinct-id>
-  promote   --id <instinct-id> [--adr <adr-file>]
+  promote   --id <instinct-id>
   reinforce --id <instinct-id>
   retire    --id <instinct-id> --reason <text>
   list      [--tier pending|active|promoted|retired|all]
