@@ -15,22 +15,20 @@
 _(empty)_
 
 ## IN_REVIEW
-- [ ] [S2-03] BLOCK 0 lite-mode: wire aegis-block0-mode.sh into Nick Fury gate checks (@iron-man) — 3pt
-      **Loki Plan-Approval Gate verdict**: CONDITIONAL (2026-04-23, decision-audit D-004, conf 0.9)
-      Conditions (5-min fixes per Loki, address before Spider-Man builds):
-      1. Add skip-log acceptance test — verify lite-mode task produces `skipped=0A` log AND does NOT produce 0A/0B/0E output. Spec currently reproduces the policy-without-test pattern it claims to fix.
-      2. Define source of `--points N --tags <tags>` in no-meta.json fallback branch (currently undefined variables).
-      3. Add "Don't" for stale-pin bypass risk when a task is re-tagged typo→security mid-flight (mitigation can defer to S2-04 Loki counter but risk must be documented).
-      **Format compliance**: ✓ (soul paragraph, matrix tables, do/don't, Agent Prompt Guide)
-      **Blockers**: none
-      **Iron Man revision v1.1** (2026-04-23, decision D-005, adr:sprint-v9-02, conf 0.85): all 3 conditions addressed — acceptance test for lite-mode skip-log added (§6), ELSE-branch inference codified (§4a), stale-pin Don't added (§7), Thor test prompt added (§8). Spec at `_aegis-output/specs/S2-03-spec.md` v1.1 (gitignored, persistent on disk).
-      **Next actor**: Loki re-review in fresh session (should flip CONDITIONAL → APPROVE) → Spider-Man build
+_(empty)_
 
 ## QA
 _(empty)_
 
 ## DONE
 - [x] [S2-02] Retro-summary wiring — Nick Fury logs decisions to decision-audit.log; /aegis-retro reads and summarizes (@nick-fury) — 3pt [PR #34 merged 2026-04-22]
+- [x] [S2-03] BLOCK 0 lite-mode: wire aegis-block0-mode.sh into Nick Fury gate checks (@spider-man) — 3pt [PR #39 merged 2026-04-23]
+      Full audit trail D-001 → D-010 in decision-audit.log. Autonomous cycle:
+      Nick Fury pick → spec → Loki CONDITIONAL → Iron Man v1.1 → Loki APPROVE →
+      Spider-Man impl → Black Panther CONDITIONAL → Spider-Man round-2 → BP PASS.
+      Artifacts: nick-fury.md +45 (§BLOCK 0 Runtime Procedure),
+      coulson.md +34 (§COULSON_BLOCK0), tools/aegis-block0-gate-test.sh
+      (new, 240 LOC, 22/22 assertions pass).
 
 ## Blocked (not in sprint)
 - [S4-02] Nick Fury proxy dispatch loop — blocked on `memory_20250818` tool availability (SDK-side, not in-repo)
