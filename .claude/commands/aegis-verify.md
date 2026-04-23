@@ -8,6 +8,13 @@ triggers:
 
 # /aegis-verify
 
+## Modes
+
+| Flag | Behavior | Source |
+|------|----------|--------|
+| (default) | Full verification pipeline | existing |
+| `--doctor` | System health check + diagnostics | was /aegis-doctor |
+
 ## Quick Reference
 Verification pipeline that runs tests (if configured), linter (if configured), scans
 for TODO/FIXME markers, validates git status (clean working tree?), checks for security

@@ -125,6 +125,35 @@ The helper:
   (next defer should auto-route to Captain America per
   [captain-america-fallback.md](../references/captain-america-fallback.md))
 
+**Exit code contract (F1-03):**
+
+| Exit | Meaning |
+|------|---------|
+| 0 | Logged successfully, judgment count below threshold |
+| 3 | Logged successfully, judgment count AT or ABOVE threshold — spawn Captain America for next judgment |
+| 1 | Error (missing args, validation failure) |
+
+After calling `aegis-log-decision.sh`, always check exit code:
+
+```bash
+bash tools/aegis-log-decision.sh --source judgment ... 
+EXIT=$?
+if [[ "$EXIT" -eq 3 ]]; then
+    # Judgment threshold exceeded — route next decision through Captain America
+    # Spawn captain-america with the pending question instead of deciding directly
+    : # (delegate to captain-america)
+fi
+```
+
+**When to use `--source instinct:<tier>` vs `--source judgment`:**
+
+When making a decision and the source-priority-chain reaches the instincts tier
+(i.e., the decision is informed by consulting a promoted, active, or pending instinct),
+log via `tools/aegis-log-decision.sh --source instinct:<tier> --source-id <instinct-id>`.
+Do NOT default to `--source judgment` when an instinct was consulted.
+The auto-reinforce pipeline (F3-02) depends on these entries to close the instinct
+lifecycle loop.
+
 **Confidence guidance:**
 - `1.0` — hard-rule hits (promoted instincts, ADRs, identity)
 - `0.7-0.9` — active instincts, resonance, retro-backed

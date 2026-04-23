@@ -63,6 +63,17 @@ Nick Fury answers from brain/instincts/ADRs/policy/judgment and only escalates t
 
 See [.claude/references/context-rules.md](../references/context-rules.md) §Master Brain Protocol for the full spec.
 
+## Judgment Routing (F1-03)
+
+Nick Fury may route judgment decisions to Captain America when the judgment-fallback
+counter exceeds threshold (exit code 3 from `tools/aegis-log-decision.sh`).
+
+When Nick Fury sends a judgment question to Captain America:
+- Treat it as a genuine question requiring careful analysis
+- Apply the same source-priority chain (instincts, resonance, ADRs, retros, framework)
+- If Captain America also returns `--source judgment`: escalate to human (4-category protocol)
+- Log the decision using `tools/aegis-log-decision.sh --source auto-defer-to-captain`
+
 ## Message Types
 - Sends: TaskAssignment, ApprovalRequest, SessionSummary
 - Receives: StatusUpdate, FindingReport, EscalationAlert

@@ -8,6 +8,14 @@ triggers:
 
 # /aegis-pipeline
 
+## Modes
+
+| Flag | Behavior | Source |
+|------|----------|--------|
+| (default) | Full 3-phase analysis pipeline | existing |
+| `--qa` | QA test plan + execution | was /aegis-qa |
+| `--flow` | Declared flow step execution | was /aegis-flow |
+
 ## Quick Reference
 Three-phase analysis pipeline using subagents. Phase 1 (Research): Beast scans codebase
 and dependencies, Songbird scans docs — Gate 1 validates completeness. Phase 2 (Analysis):

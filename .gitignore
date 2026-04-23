@@ -2,6 +2,7 @@
 # Approved specs are tracked; everything else is gitignored (S2-06).
 _aegis-output/*
 !_aegis-output/specs/
+!_aegis-output/.gitignore
 
 # Environment
 .env
@@ -69,10 +70,14 @@ dashboard/node_modules/
 # Ignore runtime noise
 .aegis/brain/logs/
 .aegis/brain/metrics/raw/
+.aegis/brain/metrics/judgment-fallback-counter.json
 .aegis/brain/skill-cache/
 .aegis/brain/learnings/raw/
 .aegis/logs/
 .aegis/brain/tasks/*/history.md
+
+# MBP rollout backup (transient — safety net, not committed)
+.claude/settings.json.pre-mbp-backup
 
 # <<< AEGIS-V9-END >>>
 

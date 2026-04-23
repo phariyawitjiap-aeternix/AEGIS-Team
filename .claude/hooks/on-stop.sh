@@ -250,6 +250,13 @@ except Exception as ex:
     esac
 fi
 
+# ── Instinct auto-reinforce at session end (F3-02) ───────────────────────
+if [[ -x "tools/aegis-instinct-auto-reinforce.sh" ]]; then
+    echo ""
+    echo "Instinct auto-reinforce..."
+    bash tools/aegis-instinct-auto-reinforce.sh 2>/dev/null || true
+fi
+
 # ── Human Action Queue — bilingual banner ─────────────────────────────────
 # Show pending items from .aegis/brain/human-queue.md so the user doesn't
 # have to hunt through retros/handoffs to find what genuinely needs them.

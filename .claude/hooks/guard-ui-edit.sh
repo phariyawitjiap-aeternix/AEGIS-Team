@@ -64,6 +64,15 @@ _canonicalize() {
         greadlink -m "$p" 2>/dev/null && return
     fi
     python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$p" 2>/dev/null && return
+    # Literal fallback: warn once per session that resolution degraded
+    _SENTINEL="/tmp/.aegis-realpath-warned-${CLAUDE_SESSION_ID:-default}.flag"
+    if [[ ! -f "$_SENTINEL" ]]; then
+        touch "$_SENTINEL"
+        local _ts
+        _ts=$(date -u +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || echo "unknown")
+        echo "[${_ts}] [HOOK:guard-ui-edit] WARN realpath/greadlink/python3 all unavailable — fell through to literal path (resolution degraded)" \
+            >> "${AEGIS_ACTIVITY_LOG:-.aegis/brain/logs/activity.log}" 2>/dev/null || true
+    fi
     echo "$p"  # fallback: use as-is
 }
 

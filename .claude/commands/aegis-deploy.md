@@ -8,6 +8,13 @@ triggers:
 
 # /aegis-deploy
 
+## Modes
+
+| Flag | Behavior | Source |
+|------|----------|--------|
+| (default) | Full deploy pipeline: build + deploy + health + monitor | existing |
+| `--launch` | Pre-deploy verify + release checklist | was /aegis-launch |
+
 ## Quick Reference
 Full deployment pipeline. Runs build verification, deploys to target environment, runs health
 checks, monitors for stability. Auto-rollbacks on failure. Creates Correction Register if

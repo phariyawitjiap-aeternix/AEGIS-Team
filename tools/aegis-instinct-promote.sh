@@ -231,7 +231,10 @@ cmd_activate() {
 
     # Validate thresholds: confidence > 0.5 AND observations >= 2
     local conf_ok=0 obs_ok=0
-    python3 -c "import sys; sys.exit(0 if float('${confidence}') > 0.5 else 1)" 2>/dev/null && conf_ok=1
+    python3 - "$confidence" <<'PYEOF' 2>/dev/null && conf_ok=1
+import sys
+sys.exit(0 if float(sys.argv[1]) > 0.5 else 1)
+PYEOF
     [[ "${observations}" -ge 2 ]] 2>/dev/null && obs_ok=1
 
     if [[ $conf_ok -eq 0 ]]; then
@@ -276,7 +279,10 @@ cmd_promote() {
     confidence=$(get_yaml_field "$src" "confidence")
 
     # Validate: confidence > 0.8
-    python3 -c "import sys; sys.exit(0 if float('${confidence}') > 0.8 else 1)" 2>/dev/null || {
+    python3 - "$confidence" <<'PYEOF' 2>/dev/null || {
+import sys
+sys.exit(0 if float(sys.argv[1]) > 0.8 else 1)
+PYEOF
         echo "REJECTED: confidence (${confidence}) must be > 0.8 to promote" >&2
         exit 1
     }

@@ -132,6 +132,21 @@ wiring are in place. The chicken-and-egg is now just on Nick Fury's
 runtime write step (agent prompt edit). When that lands, the retro step
 activates automatically -- no second deployment needed.
 
+## Source Attribution Rules
+
+The `source` field MUST reflect the actual knowledge source consulted,
+not the decision-making mode.
+
+- If Nick Fury read instinct `sentinel-markers-over-comment-regex` before deciding,
+  `source` is `instinct:promoted` and `source_id` is
+  `sentinel-markers-over-comment-regex` — even though the act of deciding is a judgment.
+- Do NOT default to `--source judgment` when an instinct was consulted. The
+  auto-reinforce pipeline (F3-02) depends on `instinct:*` entries to close the
+  instinct lifecycle loop.
+- If multiple sources were consulted, use the highest-priority one (promoted > active >
+  pending > resonance > adr > retro > framework > identity > judgment).
+- `source_id` is required for all `instinct:*` and `adr:*` sources.
+
 ## Privacy Note
 
 Audit log contains decision questions and answers. May reveal sensitive project context.

@@ -43,7 +43,7 @@ Everything else routes through Nick Fury via `QUESTION_TO_BRAIN`, or picks a sen
 |---|---|
 | `/aegis-pipeline` | Phases execute with gates → reports → apply Decision Matrix → chain to next command per priority |
 | `/aegis-flow` | Run declared flow steps → ends when flow done → return to Nick Fury |
-| `/aegis-launch` | Verify + release checklist → if GREEN: auto-chain to `/aegis-deploy`; if RED: log + fix loop (Spider-Man) |
+| `/aegis-deploy --launch` | Verify + release checklist → if GREEN: auto-chain to `/aegis-deploy`; if RED: log + fix loop (Spider-Man) |
 | `/aegis-deploy` | Build + deploy + health check + 5-min monitor → on success: ends; on rollback: Correction Register + return to Nick Fury |
 
 ### Planning commands
@@ -60,19 +60,19 @@ Everything else routes through Nick Fury via `QUESTION_TO_BRAIN`, or picks a sen
 
 | Command | Default next action |
 |---|---|
-| `/aegis-team-build` | Spec → build → review → test → on PASS: return to Nick Fury; on FAIL: fix loop |
-| `/aegis-team-review` | Multi-agent review → consolidated report → return to Nick Fury |
-| `/aegis-team-debate` | Debate output → decision logged → return to Nick Fury |
-| `/aegis-qa` | Test plan → execution → verdict → on PASS: return to Nick Fury; on FAIL: Spider-Man fix loop |
+| `/aegis-team build` | Spec → build → review → test → on PASS: return to Nick Fury; on FAIL: fix loop |
+| `/aegis-team review` | Multi-agent review → consolidated report → return to Nick Fury |
+| `/aegis-team debate` | Debate output → decision logged → return to Nick Fury |
+| `/aegis-pipeline --qa` | Test plan → execution → verdict → on PASS: return to Nick Fury; on FAIL: Spider-Man fix loop |
 | `/aegis-verify` | Verification report → return to Nick Fury |
 
 ### Read-only / information commands
 
 These return to the caller (the user's prompt). They don't chain because they have no next phase.
 
-- `/aegis-status`, `/aegis-context`, `/aegis-dashboard`, `/aegis-kanban`, `/aegis-doctor`
-- `/aegis-memory` (status/recall modes), `/aegis-instinct` (list mode), `/aegis-adr` (list mode)
-- `/aegis-lint`
+- `/aegis-status`, `/aegis-status --context`, `/aegis-status --dashboard`, `/aegis-status --kanban`, `/aegis-verify --doctor`
+- `/aegis-memory` (status/recall modes), `/aegis-memory --instinct` (list mode), `/aegis-memory --adr` (list mode)
+- `/aegis-memory --lint`
 
 These commands output their report and return. They do **not** present "what next?" menus.
 
@@ -80,12 +80,37 @@ These commands output their report and return. They do **not** present "what nex
 
 | Command | Default next action |
 |---|---|
-| `/aegis-distill` | Distillation done → return to Nick Fury |
-| `/aegis-evolve` | Cluster + merge → return to Nick Fury |
-| `/aegis-ingest` | Research ingested → return to Nick Fury |
+| `/aegis-memory --distill` | Distillation done → return to Nick Fury |
+| `/aegis-memory --evolve` | Cluster + merge → return to Nick Fury |
+| `/aegis-memory --ingest` | Research ingested → return to Nick Fury |
 | `/aegis-mode` | Mode switched → return to Nick Fury |
-| `/aegis-compliance` | Compliance audit → report → return to Nick Fury |
-| `/aegis-reengineer` | Full re-engineer pipeline → ends with handoff |
+| `/aegis-memory --iso` | Compliance audit → report → return to Nick Fury |
+| (deprecated) `/aegis-reengineer` | Use `/aegis-start` on existing codebase; shim redirects |
+
+### Deprecated Commands (17 shims)
+
+The following commands have been consolidated. Their shim files redirect to the canonical form.
+See `.claude/commands/aegis-*.md` for each shim.
+
+| Deprecated | Canonical |
+|-----------|-----------|
+| `/aegis-kanban` | `/aegis-status --kanban` |
+| `/aegis-dashboard` | `/aegis-status --dashboard` |
+| `/aegis-context` | `/aegis-status --context` |
+| `/aegis-qa` | `/aegis-pipeline --qa` |
+| `/aegis-flow` | `/aegis-pipeline --flow` |
+| `/aegis-team-build` | `/aegis-team build` |
+| `/aegis-team-review` | `/aegis-team review` |
+| `/aegis-team-debate` | `/aegis-team debate` |
+| `/aegis-doctor` | `/aegis-verify --doctor` |
+| `/aegis-launch` | `/aegis-deploy --launch` |
+| `/aegis-adr` | `/aegis-memory --adr` |
+| `/aegis-instinct` | `/aegis-memory --instinct` |
+| `/aegis-distill` | `/aegis-memory --distill` |
+| `/aegis-evolve` | `/aegis-memory --evolve` |
+| `/aegis-ingest` | `/aegis-memory --ingest` |
+| `/aegis-lint` | `/aegis-memory --lint` |
+| `/aegis-compliance` | `/aegis-memory --iso` |
 
 ## Fallback rules
 

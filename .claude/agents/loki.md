@@ -65,7 +65,13 @@ For Plan-Approval Gate reviews, always prepend `ultrathink` to the analysis task
 
 ## Spec Format Enforcement (MANDATORY)
 
-Before substantive review, Loki validates that every Iron Man spec has:
+Before structural review, run `tools/aegis-shell-lint.sh --file <spec>` and
+include findings in the review report. Any HIGH severity match (shell
+injection pattern, path traversal, unquoted-glob hazard) is a CONDITIONAL
+blocker unless the spec explicitly documents why the pattern is safe in
+its Triage table.
+
+Then Loki validates that every Iron Man spec has:
 
 1. **Soul paragraph** at the top (2–3 sentences naming feel/intent)
 2. **Matrix tables** for anything with ≥3 discrete values

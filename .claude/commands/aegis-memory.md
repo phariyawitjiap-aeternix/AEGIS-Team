@@ -8,6 +8,19 @@ triggers:
 
 # /aegis-memory
 
+## Modes
+
+| Flag | Behavior | Source |
+|------|----------|--------|
+| (default/status) | Memory tier status | existing |
+| `--adr` | Architecture Decision Record management | was /aegis-adr |
+| `--instinct` | Instinct lifecycle management | was /aegis-instinct |
+| `--distill` | Distill resonance patterns | was /aegis-distill |
+| `--evolve` | Cluster + merge patterns | was /aegis-evolve |
+| `--ingest` | Ingest research into brain | was /aegis-ingest |
+| `--lint` | Memory/spec linting | was /aegis-lint |
+| `--iso` | Compliance audit | was /aegis-compliance |
+
 ## Quick Reference
 Memory management inspired by Letta/MemGPT patterns. Subcommands: `status` (show loaded
 vs available memory), `recall <topic>` (search .aegis/brain/ for relevant context),
