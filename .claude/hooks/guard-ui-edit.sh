@@ -70,7 +70,7 @@ _canonicalize() {
         touch "$_SENTINEL"
         local _ts
         _ts=$(date -u +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || echo "unknown")
-        echo "[${_ts}] [HOOK:guard-ui-edit] WARN realpath -m unavailable, falling back to python3/literal" \
+        echo "[${_ts}] [HOOK:guard-ui-edit] WARN realpath/greadlink/python3 all unavailable — fell through to literal path (resolution degraded)" \
             >> "${AEGIS_ACTIVITY_LOG:-.aegis/brain/logs/activity.log}" 2>/dev/null || true
     fi
     echo "$p"  # fallback: use as-is

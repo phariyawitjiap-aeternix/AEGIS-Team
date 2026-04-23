@@ -36,7 +36,7 @@ _canonicalize() {
         touch \"\$_SENTINEL\"
         local _ts
         _ts=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\" 2>/dev/null || echo \"unknown\")
-        echo \"[\${_ts}] [HOOK:guard-ui-edit] WARN realpath -m unavailable, falling back to python3/literal\" \
+        echo \"[\${_ts}] [HOOK:guard-ui-edit] WARN realpath/greadlink/python3 all unavailable — fell through to literal path (resolution degraded)\" \
             >> \"\${AEGIS_ACTIVITY_LOG:-.aegis/brain/logs/activity.log}\" 2>/dev/null || true
     fi
     echo \"\$p\"
@@ -45,7 +45,7 @@ _canonicalize '/some/test/path'
 " 2>/dev/null)
 
 # Assert WARN appears in log
-if grep -q "WARN realpath -m unavailable" "${FAKE_LOG}" 2>/dev/null; then
+if grep -q "WARN realpath/greadlink/python3 all unavailable" "${FAKE_LOG}" 2>/dev/null; then
     PASS "TC-01 WARN line appears in activity.log"
 else
     FAIL "TC-01 WARN line not found in activity.log"
@@ -59,7 +59,7 @@ else
 fi
 
 # TC-02: Sentinel already exists — no new WARN line
-WARN_COUNT_BEFORE=$(grep -c "WARN realpath -m unavailable" "${FAKE_LOG}" 2>/dev/null || echo "0")
+WARN_COUNT_BEFORE=$(grep -c "WARN realpath/greadlink/python3 all unavailable" "${FAKE_LOG}" 2>/dev/null || echo "0")
 
 bash -c "
 export CLAUDE_SESSION_ID='${FAKE_SENTINEL_ID}'
@@ -71,7 +71,7 @@ _canonicalize() {
         touch \"\$_SENTINEL\"
         local _ts
         _ts=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\" 2>/dev/null || echo \"unknown\")
-        echo \"[\${_ts}] [HOOK:guard-ui-edit] WARN realpath -m unavailable, falling back to python3/literal\" \
+        echo \"[\${_ts}] [HOOK:guard-ui-edit] WARN realpath/greadlink/python3 all unavailable — fell through to literal path (resolution degraded)\" \
             >> \"\${AEGIS_ACTIVITY_LOG:-.aegis/brain/logs/activity.log}\" 2>/dev/null || true
     fi
     echo \"\$p\"
@@ -79,7 +79,7 @@ _canonicalize() {
 _canonicalize '/some/test/path'
 " 2>/dev/null
 
-WARN_COUNT_AFTER=$(grep -c "WARN realpath -m unavailable" "${FAKE_LOG}" 2>/dev/null || echo "0")
+WARN_COUNT_AFTER=$(grep -c "WARN realpath/greadlink/python3 all unavailable" "${FAKE_LOG}" 2>/dev/null || echo "0")
 if [[ "$WARN_COUNT_BEFORE" == "$WARN_COUNT_AFTER" ]]; then
     PASS "TC-02 sentinel dedup works — no new WARN line when sentinel exists"
 else
@@ -116,7 +116,7 @@ _canonicalize() {
         touch \"\$_SENTINEL\"
         local _ts
         _ts=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\" 2>/dev/null || echo \"unknown\")
-        echo \"[\${_ts}] [HOOK:guard-ui-edit] WARN realpath -m unavailable, falling back to python3/literal\" \
+        echo \"[\${_ts}] [HOOK:guard-ui-edit] WARN realpath/greadlink/python3 all unavailable — fell through to literal path (resolution degraded)\" \
             >> \"\${AEGIS_ACTIVITY_LOG:-.aegis/brain/logs/activity.log}\" 2>/dev/null || true
     fi
     echo \"\$p\"

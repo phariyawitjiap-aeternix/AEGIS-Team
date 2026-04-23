@@ -17,6 +17,10 @@
 #
 # Bash 3.2 compatible.
 
+# set -e intentionally omitted: reinforce is best-effort; single-ID failures
+# (e.g., already-promoted, kebab-case rejection) must not abort the loop over
+# remaining IDs. Individual reinforce calls are guarded with `|| true`. `-u`
+# + `-o pipefail` catch genuine logic bugs. See BP PR-54 LOW-01.
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

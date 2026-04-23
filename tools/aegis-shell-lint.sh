@@ -11,6 +11,10 @@
 #
 # Bash 3.2 compatible.
 
+# set -e intentionally omitted: this script uses explicit error handling and
+# fall-through on unknown-command lookups (via `|| true` on allowlist checks
+# and `command -v` probes that are expected to fail). `-u` + `-o pipefail`
+# are kept to catch genuine logic bugs. See BP PR-54 LOW-01.
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
