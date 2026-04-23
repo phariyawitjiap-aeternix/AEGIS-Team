@@ -53,6 +53,40 @@ Rationale: ≤1pt chores don't need SI.01; ≤5pt standard tasks need
 requirements but not traceability stub (added later if task grows).
 See `@references/block-0-lite.md` for the full workflow spec.
 
+Helper (do not modify — 26/26 tests passing):
+`tools/aegis-block0-mode.sh --task-id <TASK-ID>`  (stdout: lite | standard | full)
+`tools/aegis-block0-mode.sh --points <N> --tags <t1,t2,...>` (when meta.json absent)
+
+### COULSON BLOCK 0 Procedure (S2-03 — runtime enforcement)
+
+Nick Fury determines the mode and writes it to meta.json BEFORE dispatching Coulson.
+Coulson reads that value; he does NOT re-invoke the helper.
+
+```
+COULSON_BLOCK0(task):
+  1. Read MODE from .aegis/brain/tasks/<TASK-ID>/meta.json field "block0_mode"
+     IF missing: default MODE = "full"  (safe default per spec §5 P2)
+
+  2. FOR each doc in [PM.01, SI.01, tasks/kanban, SI.02]:
+       IF mode_table[MODE][doc] == "skip":
+         Append to .aegis/brain/logs/activity.log:
+           "[YYYY-MM-DDTHH:MM:SSZ] [HOOK:coulson-block0] task=<TASK-ID> mode=<MODE> skipped=<check>"
+         SKIP generation for this doc — do NOT create or modify the artifact
+       ELSE:
+         IF doc is missing or empty:
+           Generate doc (see checklist + skeleton formats below)
+         ELSE:
+           Doc already exists — no action required for this check
+
+  3. After all required docs are generated/verified:
+     Emit BLOCK 0 COMPLETE signal (see §Completion Signal below)
+```
+
+Cross-reference: Nick Fury's `BLOCK_0_PROCEDURE` in `nick-fury.md` §BLOCK 0 Runtime
+Procedure defines the branching logic that calls the helper and populates meta.json
+before Coulson is ever dispatched. Coulson is always the actor that executes
+per-check skip logic and generates the missing artifacts.
+
 ### Coulson's BLOCK 0 Checklist (full-mode columns)
 
 | Check | Document | Location | Coulson's Action if Missing |

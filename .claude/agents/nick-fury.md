@@ -292,6 +292,51 @@ Notes:
   first determination. Subsequent gate checks read from meta rather
   than re-running the helper (stability across Nick Fury re-dispatches).
 
+#### BLOCK 0 Runtime Procedure (S2-03)
+
+```
+BLOCK_0_PROCEDURE(task):
+  1. Determine mode:
+     IF task meta.json has block0_mode field:
+       MODE = meta.json.block0_mode          # pinned — stable across re-dispatches
+       # Advisory: if task was re-tagged since pin was written, S2-04 Loki counter
+       # mitigates escape but does not fully prevent — treat pin as advisory.
+     ELIF task meta.json has points/tags fields:
+       MODE = $(tools/aegis-block0-mode.sh --task-id <TASK-ID>)
+       Write MODE to meta.json block0_mode field
+     ELSE:
+       # No meta.json yet. Infer from task title + PR description.
+       # Points: /aegis-breakdown conventions (1=chore, 3=feat, 5+=epic).
+       # Tags:   from commit-footer keywords or PR labels.
+       # Precedence (per tools/aegis-block0-mode.sh):
+       #   1. Tag override: chore|typo|docs-fix|hotfix  -> lite
+       #   2. Tag override: feature|refactor|security|breaking -> full
+       #   3. Size fallback: <=1pt -> lite, 2-5pt -> standard, >5pt -> full
+       # If inference is ambiguous, default to full (safe default).
+       MODE = $(tools/aegis-block0-mode.sh --points <inferred-N> --tags <inferred-tags>)
+       # On helper non-zero exit: fall back to full, log error, continue.
+       Write MODE to meta.json block0_mode field
+
+  2. Log mode determination to activity.log:
+     "[YYYY-MM-DDTHH:MM:SSZ] [HOOK:block0] task=<TASK-ID> mode=<MODE> determined"
+
+  3. Run checks per mode table:
+     FOR each check in [0A, 0B, 0C, 0D, 0E]:
+       IF mode_table[MODE][check] == "skip":
+         Append to activity.log:
+           "[YYYY-MM-DDTHH:MM:SSZ] [HOOK:block0] task=<TASK-ID> mode=<MODE> skipped=<check>"
+         CONTINUE to next check
+       ELSE:
+         Run standard check (definitions below in BLOCK 0A-0E)
+         IF check FAILS:
+           Dispatch Coulson to fix (Coulson reads block0_mode from meta.json)
+           BLOCK — do not proceed until Coulson signals BLOCK 0 COMPLETE
+
+  4. Emit result:
+     "BLOCK 0: PASS (mode=<MODE>, skipped=[list or none])"
+     Proceed to BLOCK 1.
+```
+
 **Loki counter (per spec)**: agents cannot self-tag to escape full mode.
 Nick Fury validates tag legitimacy on task creation: if a task tagged
 `chore` actually modifies security-sensitive paths (`.claude/`, auth
