@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# AEGIS Hook — guard-ui-edit.sh (S3-04)
+# AEGIS Hook — guard-ui-edit.sh (S3-04, S3-05, S3-09)
 # Blocks Edit/Write/MultiEdit on UI files when DESIGN.md is absent at repo root.
 # Prevents agents from writing UI code without a design contract.
 #
@@ -11,12 +11,20 @@
 # Exit 0: allow  |  Exit 2: block
 #
 # Pattern evaluation order:
-#   1. EXCLUDE patterns checked FIRST (fail-safe — if any match, exit 0 immediately)
-#   2. INCLUDE UI patterns checked second
-#   3. If INCLUDE matches AND no DESIGN.md at repo root: exit 2 (block)
-#   4. Otherwise: exit 0 (allow)
+#   1. Path canonicalized via realpath/greadlink/python3 fallback (S3-09)
+#   2. EXCLUDE patterns checked FIRST (fail-safe — if any match, exit 0 immediately)
+#   3. INCLUDE UI patterns checked second
+#   4. If INCLUDE matches AND no DESIGN.md at repo root: exit 2 (block)
+#   5. Otherwise: exit 0 (allow)
+#
+# Patterns sourced from tools/aegis-ui-patterns.sh (SSOT per S3-05).
 
 set -euo pipefail
+
+# ── Source canonical UI patterns (SSOT — S3-05) ───────────────────────────
+_HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=../../tools/aegis-ui-patterns.sh
+source "${_HOOK_DIR}/../../tools/aegis-ui-patterns.sh"
 
 INPUT=$(cat)
 
@@ -31,6 +39,9 @@ esac
 
 [[ -z "$FILE" ]] && exit 0
 
+# ── STEP 0: Resolve project root ─────────────────────────────────────────
+REPO_ROOT="${AEGIS_REPO_ROOT:-$(pwd)}"
+
 # ── Logging helper (best-effort, never fail the hook) ─────────────────────
 LOG=".aegis/brain/logs/activity.log"
 log_decision() {
@@ -43,55 +54,57 @@ log_decision() {
     fi
 }
 
-# ── STEP 1: EXCLUDE patterns (checked FIRST — fail-safe) ─────────────────
-# If a file matches any exclusion, it is NOT a UI file for gate purposes.
-# This ensures test/spec/story/config files never trigger the gate.
-
-# Pattern matching via bash regex against the full file path
-is_excluded() {
-    local path="$1"
-    # *.test.{tsx,jsx,css,scss}
-    [[ "$path" =~ \.(test|spec|stories)\.(tsx|jsx|css|scss|js|ts)$ ]] && return 0
-    # *.config.{tsx,js,ts}
-    [[ "$path" =~ \.config\.(tsx|jsx|js|ts|mjs|cjs)$ ]] && return 0
-    # **/__tests__/**
-    [[ "$path" =~ (^|/)'__tests__'/ ]] && return 0
-    # **/__mocks__/**
-    [[ "$path" =~ (^|/)'__mocks__'/ ]] && return 0
-    # **/setupTests.*
-    [[ "$path" =~ (^|/)setupTests\. ]] && return 0
-    return 1
+# ── STEP 1: Canonicalize path (S3-09 — prevent traversal false-positives) ─
+_canonicalize() {
+    local p="$1"
+    if command -v realpath >/dev/null 2>&1; then
+        realpath -m "$p" 2>/dev/null && return
+    fi
+    if command -v greadlink >/dev/null 2>&1; then
+        greadlink -m "$p" 2>/dev/null && return
+    fi
+    python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$p" 2>/dev/null && return
+    echo "$p"  # fallback: use as-is
 }
 
-if is_excluded "$FILE"; then
+# Canonicalize REPO_ROOT itself so symlink-resolved paths compare correctly
+# (on macOS, /tmp -> /private/tmp; without this, the prefix check fails)
+REPO_ROOT=$(_canonicalize "$REPO_ROOT")
+
+# Make path absolute relative to REPO_ROOT if not already absolute
+if [[ "$FILE" != /* ]]; then
+    FILE="${REPO_ROOT}/${FILE}"
+fi
+FILE=$(_canonicalize "$FILE")
+
+# Guard: if resolved path is outside repo root, allow (not our concern)
+if [[ "$FILE" != "${REPO_ROOT}"* ]]; then
+    log_decision "ALLOW" "resolved path outside repo root (${FILE})"
+    exit 0
+fi
+
+# Strip REPO_ROOT prefix for pattern matching (keep relative path form)
+FILE="${FILE#${REPO_ROOT}/}"
+
+# ── STEP 2: EXCLUDE patterns (checked FIRST — fail-safe) ─────────────────
+# Sourced from tools/aegis-ui-patterns.sh (is_excluded_file function).
+# If a file matches any exclusion, it is NOT a UI file for gate purposes.
+
+if is_excluded_file "$FILE"; then
     log_decision "ALLOW" "excluded (test/spec/stories/config/setup pattern)"
     exit 0
 fi
 
-# ── STEP 2: INCLUDE UI patterns ───────────────────────────────────────────
+# ── STEP 3: INCLUDE UI patterns ───────────────────────────────────────────
+# Sourced from tools/aegis-ui-patterns.sh (is_ui_file function).
 # If the file does NOT match any UI pattern, allow unconditionally.
-
-is_ui_file() {
-    local path="$1"
-    # UI file extensions
-    [[ "$path" =~ \.(tsx|jsx|css|scss|vue|svelte)$ ]] && return 0
-    # UI source directories
-    [[ "$path" =~ (^|/)src/components/ ]] && return 0
-    [[ "$path" =~ (^|/)src/pages/ ]] && return 0
-    [[ "$path" =~ (^|/)src/styles/ ]] && return 0
-    [[ "$path" =~ (^|/)src/ui/ ]] && return 0
-    [[ "$path" =~ (^|/)app/components/ ]] && return 0
-    return 1
-}
 
 if ! is_ui_file "$FILE"; then
     log_decision "ALLOW" "non-UI file (no INCLUDE pattern match)"
     exit 0
 fi
 
-# ── STEP 3: UI file detected — check for DESIGN.md ───────────────────────
-# Resolve project root: use AEGIS_REPO_ROOT env if set, otherwise cwd.
-REPO_ROOT="${AEGIS_REPO_ROOT:-$(pwd)}"
+# ── STEP 4: UI file detected — check for DESIGN.md ───────────────────────
 DESIGN_MD="${REPO_ROOT}/DESIGN.md"
 
 if [[ -f "$DESIGN_MD" ]]; then
@@ -99,7 +112,7 @@ if [[ -f "$DESIGN_MD" ]]; then
     exit 0
 fi
 
-# ── STEP 4: BLOCK ────────────────────────────────────────────────────────
+# ── STEP 5: BLOCK ────────────────────────────────────────────────────────
 log_decision "BLOCK" "UI file, DESIGN.md missing"
 echo '{"decision":"block","reason":"DESIGN.md required before UI code per BLOCK 0F. Run: bash tools/aegis-design-init.sh --blank --output DESIGN.md"}'
 exit 2

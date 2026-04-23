@@ -119,7 +119,7 @@ EOF
 NO_DESIGN_ROOT="${TMPDIR_BASE}/no-design"
 mkdir -p "$NO_DESIGN_ROOT"
 
-echo "guard-ui-edit.sh — 8 Test Cases"
+echo "guard-ui-edit.sh — 13 Test Cases (8 core + 4 exclusion + 1 path-traversal S3-09)"
 echo "=================================="
 
 # TC-1: Block .tsx edit without DESIGN.md
@@ -205,6 +205,18 @@ run_test "E4" \
     "Edit jest.config.ts (excluded) without DESIGN.md -> allow (exit 0)" \
     "0" "" \
     "Edit" "jest.config.ts" \
+    "$NO_DESIGN_ROOT"
+
+# ── Path traversal test (S3-09) ───────────────────────────────────────────
+# TC-PT1: Path traversal via ../../../ should be canonicalized and allowed
+# because the resolved path is outside the repo root.
+# When AEGIS_REPO_ROOT is set to NO_DESIGN_ROOT, the path
+# src/components/../../../etc/passwd.tsx resolves to /etc/passwd.tsx which
+# is outside NO_DESIGN_ROOT — so the hook exits 0 (outside-repo allow).
+run_test "PT1" \
+    "Path traversal src/components/../../../etc/passwd.tsx -> allow (resolved outside repo, exit 0)" \
+    "0" "" \
+    "Edit" "src/components/../../../etc/passwd.tsx" \
     "$NO_DESIGN_ROOT"
 
 echo ""
