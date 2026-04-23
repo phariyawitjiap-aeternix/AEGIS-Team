@@ -47,13 +47,19 @@ Default autonomy: L3 (Autonomous) with Nick Fury active
 | Command | Purpose |
 |---------|---------|
 | /aegis-start | Begin session -- Nick Fury activates |
-| /aegis-retro | End session -- retrospective + lessons |
-| /aegis-pipeline | Full analysis pipeline |
-| /aegis-team-build | Spawn build team (in-process) |
-| /aegis-team-review | Spawn review team (in-process) |
-| /aegis-team-debate | Spawn debate team (in-process) |
 | /aegis-status | Check all agent progress (+ grand total %, team chat tail) |
+| /aegis-retro | End session -- retrospective + lessons |
+| /aegis-handoff | Save handoff for next session |
+| /aegis-sprint | Sprint lifecycle (plan/standup/review/retro/status/close) |
+| /aegis-pipeline | Full analysis pipeline (--qa, --flow modes) |
+| /aegis-team | Spawn a team (build / review / debate) |
+| /aegis-breakdown | Decompose stories into tasks |
+| /aegis-verify | Run verification pipeline (--doctor mode) |
+| /aegis-deploy | Deploy pipeline (--launch mode) |
+| /aegis-memory | Memory management (--adr, --instinct, --distill, --evolve, --ingest, --lint, --iso modes) |
 | /aegis-mode | Switch autonomy level or profile |
+
+> 17 legacy aliases exist as shims; see `.claude/references/command-chain.md` for the mapping.
 
 ## Observability Helpers
 

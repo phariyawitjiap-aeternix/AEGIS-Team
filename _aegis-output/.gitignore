@@ -1,0 +1,4 @@
+# Track approved specs (Iron Man output, Loki-reviewed).
+# Everything else in _aegis-output/ remains gitignored via root .gitignore (S2-06).
+!specs/
+!specs/**

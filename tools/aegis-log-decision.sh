@@ -75,10 +75,11 @@ if [[ "$SOURCE" == "judgment" && -z "$REASONING" ]]; then
 fi
 
 # Validate confidence is 0.0-1.0
-if ! python3 -c "
-c = float('$CONFIDENCE')
-assert 0.0 <= c <= 1.0, f'confidence must be 0.0-1.0, got {c}'
-" 2>/dev/null; then
+if ! python3 - "$CONFIDENCE" <<'PYEOF' 2>/dev/null; then
+import sys
+c = float(sys.argv[1])
+assert 0.0 <= c <= 1.0, f"confidence must be 0.0-1.0, got {c}"
+PYEOF
     echo "ERROR: --confidence must be a float between 0.0 and 1.0" >&2
     exit 1
 fi
@@ -98,26 +99,30 @@ DECISION_ID=$(printf "D-%03d" "$NEXT")
 # ── Build JSONL entry ──────────────────────────────────────────────────────
 TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-ENTRY=$(python3 -c "
-import json
+ENTRY=$(python3 - "$TS" "$DECISION_ID" "$QUESTION" "$SOURCE" \
+    "$CONFIDENCE" "$ANSWER" "$SOURCE_ID" "$REASONING" <<'PYEOF'
+import json, sys
+ts, did, q, src, conf, ans, sid, reason = sys.argv[1:9]
 d = {
-    'ts': '$TS',
-    'decision_id': '$DECISION_ID',
-    'question': '''$QUESTION''',
-    'source': '$SOURCE',
-    'confidence': float('$CONFIDENCE'),
-    'answer': '''$ANSWER''',
+    'ts': ts,
+    'decision_id': did,
+    'question': q,
+    'source': src,
+    'confidence': float(conf),
+    'answer': ans,
 }
-if '''$SOURCE_ID''':
-    d['source_id'] = '''$SOURCE_ID'''
-if '''$REASONING''':
-    d['reasoning'] = '''$REASONING'''
+if sid:
+    d['source_id'] = sid
+if reason:
+    d['reasoning'] = reason
 print(json.dumps(d, ensure_ascii=False))
-")
+PYEOF
+)
 
 echo "$ENTRY" >> "$LOG"
 
 # ── Update judgment-fallback counter if source=judgment ───────────────────
+THRESHOLD_HIT=0
 if [[ "$SOURCE" == "judgment" ]]; then
     python3 - "$COUNTER" "$TS" "$SESSION_ID" <<'PYEOF'
 import json, sys, os
@@ -134,7 +139,7 @@ except (FileNotFoundError, json.JSONDecodeError):
         'auto_escalate_on_threshold': True,
         'last_judgment_at': None,
     }
-# New session → reset counter
+# New session -> reset counter
 if state.get('session_id') != sid:
     state = {
         'session_id': sid,
@@ -151,8 +156,27 @@ with open(path, 'w') as f:
 
 # Alert when threshold hit
 if state['judgment_count'] >= state['threshold']:
-    print(f"⚠️  judgment threshold reached ({state['judgment_count']}/{state['threshold']}) — next defer should go to Captain America per decision-audit-protocol.md", file=sys.stderr)
+    print(f"WARN: judgment threshold reached ({state['judgment_count']}/{state['threshold']}) -- next defer should go to Captain America per decision-audit-protocol.md", file=sys.stderr)
 PYEOF
+
+    # Check if threshold was hit
+    if python3 - "$COUNTER" <<'PYEOF' 2>/dev/null
+import json, sys
+try:
+    with open(sys.argv[1]) as f:
+        state = json.load(f)
+    sys.exit(0 if state.get('judgment_count', 0) >= state.get('threshold', 3) else 1)
+except Exception:
+    sys.exit(1)
+PYEOF
+    then
+        THRESHOLD_HIT=1
+    fi
 fi
 
-echo "✅ logged $DECISION_ID ($SOURCE, conf=$CONFIDENCE)"
+echo "logged $DECISION_ID ($SOURCE, conf=$CONFIDENCE)"
+if [[ "$THRESHOLD_HIT" -eq 1 ]]; then
+    echo "THRESHOLD_EXCEEDED -- route next judgment to Captain America" >&2
+    exit 3
+fi
+exit 0

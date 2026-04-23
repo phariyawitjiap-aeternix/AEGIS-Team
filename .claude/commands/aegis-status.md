@@ -8,6 +8,15 @@ triggers:
 
 # /aegis-status
 
+## Modes
+
+| Flag | Behavior | Source |
+|------|----------|--------|
+| (default) | Team status dashboard | existing |
+| `--kanban` | Sprint kanban board | was /aegis-kanban |
+| `--dashboard` | Sprint burndown + metrics | was /aegis-dashboard |
+| `--context` | Context window budget | was /aegis-context |
+
 ## Quick Reference
 Team status dashboard showing all active agents/teammates with their current task
 and progress, overall pipeline progress, context budget summary, and last 5 actions
