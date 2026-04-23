@@ -162,48 +162,59 @@ echo "BLOCK 0F Gate — 8 Test Cases"
 echo "=============================="
 
 # TC-1: UI task without DESIGN.md -> FAIL
-DESIGN_MD_PATH="" result=$(block0f_check 1 "src/components/Button.tsx")
+unset DESIGN_MD_PATH
+result=$(block0f_check 1 "src/components/Button.tsx")
 run_test 1 "UI task (Button.tsx) without DESIGN.md -> FAIL" "FAIL" "$result"
 
 # TC-2: UI task with valid DESIGN.md -> PASS
-DESIGN_MD_PATH="$VALID_DESIGN" result=$(block0f_check 1 "src/components/Card.tsx")
+export DESIGN_MD_PATH="$VALID_DESIGN"
+result=$(block0f_check 1 "src/components/Card.tsx")
 run_test 2 "UI task (Card.tsx) with valid DESIGN.md -> PASS" "PASS" "$result"
 
 # TC-3: UI task with malformed DESIGN.md -> FAIL
-DESIGN_MD_PATH="$BAD_DESIGN" result=$(block0f_check 1 "src/components/Nav.tsx")
+export DESIGN_MD_PATH="$BAD_DESIGN"
+result=$(block0f_check 1 "src/components/Nav.tsx")
 run_test 3 "UI task with malformed DESIGN.md -> FAIL" "FAIL" "$result"
 
 # TC-4: Non-UI task (pure logic) -> NOT_APPLICABLE
-DESIGN_MD_PATH="" result=$(block0f_check 1 "src/utils/math.ts")
+unset DESIGN_MD_PATH
+result=$(block0f_check 1 "src/utils/math.ts")
 run_test 4 "Non-UI task (math.ts) -> NOT_APPLICABLE" "NOT_APPLICABLE" "$result"
 
 # TC-5: Mixed files (UI + non-UI) -> FAIL (any UI file activates gate)
-DESIGN_MD_PATH="" result=$(block0f_check 1 "src/utils/math.ts" "src/components/Card.tsx")
+unset DESIGN_MD_PATH
+result=$(block0f_check 1 "src/utils/math.ts" "src/components/Card.tsx")
 run_test 5 "Mixed files (math.ts + Card.tsx) without DESIGN.md -> FAIL" "FAIL" "$result"
 
 # TC-6: Low-priority UI task (P4 = priority 4 > 3 threshold) -> NOT_APPLICABLE
-DESIGN_MD_PATH="" result=$(block0f_check 4 "src/components/Button.tsx")
+unset DESIGN_MD_PATH
+result=$(block0f_check 4 "src/components/Button.tsx")
 run_test 6 "P4 UI task (below P3 threshold) -> NOT_APPLICABLE" "NOT_APPLICABLE" "$result"
 
 # TC-7: P3 UI task with valid DESIGN.md -> PASS
-DESIGN_MD_PATH="$VALID_DESIGN" result=$(block0f_check 3 "src/components/Button.tsx")
+export DESIGN_MD_PATH="$VALID_DESIGN"
+result=$(block0f_check 3 "src/components/Button.tsx")
 run_test 7 "P3 UI task with valid DESIGN.md -> PASS" "PASS" "$result"
 
 # TC-8: CSS-only change -> FAIL (no DESIGN.md)
-DESIGN_MD_PATH="" result=$(block0f_check 1 "styles/theme.css")
+unset DESIGN_MD_PATH
+result=$(block0f_check 1 "styles/theme.css")
 run_test 8 "CSS-only change (styles/theme.css) without DESIGN.md -> FAIL" "FAIL" "$result"
 
 # ── Bonus: EXCLUDE pattern tests (ensure test files are never gated) ───────
 # TC-E1: *.test.tsx -> NOT_APPLICABLE (excluded before INCLUDE check)
-DESIGN_MD_PATH="" result=$(block0f_check 1 "src/components/Button.test.tsx")
+unset DESIGN_MD_PATH
+result=$(block0f_check 1 "src/components/Button.test.tsx")
 run_test "E1" "Excluded *.test.tsx -> NOT_APPLICABLE" "NOT_APPLICABLE" "$result"
 
 # TC-E2: __tests__/ directory -> NOT_APPLICABLE
-DESIGN_MD_PATH="" result=$(block0f_check 1 "__tests__/Button.tsx")
+unset DESIGN_MD_PATH
+result=$(block0f_check 1 "__tests__/Button.tsx")
 run_test "E2" "Excluded __tests__/Button.tsx -> NOT_APPLICABLE" "NOT_APPLICABLE" "$result"
 
 # TC-E3: *.stories.tsx -> NOT_APPLICABLE
-DESIGN_MD_PATH="" result=$(block0f_check 1 "src/components/Button.stories.tsx")
+unset DESIGN_MD_PATH
+result=$(block0f_check 1 "src/components/Button.stories.tsx")
 run_test "E3" "Excluded *.stories.tsx -> NOT_APPLICABLE" "NOT_APPLICABLE" "$result"
 
 echo ""
