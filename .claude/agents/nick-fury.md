@@ -90,35 +90,63 @@ above does Nick Fury ask the human.
 
 Every non-trivial decision Nick Fury makes — meaning: the answer to any
 `QUESTION_TO_BRAIN`, any Decision Matrix P-level pick, any scope / naming /
-library / test-strategy call — MUST be appended to
-`.aegis/brain/logs/decision-audit.log` as one JSONL line.
+library / test-strategy call — MUST be logged via
+`tools/aegis-log-decision.sh` (shipped in PR #32).
 
-Format (per `@references/decision-audit-protocol.md`):
+**Canonical way (preferred):**
 
-```jsonl
-{"ts":"<ISO8601 UTC>","decision_id":"D-NNN","question":"<short>","source":"instinct|resonance|plan|judgment|policy","confidence":<0.0-1.0>,"answer":"<chosen option>","reasoning":"<1 line, optional>"}
+```bash
+bash tools/aegis-log-decision.sh \
+  --question "<short question>" \
+  --source "instinct:promoted" \
+  --source-id "<instinct-or-adr-id>" \
+  --confidence 0.95 \
+  --answer "<chosen option>"
+
+# For judgment-source calls (--reasoning REQUIRED):
+bash tools/aegis-log-decision.sh \
+  --question "<short question>" \
+  --source judgment \
+  --confidence 0.45 \
+  --answer "<chosen option>" \
+  --reasoning "<1-line rationale>"
 ```
 
-- `decision_id`: increment across the session. Format `D-001`, `D-002`, ...
-- `source`: which of the 8 priority sources above produced the answer.
-  Use `judgment` only when sources 1-7 returned no answer.
-- `confidence`: 1.0 for hard-rule hits (promoted instincts, ADRs), 0.7-0.9
-  for soft evidence, 0.3-0.6 for judgment calls. Be honest -- the point
-  of the log is to surface low-confidence-judgment density for
-  retrospective review.
+The helper:
+- Validates `--source` against the 9 allowed values (instinct:promoted|
+  active|pending, resonance:*, adr:*, identity, framework, retro:*,
+  judgment, auto-defer-to-captain) — invalid sources are rejected
+- REQUIRES `--reasoning` when `--source=judgment` — per spec, judgment
+  calls must explain themselves
+- Assigns sequential `D-NNN` decision IDs within the session
+- Appends valid JSONL to `.aegis/brain/logs/decision-audit.log`
+- Increments `.aegis/brain/metrics/judgment-fallback-counter.json` on
+  judgment-source calls; warns on stderr when threshold (3) is reached
+  (next defer should auto-route to Captain America per
+  [captain-america-fallback.md](../references/captain-america-fallback.md))
 
-Why: `/aegis-retro` reads this log (Step 1b) and summarizes decisions
-by source + confidence. If judgment-level calls exceed ~20% of session
-decisions, the brain is under-utilized -- the retro surfaces this.
-Honest logging > pretty numbers.
+**Confidence guidance:**
+- `1.0` — hard-rule hits (promoted instincts, ADRs, identity)
+- `0.7-0.9` — active instincts, resonance, retro-backed
+- `0.5-0.7` — plan/policy inference with minor extrapolation
+- `0.3-0.5` — judgment fallback (be honest — the log's value is surfacing
+  low-confidence density for retrospective review)
 
-Skip the log ONLY for trivial per-tool decisions (which file to read,
-what to grep for). Everything that would go in a PR description or
-commit message should have a log entry.
+**Why this matters:** `/aegis-retro` Step 1b reads this log and
+summarizes decisions by source + confidence. If judgment-level calls
+exceed ~25% of session decisions, the brain is under-utilized and the
+retro will surface this. Honest logging > pretty numbers.
 
-If the log file doesn't exist yet, create it. If writing fails (disk
-full, permissions), note the failure inline in the response and
-continue -- don't block the decision on the log.
+**Skip the log ONLY for trivial per-tool decisions** (which file to
+read, what to grep for). Anything that would go in a PR description,
+commit message, or the "Rationale" line of an announced decision MUST
+have a log entry.
+
+**Fallback if the helper is unavailable** (legacy sessions pre-PR #32):
+append a single JSONL line directly to `.aegis/brain/logs/decision-audit.log`
+matching the format in `@references/decision-audit-protocol.md`. Note the
+fallback inline in the response so the main agent can diagnose why the
+helper was missing.
 
 ## Adaptive Thinking (Claude 4.6)
 
