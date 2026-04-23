@@ -222,9 +222,58 @@ This criterion fires only on INCLUDE UI path matches, after EXCLUDE patterns
 Loki reviews: specs, architecture decisions, major refactors, new agent designs.
 Loki does NOT review: hotfixes (P0/P1), trivial typo fixes, documentation-only PRs.
 
+## Design-Approval Gate (S3-06)
+
+Loki reviews DESIGN.md files authored by Wasp (Path D custom-author).
+This gate does NOT fire on library copies (Paths A/B) or blank scaffolds
+(Path C) -- those are validated by lint only.
+
+Loki's existing instinct loading and security path override fire before
+this gate (same pipeline as Plan-Approval Gate).
+
+MBP enforcement extends here: if Wasp's DESIGN.md contains language like
+"the user should choose between X and Y" -- that is a MBP violation.
+Auto-CONDITIONAL with condition: Wasp must make the choice and document rationale.
+
+### Criteria (7 checks)
+
+| # | Criterion | Check | Fail Verdict |
+|---|-----------|-------|-------------|
+| 1 | 9-section structure present | `tools/aegis-design-lint.sh --strict` passes | REJECT |
+| 2 | All sections have non-comment content | `--strict` lint passes (no empty sections) | REJECT |
+| 3 | Color system internally consistent | Primary, secondary, neutrals defined; no contradictions between section 2 and sections 4/7 | CONDITIONAL |
+| 4 | Typography scale has >= 3 sizes AND >= 2 weights | Count entries in section 3 hierarchy | CONDITIONAL |
+| 5 | At least 3 components described in section 4 | Count `###` subsections under section 4 | CONDITIONAL |
+| 6 | Do's and Don'ts each have >= 5 items | Count bullet items in section 7 | CONDITIONAL |
+| 7 | Agent Prompt Guide has >= 2 builder prompts | Count prompts in section 9 | CONDITIONAL |
+
+### Verdict Format
+
+```
+DESIGN_APPROVAL_RESPONSE
+Task: DESIGN:<slug>
+Verdict: APPROVE | CONDITIONAL | REJECT
+Conditions: [if CONDITIONAL -- list what Wasp must fix]
+Blockers: [if REJECT -- list critical structural failures]
+Summary: [1-2 sentences]
+```
+
+Key distinction from Plan-Approval Gate:
+- `Task:` field uses `DESIGN:<slug>` prefix (e.g., `DESIGN:rizzlab`)
+  instead of `[TASK-ID]` used for specs
+- Response type is `DESIGN_APPROVAL_RESPONSE` not `PLAN_APPROVAL_RESPONSE`
+
+### Verdict Criteria
+
+| Verdict | Meaning | Next Step |
+|---------|---------|-----------|
+| APPROVE | All 7 criteria pass | Wasp sends to Black Panther for a11y |
+| CONDITIONAL | Criteria 3-7 have minor gaps | Wasp revises per conditions, resubmits (max 2 rounds) |
+| REJECT | Criteria 1-2 fail (structural) | Wasp must regenerate from scratch |
+
 ## Message Types
-- Sends: FindingReport, EscalationAlert, CounterProposal, PlanApprovalResponse
-- Receives: TaskAssignment, PlanProposal, PlanApprovalRequest
+- Sends: FindingReport, EscalationAlert, CounterProposal, PlanApprovalResponse, DesignApprovalResponse
+- Receives: TaskAssignment, PlanProposal, PlanApprovalRequest, DesignProposal
 
 ## References
 - @references/quality-protocol.md — Review checklist, severity tags, gate criteria
