@@ -16,23 +16,28 @@ external dependencies (new SDK features, infra, migration calendar).
 
 ## Tally (update on every sprint close)
 
-_Last updated: 2026-04-23 · by: main agent (sprint-v9-02 close)_
+_Last updated: 2026-04-23 · by: main agent (sprint-v9-03 close)_
 
 | Sprint | Points Selected | Points Done | Stretch Done | Status |
 |--------|-----------------|-------------|--------------|--------|
 | sprint-v9-01 (foundation) | 13 | 13 | 0 | CLOSED |
 | sprint-v9-02 (follow-ups) | 11 | 11 | 0 | CLOSED |
-| **sprint-v9-03** (next) | 10 | 0 | — | PLANNED |
-| **backlog — planned** | 12 | 0 | — | PLANNED |
+| sprint-v9-03 (visual layer) | 11 | 11 | 0 | CLOSED |
+| **sprint-v9-04** (next) | 10 | 0 | — | PLANNED |
+| **backlog — planned** | 8 | 0 | — | PLANNED |
 | **stretch — deferred** | 5 | 0 | — | BACKLOG |
 
-## Planned next (sprint-v9-03 candidates, 10pt target)
+## Planned next (sprint-v9-04 candidates, 10pt target)
 
 | ID | Title | Points | Source |
 |----|-------|--------|--------|
-| S6-06 | Command consolidation 29→12 | 5 | v9-follow-ups (stretch carried from v9-02) |
-| S2-05 | Promote resonance → instinct lifecycle (pipeline gap from v9-02 retro) | 3 | v9-02 retro action item |
-| S2-06 | Track approved specs in git (fix `_aegis-output/` gitignore exclusion) | 2 | v9-02 retro action item |
+| S3-05 | EXCLUDE/INCLUDE pattern SSOT (single file for hooks + agents + tests) | 3 | v9-03 retro (BP F-03 finding) |
+| S2-05 | Promote resonance → instinct lifecycle (pipeline gap) | 3 | v9-02 retro carry-forward |
+| S2-06 | Track approved specs in git (fix `_aegis-output/` gitignore) | 2 | v9-02 retro carry-forward |
+| S6-06 | Command consolidation 29→12 (stretch from v9-02, deferred again) | 5 | v9-follow-ups (can stretch v9-04 to 15pt) |
+| S3-09 | realpath normalization in guard-ui-edit (BP F-02 LOW) | 1 | v9-03 retro carry-forward |
+| BACKLOG-1 | --output path validation (design-fetch + design-init) | 1 | v9-03 round-1 LOW S-01 |
+| BACKLOG-2 | --seed-all exit code semantics | 1 | v9-03 round-1 LOW C-02 |
 
 ## Planned backlog (post-v9-03)
 
