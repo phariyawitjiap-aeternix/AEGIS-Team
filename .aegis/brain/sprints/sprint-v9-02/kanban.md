@@ -23,7 +23,8 @@ _(empty)_
       3. Add "Don't" for stale-pin bypass risk when a task is re-tagged typo→security mid-flight (mitigation can defer to S2-04 Loki counter but risk must be documented).
       **Format compliance**: ✓ (soul paragraph, matrix tables, do/don't, Agent Prompt Guide)
       **Blockers**: none
-      **Next actor**: Iron Man revise → Spider-Man build (next fresh session)
+      **Iron Man revision v1.1** (2026-04-23, decision D-005, adr:sprint-v9-02, conf 0.85): all 3 conditions addressed — acceptance test for lite-mode skip-log added (§6), ELSE-branch inference codified (§4a), stale-pin Don't added (§7), Thor test prompt added (§8). Spec at `_aegis-output/specs/S2-03-spec.md` v1.1 (gitignored, persistent on disk).
+      **Next actor**: Loki re-review in fresh session (should flip CONDITIONAL → APPROVE) → Spider-Man build
 
 ## QA
 _(empty)_
