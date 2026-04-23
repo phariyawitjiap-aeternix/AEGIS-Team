@@ -8,14 +8,24 @@
 - [ ] [S6-06] Command consolidation 29→12 (@unassigned) — 5pt, stretch if velocity allows
 
 ## TODO
-- [ ] [S2-04] BLOCK 0 lite-mode: tag-override validation via Loki counter (@unassigned) — 2pt, pairs with S2-03
 - [ ] [DIST-01] Run /aegis-distill: process 28-session learning backlog (@unassigned) — 3pt, independent
 
 ## IN_PROGRESS
 _(empty)_
 
 ## IN_REVIEW
-_(empty)_
+- [ ] [S2-04] BLOCK 0 lite-mode: tag-override validation via Loki counter (@iron-man) — 2pt
+      **Loki gate round 1** (D-011, adr:sprint-v9-02, conf 0.95): CONDITIONAL — 3 fixable
+        1. `mv -n` not atomic on macOS HFS+/APFS → use flock
+        2. `secret[^s]` regex misses bare `secret` file → change to `secret($|[^s])`
+        3. Missing test cases for `.ssh/` and `tokens/` → add TC-13, TC-14
+      **Iron Man v1.1** (D-013, adr:sprint-v9-02, conf 0.9): ALL 3 addressed.
+        - flock -x lockfile pattern replacing mv -n swap (macOS fallback: last-writer-wins + warning)
+        - regex anchor fix in all 3 locations (pattern table + pseudocode + path registry)
+        - TC-13 (.ssh/id_rsa), TC-14 (tokens/api.json) added; total 14 test cases
+        - v1.1 footer added
+      **Next actor**: Loki re-review (should flip → APPROVE) → Spider-Man build → BP review → merge
+      **Blockers**: none
 
 ## QA
 _(empty)_
