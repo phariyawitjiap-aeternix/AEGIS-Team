@@ -8,7 +8,7 @@
 - [ ] [S6-06] Command consolidation 29→12 (@unassigned) — 5pt, stretch if velocity allows
 
 ## TODO
-- [ ] [DIST-01] Run /aegis-distill: process 28-session learning backlog (@unassigned) — 3pt, independent
+_(empty — all sprint work DONE, only S6-06 stretch in BACKLOG)_
 
 ## IN_PROGRESS
 _(empty)_
@@ -37,6 +37,15 @@ _(empty)_
       aegis-s204-override-test.sh) — 16/16 assertions pass incl. single-quote
       injection safety + space-in-filename + tests/auth/ coverage.
       loki.md +74 (§Security Path Override section).
+- [x] [DIST-01] Distill 28-session learning backlog (@beast) — 3pt [PR pending 2026-04-23]
+      Executed by Beast per his own scan report. 2 new resonance files:
+      - `.aegis/brain/resonance/policy-enforcement-architecture.md` (merged
+        policy-without-test + mbp-four-layer learnings)
+      - `.aegis/brain/resonance/platform-capability-verification.md` (merged
+        subagent-tool-availability + verify-primitives learnings)
+      Distill counter reset 28→0.
+      Deferred: cluster C (worktree, 2 members), D (hook-governance) for next
+      distill cycle. Decision D-019.
 
 ## Blocked (not in sprint)
 - [S4-02] Nick Fury proxy dispatch loop — blocked on `memory_20250818` tool availability (SDK-side, not in-repo)
