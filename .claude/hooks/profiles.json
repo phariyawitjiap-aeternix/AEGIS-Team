@@ -9,6 +9,7 @@
     "standard": [
       "guard-bash",
       "guard-write",
+      "guard-ui-edit",
       "guard-ask-user",
       "post-tool-use",
       "post-edit-accumulate",
@@ -17,6 +18,7 @@
     "strict": [
       "guard-bash",
       "guard-write",
+      "guard-ui-edit",
       "guard-ask-user",
       "post-tool-use",
       "post-edit-accumulate",

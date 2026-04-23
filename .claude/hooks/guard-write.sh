@@ -124,9 +124,13 @@ for pattern in "${ALL_PATTERNS[@]}"; do
 done
 
 # Category 5: AEGIS framework self-protection (never let agents edit hooks/settings mid-session)
+# S3-03: .aegis/brain/design-library/ added for library immutability (per spec §8 Security).
+# Agents must not modify reference library files in place — copy to project root and customize.
+# ADR-004 maintainer-mode override still works for legitimate library updates by the human.
 AEGIS_PATTERNS=(
     ".claude/settings.json"
     ".claude/settings.local.json"
+    ".aegis/brain/design-library/"
 )
 for pattern in "${AEGIS_PATTERNS[@]}"; do
     if [[ "$FILE" == *"$pattern"* ]]; then
