@@ -23,8 +23,8 @@ _Last updated: 2026-04-23 · by: main agent (sprint-v9-03 close)_
 | sprint-v9-01 (foundation) | 13 | 13 | 0 | CLOSED |
 | sprint-v9-02 (follow-ups) | 11 | 11 | 0 | CLOSED |
 | sprint-v9-03 (visual layer) | 11 | 11 | 0 | CLOSED |
-| **sprint-v9-04** (next) | 10 | 0 | — | PLANNED |
-| **backlog — planned** | 8 | 0 | — | PLANNED |
+| sprint-v9-04 (design gen + cleanup) | 10 | 5 | 0 | ACTIVE |
+| **backlog — planned** | 4 | 0 | — | PLANNED |
 | **stretch — deferred** | 5 | 0 | — | BACKLOG |
 
 ## Planned next (sprint-v9-04 candidates, 10pt target)
