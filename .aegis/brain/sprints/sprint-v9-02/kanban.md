@@ -14,18 +14,7 @@
 _(empty)_
 
 ## IN_REVIEW
-- [ ] [S2-04] BLOCK 0 lite-mode: tag-override validation via Loki counter (@iron-man) — 2pt
-      **Loki gate round 1** (D-011, adr:sprint-v9-02, conf 0.95): CONDITIONAL — 3 fixable
-        1. `mv -n` not atomic on macOS HFS+/APFS → use flock
-        2. `secret[^s]` regex misses bare `secret` file → change to `secret($|[^s])`
-        3. Missing test cases for `.ssh/` and `tokens/` → add TC-13, TC-14
-      **Iron Man v1.1** (D-013, adr:sprint-v9-02, conf 0.9): ALL 3 addressed.
-        - flock -x lockfile pattern replacing mv -n swap (macOS fallback: last-writer-wins + warning)
-        - regex anchor fix in all 3 locations (pattern table + pseudocode + path registry)
-        - TC-13 (.ssh/id_rsa), TC-14 (tokens/api.json) added; total 14 test cases
-        - v1.1 footer added
-      **Next actor**: Loki re-review (should flip → APPROVE) → Spider-Man build → BP review → merge
-      **Blockers**: none
+_(empty)_
 
 ## QA
 _(empty)_
@@ -39,6 +28,15 @@ _(empty)_
       Artifacts: nick-fury.md +45 (§BLOCK 0 Runtime Procedure),
       coulson.md +34 (§COULSON_BLOCK0), tools/aegis-block0-gate-test.sh
       (new, 240 LOC, 22/22 assertions pass).
+- [x] [S2-04] Loki security-path override: lite/standard → full on sensitive paths (@spider-man) — 2pt [PR #42 merged 2026-04-23]
+      Mitigates BP S-01 stale-pin bypass from S2-03 review. Full audit trail
+      D-011 → D-018. Autonomous cycle: Loki CONDITIONAL → Iron Man v1.1 → Loki
+      APPROVE → Spider-Man impl → BP CONDITIONAL (HIGH shell injection) →
+      Spider-Man round-2 → BP PASS.
+      Artifacts: 3 new tools (aegis-security-paths.sh, aegis-s204-override.sh,
+      aegis-s204-override-test.sh) — 16/16 assertions pass incl. single-quote
+      injection safety + space-in-filename + tests/auth/ coverage.
+      loki.md +74 (§Security Path Override section).
 
 ## Blocked (not in sprint)
 - [S4-02] Nick Fury proxy dispatch loop — blocked on `memory_20250818` tool availability (SDK-side, not in-repo)
