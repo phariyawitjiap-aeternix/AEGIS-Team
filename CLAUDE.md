@@ -52,8 +52,17 @@ Default autonomy: L3 (Autonomous) with Nick Fury active
 | /aegis-team-build | Spawn build team (in-process) |
 | /aegis-team-review | Spawn review team (in-process) |
 | /aegis-team-debate | Spawn debate team (in-process) |
-| /aegis-status | Check all agent progress |
+| /aegis-status | Check all agent progress (+ grand total %, team chat tail) |
 | /aegis-mode | Switch autonomy level or profile |
+
+## Observability Helpers
+
+| Tool | Purpose |
+|------|---------|
+| `tools/aegis-team-chat.sh` | Append inter-agent dialogue event (DISPATCH / REPORT / VERDICT / etc.) to today's chat log. Surfaces team conversation during processing — not just final results. |
+| `tools/aegis-progress.sh` | Compute grand-total progress % against the roadmap. Denominator = all selected + planned scope. `--bar` / `--json` flags available. |
+| `tools/aegis-log-decision.sh` | Nick Fury's decision-audit logger (S2-02). Every non-trivial decision gets one JSONL entry. |
+| `.aegis/brain/sprints/roadmap.md` | Single source of truth for "how close are we to 100% done". Update on every sprint open/close. |
 
 ## v9 Transition State (largely shipped)
 

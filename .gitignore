@@ -73,3 +73,6 @@ dashboard/node_modules/
 .aegis/brain/tasks/*/history.md
 
 # <<< AEGIS-V9-END >>>
+
+# Runtime inter-agent chat logs (per-session, per-machine)
+.aegis/brain/conversations/

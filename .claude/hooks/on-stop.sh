@@ -292,6 +292,42 @@ PYEOF
     fi
 fi
 
+# ── Grand-total progress banner ───────────────────────────────────────────
+# Shows overall completion % so the user sees where we are in the roadmap,
+# not just the current session's wins.
+if [[ -x "tools/aegis-progress.sh" ]]; then
+    echo ""
+    bash tools/aegis-progress.sh --bar 2>/dev/null || true
+fi
+
+# ── Team chat tail — last 5 inter-agent events this session ───────────────
+# Surfaces the internal team dialogue so the user sees what actually happened
+# between spawns (dispatch, verdicts, handoffs) instead of only the final result.
+CHAT_TODAY=".aegis/brain/conversations/$(date -u +%Y-%m-%d)/chat.log"
+if [[ -f "$CHAT_TODAY" ]]; then
+    CHAT_COUNT=$(wc -l < "$CHAT_TODAY" | tr -d ' ')
+    if [[ "$CHAT_COUNT" -gt 0 ]]; then
+        echo ""
+        echo "┌─ 💬 Team chat (last 5 of $CHAT_COUNT today) ────────────────────┐"
+        tail -5 "$CHAT_TODAY" | python3 -c "
+import sys, json
+icons = {'DISPATCH':'📤','REPORT':'📥','VERDICT':'⚖️ ','QUESTION':'❓','ANSWER':'💡','STATUS':'💓','HANDOFF':'🔁','BLOCKED':'🛑','NOTE':'📝'}
+for line in sys.stdin:
+    try:
+        e = json.loads(line)
+        icon = icons.get(e.get('type','NOTE'), '•')
+        time = e.get('ts','')[11:19]
+        task = f\"[{e['task']}] \" if e.get('task') else ''
+        msg = (e.get('msg','')[:50]).ljust(50)
+        line_str = f'│ {icon} {time} {e[\"from\"][:12]:<12} → {e[\"to\"][:12]:<12} {task}{msg} │'
+        print(line_str[:80])
+    except Exception:
+        continue
+" 2>/dev/null || true
+        echo "└─────────────────────────────────────────────────────────────────┘"
+    fi
+fi
+
 # Remind human
 echo ""
 echo "┌─────────────────────────────────────────────────────┐"

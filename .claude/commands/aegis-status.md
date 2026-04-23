@@ -77,6 +77,24 @@ of what AEGIS is doing.
   Pipeline: None active
   ```
 
+### Step 3.5: Show Grand Total Progress
+
+Run `bash tools/aegis-progress.sh --bar` and display the one-line result.
+For fuller detail (`aegis-progress.sh` without flag), show the dashboard
+boxed display. This tells the user where we are against ALL known scope,
+not just the current sprint.
+
+Source: `.aegis/brain/sprints/roadmap.md` — update that file on every
+sprint open/close/rescope.
+
+### Step 3.75: Show Team Chat Tail
+
+Show last 5 inter-agent events from today's chat log at
+`.aegis/brain/conversations/$(date -u +%Y-%m-%d)/chat.log`.
+Format per-line: `ICON time from → to [TASK] TYPE: msg`.
+
+If no chat log exists for today: skip silently (no bare-file noise).
+
 ### Step 4: Show Context Budget
 - Quick context summary (abbreviated version of /aegis-context):
   ```
