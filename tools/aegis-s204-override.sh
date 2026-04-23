@@ -135,13 +135,15 @@ find_security_match() {
 
   while IFS= read -r pattern; do
     [[ -z "$pattern" ]] && continue
-    for file_path in $files_list; do
+    # Use newline-delimited iteration to handle paths with spaces
+    while IFS= read -r file_path; do
+      [[ -z "$file_path" ]] && continue
       if echo "$file_path" | grep -qE "$pattern"; then
         category=$(pattern_to_category "$pattern")
         echo "${category}:${file_path}"
         return 0
       fi
-    done
+    done <<< "$files_list"
   done < <(bash "$SECURITY_PATHS_SH")
 
   return 0
@@ -153,8 +155,9 @@ find_security_match() {
 init_counter_if_missing() {
   if [[ ! -f "$COUNTER_FILE" ]]; then
     mkdir -p "$(dirname "$COUNTER_FILE")"
-    python3 -c "
-import json
+    COUNTER_FILE_PY="$COUNTER_FILE" \
+    python3 - <<'PYEOF'
+import json, os
 data = {
     'total_overrides': 0,
     'last_override_at': None,
@@ -164,10 +167,10 @@ data = {
     },
     'recent': []
 }
-with open('${COUNTER_FILE}', 'w') as f:
+with open(os.environ['COUNTER_FILE_PY'], 'w') as f:
     json.dump(data, f, indent=2)
     f.write('\n')
-"
+PYEOF
   fi
 }
 
@@ -183,16 +186,23 @@ do_counter_update() {
   local tmp_file
   tmp_file=$(mktemp "${COUNTER_FILE}.tmp.XXXXXX")
 
-  python3 -c "
-import json, sys
+  COUNTER_FILE_PY="$COUNTER_FILE" \
+  TMP_FILE_PY="$tmp_file" \
+  TASK_ID_PY="$task_id" \
+  WAS_MODE_PY="$was_mode" \
+  TRIGGER_PATH_PY="$trigger_path" \
+  CATEGORY_PY="$category" \
+  NOW_ISO_PY="$now_iso" \
+  python3 - <<'PYEOF' 2>&1
+import json, os
 
-counter_file = '${COUNTER_FILE}'
-tmp_file = '${tmp_file}'
-task_id = '${task_id}'
-was_mode = '${was_mode}'
-trigger_path = '${trigger_path}'
-category = '${category}'
-now_iso = '${now_iso}'
+counter_file = os.environ['COUNTER_FILE_PY']
+tmp_file     = os.environ['TMP_FILE_PY']
+task_id      = os.environ['TASK_ID_PY']
+was_mode     = os.environ['WAS_MODE_PY']
+trigger_path = os.environ['TRIGGER_PATH_PY']
+category     = os.environ['CATEGORY_PY']
+now_iso      = os.environ['NOW_ISO_PY']
 
 with open(counter_file) as f:
     data = json.load(f)
@@ -221,7 +231,7 @@ data['recent'] = recent
 with open(tmp_file, 'w') as f:
     json.dump(data, f, indent=2)
     f.write('\n')
-" 2>&1
+PYEOF
 
   mv "${tmp_file}" "${COUNTER_FILE}"
 }
@@ -265,21 +275,31 @@ rewrite_meta() {
   local now_iso
   now_iso=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-  python3 -c "
-import json
-with open('${meta}') as f:
+  META_PATH_PY="$meta" \
+  WAS_MODE_PY="$was_mode" \
+  NOW_ISO_PY="$now_iso" \
+  TRIGGER_PATH_PY="$trigger_path" \
+  python3 - <<'PYEOF' 2>/dev/null || { echo "ERROR: python3 required for meta.json rewrite" >&2; exit 2; }
+import json, os
+
+meta         = os.environ['META_PATH_PY']
+was_mode     = os.environ['WAS_MODE_PY']
+now_iso      = os.environ['NOW_ISO_PY']
+trigger_path = os.environ['TRIGGER_PATH_PY']
+
+with open(meta) as f:
     data = json.load(f)
 data['block0_mode'] = 'full'
 data['block0_override'] = {
-    'original_mode': '${was_mode}',
+    'original_mode': was_mode,
     'overridden_by': 'loki',
-    'overridden_at': '${now_iso}',
-    'reason': 'security-sensitive path: ${trigger_path}'
+    'overridden_at': now_iso,
+    'reason': 'security-sensitive path: ' + trigger_path
 }
-with open('${meta}', 'w') as f:
+with open(meta, 'w') as f:
     json.dump(data, f, indent=2)
     f.write('\n')
-" 2>/dev/null || { echo "ERROR: python3 required for meta.json rewrite" >&2; exit 2; }
+PYEOF
 }
 
 # ---------------------------------------------------------------------------
@@ -309,15 +329,16 @@ main() {
   if [[ -n "$TASK_ID" ]]; then
     current_mode=$(get_mode_from_meta "$META_JSON")
     # Try to read changed_files from meta.json
-    files_to_scan=$(python3 -c "
-import json, sys
+    files_to_scan=$(META_JSON_PY="$META_JSON" python3 - <<'PYEOF' 2>/dev/null
+import json, os
 try:
-    with open('${META_JSON}') as f:
+    with open(os.environ['META_JSON_PY']) as f:
         d = json.load(f)
-    print(' '.join(d.get('changed_files', [])))
+    print('\n'.join(d.get('changed_files', [])))
 except Exception:
     print('')
-" 2>/dev/null) || files_to_scan=""
+PYEOF
+) || files_to_scan=""
   else
     # --paths mode
     files_to_scan="$PATHS_ARG"

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # AEGIS S2-04 Override Test Harness
 #
-# Runs all 14 test cases from spec S2-04 §5.
+# Runs all 16 test cases from spec S2-04 §5.
 # Each test creates an isolated temp directory, invokes aegis-s204-override.sh,
 # and asserts meta.json mode, counter state, and log line presence/absence.
 #
@@ -63,34 +63,6 @@ mk_meta() {
   "story_points": 1
 }
 EOF
-}
-
-# Run override script with env vars pointing at the test temp dir
-run_override() {
-  local tmpdir="$1"
-  local paths="$2"
-  local meta="${tmpdir}/meta.json"
-
-  # Override the internal paths used by the script via environment
-  AEGIS_TEST_META="${meta}" \
-  REPO_ROOT_OVERRIDE="${tmpdir}" \
-  bash "${OVERRIDE_SH}" --paths "$paths" 2>&1 || true
-}
-
-# Same but using a forked version that accepts REPO_ROOT_OVERRIDE
-# We inject env vars that the script honours for state paths
-run_override_with_env() {
-  local tmpdir="$1"
-  local paths="$2"
-  local meta="${tmpdir}/meta.json"
-
-  # We need the script to write to tmpdir's counter and log.
-  # Use a wrapper that re-exports the critical paths before calling main.
-  COUNTER_FILE="${tmpdir}/.aegis/brain/state/override-counter.json" \
-  ACTIVITY_LOG="${tmpdir}/.aegis/brain/logs/activity.log" \
-  TASKS_DIR="${tmpdir}/.aegis/brain/tasks" \
-  AEGIS_TEST_META="${meta}" \
-  bash "${OVERRIDE_SH}" --paths "$paths" 2>&1 || true
 }
 
 assert_pass() {
@@ -395,6 +367,44 @@ if [[ "$mode" == "full" && "$cat_val" == "1" ]]; then
   assert_pass "$TC" "lite+tokens/api.json -> full, category=tokens"
 else
   assert_fail "$TC" "lite+tokens/api.json -> full" "mode=$mode tokens_count=$cat_val"
+fi
+rm -rf "$T"
+
+# ---------------------------------------------------------------------------
+# TC-15: lite mode + tests/auth/foo.ts -> MUST override, category=auth
+# Spec §3 negative table last row: tests/auth/ DOES trigger
+# ---------------------------------------------------------------------------
+TC="TC-15"
+T=$(mk_test_env)
+mk_meta "$T" "lite"
+invoke "$T" "tests/auth/foo.ts" >/dev/null
+mode=$(check_mode "${T}/meta.json")
+cat_val=$(check_category_count "${T}/.aegis/brain/state/override-counter.json" "auth")
+total=$(check_total_overrides "${T}/.aegis/brain/state/override-counter.json")
+if [[ "$mode" == "full" && "$cat_val" == "1" && "$total" == "1" ]]; then
+  assert_pass "$TC" "lite+tests/auth/foo.ts -> full, category=auth (tests/auth/ DOES trigger)"
+else
+  assert_fail "$TC" "lite+tests/auth/foo.ts -> full" "mode=$mode auth_count=$cat_val total=$total"
+fi
+rm -rf "$T"
+
+# ---------------------------------------------------------------------------
+# TC-16: path containing single quote -> override succeeds, no injection error
+# Verifies shell-injection fix (S-01): auth/it's-broken.ts must override cleanly
+# Also covers space-in-filename (C-01): path passes through newline iteration
+# ---------------------------------------------------------------------------
+TC="TC-16"
+T=$(mk_test_env)
+mk_meta "$T" "lite"
+# Single quote in path — would break `python3 -c "... '${var}' ..."` style interpolation
+invoke "$T" "auth/it's-broken.ts" >/dev/null
+mode=$(check_mode "${T}/meta.json")
+total=$(check_total_overrides "${T}/.aegis/brain/state/override-counter.json")
+log_hit=$(check_log_has_override "${T}/.aegis/brain/logs/activity.log")
+if [[ "$mode" == "full" && "$total" == "1" && "$log_hit" == "yes" ]]; then
+  assert_pass "$TC" "single-quote in path -> override succeeds, no injection, counter=1"
+else
+  assert_fail "$TC" "single-quote in path -> override succeeds" "mode=$mode total=$total log=$log_hit"
 fi
 rm -rf "$T"
 
