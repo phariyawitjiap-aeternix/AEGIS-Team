@@ -110,14 +110,33 @@ for entry in $SECTIONS; do
     found_lineno=$(awk -v pat="${spat}" -v start="$cursor_line" 'BEGIN{IGNORECASE=1} NR>=start && /^## / && tolower($0) ~ tolower(pat) {print NR; exit}' "$TARGET_FILE" 2>/dev/null) || found_lineno=""
 
     if [ -z "$found_lineno" ]; then
-        prev_name=""
+        # Get the last successfully-found section's name and lineno from found_section_lines
+        # Format: " Name:lineno Name2:lineno2 ..." (space-separated tokens, each "name:lineno")
+        _last_token=""
+        _prev_name=""
+        _prev_lineno=""
         if [ -n "$found_section_lines" ]; then
-            prev_name="$(echo "$found_section_lines" | awk -F: '{print $1}' | tail -1)"
+            _last_token="$(echo "$found_section_lines" | tr ' ' '\n' | grep -v '^$' | tail -1)"
+            _prev_name="${_last_token%%:*}"
+            _prev_lineno="${_last_token##*:}"
         fi
-        if [ -n "$prev_name" ]; then
-            msg="FAIL: Missing section \"${sname}\" -- expected after \"${prev_name}\""
+
+        # Check if the section exists earlier in the file (before cursor = out-of-order)
+        early_lineno=$(awk -v pat="${spat}" 'BEGIN{IGNORECASE=1} /^## / && tolower($0) ~ tolower(pat) {print NR; exit}' "$TARGET_FILE" 2>/dev/null) || early_lineno=""
+        if [ -n "$early_lineno" ] && [ "$early_lineno" -lt "$cursor_line" ]; then
+            # Section is present but appeared before a section that should come first
+            if [ -n "$_prev_name" ] && [ -n "$_prev_lineno" ]; then
+                msg="FAIL: Section \"${sname}\" (line ${early_lineno}) appears before \"${_prev_name}\" (line ${_prev_lineno}) -- sections must follow canonical order"
+            else
+                msg="FAIL: Section \"${sname}\" (line ${early_lineno}) appears before expected position -- sections must follow canonical order"
+            fi
         else
-            msg="FAIL: Missing section \"${sname}\""
+            # Genuinely missing (not found anywhere in the file)
+            if [ -n "$_prev_name" ]; then
+                msg="FAIL: Missing section \"${sname}\" -- expected after \"${_prev_name}\""
+            else
+                msg="FAIL: Missing section \"${sname}\""
+            fi
         fi
         fail_msgs="${fail_msgs}|${msg}"
         if [ $VERBOSE -eq 1 ]; then

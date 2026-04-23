@@ -387,10 +387,10 @@ Guide.
 EOF
 out08=$("$LINT" --file "$tmp08" 2>&1) || true
 if ! "$LINT" --file "$tmp08" >/dev/null 2>&1; then
-    if echo "$out08" | grep -qi "Missing\|order\|before"; then
+    if echo "$out08" | grep -qi "appears before"; then
         ok "08"
     else
-        ko "08" "exit 1 but missing order-related message. Got: $out08"
+        ko "08" "exit 1 but missing 'appears before' out-of-order message. Got: $out08"
     fi
 else
     ko "08" "should fail (out-of-order sections)"
