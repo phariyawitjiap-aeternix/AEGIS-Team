@@ -1,5 +1,7 @@
-# AEGIS Runtime Output (all session artifacts — research, specs, reviews, qa, etc.)
-_aegis-output/
+# AEGIS Runtime Output (session artifacts — research, deployments, qa, etc.)
+# Approved specs are tracked; everything else is gitignored (S2-06).
+_aegis-output/*
+!_aegis-output/specs/
 
 # Environment
 .env

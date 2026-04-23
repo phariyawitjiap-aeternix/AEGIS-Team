@@ -52,6 +52,7 @@ Note: 0F is **conditional** — activated when task file paths match UI patterns
 `src/pages/`, `src/styles/`, `src/ui/`, `app/components/`) AND task priority >= P3.
 EXCLUDE patterns are checked FIRST: `*.test.*`, `*.spec.*`, `*.stories.*`,
 `*.config.*`, `**/__tests__/**`, `**/__mocks__/**`, `**/setupTests.*`.
+Patterns per `tools/aegis-ui-patterns.sh` (canonical SSOT per S3-05).
 "conditional" applies equally to Full, Standard, and Lite — mode does NOT gate 0F;
 path detection does (per ADR-S3-02). Lite is the only mode where 0F is path-sensitive
 vs skipped; for Lite tasks hitting UI paths, 0F still fires.
@@ -95,11 +96,12 @@ COULSON_BLOCK0(task):
 
   3. Check 0F (DESIGN.md — conditional, runs in all modes):
      Collect task file paths (meta.json "files" field, PR diff, or task description).
-     Filter out EXCLUDE patterns (*.test.*, *.spec.*, *.stories.*, *.config.*,
-       **/__tests__/**, **/__mocks__/**, **/setupTests.*) FIRST.
-     IF remaining paths match UI patterns (*.tsx, *.jsx, *.css, *.scss, *.vue,
-       *.svelte, src/components/**, src/pages/**, src/styles/**, src/ui/**,
-       app/components/**) AND task priority >= P3:
+     Filter out EXCLUDE patterns (see tools/aegis-ui-patterns.sh SSOT per S3-05 —
+       *.test.*, *.spec.*, *.stories.*, *.config.*, **/__tests__/**, **/__mocks__/**,
+       **/setupTests.*) FIRST.
+     IF remaining paths match UI patterns (see tools/aegis-ui-patterns.sh SSOT —
+       *.tsx, *.jsx, *.css, *.scss, *.vue, *.svelte, src/components/**,
+       src/pages/**, src/styles/**, src/ui/**, app/components/**) AND task priority >= P3:
        IF DESIGN.md does NOT exist at project root:
          Report 0F FAIL to Nick Fury. Do NOT generate DESIGN.md.
          Log: "[HOOK:block0] task=<TASK-ID> check=0F result=FAIL reason=missing"

@@ -389,8 +389,10 @@ MESSAGE: "⛔ BLOCK 0E: Traceability Matrix not initialized. Coulson creating SI
 BLOCK_0F_CHECK(task):
   -- Evaluation order: EXCLUDE patterns checked FIRST (fail-safe).
   -- If any EXCLUDE matches, file is non-UI regardless of INCLUDE matches.
+  -- Patterns are authoritative at tools/aegis-ui-patterns.sh (SSOT per S3-05).
 
   EXCLUDE patterns (check each file path against these FIRST):
+  [See tools/aegis-ui-patterns.sh -- UI_EXCLUDE_* arrays for canonical list]
     *.test.tsx  *.test.jsx  *.test.css  *.test.scss
     *.spec.tsx  *.spec.jsx
     *.stories.tsx  *.stories.jsx
@@ -400,6 +402,7 @@ BLOCK_0F_CHECK(task):
     **/setupTests.*
 
   INCLUDE UI patterns (only checked after EXCLUDE passes):
+  [See tools/aegis-ui-patterns.sh -- UI_INCLUDE_* arrays for canonical list]
     *.tsx  *.jsx  *.css  *.scss  *.vue  *.svelte
     src/components/**  src/pages/**  src/styles/**  src/ui/**
     app/components/**

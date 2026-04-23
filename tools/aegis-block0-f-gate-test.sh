@@ -13,6 +13,11 @@
 
 set -uo pipefail
 
+# ── Source canonical UI patterns (SSOT — S3-05) ───────────────────────────
+_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=./aegis-ui-patterns.sh
+source "${_SCRIPT_DIR}/aegis-ui-patterns.sh"
+
 VERBOSE=0
 [[ "${1:-}" == "--verbose" ]] && VERBOSE=1
 
@@ -20,7 +25,7 @@ PASS=0
 FAIL=0
 SKIP=0
 
-# ── BLOCK 0F gate logic (inline implementation matching nick-fury.md spec) ─
+# ── BLOCK 0F gate logic (sourced patterns from tools/aegis-ui-patterns.sh) ─
 # Returns: "PASS", "FAIL", or "NOT_APPLICABLE"
 # Arguments: priority files... (where priority is P1-P10 int, e.g. "3")
 # DESIGN_MD_PATH must be set by caller (path to test DESIGN.md or empty string)
@@ -29,33 +34,11 @@ block0f_check() {
     shift
     local files=("$@")
 
-    # EXCLUDE patterns (checked FIRST)
-    is_excluded() {
-        local p="$1"
-        [[ "$p" =~ \.(test|spec|stories)\.(tsx|jsx|css|scss|js|ts)$ ]] && return 0
-        [[ "$p" =~ \.config\.(tsx|jsx|js|ts|mjs|cjs)$ ]] && return 0
-        [[ "$p" =~ (^|/)'__tests__'/ ]] && return 0
-        [[ "$p" =~ (^|/)'__mocks__'/ ]] && return 0
-        [[ "$p" =~ (^|/)setupTests\. ]] && return 0
-        return 1
-    }
-
-    # INCLUDE UI patterns (checked after EXCLUDE passes)
-    is_ui_file() {
-        local p="$1"
-        [[ "$p" =~ \.(tsx|jsx|css|scss|vue|svelte)$ ]] && return 0
-        [[ "$p" =~ (^|/)src/components/ ]] && return 0
-        [[ "$p" =~ (^|/)src/pages/ ]] && return 0
-        [[ "$p" =~ (^|/)src/styles/ ]] && return 0
-        [[ "$p" =~ (^|/)src/ui/ ]] && return 0
-        [[ "$p" =~ (^|/)app/components/ ]] && return 0
-        return 1
-    }
-
-    # Filter files: exclude first, then check UI patterns
+    # Filter files: exclude first (is_excluded_file), then check UI patterns (is_ui_file)
+    # Both functions sourced from tools/aegis-ui-patterns.sh (SSOT per S3-05)
     local ui_count=0
     for f in "${files[@]}"; do
-        if is_excluded "$f"; then
+        if is_excluded_file "$f"; then
             continue
         fi
         if is_ui_file "$f"; then
