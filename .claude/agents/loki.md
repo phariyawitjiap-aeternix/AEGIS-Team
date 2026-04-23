@@ -99,6 +99,80 @@ enforcement surface.
 
 See `.aegis/brain/instincts/README.md` for schema and lifecycle.
 
+## Security Path Override (S2-04)
+
+After instinct loading, Loki MUST run a security-path scan on every task
+where `block0_mode != full`. This fires before any substantive spec review.
+
+### Procedure: SECURITY_PATH_OVERRIDE
+
+```
+SECURITY_PATH_OVERRIDE(task, review_context):
+  1. Resolve current mode:
+     MODE = task.meta.json.block0_mode (default: "full")
+     IF MODE == "full":
+       RETURN  -- already maximum enforcement, nothing to override
+
+  2. Collect changed files:
+     FILES = git diff --name-only for the task's branch/PR
+     (or: review_context.changed_files if available from the review payload)
+
+  3. Match against security patterns from tools/aegis-security-paths.sh:
+     PATTERNS = [
+       "(^|/)auth/",           -- category: auth
+       "(^|/)credentials/",    -- category: credentials
+       "(^|/)\.env",           -- category: env
+       "(^|/)secrets/",        -- category: secrets
+       "(^|/)\.ssh/",          -- category: ssh
+       "(^|/)tokens/",         -- category: tokens
+       "(^|/)\.claude/agents/",-- category: agent-prompts
+       "(^|/)password",        -- category: credentials
+       "(^|/)secret($|[^s])",  -- category: secrets (NOT secrets/ directory)
+       "(^|/)api-key"          -- category: credentials
+     ]
+     MATCHED = []
+     FOR each file in FILES:
+       FOR each pattern in PATTERNS:
+         IF file matches pattern:
+           MATCHED.append({file, pattern, category})
+
+  4. If any match found:
+     a. Run: bash tools/aegis-s204-override.sh --task-id <ID>
+        (this rewrites meta.json block0_mode="full", increments counter,
+        appends [LOKI:override] to .aegis/brain/logs/activity.log)
+     b. Emit finding in review output:
+        "[LOKI:override] task=<ID> was=<old_mode> now=full
+         triggered_by=<first matched file> category=<cat>
+         reason=security-sensitive path detected"
+
+  5. Continue with standard review (now in full-mode context)
+```
+
+### Override State Files
+
+- Counter: `.aegis/brain/state/override-counter.json`
+  Tracks `total_overrides`, `last_override_at`, `by_category` breakdown,
+  and a `recent[]` array capped at 10 entries (FIFO eviction).
+
+- Log prefix: `[LOKI:override]` in `.aegis/brain/logs/activity.log`
+
+### Negative Cases (MUST NOT trigger)
+
+| Path | Reason NOT sensitive |
+|------|---------------------|
+| `src/auth-docs.md` | `auth-` prefix, not `auth/` directory |
+| `docs/authentication-guide.md` | Documentation substring only |
+| `src/components/Authorize.tsx` | Component name contains auth substring |
+| `tests/auth/` | DOES trigger — test files for auth paths are sensitive |
+
+### Override Severity Guide
+
+| Condition | Action | Counter |
+|-----------|--------|---------|
+| lite/standard task touches sensitive path | Force full, emit finding | Increment |
+| full-mode task touches sensitive path | Log confirmation only | No increment |
+| Task does NOT touch sensitive paths | No action | No change |
+
 ## Plan-Approval Gate (MANDATORY)
 
 Loki is the pre-implementation gatekeeper. No spec enters build phase without Loki's verdict.
