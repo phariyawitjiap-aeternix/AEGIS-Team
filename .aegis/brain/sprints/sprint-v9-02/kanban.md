@@ -8,13 +8,11 @@
 - [ ] [S6-06] Command consolidation 29→12 (@unassigned) — 5pt, stretch if velocity allows
 
 ## TODO
-- [ ] [S2-02] Retro-summary wiring — Nick Fury logs decisions to decision-audit.log; /aegis-retro reads and summarizes (@unassigned) — 3pt
-- [ ] [S2-03] BLOCK 0 lite-mode: wire aegis-block0-mode.sh into Nick Fury gate checks (@unassigned) — 3pt, depends on S2-02
 - [ ] [S2-04] BLOCK 0 lite-mode: tag-override validation via Loki counter (@unassigned) — 2pt, pairs with S2-03
 - [ ] [DIST-01] Run /aegis-distill: process 28-session learning backlog (@unassigned) — 3pt, independent
 
 ## IN_PROGRESS
-_(empty — Nick Fury assigns from TODO on next cycle)_
+- [ ] [S2-03] BLOCK 0 lite-mode: wire aegis-block0-mode.sh into Nick Fury gate checks (@iron-man → spec) — 3pt, depends on S2-02
 
 ## IN_REVIEW
 _(empty)_
@@ -23,7 +21,7 @@ _(empty)_
 _(empty)_
 
 ## DONE
-_(empty — sprint just opened)_
+- [x] [S2-02] Retro-summary wiring — Nick Fury logs decisions to decision-audit.log; /aegis-retro reads and summarizes (@nick-fury) — 3pt [PR #34 merged 2026-04-22]
 
 ## Blocked (not in sprint)
 - [S4-02] Nick Fury proxy dispatch loop — blocked on `memory_20250818` tool availability (SDK-side, not in-repo)
