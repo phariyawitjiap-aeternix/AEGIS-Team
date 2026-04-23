@@ -314,7 +314,10 @@ BLOCK_0_PROCEDURE(task):
        #   3. Size fallback: <=1pt -> lite, 2-5pt -> standard, >5pt -> full
        # If inference is ambiguous, default to full (safe default).
        MODE = $(tools/aegis-block0-mode.sh --points <inferred-N> --tags <inferred-tags>)
-       # On helper non-zero exit: fall back to full, log error, continue.
+       # On helper non-zero exit:
+       #   Append to activity.log:
+       #     "[YYYY-MM-DDTHH:MM:SSZ] [HOOK:block0] ERROR task=<ID> helper_exit=<N> falling_back_to=full"
+       #   Then: MODE = full
        Write MODE to meta.json block0_mode field
 
   2. Log mode determination to activity.log:

@@ -47,7 +47,7 @@ by that mode — skip the rest to save cycles on small tasks.
 | 0E | SI.02 Traceability Matrix (skeleton) | ✓ | **skip** | **skip** |
 
 When skipping, log to `.aegis/brain/logs/activity.log`:
-`[HOOK:coulson-block0] task=<TASK-ID> mode=<M> skipped=<0B,0E>`
+`[HOOK:block0] task=<TASK-ID> mode=<M> skipped=<0B,0E>`
 
 Rationale: ≤1pt chores don't need SI.01; ≤5pt standard tasks need
 requirements but not traceability stub (added later if task grows).
@@ -67,10 +67,10 @@ COULSON_BLOCK0(task):
   1. Read MODE from .aegis/brain/tasks/<TASK-ID>/meta.json field "block0_mode"
      IF missing: default MODE = "full"  (safe default per spec §5 P2)
 
-  2. FOR each doc in [PM.01, SI.01, tasks/kanban, SI.02]:
+  2. FOR each doc in [PM.01, SI.01, tasks, kanban, SI.02]:
        IF mode_table[MODE][doc] == "skip":
          Append to .aegis/brain/logs/activity.log:
-           "[YYYY-MM-DDTHH:MM:SSZ] [HOOK:coulson-block0] task=<TASK-ID> mode=<MODE> skipped=<check>"
+           "[YYYY-MM-DDTHH:MM:SSZ] [HOOK:block0] task=<TASK-ID> mode=<MODE> skipped=<check>"
          SKIP generation for this doc — do NOT create or modify the artifact
        ELSE:
          IF doc is missing or empty:
