@@ -417,16 +417,51 @@ BLOCK_0F_CHECK(task):
      Log: "[HOOK:block0] task=<ID> mode=<M> 0F=not_applicable reason=below-p3-threshold"
 
   3. Check for DESIGN.md:
-     IF file NOT exists at project root (DESIGN.md):
-       Dispatch: "bash tools/aegis-design-init.sh --blank --output DESIGN.md"
-       Append to activity.log:
-         "[HOOK:block0] task=<ID> mode=<M> 0F=triggered action=init-dispatched"
-       BLOCK until DESIGN.md exists.
-     ELSE:
-       Run: bash tools/aegis-design-lint.sh --strict DESIGN.md
-       IF fails: 0F = FAIL, BLOCK, emit finding:
-         "⛔ BLOCK 0F: DESIGN.md exists but fails strict lint. Fix before proceeding."
-       ELSE: 0F = PASS
+     IF file EXISTS at project root (DESIGN.md):
+       Run: bash tools/aegis-design-lint.sh --strict --file DESIGN.md
+       IF passes: 0F = PASS
+       IF fails AND (--from or --vibe flag provided):
+         Dispatch: "bash tools/aegis-design-init.sh --from <slug>" or "--vibe <kw>"
+         BLOCK until DESIGN.md exists, then re-lint.
+       IF fails AND no --from/--vibe flag (broken-DESIGN branch -- S3-06):
+         Log: "[HOOK:block0] task=<ID> mode=<M> 0F=broken-design dispatching=wasp"
+         Dispatch Wasp with existing DESIGN.md as partial input plus lint diagnostics:
+           Message: "Existing DESIGN.md fails --strict; revise per diagnostics: <lint output>"
+         BLOCK until Wasp signals DESIGN.md revised.
+         Nick Fury re-runs: tools/aegis-design-lint.sh --strict --file DESIGN.md
+         IF passes: 0F = PASS
+         IF fails: 0F = FAIL (log error, fall back to --blank scaffold)
+     ELSE (DESIGN.md missing):
+       4a. IF --from or --vibe flag provided:
+           Dispatch: "bash tools/aegis-design-init.sh --from <slug>" or "--vibe <kw>"
+           BLOCK until DESIGN.md exists, then re-lint.
+       4b. IF no flag specified (custom-author path -- Path D, S3-06):
+           Log: "[HOOK:block0] task=<ID> mode=<M> 0F=custom-author-path dispatching=wasp"
+
+           Construct brief from project context:
+             brief_sources = []
+             IF .aegis/brain/resonance/project-identity.md exists:
+               brief_sources.append(read project-identity.md)
+             IF README.md exists:
+               brief_sources.append(read README.md description)
+             IF package.json exists:
+               brief_sources.append(read package.json description + keywords)
+
+           Dispatch Wasp:
+             DispatchDesignRequest {
+               brief: concatenated brief_sources
+               constraints: task.meta.json constraints (if any)
+               target: "./DESIGN.md"
+               library_path: ".aegis/brain/design-library/"
+             }
+
+           BLOCK until Wasp signals DESIGN.md published.
+           Nick Fury runs: tools/aegis-design-lint.sh --strict --file DESIGN.md
+           IF passes: 0F = PASS
+           IF fails: 0F = FAIL (Wasp bug -- log error, fall back to --blank scaffold)
+
+         KEY: Nick Fury always runs lint -- Wasp is Bash-less and cannot execute
+         shell tools. Wasp produces; Nick Fury validates.
 
   4. Log result:
      Append to .aegis/brain/logs/activity.log:

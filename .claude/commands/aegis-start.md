@@ -198,6 +198,16 @@ BLOCK 0D: Kanban initialized    → ls .aegis/brain/sprints/current/kanban.md
 BLOCK 0E: SI.02 Traceability    → ls _aegis-output/iso-docs/SI-02-traceability-matrix/matrix.md
 ```
 
+BLOCK 0F (extended S3-06):
+  IF DESIGN.md missing AND no --from/--vibe flag AND UI paths detected:
+    Nick Fury dispatches Wasp to author custom DESIGN.md from project brief.
+    Wasp -> Loki Design-Approval Gate -> Black Panther a11y pass -> DESIGN.md published.
+    0F re-checks after publish.
+  IF DESIGN.md exists AND lint fails AND no --from/--vibe flag:
+    Nick Fury dispatches Wasp with existing DESIGN.md as partial input plus lint diagnostics.
+    Wasp revises -> Nick Fury re-lints -> 0F re-checks.
+  Existing Paths A/B/C continue unchanged when --from or --vibe flag is provided.
+
 If ANY block check fails AND the task is P3+ (not a hotfix):
 → **Dispatch Coulson immediately** to generate missing documents BEFORE any other agent acts.
 → Coulson generates PM.01 skeleton, SI.01 skeleton, task hierarchy, kanban, SI.02 skeleton.

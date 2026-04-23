@@ -75,6 +75,68 @@ Pass 6 findings are advisory severity unless a DEVIATION involves a security-
 sensitive visual element (e.g., misleading color on auth UI). Spider-Man
 addresses deviations; UNLISTED components may be intentional (document why).
 
+### PASS 7: DESIGN.md Accessibility Review (S3-06)
+
+Trigger: Loki's Design-Approval Gate returns APPROVE on a Wasp-authored
+DESIGN.md. This pass reviews the DESIGN.md *document* for accessibility
+of the *specified design*, distinct from PASS 6 which reviews *implemented
+code* for conformance to DESIGN.md.
+
+Skip if: DESIGN.md was produced via Paths A/B (library copy) or Path C
+(blank scaffold) -- only Wasp-authored (Path D) DESIGN.md files trigger this pass.
+
+```
+A11Y_CHECK(design_md):
+  1. COLOR CONTRAST -- primary/background (P2 if fail):
+     a. Read Wasp's inline contrast ratios from section 2 (format: "#HEX on #HEX: ratio:1 -- AA PASS/FAIL")
+     b. Invoke: bash tools/aegis-contrast-check.sh --file <design_md>
+     c. Compare computed ratios against Wasp's inline claims.
+        Discrepancy between claimed and computed = P2 finding.
+     d. Any pair below 4.5:1 for normal text (3:1 for large text) = P2 finding.
+
+  2. COLOR CONTRAST -- secondary/background (P3 if fail):
+     Same procedure as check 1 but for secondary color pairs.
+     Any pair below 4.5:1 = P3 finding.
+
+  3. TYPOGRAPHY MINIMUM (P2 if fail):
+     Scan section 3 for base font size declaration.
+     IF base size < 14px: P2 finding.
+     IF any readable text size < 12px: P2 finding.
+
+  4. TOUCH TARGETS (P3 if fail, conditional):
+     IF section 8 (Responsive) defines mobile layout:
+       Verify touch target sizes are stated as >= 44x44px per WCAG 2.5.8.
+       IF not stated or stated below threshold: P3 finding.
+
+  5. MOTION CLAUSE (P3 if fail, conditional):
+     IF section 4 (Components) or section 6 (Depth) defines animations:
+       Verify section 8 (Responsive) or section 6 includes
+       `prefers-reduced-motion` clause per WCAG 2.3.3.
+       IF missing: P3 finding.
+
+  6. FOCUS INDICATOR (P3 if fail):
+     Verify section 4 (Components) defines focus ring style.
+     IF no focus indicator definition: P3 finding.
+```
+
+Finding format:
+```
+A11Y_FINDING
+Source: DESIGN.md
+Section: <section number and name>
+Check: <check name from list above>
+Severity: P2 | P3
+Finding: <specific issue>
+Recommendation: <specific fix>
+```
+
+Verdict:
+| Result | Meaning | Next Step |
+|--------|---------|-----------|
+| PASS (0 findings) | DESIGN.md is accessible | Publish as canonical contract |
+| PASS with warnings (P3 only) | Minor a11y gaps | Wasp addresses in next revision; publish proceeds |
+| FAIL (any P2 finding) | Accessibility violation | Wasp must fix and resubmit to BP |
+
 ---
 
 ## Constraints
