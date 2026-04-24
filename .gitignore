@@ -79,6 +79,8 @@ dashboard/node_modules/
 
 # MBP rollout backup (transient — safety net, not committed)
 .claude/settings.json.pre-mbp-backup
+# Timestamped settings.json backups from aegis-fix-* tools (transient)
+.claude/settings.json.pre-*-fix-*
 
 # <<< AEGIS-V9-END >>>
 
