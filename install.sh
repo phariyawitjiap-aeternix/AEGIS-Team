@@ -494,6 +494,18 @@ if [[ -f "${SCRIPT_DIR}/.claude/settings.json" ]]; then
             warn "hook path normalization failed — hooks may misfire from non-root cwd (run tools/aegis-fix-hook-paths.sh manually)"
         fi
     fi
+
+    # Isolate task list — rewrite CLAUDE_CODE_TASK_LIST_ID to a project-specific
+    # slug so tasks don't leak across projects (the literal "aegis-shared-tasks"
+    # in the template pooled every project's tasks into one global list).
+    # Runs for both install and upgrade; idempotent.
+    if [[ -x "${SCRIPT_DIR}/tools/aegis-fix-task-list-id.sh" ]]; then
+        if bash "${SCRIPT_DIR}/tools/aegis-fix-task-list-id.sh" --target-dir "${TARGET_DIR}" --quiet 2>/dev/null; then
+            success "task list ID isolated per project"
+        else
+            warn "task list ID isolation failed — tasks may leak across projects (run tools/aegis-fix-task-list-id.sh manually)"
+        fi
+    fi
 else
     warn "settings.json not found in source — skipping"
 fi
@@ -505,6 +517,7 @@ mkdir -p "${TARGET_DIR}/tools"
 upgrade_toolkit=(
     "aegis-upgrade.sh"
     "aegis-fix-hook-paths.sh"
+    "aegis-fix-task-list-id.sh"
 )
 delivered_tools=0
 for tool in "${upgrade_toolkit[@]}"; do

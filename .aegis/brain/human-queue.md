@@ -48,6 +48,16 @@ Agent ตัวไหนอ่านไฟล์นี้ตรงก็ได�
 - **Blocks**: Stop hooks silently failing every session; retro logging + false-ready detection degraded until fix applied
 - **Raised**: 2026-04-24T11:25:56Z
 - **Resolved**: _(pending)_
+
+### [2026-04-24] EXTERNAL — Prune stale ~/.claude/tasks/aegis-shared-tasks/ once all AEGIS projects are migrated / ลบ ~/.claude/tasks/aegis-shared-tasks/ ที่ค้าง หลัง AEGIS projects ทั้งหมดย้ายเรียบร้อย
+
+- **EN**: After upgrading AEGIS-Team, DriveWiki-MCP, and RizzLab to the per-project task-list-ID (PR #70), verify each now writes to its own aegis-tasks-<slug>/ directory. Then remove the old shared dir: rm -rf ~/.claude/tasks/aegis-shared-tasks/. This purges the 44 cross-contaminated tasks including the recurring 'Cloud Build GitHub triggers' ghost. Safe only AFTER all 3 projects have been upgraded + verified.
+- **TH**: หลังจาก upgrade AEGIS-Team, DriveWiki-MCP, RizzLab ด้วย per-project task-list-ID (PR #70), ตรวจว่าทั้ง 3 projects เขียนเข้า aegis-tasks-<slug>/ ของตัวเองแล้ว จึงลบ ~/.claude/tasks/aegis-shared-tasks/ ทิ้ง. จะลบ task ที่ปนกัน 44 รายการรวมถึง 'Cloud Build GitHub triggers' ที่โผล่เรื่อยๆ. ปลอดภัยเฉพาะเมื่อ upgrade ทุก project แล้วเท่านั้น.
+- **Category**: External access
+- **Raised by**: main-agent
+- **Blocks**: Cross-project task ghosts will keep appearing in any project still reading from the shared list
+- **Raised**: 2026-04-24T12:06:03Z
+- **Resolved**: _(pending)_
 <!-- PENDING_END -->
 
 ---

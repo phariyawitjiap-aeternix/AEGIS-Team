@@ -161,6 +161,17 @@ if [[ -f "$TARGET_DIR/.claude/settings.json" ]]; then
     else
         success "Hook paths already anchored (no relative-path bug)"
     fi
+
+    # Shared task-list-ID detection
+    SHARED_ID=$(python3 -c "
+import json, sys
+with open(sys.argv[1]) as f: d = json.load(f)
+print(d.get('env', {}).get('CLAUDE_CODE_TASK_LIST_ID', ''))
+" "$TARGET_DIR/.claude/settings.json" 2>/dev/null || echo "")
+    if [[ "$SHARED_ID" == "aegis-shared-tasks" ]]; then
+        warn "Target uses the shared task list ID ${BOLD}aegis-shared-tasks${NC} (tasks leak across all AEGIS projects)"
+        info "Upgrade will rewrite it to ${BOLD}aegis-tasks-$(basename "$TARGET_DIR" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g')${NC}"
+    fi
 fi
 
 echo ""
