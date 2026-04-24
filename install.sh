@@ -482,6 +482,18 @@ copy_dir_contents "${SCRIPT_DIR}/.claude/teams"       "${TARGET_DIR}/.claude/tea
 if [[ -f "${SCRIPT_DIR}/.claude/settings.json" ]]; then
     cp "${SCRIPT_DIR}/.claude/settings.json" "${TARGET_DIR}/.claude/settings.json"
     success "settings.json installed"
+
+    # Normalize hook paths — anchor all hook commands to $CLAUDE_PROJECT_DIR.
+    # Without this, hooks fire from relative paths and fail when sub-agents /
+    # background processes fire them from a cwd that is not the repo root.
+    # Runs for both install and upgrade; idempotent (no-op if already anchored).
+    if [[ -x "${SCRIPT_DIR}/tools/aegis-fix-hook-paths.sh" ]]; then
+        if bash "${SCRIPT_DIR}/tools/aegis-fix-hook-paths.sh" --target-dir "${TARGET_DIR}" --quiet 2>/dev/null; then
+            success "hook paths normalized to \$CLAUDE_PROJECT_DIR"
+        else
+            warn "hook path normalization failed — hooks may misfire from non-root cwd (run tools/aegis-fix-hook-paths.sh manually)"
+        fi
+    fi
 else
     warn "settings.json not found in source — skipping"
 fi
