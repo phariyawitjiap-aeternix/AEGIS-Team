@@ -162,3 +162,79 @@ For hooks that need stateful authorization (e.g., maintainer-mode grants):
 Infrastructure (exempt from Rule 2):
 - `run-with-flags.sh` -- hook runner wrapper (profile-aware execution)
 - `profiles.json` -- hook profile definitions (standard/strict/permissive)
+
+---
+
+## ADR-006: Nick Fury Proxy Dispatch Loop + memory_20250818 Integration Plan
+
+**Date**: 2026-04-24
+**Status**: Proposed (implementation blocked on SDK feature availability)
+**Source**: S4-02 roadmap item, learning `2026-04-20_subagent-tool-availability.md`, ADR-002 (file = truth, memory = cache)
+**Context**: Nick Fury's decision loop currently runs as a subagent spawned via the Agent tool. The `memory_20250818` tool (Claude's built-in cross-session memory) is available only to the main orchestrator process, not to subagents. This means Nick Fury cannot directly read/write Claude-level memory -- a gap that prevents the 3-tier brain architecture from having a native cache layer. S4-02 was deferred in sprint-v9-04 after this constraint was discovered empirically.
+
+**Decision**: Design a proxy dispatch architecture where Nick Fury's memory operations are mediated by the main agent. The plan has 3 phases.
+
+### Phase 1: Proxy Dispatch (when memory_20250818 is subagent-accessible)
+When the SDK makes `memory_20250818` available to subagents (or provides an equivalent API):
+1. Nick Fury reads memory at loop start (`/memories` directory scan)
+2. Nick Fury writes key decisions to memory after each cycle
+3. Memory serves as a read-through cache over `.aegis/brain/` files (per ADR-002)
+4. On conflict: file wins, memory re-syncs from file
+
+### Phase 2: Main-Agent Mediation (current workaround)
+Until Phase 1 is possible:
+1. Main agent reads memory before spawning Nick Fury
+2. Main agent passes relevant memory contents as context to Nick Fury's prompt
+3. Nick Fury returns memory-write requests as structured output
+4. Main agent executes memory writes on Nick Fury's behalf
+5. This is the "main-agent-as-router" pattern proven in sprint-v9-05
+
+### Phase 3: 3-Tier Brain Integration
+Maps the AEGIS brain architecture to memory_20250818 primitives:
+
+| Brain Layer | File System | memory_20250818 | Purpose |
+|-------------|-------------|-----------------|---------|
+| **Working** (hot) | `.aegis/brain/logs/`, kanban, activity | Session-scoped memory entries | Current sprint state, active decisions |
+| **Semantic** (warm) | `.aegis/brain/resonance/`, instincts, ADRs | Persistent memory entries (tagged) | Project identity, patterns, conventions |
+| **Episodic** (cold) | `.aegis/brain/retrospectives/`, learnings | Persistent memory entries (dated) | Historical lessons, past sprint outcomes |
+
+**Memory entry structure** (proposed):
+```
+Title: [brain-layer]/[category]/[short-id]
+Content: [structured summary, not full file content]
+Tags: aegis, brain-layer, category, sprint-id
+```
+
+**Sync protocol**:
+- Session start: main agent reads memory entries tagged `aegis`, writes any that are newer than file timestamps to `.aegis/brain/`
+- Session end: main agent reads `.aegis/brain/` files modified this session, writes summaries to memory
+- Conflict: file is authoritative (ADR-002). Memory entry is overwritten from file.
+- Pruning: episodic entries older than 10 sprints are archived (tagged `aegis-archive`)
+
+**Migration path**:
+1. Current: file-only brain, no memory_20250818 integration (status quo)
+2. Phase 2: main-agent-mediated memory reads/writes (can implement today)
+3. Phase 1: native subagent memory access (requires SDK update)
+4. Phase 3: full 3-tier sync with conflict resolution (requires Phase 1)
+
+**Risks**:
+- **SDK API change**: memory_20250818 naming and API may change before GA. Design to the abstract (read/write/list/delete), not the concrete tool name.
+- **Memory capacity**: unknown limits on memory entry count/size. Design for summarization, not full-file dumps.
+- **Sync drift**: file and memory can diverge between sessions (other tools edit files, memory entries accumulate). Session-start sync mitigates but doesn't prevent all cases.
+- **Performance**: memory reads/writes add latency to the decision loop. Budget ~500ms per memory operation.
+
+**Rollback strategy**:
+- Memory integration is additive -- file-based brain continues working regardless
+- `AEGIS_MEMORY_ENABLED=false` env flag disables all memory reads/writes
+- If memory tool becomes unavailable mid-session, graceful fallback to file-only (already proven)
+
+**SDK readiness check**: `tools/aegis-sdk-readiness-check.sh` reports whether memory_20250818 is available in the current runtime.
+
+**Consequences (+)**: Cross-session continuity without manual handoffs; Claude-native memory reinforces file-based brain; 3-tier architecture enables intelligent pruning and summarization
+**Consequences (-)**: Adds sync complexity; memory tool availability is an external dependency; dual-write risk (mitigated by ADR-002 file-wins rule)
+**Alternatives**:
+- Wait for full SDK support (rejected: blocks all progress; Phase 2 workaround is viable now)
+- Abandon memory integration (rejected: loses cross-session continuity benefit)
+- Memory as primary, files as backup (rejected: violates ADR-002; files are diffable, git-trackable, auditable)
+**Supersedes**: None (new capability)
+**Owner**: Brain Architecture (Iron Man) + Framework (Nick Fury)
