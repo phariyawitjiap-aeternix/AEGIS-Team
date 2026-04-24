@@ -39,7 +39,15 @@ Agent ตัวไหนอ่านไฟล์นี้ตรงก็ได�
 ## 🔔 Pending / รอดำเนินการ
 
 <!-- PENDING_START -->
-_No pending items. / ไม่มีคิวรอ._
+### [2026-04-24] EXTERNAL — Apply hook-path fix: anchor .claude/settings.json hooks to $CLAUDE_PROJECT_DIR / Apply hook-path fix: anchor hook ใน .claude/settings.json ให้ใช้ $CLAUDE_PROJECT_DIR
+
+- **EN**: Root cause of the recurring Stop hook error ('bash: .claude/hooks/run-with-flags.sh: No such file or directory'): hook commands in .claude/settings.json use RELATIVE paths. When a sub-agent or background process fires a hook from a cwd that is not the repo root, bash cannot resolve the path. Fix: close Claude Code, run 'bash tools/aegis-fix-hook-paths.sh', restart Claude Code. guard-write.sh blocks mid-session edits to settings.json (ADR-004), so this cannot run from inside the current session.
+- **TH**: สาเหตุของ Stop hook error ที่เกิดเรื่อยๆ: hook ใน .claude/settings.json ใช้ relative path. พอ sub-agent หรือ background process ยิง hook จาก cwd ที่ไม่ใช่ repo root, bash หาไฟล์ไม่เจอ. วิธีแก้: ปิด Claude Code, รัน 'bash tools/aegis-fix-hook-paths.sh', แล้วเปิดใหม่. guard-write.sh บล็อกการแก้ settings.json ระหว่างเซสชัน (ADR-004).
+- **Category**: External access
+- **Raised by**: main-agent
+- **Blocks**: Stop hooks silently failing every session; retro logging + false-ready detection degraded until fix applied
+- **Raised**: 2026-04-24T11:25:56Z
+- **Resolved**: _(pending)_
 <!-- PENDING_END -->
 
 ---
