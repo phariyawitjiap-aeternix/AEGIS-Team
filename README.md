@@ -1,4 +1,8 @@
 <p align="center">
+  <img src="assets/logo/aegis-wordmark.svg" alt="AEGIS — AI Agent Team Framework" width="520"/>
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/version-9.0-blue?style=for-the-badge" alt="Version 9.0"/>
   <img src="https://img.shields.io/badge/agents-11-green?style=for-the-badge" alt="11 Agents"/>
   <img src="https://img.shields.io/badge/commands-12%20canonical%20%2B%2018%20shims-yellow?style=for-the-badge" alt="12 canonical + 18 shims"/>

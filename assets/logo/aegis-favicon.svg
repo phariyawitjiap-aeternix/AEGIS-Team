@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="AEGIS favicon">
+  <title>AEGIS</title>
+  <defs>
+    <linearGradient id="fvBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#1e3a8a"/>
+    </linearGradient>
+  </defs>
+  <!-- Simplified shield for 16px+ rendering -->
+  <path d="M 8 12
+           Q 8 6 14 6
+           L 50 6
+           Q 56 6 56 12
+           L 56 40
+           Q 56 54 32 60
+           Q 8 54 8 40
+           Z"
+        fill="url(#fvBody)"
+        stroke="#0c4a6e"
+        stroke-width="2"
+        stroke-linejoin="round"/>
+  <!-- Bold A centered -->
+  <path d="M 22 48 L 32 18 L 42 48 M 26 38 L 38 38"
+        stroke="#fef3c7"
+        stroke-width="4"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        fill="none"/>
+</svg>
