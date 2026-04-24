@@ -71,6 +71,7 @@ dashboard/node_modules/
 .aegis/brain/logs/
 .aegis/brain/metrics/raw/
 .aegis/brain/metrics/judgment-fallback-counter.json
+.aegis/brain/metrics/judgment-fallback-counter.json.lock
 .aegis/brain/skill-cache/
 .aegis/brain/learnings/raw/
 .aegis/logs/
