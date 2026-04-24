@@ -238,3 +238,107 @@ Tags: aegis, brain-layer, category, sprint-id
 - Memory as primary, files as backup (rejected: violates ADR-002; files are diffable, git-trackable, auditable)
 **Supersedes**: None (new capability)
 **Owner**: Brain Architecture (Iron Man) + Framework (Nick Fury)
+
+---
+
+## ADR-007: Shell Output Compression — Governance + ISO 29110 NFR-05 Impact
+
+**Date**: 2026-04-25
+**Status**: DEFERRED pending measurement + upstream fix + canary pass
+**Source**: Team vote (sprint-v10-02 planning session), Loki adversarial review
+**Context**: RTK (Rust Token Killer) is a Rust-based compression proxy that intercepts shell output to reduce token consumption in LLM agent workflows. The team evaluated RTK adoption for AEGIS with the following vote result:
+
+| Agent | Vote | Key Concern |
+|-------|------|-------------|
+| Iron Man | CONDITIONAL | Opt-in gate via `AEGIS_RTK=1` env var; never default-on |
+| Spider-Man | ADOPT | Token savings could be significant for Bash-heavy sessions |
+| Black Panther | ADOPT | Compression benefits code review diffs |
+| War Machine | CONDITIONAL | Must prove no signal loss in quality gate output |
+| Loki | REJECT | Killshot: "What % of AEGIS tokens is Bash vs Read/Grep/Glob?" If Bash <30%, RTK adds complexity for marginal gain. Supply chain risk. |
+| Coulson | DEFER | ISO 29110 NFR-05 audit trail impact — compressed output may not meet retention requirements |
+| Nick Fury | DEFER | Need data before commitment. Passthrough allowlist required for gate-critical commands. Pinned version, no auto-update. |
+
+**Result**: 2 ADOPT, 2 DEFER, 2 CONDITIONAL, 1 REJECT — no majority to ship.
+
+**Decision**: DEFERRED. Build measurement infrastructure (sprint-v10-02) to answer Loki's killshot question. Adoption decision moves to v10-03 if and only if all 5 gate conditions pass.
+
+### Opt-in Gate Mechanism
+
+RTK is NEVER default-on. Activation requires:
+```
+export AEGIS_RTK=1
+```
+- Only the human sets this (Master Brain Protocol: agents cannot self-activate)
+- `guard-bash.sh` blocks any agent attempt to `export AEGIS_RTK=` (same pattern as maintainer-mode)
+- When not set, RTK is completely bypassed even if installed
+
+### Retention Policy
+
+Per Coulson's ISO 29110 NFR-05 concern:
+- RTK tee directory: `~/.local/share/rtk/tee/`
+- Uncompressed originals MUST be retained for 30 days minimum
+- AEGIS hooks that read tool output (post-tool-use.sh, token-profile.sh) operate on the ORIGINAL output, not compressed
+- If RTK is activated, session logs MUST note `RTK_ACTIVE=true` in the session header for audit trail
+
+### Audit Trail Impact (NFR-05 + SI.02)
+
+- **SI.02 traceability**: requirement traces reference tool output. If output is compressed, the trace target may not match the stored artifact. Mitigation: traces reference the tee file (original), not the compressed output.
+- **NFR-05 retention**: compressed output is a derived artifact. The tee file is the primary record. Retention policy applies to tee files, not compressed output.
+- **Retrospectives**: session learnings reference specific tool output. With RTK, the retrospective must reference the tee file or the pre-compression content.
+
+### Supply Chain
+
+Per Loki and Nick Fury:
+- **Pinned version**: RTK version is locked in configuration (e.g., `rtk==0.3.2`). No auto-update.
+- **No auto-install**: AEGIS never runs `cargo install rtk` or equivalent automatically
+- **Integrity check**: if RTK is present, `aegis-verify` validates the binary hash against a known-good value (added when version is pinned)
+- **Sunset trigger**: if Anthropic ships native token compression (e.g., server-side output compaction), the RTK layer is removed entirely. The proxy becomes unnecessary overhead.
+
+### Passthrough Allowlist
+
+Per Nick Fury: certain commands MUST NOT be compressed because their output is consumed by quality gates:
+- `git status` — parsed by post-tool-use.sh for commit detection
+- `git diff` — parsed by Black Panther for code review
+- Test runners (`pytest`, `jest`, `npm test`, etc.) — parsed for TEST_PASS/TEST_FAIL
+- `jq` output — structured data consumed by hooks
+- Any command whose output contains JSON consumed by AEGIS tools
+
+The allowlist is stored in `.aegis/brain/state/rtk-passthrough.txt` (one command pattern per line). RTK is configured to bypass compression for matching commands.
+
+### Five Conditions for v10-03 ADOPT Gate
+
+ALL must pass before RTK can be adopted:
+
+1. **Measurement data**: `aegis-token-profile.sh` has data from 3+ real AEGIS sessions showing Bash token % (if <30%, adoption is rejected — Loki's killshot stands)
+2. **Upstream fix**: `aegis-rtk-upstream-check.sh` reports issue #427 state=closed
+3. **Canary pass**: `aegis-rtk-canary-test.sh` reports 3/3 PASS with the candidate RTK version
+4. **Version pinned**: RTK binary version is locked and hash-verified
+5. **Passthrough validated**: all gate-critical commands verified to bypass compression
+
+### Measurement Tools (sprint-v10-02 deliverables)
+
+| Tool | Purpose |
+|------|---------|
+| `tools/aegis-token-profile.sh` | Logs token counts per tool category; answers Loki's killshot |
+| `tools/aegis-rtk-upstream-check.sh` | Watches issue #427 status; caches weekly |
+| `tools/aegis-rtk-canary-test.sh` | Dormant signal-loss test; activates when RTK installed |
+
+**Consequences (+)**:
+- Data-driven decision instead of opinion-driven
+- No risk from premature adoption — RTK is dormant until all 5 gates pass
+- Measurement tools have independent value (token profiling useful regardless of RTK)
+- Team vote is codified — future sessions know the full context
+
+**Consequences (-)**:
+- Delays potential token savings by at least one sprint
+- Measurement overhead (token-profile hook adds ~1ms per tool call)
+- If Bash tokens are <30%, the entire RTK evaluation was unnecessary (but the data itself is valuable)
+
+**Alternatives**:
+- Adopt immediately (rejected: no data, Loki's killshot unanswered, upstream #427 unresolved)
+- Reject permanently (rejected: premature — data may show strong value proposition)
+- Wait for Anthropic native compression (rejected: timeline unknown — measurement infrastructure is useful regardless)
+- Adopt with passthrough only (rejected: complexity without proven benefit)
+
+**Supersedes**: None (new decision area)
+**Owner**: Framework Governance (Nick Fury) + Architecture (Iron Man) + Compliance (Coulson)
