@@ -27,6 +27,8 @@ _Last updated: 2026-04-24 · by: Nick Fury (sprint-v9-06 close · operational de
 | sprint-v9-05 (FINAL-PUSH) | 13 | 13 | 0 | CLOSED (100%) |
 | sprint-v9-06 (operational debt) | 11 | 11 | 0 | **CLOSED (100%)** |
 | **v9 in-repo total** | **69** | **73** | **0** | **100%** |
+| sprint-v10-01 (traceability wiki) | 13 | 13 | 0 | CLOSED (100%) |
+| **v10 in-repo total** | **13** | **13** | **0** | **100%** |
 
 ## Why delivered > denominator this sprint
 
@@ -83,6 +85,7 @@ framework to real projects."
 - Application Playbook published (`docs/AEGIS_APPLICATION_PLAYBOOK.md`) -- DONE
 - ADR-006 memory integration plan documented -- DONE
 - SDK readiness checker (`tools/aegis-sdk-readiness-check.sh`) -- DONE
+- Project-wide traceability wiki (sprint-v10-01, 13pt) -- DONE
 - Real-project application sprints (first AEGIS-powered project delivery)
 - Feedback loop: lessons from real usage feed back into framework improvements
 

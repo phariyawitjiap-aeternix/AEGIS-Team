@@ -2,7 +2,13 @@
 > Auto-maintained content catalog. Updated by agents on every brain write.
 > Pattern: Karpathy's LLM Wiki index.md
 
-Last updated: 2026-04-20
+Last updated: 2026-04-24
+
+## Project-Wide Cross-Reference
+
+For project-wide cross-reference (docs + code + tasks + modules + functions),
+see [`/PROJECT_INDEX.md`](/PROJECT_INDEX.md). This brain index covers brain-internal
+artifacts only; PROJECT_INDEX.md covers the entire repository.
 
 ## Resonance
 
