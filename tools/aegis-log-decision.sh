@@ -4,7 +4,7 @@
 # Appends one JSONL entry per decision to .aegis/brain/logs/decision-audit.log
 # and increments the judgment-fallback counter when source=judgment.
 #
-# Usage (Nick Fury calls this from her decision flow):
+# Usage (Nick Fury calls this from his decision flow):
 #   tools/aegis-log-decision.sh \
 #     --question "Which gitignore mode?" \
 #     --source "instinct:promoted" \

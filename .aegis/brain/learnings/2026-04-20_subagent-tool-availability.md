@@ -9,7 +9,7 @@ confidence: high
 
 Sprint v9-04 included S4-02: wire `memory_20250818` into Nick Fury's brain_write() helper so the cache layer stays in sync with the file layer. The spec (`.claude/references/memory-tool-integration.md`) assumed `memory_20250818` was accessible from the Nick Fury agent runtime.
 
-When Nick Fury tried to wire it, she found the tool is NOT in her agent's tools list. It's available to the main orchestrator (me) but not to subagents spawned via the Agent tool. She documented the blocker honestly in the integration guide and deferred rather than faking the wiring.
+When Nick Fury tried to wire it, he found the tool is NOT in his agent's tools list. It's available to the main orchestrator (me) but not to subagents spawned via the Agent tool. He documented the blocker honestly in the integration guide and deferred rather than faking the wiring.
 
 This is the third consecutive session where "dogfooding reveals it" (per P-006 in evolved-patterns). Same pattern played out with `isolation: "worktree"` last session — spec assumed availability, implementation discovered it isn't.
 
