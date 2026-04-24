@@ -1,12 +1,11 @@
 <p align="center">
   <img src="https://img.shields.io/badge/version-9.0-blue?style=for-the-badge" alt="Version 9.0"/>
-  <img src="https://img.shields.io/badge/agents-10-green?style=for-the-badge" alt="10 Agents"/>
-  <img src="https://img.shields.io/badge/skills-30-orange?style=for-the-badge" alt="30 Skills"/>
-  <img src="https://img.shields.io/badge/commands-29-yellow?style=for-the-badge" alt="29 Commands"/>
+  <img src="https://img.shields.io/badge/agents-11-green?style=for-the-badge" alt="11 Agents"/>
+  <img src="https://img.shields.io/badge/commands-12%20canonical%20%2B%2018%20shims-yellow?style=for-the-badge" alt="12 canonical + 18 shims"/>
   <img src="https://img.shields.io/badge/gates-6-red?style=for-the-badge" alt="6 Gates"/>
-  <img src="https://img.shields.io/badge/hooks-9-teal?style=for-the-badge" alt="9 Hooks"/>
-  <img src="https://img.shields.io/badge/tools-20+-slategray?style=for-the-badge" alt="20+ Helper Tools"/>
-  <img src="https://img.shields.io/badge/tests-76%2F76-brightgreen?style=for-the-badge" alt="Test Suite"/>
+  <img src="https://img.shields.io/badge/hooks-11-teal?style=for-the-badge" alt="11 Hooks"/>
+  <img src="https://img.shields.io/badge/tools-60%2B-slategray?style=for-the-badge" alt="60+ Helper Tools"/>
+  <img src="https://img.shields.io/badge/tests-134%2F134-brightgreen?style=for-the-badge" alt="Test Suite 134/134"/>
   <img src="https://img.shields.io/badge/ISO--29110-compliant-brightgreen?style=for-the-badge" alt="ISO 29110"/>
   <img src="https://img.shields.io/badge/Claude_4.x-1M_context-blueviolet?style=for-the-badge" alt="Claude 4.x"/>
   <img src="https://img.shields.io/badge/license-MIT-purple?style=for-the-badge" alt="MIT License"/>
@@ -16,13 +15,13 @@
 
 > **"Context is King, Memory is Soul"**
 >
-> :dna: Nick Fury · 10 Marvel Agents · 30 Skills · 29 Commands · 6-Gate Quality · 9 Hooks · 20+ Helper Tools · ISO 29110 · Claude 4.x 1M Context
+> :dna: Nick Fury · 11 Marvel Agents · 12 canonical commands (+18 shims) · 6-Gate Quality · 11 Hooks · 60+ Helper Tools · ISO 29110 · Claude 4.x 1M Context · [`PROJECT_INDEX.md`](PROJECT_INDEX.md)
 
 ---
 
-## :sparkles: What's new in v9.0
+## :sparkles: What's new in v9.0 + v10
 
-**Framework hardening + brain layer + ecosystem prep.** 482-point plan, ~99% of in-repo work shipped. Full audit in [.claude/references/v9-follow-ups.md](.claude/references/v9-follow-ups.md).
+**Framework hardening + brain layer + ecosystem + traceability wiki.** v9 in-repo **100% shipped** (69pt across 6 sprints); v10 open-ended framework-application phase active (13pt delivered in v10-01). Full audit in [.claude/references/v9-follow-ups.md](.claude/references/v9-follow-ups.md). Cross-reference every doc, requirement, module, function and task in [`PROJECT_INDEX.md`](PROJECT_INDEX.md).
 
 ### Agent consolidation (13 → 10)
 - **War Machine absorbed Vision** (QA Lead + Executor combined)
