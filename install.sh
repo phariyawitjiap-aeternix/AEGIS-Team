@@ -499,6 +499,27 @@ else
 fi
 
 # --------------------------------------------------------------------------
+# Deliver the AEGIS upgrade toolkit to the target (so they can self-upgrade)
+# --------------------------------------------------------------------------
+mkdir -p "${TARGET_DIR}/tools"
+upgrade_toolkit=(
+    "aegis-upgrade.sh"
+    "aegis-fix-hook-paths.sh"
+)
+delivered_tools=0
+for tool in "${upgrade_toolkit[@]}"; do
+    src="${SCRIPT_DIR}/tools/${tool}"
+    if [[ -f "$src" ]]; then
+        cp "$src" "${TARGET_DIR}/tools/${tool}"
+        chmod +x "${TARGET_DIR}/tools/${tool}"
+        delivered_tools=$((delivered_tools + 1))
+    fi
+done
+if [[ "$delivered_tools" -gt 0 ]]; then
+    success "${delivered_tools} upgrade tools delivered (aegis-upgrade.sh, aegis-fix-hook-paths.sh)"
+fi
+
+# --------------------------------------------------------------------------
 # Copy skill files based on profile (full files, not stubs)
 # --------------------------------------------------------------------------
 info "Installing skills for profile: ${PROFILE}..."
