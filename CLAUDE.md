@@ -10,6 +10,7 @@
 | CLAUDE_agents.md | Before spawning agents | As needed |
 | CLAUDE_skills.md | When choosing skills | As needed |
 | CLAUDE_lessons.md | When stuck or deciding | Reference |
+| PROJECT_INDEX.md | Project-wide wiki (doc/req/mod/func/task cross-ref) | Reference |
 
 ## Golden Rules
 1. NEVER use --force flags on git

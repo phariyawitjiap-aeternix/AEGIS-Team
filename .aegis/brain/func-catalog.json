@@ -1,0 +1,3410 @@
+[
+  {
+    "id": "FUNC-D06275",
+    "name": "beast::Capabilities",
+    "source_file": ".claude/agents/beast.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent beast capability: Capabilities"
+  },
+  {
+    "id": "FUNC-18F0A9",
+    "name": "beast::Constraints",
+    "source_file": ".claude/agents/beast.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent beast capability: Constraints"
+  },
+  {
+    "id": "FUNC-A6CBBD",
+    "name": "beast::Identity",
+    "source_file": ".claude/agents/beast.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent beast capability: Identity"
+  },
+  {
+    "id": "FUNC-E1EE36",
+    "name": "beast::Master Brain Protocol (MANDATORY — CLAUDE.md Golden Rule #7)",
+    "source_file": ".claude/agents/beast.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent beast capability: Master Brain Protocol (MANDATORY — CLAUDE.md Golden Rule #7)"
+  },
+  {
+    "id": "FUNC-D2454F",
+    "name": "beast::Message Types",
+    "source_file": ".claude/agents/beast.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent beast capability: Message Types"
+  },
+  {
+    "id": "FUNC-A67A7E",
+    "name": "beast::Output Location",
+    "source_file": ".claude/agents/beast.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent beast capability: Output Location"
+  },
+  {
+    "id": "FUNC-E53383",
+    "name": "beast::Programmatic Scanning Protocol",
+    "source_file": ".claude/agents/beast.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent beast capability: Programmatic Scanning Protocol"
+  },
+  {
+    "id": "FUNC-E59C4E",
+    "name": "beast::References",
+    "source_file": ".claude/agents/beast.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent beast capability: References"
+  },
+  {
+    "id": "FUNC-0B1FE2",
+    "name": "black-panther::5-Pass Review Methodology",
+    "source_file": ".claude/agents/black-panther.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent black-panther capability: 5-Pass Review Methodology"
+  },
+  {
+    "id": "FUNC-F5A281",
+    "name": "black-panther::Capabilities",
+    "source_file": ".claude/agents/black-panther.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent black-panther capability: Capabilities"
+  },
+  {
+    "id": "FUNC-C048AF",
+    "name": "black-panther::Constraints",
+    "source_file": ".claude/agents/black-panther.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent black-panther capability: Constraints"
+  },
+  {
+    "id": "FUNC-CAF1F0",
+    "name": "black-panther::Identity",
+    "source_file": ".claude/agents/black-panther.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent black-panther capability: Identity"
+  },
+  {
+    "id": "FUNC-D6B915",
+    "name": "black-panther::Master Brain Protocol (MANDATORY — CLAUDE.md Golden Rule #7)",
+    "source_file": ".claude/agents/black-panther.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent black-panther capability: Master Brain Protocol (MANDATORY — CLAUDE.md Golden Rule #7)"
+  },
+  {
+    "id": "FUNC-CA7617",
+    "name": "black-panther::Message Types",
+    "source_file": ".claude/agents/black-panther.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent black-panther capability: Message Types"
+  },
+  {
+    "id": "FUNC-BB2467",
+    "name": "black-panther::Output Location",
+    "source_file": ".claude/agents/black-panther.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent black-panther capability: Output Location"
+  },
+  {
+    "id": "FUNC-456681",
+    "name": "black-panther::References",
+    "source_file": ".claude/agents/black-panther.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent black-panther capability: References"
+  },
+  {
+    "id": "FUNC-358465",
+    "name": "captain-america::Capabilities",
+    "source_file": ".claude/agents/captain-america.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent captain-america capability: Capabilities"
+  },
+  {
+    "id": "FUNC-BF94C2",
+    "name": "captain-america::Constraints",
+    "source_file": ".claude/agents/captain-america.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent captain-america capability: Constraints"
+  },
+  {
+    "id": "FUNC-48C648",
+    "name": "captain-america::Identity",
+    "source_file": ".claude/agents/captain-america.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent captain-america capability: Identity"
+  },
+  {
+    "id": "FUNC-D595CF",
+    "name": "captain-america::Judgment Routing (F1-03)",
+    "source_file": ".claude/agents/captain-america.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent captain-america capability: Judgment Routing (F1-03)"
+  },
+  {
+    "id": "FUNC-97BAED",
+    "name": "captain-america::Master Brain Protocol (MANDATORY — CLAUDE.md Golden Rule #7)",
+    "source_file": ".claude/agents/captain-america.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent captain-america capability: Master Brain Protocol (MANDATORY — CLAUDE.md Golden Rule #7)"
+  },
+  {
+    "id": "FUNC-84196B",
+    "name": "captain-america::Message Types",
+    "source_file": ".claude/agents/captain-america.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent captain-america capability: Message Types"
+  },
+  {
+    "id": "FUNC-FCDA05",
+    "name": "captain-america::Output Location",
+    "source_file": ".claude/agents/captain-america.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent captain-america capability: Output Location"
+  },
+  {
+    "id": "FUNC-8012C2",
+    "name": "captain-america::References",
+    "source_file": ".claude/agents/captain-america.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent captain-america capability: References"
+  },
+  {
+    "id": "FUNC-9FFFCB",
+    "name": "coulson::BACKLOG",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: BACKLOG"
+  },
+  {
+    "id": "FUNC-6A7EED",
+    "name": "coulson::BLOCK 0 — Pre-Work Documentation Gate (HIGHEST PRIORITY)",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: BLOCK 0 — Pre-Work Documentation Gate (HIGHEST PRIORITY)"
+  },
+  {
+    "id": "FUNC-B0454B",
+    "name": "coulson::Blast Radius",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: Blast Radius"
+  },
+  {
+    "id": "FUNC-A4B7DD",
+    "name": "coulson::CRITICAL: Documents at Activity Time, Not Retroactively",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: CRITICAL: Documents at Activity Time, Not Retroactively"
+  },
+  {
+    "id": "FUNC-8FEFF4",
+    "name": "coulson::Capabilities",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: Capabilities"
+  },
+  {
+    "id": "FUNC-C4C822",
+    "name": "coulson::Constraints",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: Constraints"
+  },
+  {
+    "id": "FUNC-6D80D7",
+    "name": "coulson::Correction Register — Key Rules",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: Correction Register — Key Rules"
+  },
+  {
+    "id": "FUNC-1F66F7",
+    "name": "coulson::DONE",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: DONE"
+  },
+  {
+    "id": "FUNC-CD9DC7",
+    "name": "coulson::Deliverables",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: Deliverables"
+  },
+  {
+    "id": "FUNC-28515C",
+    "name": "coulson::Document Lifecycle",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: Document Lifecycle"
+  },
+  {
+    "id": "FUNC-476E66",
+    "name": "coulson::Functional Requirements",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: Functional Requirements"
+  },
+  {
+    "id": "FUNC-AF358C",
+    "name": "coulson::IN_PROGRESS",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: IN_PROGRESS"
+  },
+  {
+    "id": "FUNC-5E0032",
+    "name": "coulson::ISO 29110 Document Map",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: ISO 29110 Document Map"
+  },
+  {
+    "id": "FUNC-8CABB4",
+    "name": "coulson::Identity",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: Identity"
+  },
+  {
+    "id": "FUNC-0DD8E5",
+    "name": "coulson::Master Brain Protocol (MANDATORY — CLAUDE.md Golden Rule #7)",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: Master Brain Protocol (MANDATORY — CLAUDE.md Golden Rule #7)"
+  },
+  {
+    "id": "FUNC-09FF0B",
+    "name": "coulson::Message Types",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: Message Types"
+  },
+  {
+    "id": "FUNC-569FDA",
+    "name": "coulson::Non-Functional Requirements",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: Non-Functional Requirements"
+  },
+  {
+    "id": "FUNC-953090",
+    "name": "coulson::Output Location",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: Output Location"
+  },
+  {
+    "id": "FUNC-C7A46C",
+    "name": "coulson::PM.3 — Ongoing Assessment",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: PM.3 — Ongoing Assessment"
+  },
+  {
+    "id": "FUNC-054BCE",
+    "name": "coulson::References",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: References"
+  },
+  {
+    "id": "FUNC-F77702",
+    "name": "coulson::Schedule",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: Schedule"
+  },
+  {
+    "id": "FUNC-BF5F1B",
+    "name": "coulson::Scope",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: Scope"
+  },
+  {
+    "id": "FUNC-81C950",
+    "name": "coulson::TODO",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: TODO"
+  },
+  {
+    "id": "FUNC-7DA6B2",
+    "name": "coulson::Tasks",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: Tasks"
+  },
+  {
+    "id": "FUNC-96AF7D",
+    "name": "coulson::Team",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: Team"
+  },
+  {
+    "id": "FUNC-CCCDDD",
+    "name": "coulson::Traceability Matrix — Key Rules",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: Traceability Matrix — Key Rules"
+  },
+  {
+    "id": "FUNC-CFFA77",
+    "name": "coulson::Trigger Words",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: Trigger Words"
+  },
+  {
+    "id": "FUNC-F6F366",
+    "name": "iron-man::Capabilities",
+    "source_file": ".claude/agents/iron-man.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent iron-man capability: Capabilities"
+  },
+  {
+    "id": "FUNC-59F893",
+    "name": "iron-man::Constraints",
+    "source_file": ".claude/agents/iron-man.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent iron-man capability: Constraints"
+  },
+  {
+    "id": "FUNC-2387FF",
+    "name": "iron-man::Identity",
+    "source_file": ".claude/agents/iron-man.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent iron-man capability: Identity"
+  },
+  {
+    "id": "FUNC-816658",
+    "name": "iron-man::Master Brain Protocol (MANDATORY — CLAUDE.md Golden Rule #7)",
+    "source_file": ".claude/agents/iron-man.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent iron-man capability: Master Brain Protocol (MANDATORY — CLAUDE.md Golden Rule #7)"
+  },
+  {
+    "id": "FUNC-DBD437",
+    "name": "iron-man::Message Types",
+    "source_file": ".claude/agents/iron-man.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent iron-man capability: Message Types"
+  },
+  {
+    "id": "FUNC-578E6B",
+    "name": "iron-man::Output Location",
+    "source_file": ".claude/agents/iron-man.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent iron-man capability: Output Location"
+  },
+  {
+    "id": "FUNC-E3DFAD",
+    "name": "iron-man::Plan-Approval Gate (MANDATORY)",
+    "source_file": ".claude/agents/iron-man.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent iron-man capability: Plan-Approval Gate (MANDATORY)"
+  },
+  {
+    "id": "FUNC-1C5BD2",
+    "name": "iron-man::Power Keywords",
+    "source_file": ".claude/agents/iron-man.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent iron-man capability: Power Keywords"
+  },
+  {
+    "id": "FUNC-D170DE",
+    "name": "iron-man::References",
+    "source_file": ".claude/agents/iron-man.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent iron-man capability: References"
+  },
+  {
+    "id": "FUNC-FF29CB",
+    "name": "iron-man::Spec Format Conventions (MANDATORY)",
+    "source_file": ".claude/agents/iron-man.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent iron-man capability: Spec Format Conventions (MANDATORY)"
+  },
+  {
+    "id": "FUNC-815192",
+    "name": "loki::Capabilities",
+    "source_file": ".claude/agents/loki.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent loki capability: Capabilities"
+  },
+  {
+    "id": "FUNC-FE5842",
+    "name": "loki::Constraints",
+    "source_file": ".claude/agents/loki.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent loki capability: Constraints"
+  },
+  {
+    "id": "FUNC-829772",
+    "name": "loki::Design-Approval Gate (S3-06)",
+    "source_file": ".claude/agents/loki.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent loki capability: Design-Approval Gate (S3-06)"
+  },
+  {
+    "id": "FUNC-7845E4",
+    "name": "loki::Identity",
+    "source_file": ".claude/agents/loki.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent loki capability: Identity"
+  },
+  {
+    "id": "FUNC-6A36A7",
+    "name": "loki::Instinct Loading (MANDATORY before every review)",
+    "source_file": ".claude/agents/loki.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent loki capability: Instinct Loading (MANDATORY before every review)"
+  },
+  {
+    "id": "FUNC-BCCBDA",
+    "name": "loki::Master Brain Protocol (MANDATORY — CLAUDE.md Golden Rule #7)",
+    "source_file": ".claude/agents/loki.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent loki capability: Master Brain Protocol (MANDATORY — CLAUDE.md Golden Rule #7)"
+  },
+  {
+    "id": "FUNC-EFD9F1",
+    "name": "loki::Message Types",
+    "source_file": ".claude/agents/loki.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent loki capability: Message Types"
+  },
+  {
+    "id": "FUNC-894B88",
+    "name": "loki::Output Location",
+    "source_file": ".claude/agents/loki.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent loki capability: Output Location"
+  },
+  {
+    "id": "FUNC-5A4D0E",
+    "name": "loki::Plan-Approval Gate (MANDATORY)",
+    "source_file": ".claude/agents/loki.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent loki capability: Plan-Approval Gate (MANDATORY)"
+  },
+  {
+    "id": "FUNC-38EDA0",
+    "name": "loki::Power Keywords",
+    "source_file": ".claude/agents/loki.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent loki capability: Power Keywords"
+  },
+  {
+    "id": "FUNC-61D979",
+    "name": "loki::References",
+    "source_file": ".claude/agents/loki.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent loki capability: References"
+  },
+  {
+    "id": "FUNC-5C8D8E",
+    "name": "loki::Security Path Override (S2-04)",
+    "source_file": ".claude/agents/loki.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent loki capability: Security Path Override (S2-04)"
+  },
+  {
+    "id": "FUNC-3AF6DB",
+    "name": "loki::Spec Format Enforcement (MANDATORY)",
+    "source_file": ".claude/agents/loki.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent loki capability: Spec Format Enforcement (MANDATORY)"
+  },
+  {
+    "id": "FUNC-609834",
+    "name": "nick-fury::5-Gate Quality System",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: 5-Gate Quality System"
+  },
+  {
+    "id": "FUNC-46B46D",
+    "name": "nick-fury::Adaptive Thinking (Claude 4.6)",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: Adaptive Thinking (Claude 4.6)"
+  },
+  {
+    "id": "FUNC-05D129",
+    "name": "nick-fury::Autonomy Behavior",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: Autonomy Behavior"
+  },
+  {
+    "id": "FUNC-01FD34",
+    "name": "nick-fury::Communication Style",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: Communication Style"
+  },
+  {
+    "id": "FUNC-926241",
+    "name": "nick-fury::Constraints",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: Constraints"
+  },
+  {
+    "id": "FUNC-760803",
+    "name": "nick-fury::Context Router",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: Context Router"
+  },
+  {
+    "id": "FUNC-B0C606",
+    "name": "nick-fury::Context Window",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: Context Window"
+  },
+  {
+    "id": "FUNC-EA9598",
+    "name": "nick-fury::Decision Cycle (per session)",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: Decision Cycle (per session)"
+  },
+  {
+    "id": "FUNC-6BC9B0",
+    "name": "nick-fury::Decision Matrix -- What To Do Next",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: Decision Matrix -- What To Do Next"
+  },
+  {
+    "id": "FUNC-665155",
+    "name": "nick-fury::ENFORCEMENT ORDER (non-negotiable)",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: ENFORCEMENT ORDER (non-negotiable)"
+  },
+  {
+    "id": "FUNC-105D4D",
+    "name": "nick-fury::Enforcement Layer (Hooks)",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: Enforcement Layer (Hooks)"
+  },
+  {
+    "id": "FUNC-AF7556",
+    "name": "nick-fury::Identity",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: Identity"
+  },
+  {
+    "id": "FUNC-B3A321",
+    "name": "nick-fury::Knowledge Pipeline (4-stage)",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: Knowledge Pipeline (4-stage)"
+  },
+  {
+    "id": "FUNC-4321D5",
+    "name": "nick-fury::MANDATORY Planning-Before-Build Rule",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: MANDATORY Planning-Before-Build Rule"
+  },
+  {
+    "id": "FUNC-7E20CC",
+    "name": "nick-fury::Master Brain Protocol (v8.4 — MANDATORY)",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: Master Brain Protocol (v8.4 — MANDATORY)"
+  },
+  {
+    "id": "FUNC-525500",
+    "name": "nick-fury::Master Workflow Reference",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: Master Workflow Reference"
+  },
+  {
+    "id": "FUNC-5FB76B",
+    "name": "nick-fury::Memory Tool (Claude 4.6)",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: Memory Tool (Claude 4.6)"
+  },
+  {
+    "id": "FUNC-140F6B",
+    "name": "nick-fury::Output Location",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: Output Location"
+  },
+  {
+    "id": "FUNC-CE7B9A",
+    "name": "nick-fury::Plan-Approval Gate Enforcement",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: Plan-Approval Gate Enforcement"
+  },
+  {
+    "id": "FUNC-725472",
+    "name": "nick-fury::Power Keywords (Claude Code CLI)",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: Power Keywords (Claude Code CLI)"
+  },
+  {
+    "id": "FUNC-8DA242",
+    "name": "nick-fury::References",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: References"
+  },
+  {
+    "id": "FUNC-56384F",
+    "name": "nick-fury::Scan Protocol",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: Scan Protocol"
+  },
+  {
+    "id": "FUNC-C6EF84",
+    "name": "nick-fury::Self-Evolving Intelligence (v8.1)",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: Self-Evolving Intelligence (v8.1)"
+  },
+  {
+    "id": "FUNC-87CE2C",
+    "name": "nick-fury::Server-Side Compaction (Claude 4.6)",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: Server-Side Compaction (Claude 4.6)"
+  },
+  {
+    "id": "FUNC-BBB464",
+    "name": "nick-fury::Sprint/Kanban-Aware Decision Flow",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: Sprint/Kanban-Aware Decision Flow"
+  },
+  {
+    "id": "FUNC-B0FDDE",
+    "name": "nick-fury::Team Selection Logic",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: Team Selection Logic"
+  },
+  {
+    "id": "FUNC-89D172",
+    "name": "nick-fury::v9 Decision Defaults (apply ASAP, full impl per sprint)",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: v9 Decision Defaults (apply ASAP, full impl per sprint)"
+  },
+  {
+    "id": "FUNC-D5C8DC",
+    "name": "nick-fury::v9 Protocol References (NEW)",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: v9 Protocol References (NEW)"
+  },
+  {
+    "id": "FUNC-46C95A",
+    "name": "nick-fury::██ HARD BLOCKS — ENFORCED PIPELINE GATES ██",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: ██ HARD BLOCKS — ENFORCED PIPELINE GATES ██"
+  },
+  {
+    "id": "FUNC-7D47BE",
+    "name": "spider-man::Capabilities",
+    "source_file": ".claude/agents/spider-man.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent spider-man capability: Capabilities"
+  },
+  {
+    "id": "FUNC-FDC3E8",
+    "name": "spider-man::Constraints",
+    "source_file": ".claude/agents/spider-man.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent spider-man capability: Constraints"
+  },
+  {
+    "id": "FUNC-0EB3A0",
+    "name": "spider-man::Identity",
+    "source_file": ".claude/agents/spider-man.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent spider-man capability: Identity"
+  },
+  {
+    "id": "FUNC-2E1CB0",
+    "name": "spider-man::Master Brain Protocol (MANDATORY — CLAUDE.md Golden Rule #7)",
+    "source_file": ".claude/agents/spider-man.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent spider-man capability: Master Brain Protocol (MANDATORY — CLAUDE.md Golden Rule #7)"
+  },
+  {
+    "id": "FUNC-BE27DB",
+    "name": "spider-man::Message Types",
+    "source_file": ".claude/agents/spider-man.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent spider-man capability: Message Types"
+  },
+  {
+    "id": "FUNC-72941C",
+    "name": "spider-man::Output Location",
+    "source_file": ".claude/agents/spider-man.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent spider-man capability: Output Location"
+  },
+  {
+    "id": "FUNC-C3B01A",
+    "name": "spider-man::References",
+    "source_file": ".claude/agents/spider-man.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent spider-man capability: References"
+  },
+  {
+    "id": "FUNC-29484D",
+    "name": "spider-man::Worktree Isolation (Sprint v9-05)",
+    "source_file": ".claude/agents/spider-man.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent spider-man capability: Worktree Isolation (Sprint v9-05)"
+  },
+  {
+    "id": "FUNC-656565",
+    "name": "thor::Behavioral Rules",
+    "source_file": ".claude/agents/thor.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent thor capability: Behavioral Rules"
+  },
+  {
+    "id": "FUNC-FD7DCD",
+    "name": "thor::Blast Radius",
+    "source_file": ".claude/agents/thor.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent thor capability: Blast Radius"
+  },
+  {
+    "id": "FUNC-83BFA9",
+    "name": "thor::Build Verification",
+    "source_file": ".claude/agents/thor.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent thor capability: Build Verification"
+  },
+  {
+    "id": "FUNC-F39DB8",
+    "name": "thor::Capabilities",
+    "source_file": ".claude/agents/thor.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent thor capability: Capabilities"
+  },
+  {
+    "id": "FUNC-85EE0B",
+    "name": "thor::Constraints",
+    "source_file": ".claude/agents/thor.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent thor capability: Constraints"
+  },
+  {
+    "id": "FUNC-D2720E",
+    "name": "thor::Health Check Protocol",
+    "source_file": ".claude/agents/thor.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent thor capability: Health Check Protocol"
+  },
+  {
+    "id": "FUNC-DAF607",
+    "name": "thor::Identity",
+    "source_file": ".claude/agents/thor.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent thor capability: Identity"
+  },
+  {
+    "id": "FUNC-CEC128",
+    "name": "thor::Master Brain Protocol (MANDATORY — CLAUDE.md Golden Rule #7)",
+    "source_file": ".claude/agents/thor.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent thor capability: Master Brain Protocol (MANDATORY — CLAUDE.md Golden Rule #7)"
+  },
+  {
+    "id": "FUNC-A5D498",
+    "name": "thor::Message Types",
+    "source_file": ".claude/agents/thor.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent thor capability: Message Types"
+  },
+  {
+    "id": "FUNC-4C24F0",
+    "name": "thor::Monitor Protocol",
+    "source_file": ".claude/agents/thor.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent thor capability: Monitor Protocol"
+  },
+  {
+    "id": "FUNC-96A3BC",
+    "name": "thor::Output Location",
+    "source_file": ".claude/agents/thor.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent thor capability: Output Location"
+  },
+  {
+    "id": "FUNC-3AAEC3",
+    "name": "thor::References",
+    "source_file": ".claude/agents/thor.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent thor capability: References"
+  },
+  {
+    "id": "FUNC-4FA426",
+    "name": "thor::Rollback Protocol",
+    "source_file": ".claude/agents/thor.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent thor capability: Rollback Protocol"
+  },
+  {
+    "id": "FUNC-8B0343",
+    "name": "thor::Triggers",
+    "source_file": ".claude/agents/thor.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent thor capability: Triggers"
+  },
+  {
+    "id": "FUNC-43ABD3",
+    "name": "war-machine::Blast Radius",
+    "source_file": ".claude/agents/war-machine.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent war-machine capability: Blast Radius"
+  },
+  {
+    "id": "FUNC-2A8F96",
+    "name": "war-machine::Capabilities",
+    "source_file": ".claude/agents/war-machine.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent war-machine capability: Capabilities"
+  },
+  {
+    "id": "FUNC-A66B7A",
+    "name": "war-machine::Constraints",
+    "source_file": ".claude/agents/war-machine.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent war-machine capability: Constraints"
+  },
+  {
+    "id": "FUNC-C0094C",
+    "name": "war-machine::Identity",
+    "source_file": ".claude/agents/war-machine.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent war-machine capability: Identity"
+  },
+  {
+    "id": "FUNC-A6378F",
+    "name": "war-machine::Master Brain Protocol (MANDATORY — CLAUDE.md Golden Rule #7)",
+    "source_file": ".claude/agents/war-machine.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent war-machine capability: Master Brain Protocol (MANDATORY — CLAUDE.md Golden Rule #7)"
+  },
+  {
+    "id": "FUNC-9AF192",
+    "name": "war-machine::Message Types",
+    "source_file": ".claude/agents/war-machine.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent war-machine capability: Message Types"
+  },
+  {
+    "id": "FUNC-44CD84",
+    "name": "war-machine::Output Location",
+    "source_file": ".claude/agents/war-machine.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent war-machine capability: Output Location"
+  },
+  {
+    "id": "FUNC-9B144E",
+    "name": "war-machine::Pipeline Role",
+    "source_file": ".claude/agents/war-machine.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent war-machine capability: Pipeline Role"
+  },
+  {
+    "id": "FUNC-DC1BA8",
+    "name": "war-machine::References",
+    "source_file": ".claude/agents/war-machine.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent war-machine capability: References"
+  },
+  {
+    "id": "FUNC-15E140",
+    "name": "wasp::Capabilities",
+    "source_file": ".claude/agents/wasp.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent wasp capability: Capabilities"
+  },
+  {
+    "id": "FUNC-7518C5",
+    "name": "wasp::Constraints",
+    "source_file": ".claude/agents/wasp.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent wasp capability: Constraints"
+  },
+  {
+    "id": "FUNC-F8B2B9",
+    "name": "wasp::Continuation Protocol (MBP / Golden Rule #7)",
+    "source_file": ".claude/agents/wasp.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent wasp capability: Continuation Protocol (MBP / Golden Rule #7)"
+  },
+  {
+    "id": "FUNC-9AAAE3",
+    "name": "wasp::Identity",
+    "source_file": ".claude/agents/wasp.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent wasp capability: Identity"
+  },
+  {
+    "id": "FUNC-EEB073",
+    "name": "wasp::Master Brain Protocol (MANDATORY -- CLAUDE.md Golden Rule #7)",
+    "source_file": ".claude/agents/wasp.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent wasp capability: Master Brain Protocol (MANDATORY -- CLAUDE.md Golden Rule #7)"
+  },
+  {
+    "id": "FUNC-A4C467",
+    "name": "wasp::Message Types",
+    "source_file": ".claude/agents/wasp.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent wasp capability: Message Types"
+  },
+  {
+    "id": "FUNC-394EEB",
+    "name": "wasp::Output Location",
+    "source_file": ".claude/agents/wasp.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent wasp capability: Output Location"
+  },
+  {
+    "id": "FUNC-F904D7",
+    "name": "wasp::Power Keywords",
+    "source_file": ".claude/agents/wasp.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent wasp capability: Power Keywords"
+  },
+  {
+    "id": "FUNC-3E6555",
+    "name": "wasp::References",
+    "source_file": ".claude/agents/wasp.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent wasp capability: References"
+  },
+  {
+    "id": "FUNC-5808E7",
+    "name": "wasp::Tool Permissions",
+    "source_file": ".claude/agents/wasp.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent wasp capability: Tool Permissions"
+  },
+  {
+    "id": "FUNC-CDC8E9",
+    "name": "wasp::Workflow",
+    "source_file": ".claude/agents/wasp.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent wasp capability: Workflow"
+  },
+  {
+    "id": "FUNC-F0E076",
+    "name": "/aegis-adr",
+    "source_file": ".claude/commands/aegis-adr.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-adr"
+  },
+  {
+    "id": "FUNC-038831",
+    "name": "/aegis-breakdown",
+    "source_file": ".claude/commands/aegis-breakdown.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-breakdown"
+  },
+  {
+    "id": "FUNC-B1A84A",
+    "name": "/aegis-compliance",
+    "source_file": ".claude/commands/aegis-compliance.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-compliance"
+  },
+  {
+    "id": "FUNC-A2D4E8",
+    "name": "/aegis-context",
+    "source_file": ".claude/commands/aegis-context.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-context"
+  },
+  {
+    "id": "FUNC-7A32FC",
+    "name": "/aegis-dashboard",
+    "source_file": ".claude/commands/aegis-dashboard.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-dashboard"
+  },
+  {
+    "id": "FUNC-8362A9",
+    "name": "/aegis-deploy",
+    "source_file": ".claude/commands/aegis-deploy.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-deploy"
+  },
+  {
+    "id": "FUNC-3E4194",
+    "name": "/aegis-distill",
+    "source_file": ".claude/commands/aegis-distill.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-distill"
+  },
+  {
+    "id": "FUNC-2CAE6C",
+    "name": "/aegis-doctor",
+    "source_file": ".claude/commands/aegis-doctor.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-doctor"
+  },
+  {
+    "id": "FUNC-7A3296",
+    "name": "/aegis-evolve",
+    "source_file": ".claude/commands/aegis-evolve.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-evolve"
+  },
+  {
+    "id": "FUNC-3EB7CD",
+    "name": "/aegis-flow",
+    "source_file": ".claude/commands/aegis-flow.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-flow"
+  },
+  {
+    "id": "FUNC-164964",
+    "name": "/aegis-handoff",
+    "source_file": ".claude/commands/aegis-handoff.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-handoff"
+  },
+  {
+    "id": "FUNC-743303",
+    "name": "/aegis-ingest",
+    "source_file": ".claude/commands/aegis-ingest.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-ingest"
+  },
+  {
+    "id": "FUNC-F6C4CA",
+    "name": "/aegis-instinct",
+    "source_file": ".claude/commands/aegis-instinct.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-instinct"
+  },
+  {
+    "id": "FUNC-A9D6EE",
+    "name": "/aegis-kanban",
+    "source_file": ".claude/commands/aegis-kanban.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-kanban"
+  },
+  {
+    "id": "FUNC-4EC6A4",
+    "name": "/aegis-launch",
+    "source_file": ".claude/commands/aegis-launch.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-launch"
+  },
+  {
+    "id": "FUNC-B2D952",
+    "name": "/aegis-lint",
+    "source_file": ".claude/commands/aegis-lint.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-lint"
+  },
+  {
+    "id": "FUNC-32522B",
+    "name": "/aegis-memory",
+    "source_file": ".claude/commands/aegis-memory.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-memory"
+  },
+  {
+    "id": "FUNC-42639A",
+    "name": "/aegis-mode",
+    "source_file": ".claude/commands/aegis-mode.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-mode"
+  },
+  {
+    "id": "FUNC-3F1184",
+    "name": "/aegis-pipeline",
+    "source_file": ".claude/commands/aegis-pipeline.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-pipeline"
+  },
+  {
+    "id": "FUNC-C2CBC3",
+    "name": "/aegis-qa",
+    "source_file": ".claude/commands/aegis-qa.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-qa"
+  },
+  {
+    "id": "FUNC-A99427",
+    "name": "/aegis-reengineer",
+    "source_file": ".claude/commands/aegis-reengineer.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-reengineer"
+  },
+  {
+    "id": "FUNC-0A5DEF",
+    "name": "/aegis-retro",
+    "source_file": ".claude/commands/aegis-retro.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-retro"
+  },
+  {
+    "id": "FUNC-D3383D",
+    "name": "/aegis-sprint",
+    "source_file": ".claude/commands/aegis-sprint.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-sprint"
+  },
+  {
+    "id": "FUNC-0B8071",
+    "name": "/aegis-start",
+    "source_file": ".claude/commands/aegis-start.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-start"
+  },
+  {
+    "id": "FUNC-F489A3",
+    "name": "/aegis-status",
+    "source_file": ".claude/commands/aegis-status.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-status"
+  },
+  {
+    "id": "FUNC-E655EE",
+    "name": "/aegis-team",
+    "source_file": ".claude/commands/aegis-team.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-team"
+  },
+  {
+    "id": "FUNC-988863",
+    "name": "/aegis-team-build",
+    "source_file": ".claude/commands/aegis-team-build.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-team-build"
+  },
+  {
+    "id": "FUNC-B4E87C",
+    "name": "/aegis-team-debate",
+    "source_file": ".claude/commands/aegis-team-debate.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-team-debate"
+  },
+  {
+    "id": "FUNC-1FA7EF",
+    "name": "/aegis-team-review",
+    "source_file": ".claude/commands/aegis-team-review.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-team-review"
+  },
+  {
+    "id": "FUNC-381484",
+    "name": "/aegis-verify",
+    "source_file": ".claude/commands/aegis-verify.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-verify"
+  },
+  {
+    "id": "FUNC-900669",
+    "name": "aegis-version-check",
+    "source_file": ".claude/hooks/aegis-version-check.sh",
+    "type": "hook",
+    "module": "MOD-HOOKS",
+    "description": "AEGIS Hook — aegis-version-check.sh"
+  },
+  {
+    "id": "FUNC-4E699B",
+    "name": "guard-ask-user",
+    "source_file": ".claude/hooks/guard-ask-user.sh",
+    "type": "hook",
+    "module": "MOD-HOOKS",
+    "description": "AEGIS Hook — guard-ask-user.sh (PreToolUse on AskUserQuestion)"
+  },
+  {
+    "id": "FUNC-82942F",
+    "name": "guard-bash",
+    "source_file": ".claude/hooks/guard-bash.sh",
+    "type": "hook",
+    "module": "MOD-HOOKS",
+    "description": "AEGIS Hook — guard-bash.sh"
+  },
+  {
+    "id": "FUNC-C1E8B6",
+    "name": "guard-ui-edit",
+    "source_file": ".claude/hooks/guard-ui-edit.sh",
+    "type": "hook",
+    "module": "MOD-HOOKS",
+    "description": "AEGIS Hook — guard-ui-edit.sh (S3-04, S3-05, S3-09)"
+  },
+  {
+    "id": "FUNC-1981EB",
+    "name": "guard-write",
+    "source_file": ".claude/hooks/guard-write.sh",
+    "type": "hook",
+    "module": "MOD-HOOKS",
+    "description": "AEGIS Hook — guard-write.sh"
+  },
+  {
+    "id": "FUNC-22C712",
+    "name": "on-stop",
+    "source_file": ".claude/hooks/on-stop.sh",
+    "type": "hook",
+    "module": "MOD-HOOKS",
+    "description": "AEGIS Hook — on-stop.sh"
+  },
+  {
+    "id": "FUNC-A19A69",
+    "name": "post-edit-accumulate",
+    "source_file": ".claude/hooks/post-edit-accumulate.sh",
+    "type": "hook",
+    "module": "MOD-HOOKS",
+    "description": "AEGIS Hook — post-edit-accumulate.sh"
+  },
+  {
+    "id": "FUNC-7339C0",
+    "name": "post-tool-use",
+    "source_file": ".claude/hooks/post-tool-use.sh",
+    "type": "hook",
+    "module": "MOD-HOOKS",
+    "description": "AEGIS Hook — post-tool-use.sh"
+  },
+  {
+    "id": "FUNC-060A6E",
+    "name": "run-with-flags",
+    "source_file": ".claude/hooks/run-with-flags.sh",
+    "type": "hook",
+    "module": "MOD-HOOKS",
+    "description": "AEGIS Hook Wrapper — run-with-flags.sh"
+  },
+  {
+    "id": "FUNC-0E8D3A",
+    "name": "session-start",
+    "source_file": ".claude/hooks/session-start.sh",
+    "type": "hook",
+    "module": "MOD-HOOKS",
+    "description": "AEGIS Session Start Hook -- Runs on every Claude Code session start"
+  },
+  {
+    "id": "FUNC-670FD8",
+    "name": "tinman-heartbeat",
+    "source_file": ".claude/hooks/tinman-heartbeat.sh",
+    "type": "hook",
+    "module": "MOD-HOOKS",
+    "description": "AEGIS TinMan — tinman-heartbeat.sh"
+  },
+  {
+    "id": "FUNC-4B0F42",
+    "name": "FAIL",
+    "source_file": "tools/aegis-test-harness-template.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-test-harness-template"
+  },
+  {
+    "id": "FUNC-3CC618",
+    "name": "FAIL_FAST",
+    "source_file": "tools/aegis-test-harness-template.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-test-harness-template"
+  },
+  {
+    "id": "FUNC-4AED60",
+    "name": "PASS",
+    "source_file": "tools/aegis-test-harness-template.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-test-harness-template"
+  },
+  {
+    "id": "FUNC-B72943",
+    "name": "_canonicalize",
+    "source_file": "tools/test-f1-01-realpath-warn.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in test-f1-01-realpath-warn"
+  },
+  {
+    "id": "FUNC-ACE114",
+    "name": "_cleanup",
+    "source_file": "tools/aegis-test-harness-template.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-test-harness-template"
+  },
+  {
+    "id": "FUNC-13AEBB",
+    "name": "add_result",
+    "source_file": "tools/aegis-brain-benchmark.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-brain-benchmark"
+  },
+  {
+    "id": "FUNC-821FA1",
+    "name": "aegis-agent-tools-matrix",
+    "source_file": "tools/aegis-agent-tools-matrix.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Agent Tools Matrix (dogfood-observation #2 -- subagent tool availability pre-flight)"
+  },
+  {
+    "id": "FUNC-B057C5",
+    "name": "aegis-apply-mbp-guard",
+    "source_file": "tools/aegis-apply-mbp-guard.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-apply-mbp-guard.sh — one-shot between-session applier for MBP guard settings."
+  },
+  {
+    "id": "FUNC-DAA124",
+    "name": "aegis-block0-f-gate-test",
+    "source_file": "tools/aegis-block0-f-gate-test.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Test — aegis-block0-f-gate-test.sh (S3-03)"
+  },
+  {
+    "id": "FUNC-7C4870",
+    "name": "aegis-block0-gate-test",
+    "source_file": "tools/aegis-block0-gate-test.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS BLOCK 0 Gate Test (Sprint v9-02 S2-03 — D-01)"
+  },
+  {
+    "id": "FUNC-EEC722",
+    "name": "aegis-block0-mode",
+    "source_file": "tools/aegis-block0-mode.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS BLOCK 0 Mode Determiner (Sprint v9-02 S2-03/04)"
+  },
+  {
+    "id": "FUNC-B116F2",
+    "name": "aegis-block0-mode-test",
+    "source_file": "tools/aegis-block0-mode-test.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS BLOCK 0 Mode Regression Test (Sprint v9-02 S2-03/04)"
+  },
+  {
+    "id": "FUNC-336428",
+    "name": "aegis-brain-adversarial-test",
+    "source_file": "tools/aegis-brain-adversarial-test.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Brain Write -- Adversarial Corruption Tests (S4-05)"
+  },
+  {
+    "id": "FUNC-D6168C",
+    "name": "aegis-brain-benchmark",
+    "source_file": "tools/aegis-brain-benchmark.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Brain Benchmark -- Performance measurements for brain-write/sync (S4-06)"
+  },
+  {
+    "id": "FUNC-F9BB90",
+    "name": "aegis-brain-sync",
+    "source_file": "tools/aegis-brain-sync.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Brain Sync -- Regenerates MEMORY.md index from .aegis/brain/ state"
+  },
+  {
+    "id": "FUNC-C33036",
+    "name": "aegis-brain-write",
+    "source_file": "tools/aegis-brain-write.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Brain Write -- Write to brain with automatic MEMORY.md regeneration"
+  },
+  {
+    "id": "FUNC-FFB48E",
+    "name": "aegis-claude-md-lift",
+    "source_file": "tools/aegis-claude-md-lift.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "============================================================================="
+  },
+  {
+    "id": "FUNC-DFD3F7",
+    "name": "aegis-contrast-check",
+    "source_file": "tools/aegis-contrast-check.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Contrast Check (S3-06 -- D-037 Fix 3)"
+  },
+  {
+    "id": "FUNC-F876E8",
+    "name": "aegis-design-fetch",
+    "source_file": "tools/aegis-design-fetch.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Design Fetch Tool (S3-01)"
+  },
+  {
+    "id": "FUNC-C31DAE",
+    "name": "aegis-design-fetch-test",
+    "source_file": "tools/aegis-design-fetch-test.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Design Fetch Tool Tests (S3-01, spec §3.3)"
+  },
+  {
+    "id": "FUNC-875248",
+    "name": "aegis-design-init",
+    "source_file": "tools/aegis-design-init.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Design Init Wizard (S3-02)"
+  },
+  {
+    "id": "FUNC-2B5D8A",
+    "name": "aegis-design-lint",
+    "source_file": "tools/aegis-design-lint.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Design Linter (S3-02)"
+  },
+  {
+    "id": "FUNC-5B85E3",
+    "name": "aegis-design-lint-test",
+    "source_file": "tools/aegis-design-lint-test.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Design Lint Tests (S3-02, spec §4.3)"
+  },
+  {
+    "id": "FUNC-FB12CB",
+    "name": "aegis-distill-counter-test",
+    "source_file": "tools/aegis-distill-counter-test.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Distill Counter Regression Test (Sprint v9-06 S6-01)"
+  },
+  {
+    "id": "FUNC-F18774",
+    "name": "aegis-distill-reset",
+    "source_file": "tools/aegis-distill-reset.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Distill Counter Reset (Sprint v9-06 S6-01 Pattern A)"
+  },
+  {
+    "id": "FUNC-195947",
+    "name": "aegis-func-catalog",
+    "source_file": "tools/aegis-func-catalog.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-func-catalog.sh — Auto-generate FUNC-XX catalog from tools, agents, and commands"
+  },
+  {
+    "id": "FUNC-0F8CD3",
+    "name": "aegis-func-catalog-test",
+    "source_file": "tools/aegis-func-catalog-test.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-func-catalog-test.sh — Idempotency + drift test for FUNC catalog"
+  },
+  {
+    "id": "FUNC-5F4FDE",
+    "name": "aegis-guard-ui-edit-test",
+    "source_file": "tools/aegis-guard-ui-edit-test.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Test — aegis-guard-ui-edit-test.sh (S3-04)"
+  },
+  {
+    "id": "FUNC-BA0BC7",
+    "name": "aegis-guard-write-test",
+    "source_file": "tools/aegis-guard-write-test.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Test — aegis-guard-write-test.sh"
+  },
+  {
+    "id": "FUNC-73281A",
+    "name": "aegis-instinct-auto-reinforce",
+    "source_file": "tools/aegis-instinct-auto-reinforce.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-instinct-auto-reinforce.sh (F3-02) — Instinct auto-promotion pipeline."
+  },
+  {
+    "id": "FUNC-55C09D",
+    "name": "aegis-instinct-promote",
+    "source_file": "tools/aegis-instinct-promote.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Tool — aegis-instinct-promote.sh (S2-05)"
+  },
+  {
+    "id": "FUNC-C804AE",
+    "name": "aegis-instinct-promote-test",
+    "source_file": "tools/aegis-instinct-promote-test.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Test — aegis-instinct-promote-test.sh (S2-05)"
+  },
+  {
+    "id": "FUNC-F64F2B",
+    "name": "aegis-log-decision",
+    "source_file": "tools/aegis-log-decision.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-log-decision.sh (S2-02) — Nick Fury's decision-audit logger."
+  },
+  {
+    "id": "FUNC-D61AED",
+    "name": "aegis-maintainer-grant",
+    "source_file": "tools/aegis-maintainer-grant.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Maintainer Grant (ADR-004 Phase 2)"
+  },
+  {
+    "id": "FUNC-3A7F6B",
+    "name": "aegis-maintainer-test",
+    "source_file": "tools/aegis-maintainer-test.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Maintainer Mode Test Matrix (ADR-004 Phase 2)"
+  },
+  {
+    "id": "FUNC-4FE422",
+    "name": "aegis-merge-worktree",
+    "source_file": "tools/aegis-merge-worktree.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Worktree Merge Script (Sprint v9-05, S5-04)"
+  },
+  {
+    "id": "FUNC-E969B8",
+    "name": "aegis-migrate-consolidate",
+    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "============================================================================="
+  },
+  {
+    "id": "FUNC-728D91",
+    "name": "aegis-migrate-v9",
+    "source_file": "tools/aegis-migrate-v9.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "============================================================================="
+  },
+  {
+    "id": "FUNC-7D72A3",
+    "name": "aegis-nick-fury-loop-harness",
+    "source_file": "tools/aegis-nick-fury-loop-harness.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-nick-fury-loop-harness.sh (S2-07) -- Validates Nick Fury's decision"
+  },
+  {
+    "id": "FUNC-4A061A",
+    "name": "aegis-pending-items",
+    "source_file": "tools/aegis-pending-items.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Pending Items Scanner (dogfood-observation #3 -- spec freshness audit)"
+  },
+  {
+    "id": "FUNC-90A601",
+    "name": "aegis-policy-audit",
+    "source_file": "tools/aegis-policy-audit.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-policy-audit.sh (S2-10) -- Policy-without-test scanner."
+  },
+  {
+    "id": "FUNC-2318FC",
+    "name": "aegis-privacy-scrubber",
+    "source_file": "tools/aegis-privacy-scrubber.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "============================================================================="
+  },
+  {
+    "id": "FUNC-AA4B82",
+    "name": "aegis-progress",
+    "source_file": "tools/aegis-progress.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-progress.sh — compute grand-total progress % across all known work."
+  },
+  {
+    "id": "FUNC-699DBF",
+    "name": "aegis-queue-human",
+    "source_file": "tools/aegis-queue-human.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-queue-human.sh — append an entry to the human action queue."
+  },
+  {
+    "id": "FUNC-FB1C7F",
+    "name": "aegis-queue-resolve",
+    "source_file": "tools/aegis-queue-resolve.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-queue-resolve.sh — mark a pending human-queue entry as resolved."
+  },
+  {
+    "id": "FUNC-386CF1",
+    "name": "aegis-s204-override",
+    "source_file": "tools/aegis-s204-override.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS BLOCK 0 Lite-Mode Security Path Override (Sprint v9-02 S2-04)"
+  },
+  {
+    "id": "FUNC-EBB69B",
+    "name": "aegis-s204-override-test",
+    "source_file": "tools/aegis-s204-override-test.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS S2-04 Override Test Harness"
+  },
+  {
+    "id": "FUNC-F1E86F",
+    "name": "aegis-sdk-readiness-check",
+    "source_file": "tools/aegis-sdk-readiness-check.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-sdk-readiness-check.sh -- Reports SDK feature availability for AEGIS."
+  },
+  {
+    "id": "FUNC-C9D07B",
+    "name": "aegis-security-paths",
+    "source_file": "tools/aegis-security-paths.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Security-Sensitive Path Registry (Sprint v9-02 S2-04)"
+  },
+  {
+    "id": "FUNC-8F0B7F",
+    "name": "aegis-shell-lint",
+    "source_file": "tools/aegis-shell-lint.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-shell-lint.sh (F1-05) — Shell-command pre-flight linter for spec files."
+  },
+  {
+    "id": "FUNC-4F5BAA",
+    "name": "aegis-spec-tracking-test",
+    "source_file": "tools/aegis-spec-tracking-test.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Test — aegis-spec-tracking-test.sh (S2-06)"
+  },
+  {
+    "id": "FUNC-31BFAB",
+    "name": "aegis-status-brief",
+    "source_file": "tools/aegis-status-brief.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Status Brief"
+  },
+  {
+    "id": "FUNC-4A9763",
+    "name": "aegis-team-chat",
+    "source_file": "tools/aegis-team-chat.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-team-chat.sh — append an inter-agent dialogue event to the team chat log."
+  },
+  {
+    "id": "FUNC-1BD694",
+    "name": "aegis-test-all",
+    "source_file": "tools/aegis-test-all.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Unified Test Runner"
+  },
+  {
+    "id": "FUNC-8BB348",
+    "name": "aegis-test-harness-template",
+    "source_file": "tools/aegis-test-harness-template.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-test-harness-template.sh — Source this, do not execute directly."
+  },
+  {
+    "id": "FUNC-770B0E",
+    "name": "aegis-trace-audit",
+    "source_file": "tools/aegis-trace-audit.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-trace-audit.sh — Verify project-wide traceability (closes TI-01)"
+  },
+  {
+    "id": "FUNC-157B7B",
+    "name": "aegis-trace-audit-test",
+    "source_file": "tools/aegis-trace-audit-test.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-trace-audit-test.sh — Test suite for aegis-trace-audit.sh"
+  },
+  {
+    "id": "FUNC-5AD8B7",
+    "name": "aegis-ui-patterns",
+    "source_file": "tools/aegis-ui-patterns.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "tools/aegis-ui-patterns.sh — SSOT for UI file patterns (S3-05)"
+  },
+  {
+    "id": "FUNC-F4BC4C",
+    "name": "aegis-ui-patterns-test",
+    "source_file": "tools/aegis-ui-patterns-test.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Test — aegis-ui-patterns-test.sh (S3-05)"
+  },
+  {
+    "id": "FUNC-654FD8",
+    "name": "aegis-wasp-generate-test",
+    "source_file": "tools/aegis-wasp-generate-test.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Wasp Generate Test (S3-06, spec §6)"
+  },
+  {
+    "id": "FUNC-96671C",
+    "name": "aegis-worktree-gc",
+    "source_file": "tools/aegis-worktree-gc.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "============================================================================="
+  },
+  {
+    "id": "FUNC-1EA1C5",
+    "name": "asse",
+    "source_file": "tools/aegis-migrate-v9.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-v9"
+  },
+  {
+    "id": "FUNC-892F1E",
+    "name": "assert",
+    "source_file": "tools/aegis-func-catalog-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-func-catalog-test"
+  },
+  {
+    "id": "FUNC-1E9B3B",
+    "name": "assert",
+    "source_file": "tools/aegis-trace-audit-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-trace-audit-test"
+  },
+  {
+    "id": "FUNC-94A7B3",
+    "name": "assert_eq",
+    "source_file": "tools/aegis-test-harness-template.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-test-harness-template"
+  },
+  {
+    "id": "FUNC-B3FEE2",
+    "name": "assert_exit",
+    "source_file": "tools/aegis-test-harness-template.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-test-harness-template"
+  },
+  {
+    "id": "FUNC-E8CF25",
+    "name": "assert_fail",
+    "source_file": "tools/aegis-s204-override-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-s204-override-test"
+  },
+  {
+    "id": "FUNC-D70158",
+    "name": "assert_file_absent",
+    "source_file": "tools/aegis-block0-gate-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-block0-gate-test"
+  },
+  {
+    "id": "FUNC-0B719F",
+    "name": "assert_file_absent",
+    "source_file": "tools/aegis-test-harness-template.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-test-harness-template"
+  },
+  {
+    "id": "FUNC-427010",
+    "name": "assert_file_contain",
+    "source_file": "tools/aegis-test-harness-template.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-test-harness-template"
+  },
+  {
+    "id": "FUNC-A02C68",
+    "name": "assert_file_exist",
+    "source_file": "tools/aegis-block0-gate-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-block0-gate-test"
+  },
+  {
+    "id": "FUNC-6DFD0D",
+    "name": "assert_file_exist",
+    "source_file": "tools/aegis-test-harness-template.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-test-harness-template"
+  },
+  {
+    "id": "FUNC-F3BC19",
+    "name": "assert_file_not_contain",
+    "source_file": "tools/aegis-test-harness-template.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-test-harness-template"
+  },
+  {
+    "id": "FUNC-61C1A6",
+    "name": "assert_log_contain",
+    "source_file": "tools/aegis-block0-gate-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-block0-gate-test"
+  },
+  {
+    "id": "FUNC-251A88",
+    "name": "assert_log_not_contain",
+    "source_file": "tools/aegis-block0-gate-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-block0-gate-test"
+  },
+  {
+    "id": "FUNC-421731",
+    "name": "assert_mode",
+    "source_file": "tools/aegis-block0-mode-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-block0-mode-test"
+  },
+  {
+    "id": "FUNC-B86B53",
+    "name": "assert_neq",
+    "source_file": "tools/aegis-test-harness-template.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-test-harness-template"
+  },
+  {
+    "id": "FUNC-DC9CE7",
+    "name": "assert_pa",
+    "source_file": "tools/aegis-s204-override-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-s204-override-test"
+  },
+  {
+    "id": "FUNC-437012",
+    "name": "assert_stderr_contain",
+    "source_file": "tools/aegis-test-harness-template.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-test-harness-template"
+  },
+  {
+    "id": "FUNC-F5956E",
+    "name": "assert_stdout_contain",
+    "source_file": "tools/aegis-test-harness-template.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-test-harness-template"
+  },
+  {
+    "id": "FUNC-B9E543",
+    "name": "assert_task_mode",
+    "source_file": "tools/aegis-block0-mode-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-block0-mode-test"
+  },
+  {
+    "id": "FUNC-C6C35E",
+    "name": "bench_loop",
+    "source_file": "tools/aegis-brain-benchmark.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-brain-benchmark"
+  },
+  {
+    "id": "FUNC-59DF93",
+    "name": "block0f_check",
+    "source_file": "tools/aegis-block0-f-gate-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-block0-f-gate-test"
+  },
+  {
+    "id": "FUNC-512A80",
+    "name": "brain_append",
+    "source_file": "tools/aegis-brain-write.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-brain-write"
+  },
+  {
+    "id": "FUNC-CF949F",
+    "name": "brain_write",
+    "source_file": "tools/aegis-brain-write.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-brain-write"
+  },
+  {
+    "id": "FUNC-9D04C0",
+    "name": "build_gitignore_block",
+    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-consolidate"
+  },
+  {
+    "id": "FUNC-1DE465",
+    "name": "check",
+    "source_file": "tools/aegis-trace-audit.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-trace-audit"
+  },
+  {
+    "id": "FUNC-9CA62B",
+    "name": "check_adaptive_thinking",
+    "source_file": "tools/aegis-sdk-readiness-check.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-sdk-readiness-check"
+  },
+  {
+    "id": "FUNC-186179",
+    "name": "check_agent_team",
+    "source_file": "tools/aegis-sdk-readiness-check.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-sdk-readiness-check"
+  },
+  {
+    "id": "FUNC-D0E917",
+    "name": "check_category_count",
+    "source_file": "tools/aegis-s204-override-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-s204-override-test"
+  },
+  {
+    "id": "FUNC-C7E2B0",
+    "name": "check_code_execution",
+    "source_file": "tools/aegis-sdk-readiness-check.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-sdk-readiness-check"
+  },
+  {
+    "id": "FUNC-CD467C",
+    "name": "check_dst_clean",
+    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-consolidate"
+  },
+  {
+    "id": "FUNC-06425B",
+    "name": "check_git_clean",
+    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-consolidate"
+  },
+  {
+    "id": "FUNC-65CE47",
+    "name": "check_log_has_override",
+    "source_file": "tools/aegis-s204-override-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-s204-override-test"
+  },
+  {
+    "id": "FUNC-FF42A6",
+    "name": "check_memory_tool",
+    "source_file": "tools/aegis-sdk-readiness-check.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-sdk-readiness-check"
+  },
+  {
+    "id": "FUNC-A6D994",
+    "name": "check_mode",
+    "source_file": "tools/aegis-s204-override-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-s204-override-test"
+  },
+  {
+    "id": "FUNC-C12CD0",
+    "name": "check_override_present",
+    "source_file": "tools/aegis-s204-override-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-s204-override-test"
+  },
+  {
+    "id": "FUNC-C6BF51",
+    "name": "check_prompt_caching",
+    "source_file": "tools/aegis-sdk-readiness-check.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-sdk-readiness-check"
+  },
+  {
+    "id": "FUNC-9CD893",
+    "name": "check_recent_length",
+    "source_file": "tools/aegis-s204-override-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-s204-override-test"
+  },
+  {
+    "id": "FUNC-B51C12",
+    "name": "check_total_override",
+    "source_file": "tools/aegis-s204-override-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-s204-override-test"
+  },
+  {
+    "id": "FUNC-61D63C",
+    "name": "check_worktree_isolation",
+    "source_file": "tools/aegis-sdk-readiness-check.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-sdk-readiness-check"
+  },
+  {
+    "id": "FUNC-BBB6EF",
+    "name": "classify_file",
+    "source_file": "tools/aegis-claude-md-lift.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-claude-md-lift"
+  },
+  {
+    "id": "FUNC-3D1C68",
+    "name": "clean_state",
+    "source_file": "tools/aegis-maintainer-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-maintainer-test"
+  },
+  {
+    "id": "FUNC-677800",
+    "name": "cleanup",
+    "source_file": "tools/aegis-brain-adversarial-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-brain-adversarial-test"
+  },
+  {
+    "id": "FUNC-966169",
+    "name": "cleanup",
+    "source_file": "tools/aegis-brain-benchmark.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-brain-benchmark"
+  },
+  {
+    "id": "FUNC-CE16FA",
+    "name": "cleanup",
+    "source_file": "tools/aegis-distill-counter-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-distill-counter-test"
+  },
+  {
+    "id": "FUNC-A9BFA4",
+    "name": "cleanup",
+    "source_file": "tools/aegis-maintainer-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-maintainer-test"
+  },
+  {
+    "id": "FUNC-BF49F3",
+    "name": "cleanup_task",
+    "source_file": "tools/aegis-block0-mode-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-block0-mode-test"
+  },
+  {
+    "id": "FUNC-A8A53E",
+    "name": "cmd_activate",
+    "source_file": "tools/aegis-instinct-promote.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-instinct-promote"
+  },
+  {
+    "id": "FUNC-A8DC70",
+    "name": "cmd_apply",
+    "source_file": "tools/aegis-claude-md-lift.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-claude-md-lift"
+  },
+  {
+    "id": "FUNC-AFF1E0",
+    "name": "cmd_apply",
+    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-consolidate"
+  },
+  {
+    "id": "FUNC-FCAA21",
+    "name": "cmd_create",
+    "source_file": "tools/aegis-instinct-promote.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-instinct-promote"
+  },
+  {
+    "id": "FUNC-3EC10F",
+    "name": "cmd_dry_run",
+    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-consolidate"
+  },
+  {
+    "id": "FUNC-EDEC83",
+    "name": "cmd_list",
+    "source_file": "tools/aegis-instinct-promote.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-instinct-promote"
+  },
+  {
+    "id": "FUNC-89546D",
+    "name": "cmd_promote",
+    "source_file": "tools/aegis-instinct-promote.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-instinct-promote"
+  },
+  {
+    "id": "FUNC-894C08",
+    "name": "cmd_reinforce",
+    "source_file": "tools/aegis-instinct-promote.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-instinct-promote"
+  },
+  {
+    "id": "FUNC-3ECEBC",
+    "name": "cmd_retire",
+    "source_file": "tools/aegis-instinct-promote.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-instinct-promote"
+  },
+  {
+    "id": "FUNC-2F99D1",
+    "name": "cmd_rollback",
+    "source_file": "tools/aegis-claude-md-lift.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-claude-md-lift"
+  },
+  {
+    "id": "FUNC-631398",
+    "name": "cmd_rollback",
+    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-consolidate"
+  },
+  {
+    "id": "FUNC-E6402C",
+    "name": "cmd_rollback",
+    "source_file": "tools/aegis-migrate-v9.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-v9"
+  },
+  {
+    "id": "FUNC-D19104",
+    "name": "count",
+    "source_file": "tools/aegis-distill-counter-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-distill-counter-test"
+  },
+  {
+    "id": "FUNC-3B4617",
+    "name": "count_file",
+    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-consolidate"
+  },
+  {
+    "id": "FUNC-FCAC91",
+    "name": "detect_state",
+    "source_file": "tools/aegis-claude-md-lift.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-claude-md-lift"
+  },
+  {
+    "id": "FUNC-777F47",
+    "name": "die",
+    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-consolidate"
+  },
+  {
+    "id": "FUNC-4E7AC5",
+    "name": "do_counter_update",
+    "source_file": "tools/aegis-s204-override.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-s204-override"
+  },
+  {
+    "id": "FUNC-91C9BF",
+    "name": "emit_blank",
+    "source_file": "tools/aegis-design-init.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-design-init"
+  },
+  {
+    "id": "FUNC-462660",
+    "name": "emit_tsv",
+    "source_file": "tools/aegis-func-catalog.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-func-catalog"
+  },
+  {
+    "id": "FUNC-DFC3DC",
+    "name": "ensure_dir",
+    "source_file": "tools/aegis-instinct-promote.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-instinct-promote"
+  },
+  {
+    "id": "FUNC-98F8FF",
+    "name": "extract_command",
+    "source_file": "tools/aegis-shell-lint.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-shell-lint"
+  },
+  {
+    "id": "FUNC-5FA55D",
+    "name": "fail",
+    "source_file": "tools/aegis-block0-gate-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-block0-gate-test"
+  },
+  {
+    "id": "FUNC-E89FD8",
+    "name": "fail",
+    "source_file": "tools/aegis-block0-mode-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-block0-mode-test"
+  },
+  {
+    "id": "FUNC-B40A25",
+    "name": "fail",
+    "source_file": "tools/aegis-brain-adversarial-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-brain-adversarial-test"
+  },
+  {
+    "id": "FUNC-C2A77E",
+    "name": "fail",
+    "source_file": "tools/aegis-distill-counter-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-distill-counter-test"
+  },
+  {
+    "id": "FUNC-801166",
+    "name": "fetch_slug",
+    "source_file": "tools/aegis-design-fetch.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-design-fetch"
+  },
+  {
+    "id": "FUNC-FB3C6D",
+    "name": "find_instinct",
+    "source_file": "tools/aegis-instinct-promote.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-instinct-promote"
+  },
+  {
+    "id": "FUNC-E7C672",
+    "name": "find_security_match",
+    "source_file": "tools/aegis-s204-override.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-s204-override"
+  },
+  {
+    "id": "FUNC-C188BC",
+    "name": "generate_func_id",
+    "source_file": "tools/aegis-func-catalog.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-func-catalog"
+  },
+  {
+    "id": "FUNC-218DC5",
+    "name": "get_field",
+    "source_file": "tools/aegis-instinct-promote-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-instinct-promote-test"
+  },
+  {
+    "id": "FUNC-790B9C",
+    "name": "get_mode_from_meta",
+    "source_file": "tools/aegis-s204-override.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-s204-override"
+  },
+  {
+    "id": "FUNC-37CC4A",
+    "name": "get_module",
+    "source_file": "tools/aegis-func-catalog.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-func-catalog"
+  },
+  {
+    "id": "FUNC-BFD804",
+    "name": "get_yaml_field",
+    "source_file": "tools/aegis-instinct-promote.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-instinct-promote"
+  },
+  {
+    "id": "FUNC-0C2A54",
+    "name": "has_fallback_nearby",
+    "source_file": "tools/aegis-shell-lint.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-shell-lint"
+  },
+  {
+    "id": "FUNC-C40193",
+    "name": "in_allowlist",
+    "source_file": "tools/aegis-shell-lint.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-shell-lint"
+  },
+  {
+    "id": "FUNC-98BE79",
+    "name": "increment_counter",
+    "source_file": "tools/aegis-s204-override.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-s204-override"
+  },
+  {
+    "id": "FUNC-95223A",
+    "name": "info",
+    "source_file": "tools/aegis-distill-counter-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-distill-counter-test"
+  },
+  {
+    "id": "FUNC-584B9B",
+    "name": "init_counter_if_missing",
+    "source_file": "tools/aegis-s204-override.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-s204-override"
+  },
+  {
+    "id": "FUNC-A57BC4",
+    "name": "invoke",
+    "source_file": "tools/aegis-s204-override-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-s204-override-test"
+  },
+  {
+    "id": "FUNC-2E3F6A",
+    "name": "invoke_guard_bash",
+    "source_file": "tools/aegis-maintainer-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-maintainer-test"
+  },
+  {
+    "id": "FUNC-55B850",
+    "name": "invoke_guard_write",
+    "source_file": "tools/aegis-maintainer-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-maintainer-test"
+  },
+  {
+    "id": "FUNC-2CC9DD",
+    "name": "is_available",
+    "source_file": "tools/aegis-shell-lint.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-shell-lint"
+  },
+  {
+    "id": "FUNC-4469E1",
+    "name": "is_excluded_file",
+    "source_file": "tools/aegis-ui-patterns.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-ui-patterns"
+  },
+  {
+    "id": "FUNC-705C18",
+    "name": "is_ui_file",
+    "source_file": "tools/aegis-ui-patterns.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-ui-patterns"
+  },
+  {
+    "id": "FUNC-EA1453",
+    "name": "json_escape",
+    "source_file": "tools/aegis-func-catalog.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-func-catalog"
+  },
+  {
+    "id": "FUNC-9F824E",
+    "name": "ko",
+    "source_file": "tools/aegis-design-fetch-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-design-fetch-test"
+  },
+  {
+    "id": "FUNC-E4C846",
+    "name": "ko",
+    "source_file": "tools/aegis-design-lint-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-design-lint-test"
+  },
+  {
+    "id": "FUNC-3B6567",
+    "name": "ko",
+    "source_file": "tools/aegis-wasp-generate-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-wasp-generate-test"
+  },
+  {
+    "id": "FUNC-007124",
+    "name": "local_slug_for",
+    "source_file": "tools/aegis-design-fetch.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-design-fetch"
+  },
+  {
+    "id": "FUNC-DA4D89",
+    "name": "log_activity",
+    "source_file": "tools/aegis-instinct-auto-reinforce.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-instinct-auto-reinforce"
+  },
+  {
+    "id": "FUNC-83B547",
+    "name": "log_activity",
+    "source_file": "tools/aegis-instinct-promote.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-instinct-promote"
+  },
+  {
+    "id": "FUNC-BD8AC3",
+    "name": "log_activity",
+    "source_file": "tools/aegis-merge-worktree.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-merge-worktree"
+  },
+  {
+    "id": "FUNC-9D6277",
+    "name": "log_dry",
+    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-consolidate"
+  },
+  {
+    "id": "FUNC-842E4A",
+    "name": "log_error",
+    "source_file": "tools/aegis-claude-md-lift.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-claude-md-lift"
+  },
+  {
+    "id": "FUNC-AC1F3F",
+    "name": "log_error",
+    "source_file": "tools/aegis-merge-worktree.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-merge-worktree"
+  },
+  {
+    "id": "FUNC-FC2843",
+    "name": "log_error",
+    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-consolidate"
+  },
+  {
+    "id": "FUNC-B7319D",
+    "name": "log_fail",
+    "source_file": "tools/aegis-maintainer-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-maintainer-test"
+  },
+  {
+    "id": "FUNC-1B722F",
+    "name": "log_info",
+    "source_file": "tools/aegis-claude-md-lift.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-claude-md-lift"
+  },
+  {
+    "id": "FUNC-79B0EF",
+    "name": "log_info",
+    "source_file": "tools/aegis-maintainer-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-maintainer-test"
+  },
+  {
+    "id": "FUNC-BC2FAA",
+    "name": "log_info",
+    "source_file": "tools/aegis-merge-worktree.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-merge-worktree"
+  },
+  {
+    "id": "FUNC-FB2AE9",
+    "name": "log_info",
+    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-consolidate"
+  },
+  {
+    "id": "FUNC-5C7A29",
+    "name": "log_judgment",
+    "source_file": "tools/test-f1-03-judgment-counter.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in test-f1-03-judgment-counter"
+  },
+  {
+    "id": "FUNC-AD1A87",
+    "name": "log_nonjudgment",
+    "source_file": "tools/test-f1-03-judgment-counter.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in test-f1-03-judgment-counter"
+  },
+  {
+    "id": "FUNC-6F4D0A",
+    "name": "log_override",
+    "source_file": "tools/aegis-s204-override.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-s204-override"
+  },
+  {
+    "id": "FUNC-B685F4",
+    "name": "log_pa",
+    "source_file": "tools/aegis-maintainer-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-maintainer-test"
+  },
+  {
+    "id": "FUNC-BD2D42",
+    "name": "log_section",
+    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-consolidate"
+  },
+  {
+    "id": "FUNC-2B67A6",
+    "name": "log_warn",
+    "source_file": "tools/aegis-claude-md-lift.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-claude-md-lift"
+  },
+  {
+    "id": "FUNC-D93715",
+    "name": "log_warn",
+    "source_file": "tools/aegis-merge-worktree.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-merge-worktree"
+  },
+  {
+    "id": "FUNC-27699F",
+    "name": "log_warn",
+    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-consolidate"
+  },
+  {
+    "id": "FUNC-D9EAD3",
+    "name": "main",
+    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-consolidate"
+  },
+  {
+    "id": "FUNC-630774",
+    "name": "main",
+    "source_file": "tools/aegis-s204-override.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-s204-override"
+  },
+  {
+    "id": "FUNC-914A15",
+    "name": "make_grant",
+    "source_file": "tools/aegis-maintainer-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-maintainer-test"
+  },
+  {
+    "id": "FUNC-4126FA",
+    "name": "mk_meta",
+    "source_file": "tools/aegis-s204-override-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-s204-override-test"
+  },
+  {
+    "id": "FUNC-CFAF2A",
+    "name": "mk_test_env",
+    "source_file": "tools/aegis-s204-override-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-s204-override-test"
+  },
+  {
+    "id": "FUNC-BB0FEE",
+    "name": "ms_now",
+    "source_file": "tools/aegis-brain-benchmark.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-brain-benchmark"
+  },
+  {
+    "id": "FUNC-912B60",
+    "name": "now_iso",
+    "source_file": "tools/aegis-instinct-promote.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-instinct-promote"
+  },
+  {
+    "id": "FUNC-3F398F",
+    "name": "ok",
+    "source_file": "tools/aegis-design-fetch-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-design-fetch-test"
+  },
+  {
+    "id": "FUNC-246CB4",
+    "name": "ok",
+    "source_file": "tools/aegis-design-lint-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-design-lint-test"
+  },
+  {
+    "id": "FUNC-C4889C",
+    "name": "ok",
+    "source_file": "tools/aegis-wasp-generate-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-wasp-generate-test"
+  },
+  {
+    "id": "FUNC-BD2561",
+    "name": "pa",
+    "source_file": "tools/aegis-block0-gate-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-block0-gate-test"
+  },
+  {
+    "id": "FUNC-F2B684",
+    "name": "pa",
+    "source_file": "tools/aegis-block0-mode-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-block0-mode-test"
+  },
+  {
+    "id": "FUNC-05DC33",
+    "name": "pa",
+    "source_file": "tools/aegis-brain-adversarial-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-brain-adversarial-test"
+  },
+  {
+    "id": "FUNC-132BDB",
+    "name": "pa",
+    "source_file": "tools/aegis-distill-counter-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-distill-counter-test"
+  },
+  {
+    "id": "FUNC-A6AC91",
+    "name": "parse_arg",
+    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-consolidate"
+  },
+  {
+    "id": "FUNC-DC48E0",
+    "name": "path_to_subtype",
+    "source_file": "tools/aegis-brain-write.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-brain-write"
+  },
+  {
+    "id": "FUNC-2AEBBE",
+    "name": "pattern_to_category",
+    "source_file": "tools/aegis-s204-override.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-s204-override"
+  },
+  {
+    "id": "FUNC-3EDD83",
+    "name": "reminder_fire",
+    "source_file": "tools/aegis-distill-counter-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-distill-counter-test"
+  },
+  {
+    "id": "FUNC-EC9605",
+    "name": "remove_gitignore_block",
+    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-consolidate"
+  },
+  {
+    "id": "FUNC-EC5BBF",
+    "name": "report_current_state",
+    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-consolidate"
+  },
+  {
+    "id": "FUNC-A7262C",
+    "name": "resolve_vibe",
+    "source_file": "tools/aegis-design-init.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-design-init"
+  },
+  {
+    "id": "FUNC-0130AA",
+    "name": "rewrite_meta",
+    "source_file": "tools/aegis-s204-override.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-s204-override"
+  },
+  {
+    "id": "FUNC-1F21CC",
+    "name": "run_test",
+    "source_file": "tools/aegis-block0-f-gate-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-block0-f-gate-test"
+  },
+  {
+    "id": "FUNC-6A63EE",
+    "name": "run_test",
+    "source_file": "tools/aegis-guard-ui-edit-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-guard-ui-edit-test"
+  },
+  {
+    "id": "FUNC-2BCD60",
+    "name": "run_test",
+    "source_file": "tools/aegis-guard-write-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-guard-write-test"
+  },
+  {
+    "id": "FUNC-12B446",
+    "name": "run_test",
+    "source_file": "tools/aegis-instinct-promote-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-instinct-promote-test"
+  },
+  {
+    "id": "FUNC-EBE53B",
+    "name": "run_test",
+    "source_file": "tools/aegis-spec-tracking-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-spec-tracking-test"
+  },
+  {
+    "id": "FUNC-DF580C",
+    "name": "run_test",
+    "source_file": "tools/aegis-ui-patterns-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-ui-patterns-test"
+  },
+  {
+    "id": "FUNC-DC2033",
+    "name": "seed_pattern",
+    "source_file": "tools/aegis-brain-benchmark.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-brain-benchmark"
+  },
+  {
+    "id": "FUNC-197CE3",
+    "name": "set_yaml_field",
+    "source_file": "tools/aegis-instinct-promote.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-instinct-promote"
+  },
+  {
+    "id": "FUNC-684F70",
+    "name": "show_help",
+    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-consolidate"
+  },
+  {
+    "id": "FUNC-E2FB38",
+    "name": "simulate_block0",
+    "source_file": "tools/aegis-block0-gate-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-block0-gate-test"
+  },
+  {
+    "id": "FUNC-C26E13",
+    "name": "skip",
+    "source_file": "tools/aegis-brain-adversarial-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-brain-adversarial-test"
+  },
+  {
+    "id": "FUNC-8B3156",
+    "name": "skip",
+    "source_file": "tools/aegis-design-fetch-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-design-fetch-test"
+  },
+  {
+    "id": "FUNC-077E20",
+    "name": "step_claude_md",
+    "source_file": "tools/aegis-migrate-v9.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-v9"
+  },
+  {
+    "id": "FUNC-2E8510",
+    "name": "step_consolidate",
+    "source_file": "tools/aegis-migrate-v9.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-v9"
+  },
+  {
+    "id": "FUNC-FFA861",
+    "name": "step_plugin",
+    "source_file": "tools/aegis-migrate-v9.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-v9"
+  },
+  {
+    "id": "FUNC-061BAB",
+    "name": "step_setting",
+    "source_file": "tools/aegis-migrate-v9.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-v9"
+  },
+  {
+    "id": "FUNC-302C6B",
+    "name": "test-f1-01-realpath-warn",
+    "source_file": "tools/test-f1-01-realpath-warn.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "test-f1-01-realpath-warn.sh — Tests for F1-01 realpath silent-degradation warning"
+  },
+  {
+    "id": "FUNC-9C9E6E",
+    "name": "test-f1-02-injection-safety",
+    "source_file": "tools/test-f1-02-injection-safety.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "test-f1-02-injection-safety.sh — Tests for F1-02 argv injection fix"
+  },
+  {
+    "id": "FUNC-601061",
+    "name": "test-f1-03-judgment-counter",
+    "source_file": "tools/test-f1-03-judgment-counter.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "test-f1-03-judgment-counter.sh — Tests for F1-03 judgment counter exit code"
+  },
+  {
+    "id": "FUNC-1817BA",
+    "name": "test-f1-04-harness-self-test",
+    "source_file": "tools/test-f1-04-harness-self-test.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "test-f1-04-harness-self-test.sh — Self-test for aegis-test-harness-template.sh"
+  },
+  {
+    "id": "FUNC-BE7AEB",
+    "name": "test-f1-05-shell-lint",
+    "source_file": "tools/test-f1-05-shell-lint.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "test-f1-05-shell-lint.sh — Tests for F1-05 shell-command pre-flight linter"
+  },
+  {
+    "id": "FUNC-134750",
+    "name": "test-f2-01-command-shims",
+    "source_file": "tools/test-f2-01-command-shims.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "test-f2-01-command-shims.sh — Tests for F2-01 command consolidation 29→12"
+  },
+  {
+    "id": "FUNC-31FDCB",
+    "name": "test-f3-01-gitignore-paradox",
+    "source_file": "tools/test-f3-01-gitignore-paradox.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "test-f3-01-gitignore-paradox.sh — Tests for F3-01 gitignore paradox fix"
+  },
+  {
+    "id": "FUNC-4D7149",
+    "name": "test-f3-02-auto-reinforce",
+    "source_file": "tools/test-f3-02-auto-reinforce.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "test-f3-02-auto-reinforce.sh — Tests for F3-02 instinct auto-reinforce pipeline"
+  },
+  {
+    "id": "FUNC-B6B59D",
+    "name": "test-s2-10-policy-audit",
+    "source_file": "tools/test-s2-10-policy-audit.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "test-s2-10-policy-audit.sh -- Test harness for aegis-policy-audit.sh"
+  },
+  {
+    "id": "FUNC-75AB69",
+    "name": "test_result",
+    "source_file": "tools/aegis-test-harness-template.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-test-harness-template"
+  },
+  {
+    "id": "FUNC-E7BC32",
+    "name": "timestamp_iso",
+    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-consolidate"
+  },
+  {
+    "id": "FUNC-55140A",
+    "name": "today_iso",
+    "source_file": "tools/aegis-instinct-promote.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-instinct-promote"
+  },
+  {
+    "id": "FUNC-D694EB",
+    "name": "update_gitignore",
+    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-consolidate"
+  },
+  {
+    "id": "FUNC-502C0E",
+    "name": "upstream_slug_for",
+    "source_file": "tools/aegis-design-fetch.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-design-fetch"
+  },
+  {
+    "id": "FUNC-76270C",
+    "name": "usage",
+    "source_file": "tools/aegis-design-fetch.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-design-fetch"
+  },
+  {
+    "id": "FUNC-60877D",
+    "name": "usage",
+    "source_file": "tools/aegis-design-init.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-design-init"
+  },
+  {
+    "id": "FUNC-5A62E3",
+    "name": "usage",
+    "source_file": "tools/aegis-maintainer-grant.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-maintainer-grant"
+  },
+  {
+    "id": "FUNC-628BD1",
+    "name": "usage",
+    "source_file": "tools/aegis-s204-override.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-s204-override"
+  },
+  {
+    "id": "FUNC-DDDCD1",
+    "name": "v9-session-start-hook",
+    "source_file": "tools/v9-session-start-hook.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "AEGIS Session Start Hook -- Runs on every Claude Code session start"
+  },
+  {
+    "id": "FUNC-244D8B",
+    "name": "validate_id",
+    "source_file": "tools/aegis-instinct-promote.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-instinct-promote"
+  },
+  {
+    "id": "FUNC-2AFAB7",
+    "name": "warn",
+    "source_file": "tools/aegis-trace-audit.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-trace-audit"
+  },
+  {
+    "id": "FUNC-41BB12",
+    "name": "write_log",
+    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-consolidate"
+  },
+  {
+    "id": "FUNC-A73AE1",
+    "name": "write_manifest",
+    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-migrate-consolidate"
+  },
+  {
+    "id": "FUNC-A50227",
+    "name": "write_valid",
+    "source_file": "tools/aegis-design-lint-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-design-lint-test"
+  },
+  {
+    "id": "FUNC-BAE69D",
+    "name": "write_valid_design",
+    "source_file": "tools/aegis-wasp-generate-test.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-wasp-generate-test"
+  }
+]
