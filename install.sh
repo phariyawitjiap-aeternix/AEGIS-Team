@@ -105,9 +105,18 @@ done
 # Pre-flight Checks
 # --------------------------------------------------------------------------
 echo ""
-echo -e "${BOLD}${CYAN}================================================${NC}"
-echo -e "${BOLD}${CYAN}  AEGIS v${VERSION} Installer${NC}"
-echo -e "${BOLD}${CYAN}================================================${NC}"
+if [[ "$UPGRADE" == true ]]; then
+    BANNER_COLOR="${YELLOW}"
+    BANNER_LABEL="Upgrader"
+else
+    BANNER_COLOR="${CYAN}"
+    BANNER_LABEL="Installer"
+fi
+echo -e "${BOLD}${BANNER_COLOR}╔══════════════════════════════════════════════╗${NC}"
+echo -e "${BOLD}${BANNER_COLOR}║  🛡️   A E G I S   v${VERSION}                       ║${NC}"
+echo -e "${BOLD}${BANNER_COLOR}║      ${BANNER_LABEL}                               ║${NC}"
+echo -e "${BOLD}${BANNER_COLOR}║      \"Context is King, Memory is Soul\"      ║${NC}"
+echo -e "${BOLD}${BANNER_COLOR}╚══════════════════════════════════════════════╝${NC}"
 echo ""
 
 info "Profile: ${BOLD}${PROFILE}${NC}"
@@ -116,7 +125,9 @@ if [[ -n "$PROJECT_NAME" ]]; then
     info "Project: ${BOLD}${PROJECT_NAME}${NC}"
 fi
 if [[ "$UPGRADE" == true ]]; then
-    info "Mode:    ${BOLD}Upgrade${NC}"
+    info "Mode:    ${BOLD}${YELLOW}Upgrade${NC} (existing installation will be backed up)"
+else
+    info "Mode:    ${BOLD}${CYAN}Fresh install${NC}"
 fi
 echo ""
 
@@ -676,9 +687,15 @@ fi
 # Summary
 # --------------------------------------------------------------------------
 echo ""
-echo -e "${BOLD}${GREEN}================================================${NC}"
-echo -e "${BOLD}${GREEN}  AEGIS v${VERSION} Installation Complete!${NC}"
-echo -e "${BOLD}${GREEN}================================================${NC}"
+if [[ "$UPGRADE" == true ]]; then
+    COMPLETION_LABEL="Upgrade Complete!"
+else
+    COMPLETION_LABEL="Installation Complete!"
+fi
+echo -e "${BOLD}${GREEN}╔══════════════════════════════════════════════╗${NC}"
+echo -e "${BOLD}${GREEN}║  🛡️   A E G I S   v${VERSION}                       ║${NC}"
+echo -e "${BOLD}${GREEN}║      ${COMPLETION_LABEL}                       ║${NC}"
+echo -e "${BOLD}${GREEN}╚══════════════════════════════════════════════╝${NC}"
 echo ""
 echo -e "${BOLD}Profile:${NC}    ${PROFILE}"
 if [[ -n "$PROJECT_NAME" ]]; then

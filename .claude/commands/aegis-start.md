@@ -125,7 +125,7 @@ fi
 
 ```
 🛡️ ═══════════════════════════════════════════════════
-🛡️  AEGIS HQ v8.3 — Session Started
+🛡️  AEGIS HQ v9.0 — Session Started
 🛡️  "Context is King, Memory is Soul"
 🛡️ ═══════════════════════════════════════════════════
 
