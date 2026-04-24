@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 320" width="256" height="320" role="img" aria-label="AEGIS shield logo monochrome">
+  <title>AEGIS Shield (monochrome)</title>
+  <!-- Monochrome variant: uses currentColor; default black. Override via CSS: svg { color: #0c4a6e; } -->
+  <g fill="currentColor" stroke="currentColor">
+    <path d="M 32 48
+             Q 32 24 56 24
+             L 200 24
+             Q 224 24 224 48
+             L 224 176
+             Q 224 244 128 296
+             Q 32 244 32 176
+             Z"
+          fill="none"
+          stroke-width="8"
+          stroke-linejoin="round"/>
+    <path d="M 88 224 L 128 72 L 168 224"
+          fill="none"
+          stroke-width="14"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+    <line x1="102" y1="174" x2="154" y2="174"
+          stroke-width="12"
+          stroke-linecap="round"/>
+    <g>
+      <circle cx="128" cy="52"  r="5"/>
+      <circle cx="180" cy="74"  r="5"/>
+      <circle cx="206" cy="128" r="5"/>
+      <circle cx="194" cy="188" r="5"/>
+      <circle cx="128" cy="244" r="5"/>
+      <circle cx="62"  cy="188" r="5"/>
+      <circle cx="50"  cy="128" r="5"/>
+      <circle cx="76"  cy="74"  r="5"/>
+    </g>
+  </g>
+</svg>
