@@ -48,6 +48,15 @@ _No pending items. / ไม่มีคิวรอ._
 
 <!-- RESOLVED_START -->
 
+### [2026-04-24] IDENTITY — v9 roadmap complete -- what should AEGIS do next? / v9 roadmap เสร็จสมบูรณ์ -- AEGIS จะทำอะไรต่อ?
+
+- **EN**: AEGIS v9 in-repo roadmap is 100% complete (62/58pt shipped across 5 sprints). Three paths forward: (A) Open sprint-v9-06 for 11pt operational debt (flock atomicity, test-harness UX, policy-without-test audit, hook-governance ADR). (B) Pivot to SDK-adjacent prep (brain-tier architecture for v9-07/08/09 when SDK features land). (C) Start a new project/epic using the AEGIS framework on a real codebase. The framework is production-ready.
+- **TH**: AEGIS v9 in-repo roadmap เสร็จ 100% (62/58pt ส่งครบใน 5 sprints) มี 3 ทางเลือก: (A) เปิด sprint-v9-06 สำหรับ operational debt 11pt (B) เตรียม brain-tier architecture สำหรับ v9-07/08/09 (C) เริ่มโปรเจคใหม่โดยใช้ AEGIS framework บน codebase จริง Framework พร้อมใช้งานแล้ว
+- **Category**: Identity
+- **Raised by**: nick-fury
+- **Blocks**: Next sprint planning -- cannot open a sprint without knowing direction
+- **Raised**: 2026-04-24T05:18:21Z
+- **Resolved**: 2026-04-24T06:21:12Z — user replied A+B+C continuously -- execute all three in sequence autonomously (D-059)
 ### [2026-04-22] EXTERNAL — Apply MBP settings patch / Apply settings.json layer 2
 
 - **EN**: Run `bash tools/aegis-apply-mbp-guard.sh` between sessions to activate the `guard-ask-user` PreToolUse hook at the tool layer. Required because `guard-write.sh` blocks mid-session edits to `settings.json` (ADR-004).
