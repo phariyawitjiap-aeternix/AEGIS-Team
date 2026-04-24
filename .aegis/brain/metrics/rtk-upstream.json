@@ -1,0 +1,9 @@
+{
+  "issue": "rtk-ai/rtk#427",
+  "state": "closed",
+  "title": "The rtk proxy is summarizing the diff. Let me get the raw content   differently.",
+  "updated_at": "2026-04-03T06:42:28Z",
+  "labels": "bug,P2-important",
+  "last_checked": "2026-04-24T21:01:08Z",
+  "query_status": "success"
+}

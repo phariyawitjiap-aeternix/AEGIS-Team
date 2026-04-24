@@ -16,7 +16,7 @@ external dependencies (new SDK features, infra, migration calendar).
 
 ## Tally (update on every sprint close)
 
-_Last updated: 2026-04-24 · by: Nick Fury (sprint-v9-06 close · operational debt cleared)_
+_Last updated: 2026-04-25 · by: Nick Fury (sprint-v10-02 close · RTK readiness)_
 
 | Sprint | Points Selected | Points Done | Stretch Done | Status |
 |--------|-----------------|-------------|--------------|--------|
@@ -25,10 +25,11 @@ _Last updated: 2026-04-24 · by: Nick Fury (sprint-v9-06 close · operational de
 | sprint-v9-03 (visual layer) | 11 | 11 | 0 | CLOSED |
 | sprint-v9-04 (design gen + cleanup) | 10 | 14 | 0 | CLOSED (140%) |
 | sprint-v9-05 (FINAL-PUSH) | 13 | 13 | 0 | CLOSED (100%) |
-| sprint-v9-06 (operational debt) | 11 | 11 | 0 | **CLOSED (100%)** |
+| sprint-v9-06 (operational debt) | 11 | 11 | 0 | CLOSED (100%) |
 | **v9 in-repo total** | **69** | **73** | **0** | **100%** |
 | sprint-v10-01 (traceability wiki) | 13 | 13 | 0 | CLOSED (100%) |
-| **v10 in-repo total** | **13** | **13** | **0** | **100%** |
+| sprint-v10-02 (RTK readiness) | 5 | 5 | 0 | **CLOSED (100%)** |
+| **v10 in-repo total** | **18** | **18** | **0** | **100%** |
 
 ## Why delivered > denominator this sprint
 
