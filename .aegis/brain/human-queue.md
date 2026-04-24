@@ -39,15 +39,14 @@ Agent ตัวไหนอ่านไฟล์นี้ตรงก็ได�
 ## 🔔 Pending / รอดำเนินการ
 
 <!-- PENDING_START -->
-### [2026-04-24] EXTERNAL — Apply hook-path fix: anchor .claude/settings.json hooks to $CLAUDE_PROJECT_DIR / Apply hook-path fix: anchor hook ใน .claude/settings.json ให้ใช้ $CLAUDE_PROJECT_DIR
+_No pending items. / ไม่มีคิวรอ._
+<!-- PENDING_END -->
 
-- **EN**: Root cause of the recurring Stop hook error ('bash: .claude/hooks/run-with-flags.sh: No such file or directory'): hook commands in .claude/settings.json use RELATIVE paths. When a sub-agent or background process fires a hook from a cwd that is not the repo root, bash cannot resolve the path. Fix: close Claude Code, run 'bash tools/aegis-fix-hook-paths.sh', restart Claude Code. guard-write.sh blocks mid-session edits to settings.json (ADR-004), so this cannot run from inside the current session.
-- **TH**: สาเหตุของ Stop hook error ที่เกิดเรื่อยๆ: hook ใน .claude/settings.json ใช้ relative path. พอ sub-agent หรือ background process ยิง hook จาก cwd ที่ไม่ใช่ repo root, bash หาไฟล์ไม่เจอ. วิธีแก้: ปิด Claude Code, รัน 'bash tools/aegis-fix-hook-paths.sh', แล้วเปิดใหม่. guard-write.sh บล็อกการแก้ settings.json ระหว่างเซสชัน (ADR-004).
-- **Category**: External access
-- **Raised by**: main-agent
-- **Blocks**: Stop hooks silently failing every session; retro logging + false-ready detection degraded until fix applied
-- **Raised**: 2026-04-24T11:25:56Z
-- **Resolved**: _(pending)_
+---
+
+## ✅ Resolved / แก้ไขแล้ว
+
+<!-- RESOLVED_START -->
 
 ### [2026-04-24] EXTERNAL — Prune stale ~/.claude/tasks/aegis-shared-tasks/ once all AEGIS projects are migrated / ลบ ~/.claude/tasks/aegis-shared-tasks/ ที่ค้าง หลัง AEGIS projects ทั้งหมดย้ายเรียบร้อย
 
@@ -57,15 +56,16 @@ Agent ตัวไหนอ่านไฟล์นี้ตรงก็ได�
 - **Raised by**: main-agent
 - **Blocks**: Cross-project task ghosts will keep appearing in any project still reading from the shared list
 - **Raised**: 2026-04-24T12:06:03Z
-- **Resolved**: _(pending)_
-<!-- PENDING_END -->
+- **Resolved**: 2026-04-24T12:41:14Z — Directory already gone. All 5 projects migrated to aegis-tasks-<slug>/ isolation. No prune needed.
+### [2026-04-24] EXTERNAL — Apply hook-path fix: anchor .claude/settings.json hooks to $CLAUDE_PROJECT_DIR / Apply hook-path fix: anchor hook ใน .claude/settings.json ให้ใช้ $CLAUDE_PROJECT_DIR
 
----
-
-## ✅ Resolved / แก้ไขแล้ว
-
-<!-- RESOLVED_START -->
-
+- **EN**: Root cause of the recurring Stop hook error ('bash: .claude/hooks/run-with-flags.sh: No such file or directory'): hook commands in .claude/settings.json use RELATIVE paths. When a sub-agent or background process fires a hook from a cwd that is not the repo root, bash cannot resolve the path. Fix: close Claude Code, run 'bash tools/aegis-fix-hook-paths.sh', restart Claude Code. guard-write.sh blocks mid-session edits to settings.json (ADR-004), so this cannot run from inside the current session.
+- **TH**: สาเหตุของ Stop hook error ที่เกิดเรื่อยๆ: hook ใน .claude/settings.json ใช้ relative path. พอ sub-agent หรือ background process ยิง hook จาก cwd ที่ไม่ใช่ repo root, bash หาไฟล์ไม่เจอ. วิธีแก้: ปิด Claude Code, รัน 'bash tools/aegis-fix-hook-paths.sh', แล้วเปิดใหม่. guard-write.sh บล็อกการแก้ settings.json ระหว่างเซสชัน (ADR-004).
+- **Category**: External access
+- **Raised by**: main-agent
+- **Blocks**: Stop hooks silently failing every session; retro logging + false-ready detection degraded until fix applied
+- **Raised**: 2026-04-24T11:25:56Z
+- **Resolved**: 2026-04-24T12:41:14Z — Applied to all 5 AEGIS projects (AEGIS-Team self-fix + 4 upgraded via /aegis-upgrade). 0 relative-path hooks across all projects.
 ### [2026-04-24] IDENTITY — v9 roadmap complete -- what should AEGIS do next? / v9 roadmap เสร็จสมบูรณ์ -- AEGIS จะทำอะไรต่อ?
 
 - **EN**: AEGIS v9 in-repo roadmap is 100% complete (62/58pt shipped across 5 sprints). Three paths forward: (A) Open sprint-v9-06 for 11pt operational debt (flock atomicity, test-harness UX, policy-without-test audit, hook-governance ADR). (B) Pivot to SDK-adjacent prep (brain-tier architecture for v9-07/08/09 when SDK features land). (C) Start a new project/epic using the AEGIS framework on a real codebase. The framework is production-ready.

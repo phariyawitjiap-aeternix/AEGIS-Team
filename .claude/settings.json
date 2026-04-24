@@ -2,7 +2,7 @@
   "_README": "MBP-guard patch applied 2026-04-22. Identical to current .claude/settings.json plus a PreToolUse matcher on AskUserQuestion wired to guard-ask-user.sh. Apply BETWEEN sessions: cp tools/settings-mbp-guard.json .claude/settings.json. After apply, restart Claude Code. Backup first: cp .claude/settings.json .claude/settings.json.pre-mbp-backup",
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "CLAUDE_CODE_TASK_LIST_ID": "aegis-shared-tasks",
+    "CLAUDE_CODE_TASK_LIST_ID": "aegis-tasks-aegis-team",
     "AEGIS_HOOK_PROFILE": "standard"
   },
   "hooks": {
@@ -12,7 +12,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/run-with-flags.sh guard-bash .claude/hooks/guard-bash.sh"
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/run-with-flags.sh\" guard-bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-bash.sh\""
           }
         ]
       },
@@ -21,7 +21,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/run-with-flags.sh guard-write .claude/hooks/guard-write.sh"
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/run-with-flags.sh\" guard-write \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.sh\""
           }
         ]
       },
@@ -30,7 +30,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/run-with-flags.sh guard-ask-user .claude/hooks/guard-ask-user.sh"
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/run-with-flags.sh\" guard-ask-user \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-ask-user.sh\""
           }
         ]
       }
@@ -41,7 +41,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/run-with-flags.sh post-tool-use .claude/hooks/post-tool-use.sh"
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/run-with-flags.sh\" post-tool-use \"$CLAUDE_PROJECT_DIR/.claude/hooks/post-tool-use.sh\""
           }
         ]
       },
@@ -50,7 +50,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/run-with-flags.sh post-edit-accumulate .claude/hooks/post-edit-accumulate.sh"
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/run-with-flags.sh\" post-edit-accumulate \"$CLAUDE_PROJECT_DIR/.claude/hooks/post-edit-accumulate.sh\""
           }
         ]
       }
@@ -60,7 +60,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/run-with-flags.sh on-stop .claude/hooks/on-stop.sh"
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/run-with-flags.sh\" on-stop \"$CLAUDE_PROJECT_DIR/.claude/hooks/on-stop.sh\""
           }
         ]
       }
@@ -70,7 +70,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/session-start.sh"
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.sh\""
           }
         ]
       }

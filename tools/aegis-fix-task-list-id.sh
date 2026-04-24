@@ -65,6 +65,10 @@ else
 fi
 
 # ---------- Idempotency check ----------
+# We always rewrite if the current ID doesn't match the derived slug for THIS target.
+# This is important because install.sh copies the source's settings.json to every
+# target — so the target initially inherits the source's ID (e.g. aegis-tasks-aegis-team)
+# and must be rewritten to its own slug.
 CURRENT_ID=$(python3 -c "
 import json, sys
 with open(sys.argv[1]) as f: d = json.load(f)
@@ -73,12 +77,6 @@ print(d.get('env', {}).get('CLAUDE_CODE_TASK_LIST_ID', ''))
 
 if [[ "$CURRENT_ID" == "$NEW_ID" ]]; then
     log "✓ Task list ID already set to '$NEW_ID'. Nothing to do."
-    exit 0
-fi
-
-if [[ "$CURRENT_ID" != "aegis-shared-tasks" && "$CURRENT_ID" != "" && -z "$CUSTOM_ID" ]]; then
-    log "✓ Task list ID is '$CURRENT_ID' (not the shared literal). Leaving as-is."
-    log "  Pass --id $NEW_ID to force rewrite."
     exit 0
 fi
 
