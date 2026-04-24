@@ -73,6 +73,26 @@ Current:
 > Computed live by `tools/aegis-progress.sh` — this table is a human-readable
 > reflection. If the two disagree, the script is authoritative (re-run it).
 
+## v10 -- Framework Application (next phase)
+
+v9 is the terminal in-repo sprint series for AEGIS framework development.
+v10 marks the transition from "building the framework" to "applying the
+framework to real projects."
+
+**v10 scope** (tracked separately from v9 denominator):
+- Application Playbook published (`docs/AEGIS_APPLICATION_PLAYBOOK.md`) -- DONE
+- ADR-006 memory integration plan documented -- DONE
+- SDK readiness checker (`tools/aegis-sdk-readiness-check.sh`) -- DONE
+- Real-project application sprints (first AEGIS-powered project delivery)
+- Feedback loop: lessons from real usage feed back into framework improvements
+
+**v10 is open-ended**: unlike v9's fixed 69pt denominator, v10 sprints are
+demand-driven. Each real project that adopts AEGIS generates its own sprint
+series. The AEGIS-Team meta-repo tracks framework-level improvements only.
+
+**SDK-dependent items** (v9-07 through v9-15) activate when their SDK
+dependencies land. They become v10 sprint candidates at that point.
+
 ## Policies
 
 - **No silent aging**: if an item sits in TODO > 2 sprints, move to deferred WITH rationale, or escalate to Nick Fury for re-prioritization. Don't let it rot.

@@ -61,6 +61,9 @@ Default autonomy: L3 (Autonomous) with Nick Fury active
 
 > 17 legacy aliases exist as shims; see `.claude/references/command-chain.md` for the mapping.
 
+## Applying AEGIS to Other Projects
+See [`docs/AEGIS_APPLICATION_PLAYBOOK.md`](docs/AEGIS_APPLICATION_PLAYBOOK.md) for a step-by-step guide covering brain seeding, persona assembly, CLAUDE.md tailoring, BLOCK 0 bootstrap, and a greenfield React app walkthrough.
+
 ## Observability Helpers
 
 | Tool | Purpose |
