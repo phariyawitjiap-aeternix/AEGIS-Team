@@ -29,7 +29,7 @@ Key invariant: **the decision audit log must continue regardless of who's routin
 
 **When NOT to invoke**:
 - Long-running autonomous work with no human oversight window
-- Decisions that require Nick Fury's specific brain context (she holds state main agent doesn't)
+- Decisions that require Nick Fury's specific brain context (he holds state main agent doesn't)
 - Multi-agent parallel dispatch (main agent's sequential attention can't match Nick Fury's async dispatch)
 
 **Operational checklist when entering router mode**:

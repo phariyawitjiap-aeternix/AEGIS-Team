@@ -4,7 +4,7 @@
 # Appends one JSONL entry per decision to .aegis/brain/logs/decision-audit.log
 # and increments the judgment-fallback counter when source=judgment.
 #
-# Usage (Nick Fury calls this from her decision flow):
+# Usage (Nick Fury calls this from his decision flow):
 #   tools/aegis-log-decision.sh \
 #     --question "Which gitignore mode?" \
 #     --source "instinct:promoted" \
@@ -122,37 +122,49 @@ PYEOF
 echo "$ENTRY" >> "$LOG"
 
 # ── Update judgment-fallback counter if source=judgment ───────────────────
+# BP-LOW-02: Uses fcntl.flock for atomic read-modify-write on the counter
+# file. Portable across macOS (no flock(1)) and Linux. The lock file is
+# adjacent to the counter JSON to avoid /tmp permission issues.
 THRESHOLD_HIT=0
 if [[ "$SOURCE" == "judgment" ]]; then
     python3 - "$COUNTER" "$TS" "$SESSION_ID" <<'PYEOF'
-import json, sys, os
+import json, sys, os, fcntl
 path, ts, sid = sys.argv[1], sys.argv[2], sys.argv[3]
-try:
-    with open(path) as f:
-        state = json.load(f)
-except (FileNotFoundError, json.JSONDecodeError):
-    state = {
-        'session_id': sid,
-        'started_at': ts,
-        'judgment_count': 0,
-        'threshold': 3,
-        'auto_escalate_on_threshold': True,
-        'last_judgment_at': None,
-    }
-# New session -> reset counter
-if state.get('session_id') != sid:
-    state = {
-        'session_id': sid,
-        'started_at': ts,
-        'judgment_count': 0,
-        'threshold': 3,
-        'auto_escalate_on_threshold': True,
-        'last_judgment_at': None,
-    }
-state['judgment_count'] += 1
-state['last_judgment_at'] = ts
-with open(path, 'w') as f:
-    json.dump(state, f, indent=2)
+lock_path = path + ".lock"
+
+# Ensure parent directory exists
+os.makedirs(os.path.dirname(path), exist_ok=True)
+
+# Acquire exclusive lock for atomic read-modify-write
+with open(lock_path, 'w') as lock_fd:
+    fcntl.flock(lock_fd, fcntl.LOCK_EX)
+    try:
+        with open(path) as f:
+            state = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        state = {
+            'session_id': sid,
+            'started_at': ts,
+            'judgment_count': 0,
+            'threshold': 3,
+            'auto_escalate_on_threshold': True,
+            'last_judgment_at': None,
+        }
+    # New session -> reset counter
+    if state.get('session_id') != sid:
+        state = {
+            'session_id': sid,
+            'started_at': ts,
+            'judgment_count': 0,
+            'threshold': 3,
+            'auto_escalate_on_threshold': True,
+            'last_judgment_at': None,
+        }
+    state['judgment_count'] += 1
+    state['last_judgment_at'] = ts
+    with open(path, 'w') as f:
+        json.dump(state, f, indent=2)
+    # Lock released when lock_fd closes (end of with block)
 
 # Alert when threshold hit
 if state['judgment_count'] >= state['threshold']:

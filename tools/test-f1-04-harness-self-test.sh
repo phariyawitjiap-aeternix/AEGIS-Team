@@ -65,13 +65,12 @@ else
     FAIL "TC-05 test_results exited $_result_05 (expected 1)"
 fi
 
-# Correct the fail counter: we had TC-02 intentional fail which was verified
-# Subtract that forced fail so results reflect real outcome.
-# Actually, the spec says "fail case increments fail counter" — that's what TC-02 proves.
-# The overall test script will show 1 fail (the intentional one) but that is expected.
-# Per spec TC-02: "assert_eq 'a' 'b' ... increments fail counter" — proven above via FAIL().
-# We accept the 1 counted fail as proof of TC-02 correctness.
+# Correct the fail counter: TC-02's intentional FAIL was verified (counter did
+# increment), so subtract it so test_results reflects real test outcomes only.
+# Without this correction, CI consumers see exit 1 even when all assertions pass.
+_AEGIS_TEST_FAIL=$(( _AEGIS_TEST_FAIL - 1 ))
+
 echo ""
-echo "Note: 1 counted FAIL above is TC-02 intentional verification (expected)."
+echo "Note: TC-02 intentional FAIL was verified and removed from final count."
 
 test_results

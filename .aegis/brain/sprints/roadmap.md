@@ -16,7 +16,7 @@ external dependencies (new SDK features, infra, migration calendar).
 
 ## Tally (update on every sprint close)
 
-_Last updated: 2026-04-23 · by: main agent (sprint-v9-05 close · GENUINE 100%)_
+_Last updated: 2026-04-24 · by: Nick Fury (sprint-v9-06 close · operational debt cleared)_
 
 | Sprint | Points Selected | Points Done | Stretch Done | Status |
 |--------|-----------------|-------------|--------------|--------|
@@ -24,8 +24,9 @@ _Last updated: 2026-04-23 · by: main agent (sprint-v9-05 close · GENUINE 100%)
 | sprint-v9-02 (follow-ups) | 11 | 11 | 0 | CLOSED |
 | sprint-v9-03 (visual layer) | 11 | 11 | 0 | CLOSED |
 | sprint-v9-04 (design gen + cleanup) | 10 | 14 | 0 | CLOSED (140%) |
-| sprint-v9-05 (FINAL-PUSH) | 13 | 13 | 0 | **CLOSED (100%)** |
-| **v9 in-repo total** | **58** | **62** | **0** | **GENUINE 100%** |
+| sprint-v9-05 (FINAL-PUSH) | 13 | 13 | 0 | CLOSED (100%) |
+| sprint-v9-06 (operational debt) | 11 | 11 | 0 | **CLOSED (100%)** |
+| **v9 in-repo total** | **69** | **73** | **0** | **100%** |
 
 ## Why delivered > denominator this sprint
 
@@ -37,20 +38,17 @@ Net position: all identified in-repo work shipped, with no silent aging
 items. The 4pt "overrun" reflects scope realism — v9-04 expanded
 its intake rather than deferring Wasp Revival to v9-05.
 
-## Planned next (v9-06 — post-100% operational sprint)
+## v9-06 delivered (post-100% operational sprint)
 
-| ID | Title | Points | Source |
+All 5 items shipped in sprint-v9-06 (2026-04-24):
+
+| ID | Title | Points | Status |
 |----|-------|--------|--------|
-| BP-LOW-02 | aegis-log-decision.sh counter `flock` atomicity | 1 | v9-05 BP advisory |
-| F1-04-UX | test-harness-template intentional-FAIL exit-code UX | 1 | v9-05 retro |
-| S2-07 | Nick Fury real-loop validation harness | 3 | roadmap carry |
-| S2-10 | Policy-without-test audit tool (automated scan) | 3 | user-feedback-driven |
-| S2-11 | Hook-governance ADR (merge deferred cluster D) | 3 | DIST-01 deferred |
-
-v9-06 denominator: 11pt. Status: BACKLOG — not yet opened. These items do
-NOT count against the v9 100% number because they are post-100%
-operational debt (stability, not features) and follow-on scope surfaced
-during v9-05 reviews.
+| BP-LOW-02 | aegis-log-decision.sh counter flock atomicity | 1 | DONE |
+| F1-04-UX | test-harness-template intentional-FAIL exit-code UX | 1 | DONE |
+| S2-07 | Nick Fury real-loop validation harness | 3 | DONE |
+| S2-10 | Policy-without-test audit tool (automated scan) | 3 | DONE |
+| S2-11 | Hook-governance ADR (merge deferred cluster D) | 3 | DONE |
 
 ## Deferred (explicit — not counted in denominator)
 
@@ -65,11 +63,11 @@ Numerator   = delivered points (DONE across closed sprints)
 Remaining   = denominator − numerator
 
 Current:
-  Denominator = 13 + 11 + 11 + 10 + 13 = 58 pt
-  Numerator   = 13 + 11 + 11 + 14 + 13 = 62 pt (incl. 4pt stretch in v9-04)
-  Effective   = min(62, 58) = 58 / 58 = 100%
+  Denominator = 13 + 11 + 11 + 10 + 13 + 11 = 69 pt
+  Numerator   = 13 + 11 + 11 + 14 + 13 + 11 = 73 pt (incl. 4pt stretch in v9-04)
+  Effective   = min(73, 69) = 69 / 69 = 100%
 
-  Grand total = 100% (genuine, v9 in-repo scope)
+  Grand total = 100% (v9 in-repo scope, 6 sprints closed)
 ```
 
 > Computed live by `tools/aegis-progress.sh` — this table is a human-readable
