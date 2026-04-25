@@ -134,20 +134,30 @@ except Exception as ex:
     if [[ "$MBP_VIOLATION" == "violation" ]]; then
         if [[ -f "$LOG" ]]; then
             TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || echo "unknown")
-            echo "[${TS}] [HOOK:on-stop] MBP_VIOLATION — last response ended with option menu + open question (Golden Rule #7)" >> "$LOG" 2>/dev/null || true
+            echo "[${TS}] [HOOK:on-stop] MBP_VIOLATION_BLOCKED — option menu detected, hook returning decision=block (Golden Rule #7)" >> "$LOG" 2>/dev/null || true
         fi
-        echo ""
-        echo "┌─────────────────────────────────────────────────────────────┐"
-        echo "│  ⚠️  AEGIS MBP CHECK — Golden Rule #7 violation detected     │"
-        echo "│                                                             │"
-        echo "│  The last response ended with an option menu (A/B/C) +      │"
-        echo "│  an open question to you. Per Master Brain Protocol,        │"
-        echo "│  decisions should route through Nick Fury via               │"
-        echo "│  QUESTION_TO_BRAIN — not handed back to the human.          │"
-        echo "│                                                             │"
-        echo "│  See: .claude/references/context-rules.md §MBP              │"
-        echo "│  Logged to: .aegis/brain/logs/activity.log                  │"
-        echo "└─────────────────────────────────────────────────────────────┘"
+
+        # HARD BLOCK: return decision=block JSON to force the agent to retry
+        # without the option menu. The current response stays visible to the user
+        # but the agent immediately produces a corrective response per the
+        # feedback in the "reason" field. This is the Stop-hook intercept pattern
+        # documented in Claude Code hooks spec.
+        #
+        # Skip if AEGIS_MBP_BLOCK_DISABLE=1 (escape hatch for legitimate menus,
+        # e.g., explicit slash command output that needs A/B/C semantics).
+        # Also skip if stop_hook_active is true (prevent block loop).
+        if [[ "${AEGIS_MBP_BLOCK_DISABLE:-0}" == "1" ]] || [[ "$STOP_HOOK_ACTIVE" == "True" ]]; then
+            echo "" >&2
+            echo "⚠️  AEGIS MBP CHECK — option menu detected (logged, NOT blocked: AEGIS_MBP_BLOCK_DISABLE=1 or stop_hook_active)" >&2
+        else
+            cat <<'BLOCK_JSON'
+{
+  "decision": "block",
+  "reason": "AEGIS MBP Golden Rule #7 violation — your last response ended with an option menu (A/B/C/numbered list) PLUS an open question to the human. This is the #1 observed MBP failure pattern. You MUST NOT ask the human to pick from a menu. Instead, do ONE of these and produce a NEW response that takes action: (1) Decide autonomously per the Decision Matrix and execute the chosen path. (2) Route the question through Nick Fury via QUESTION_TO_BRAIN — he scans state and decides. (3) If it is genuinely Identity / Irreversible-scope / External-access / Explicit-approval-gate, write to .aegis/brain/human-queue.md via tools/aegis-queue-human.sh and CONTINUE with everything else you can do. The current option-menu response was already shown to the user; produce a corrective response that picks one path and acts. To bypass this block for a legitimate menu (rare — e.g., literal slash-command output), set AEGIS_MBP_BLOCK_DISABLE=1."
+}
+BLOCK_JSON
+            exit 0
+        fi
     fi
 
     # ── Golden Rule #4: false-ready guard ─────────────────────────────────────
