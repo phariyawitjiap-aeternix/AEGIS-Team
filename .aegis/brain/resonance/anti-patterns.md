@@ -175,3 +175,58 @@
 **Cost**: Loss of trust when users see 2 folders despite "single folder" claim.
 
 **Fix**: Truthful messaging: "Consolidate to .aegis/, with .claude/ remaining at root per Claude Code requirement". See ADR-007 honest framing.
+
+---
+
+## A-011: Prose-Only Integration Points in Specs
+
+**Evidence**:
+- Sprint v9-05: F1-05 Loki integration described in prose but NOT in Tool Deliverables Matrix
+- Spider-Man self-check used matrix as checklist, shipped without touching loki.md
+- BP round-1 caught it as MEDIUM-01 only via spec-to-file cross-check
+- Feature would have shipped non-functional without BP review
+
+**Anti-pattern**: Describing integration points ("integrate with X", "add to Y", "call from Z") in prose paragraphs instead of structured tables/matrices in specs.
+
+**Root cause**: Prose feels natural for describing relationships, but prose hides actionable work inside sentences that implementers skim.
+
+**Cost**: Deliverables ship "complete" but non-functional -- the tool exists but no agent invokes it. Silent omission.
+
+**Fix**: Every spec claiming integration with existing files MUST include a "Cross-Cutting Touchpoints" section with structured table: Deliverable | Integration Target | Required Change. Prose alone is a known hiding place.
+
+---
+
+## A-012: Relative Paths in Hook Configurations
+
+**Evidence**:
+- Recurring Stop hook error across all AEGIS projects: "bash: .claude/hooks/run-with-flags.sh: No such file or directory"
+- Root cause: hook commands in .claude/settings.json used RELATIVE paths
+- Sub-agents and background processes fire hooks from arbitrary cwd, not repo root
+- Fixed across 5 projects (PRs #67, #68) by anchoring to $CLAUDE_PROJECT_DIR
+- Same class as cross-project namespace isolation (P-012)
+
+**Anti-pattern**: Using relative paths in hook command configurations, assuming hooks always execute from the repo root.
+
+**Root cause**: Hook commands work during manual testing (developer is in repo root). Fails silently when sub-agents or background processes have different cwd.
+
+**Cost**: Hooks silently fail, degrading retro logging, false-ready detection, and session-end safety checks.
+
+**Fix**: Anchor ALL hook commands to `$CLAUDE_PROJECT_DIR` or absolute paths. Auto-applied during `/aegis-upgrade`. Detection: grep for relative paths in settings.json hooks.
+
+---
+
+## A-013: Stale Heartbeat During Main-Agent-as-Router
+
+**Evidence**:
+- Sprint v9-05: Nick Fury heartbeat stale for 7 hours while main agent routed decisions
+- Sprint v10-02 session 2: heartbeat never refreshed across 7 PRs
+- TinMan health checks would report brain as unhealthy, creating false alerts
+- Pattern repeats whenever main-agent-as-router substitutes for Nick Fury process
+
+**Anti-pattern**: Running the main-agent-as-router pattern (Captain America substituting for Nick Fury) without refreshing the heartbeat signal.
+
+**Root cause**: Heartbeat is tied to Nick Fury's process loop, not to the decision-routing function. When the function moves to a different agent, the signal goes stale.
+
+**Cost**: False health alerts from TinMan; observability gap; session-end hooks may trigger stale-brain warnings.
+
+**Fix**: If main-agent-as-router exceeds 3 PRs or 30 minutes, manually refresh heartbeat. Future: decouple heartbeat from agent identity, tie it to decision-routing activity.
