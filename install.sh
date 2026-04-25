@@ -552,22 +552,34 @@ fi
 # Deliver the AEGIS upgrade toolkit to the target (so they can self-upgrade)
 # --------------------------------------------------------------------------
 mkdir -p "${TARGET_DIR}/tools"
+# Tools advertised in CLAUDE.md must be shipped to consumer projects.
+# Splits into two arrays so the failure mode (missing source file) is
+# logged with the right severity per category.
 upgrade_toolkit=(
     "aegis-upgrade.sh"
     "aegis-fix-hook-paths.sh"
     "aegis-fix-task-list-id.sh"
 )
+runtime_helpers=(
+    "aegis-team-chat.sh"      # Inter-agent dialogue logging (DISPATCH/REPORT/VERDICT)
+    "aegis-progress.sh"        # Grand-total roadmap progress (--bar / --json)
+    "aegis-log-decision.sh"    # Nick Fury decision-audit logger (S2-02)
+    "aegis-queue-human.sh"     # Append items to human-queue.md
+    "aegis-queue-resolve.sh"   # Resolve items in human-queue.md
+)
 delivered_tools=0
-for tool in "${upgrade_toolkit[@]}"; do
+for tool in "${upgrade_toolkit[@]}" "${runtime_helpers[@]}"; do
     src="${SCRIPT_DIR}/tools/${tool}"
     if [[ -f "$src" ]]; then
         cp "$src" "${TARGET_DIR}/tools/${tool}"
         chmod +x "${TARGET_DIR}/tools/${tool}"
         delivered_tools=$((delivered_tools + 1))
+    else
+        warn "tools/${tool} missing from source — not delivered"
     fi
 done
 if [[ "$delivered_tools" -gt 0 ]]; then
-    success "${delivered_tools} upgrade tools delivered (aegis-upgrade.sh, aegis-fix-hook-paths.sh)"
+    success "${delivered_tools} helper tools delivered (upgrade toolkit + CLAUDE.md-advertised runtime helpers)"
 fi
 
 # --------------------------------------------------------------------------
