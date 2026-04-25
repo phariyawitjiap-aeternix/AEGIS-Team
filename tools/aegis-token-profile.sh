@@ -31,18 +31,123 @@ OUTPUT_FORMAT="text"
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --summary)  MODE="summary"; shift ;;
-        --date)     SUMMARY_DATE="$2"; shift 2 ;;
-        --json)     OUTPUT_FORMAT="json"; shift ;;
+        --summary)    MODE="summary"; shift ;;
+        --date)       SUMMARY_DATE="$2"; shift 2 ;;
+        --json)       OUTPUT_FORMAT="json"; shift ;;
+        --install)    MODE="install"; shift ;;
+        --uninstall)  MODE="uninstall"; shift ;;
         --help|-h)
-            echo "Usage:"
-            echo "  echo '{tool_event_json}' | aegis-token-profile.sh    # hook mode"
-            echo "  aegis-token-profile.sh --summary [--date YYYY-MM-DD] [--json]"
+            cat <<USAGE
+Usage:
+  echo '{tool_event_json}' | aegis-token-profile.sh    # hook mode (called by PostToolUse)
+  aegis-token-profile.sh --summary [--date YYYY-MM-DD] [--json]
+  aegis-token-profile.sh --install        # wire into .claude/settings.json (between sessions)
+  aegis-token-profile.sh --uninstall      # remove the hook entry
+
+Run --install BETWEEN sessions only. guard-write.sh blocks mid-session
+edits to settings.json per ADR-004.
+USAGE
             exit 0
             ;;
         *) shift ;;
     esac
 done
+
+# ── INSTALL / UNINSTALL MODE (between-sessions) ────────────────────────────
+
+settings_install() {
+    local SETTINGS="$REPO_ROOT/.claude/settings.json"
+    [[ -f "$SETTINGS" ]] || { echo "ERROR: $SETTINGS not found" >&2; exit 1; }
+    if pgrep -f "claude.*code\|claude-code" >/dev/null 2>&1; then
+        echo "⚠️  Claude Code appears to be running. Close it first (guard-write.sh blocks mid-session settings.json edits per ADR-004)." >&2
+        read -rp "    Continue anyway? [y/N] " ans
+        [[ "$ans" == "y" || "$ans" == "Y" ]] || exit 1
+    fi
+    local TS=$(date -u +"%Y-%m-%dT%H%M%SZ")
+    local BACKUP="$SETTINGS.pre-token-profile-install-$TS"
+    cp "$SETTINGS" "$BACKUP"
+    echo "📦 Backup: $BACKUP"
+
+    python3 - "$SETTINGS" <<'PYEOF'
+import json, sys
+path = sys.argv[1]
+with open(path) as f:
+    data = json.load(f)
+data.setdefault("hooks", {}).setdefault("PostToolUse", [])
+
+# Skip if already installed
+for entry in data["hooks"]["PostToolUse"]:
+    for h in entry.get("hooks", []):
+        if "aegis-token-profile.sh" in h.get("command", ""):
+            print("✓ Token profile hook already installed.")
+            sys.exit(0)
+
+data["hooks"]["PostToolUse"].append({
+    "matcher": ".*",
+    "hooks": [{
+        "type": "command",
+        "command": 'bash "$CLAUDE_PROJECT_DIR/tools/aegis-token-profile.sh"'
+    }]
+})
+with open(path, "w") as f:
+    json.dump(data, f, indent=2)
+    f.write("\n")
+print("✏️  Added PostToolUse hook for aegis-token-profile.sh (matcher='.*', anchored to $CLAUDE_PROJECT_DIR)")
+PYEOF
+
+    if ! python3 -c "import json, sys; json.load(open(sys.argv[1]))" "$SETTINGS" 2>/dev/null; then
+        echo "❌ Validation FAILED — restoring backup" >&2
+        cp "$BACKUP" "$SETTINGS"
+        exit 2
+    fi
+    echo ""
+    echo "✅ Token profile hook installed."
+    echo "   Next: restart Claude Code, then use AEGIS normally for ≥3 sessions."
+    echo "   Then: bash tools/aegis-token-profile.sh --summary"
+    echo ""
+    echo "   Rollback: bash tools/aegis-token-profile.sh --uninstall"
+    echo "   (or:      cp '$BACKUP' '$SETTINGS')"
+}
+
+settings_uninstall() {
+    local SETTINGS="$REPO_ROOT/.claude/settings.json"
+    [[ -f "$SETTINGS" ]] || { echo "ERROR: $SETTINGS not found" >&2; exit 1; }
+    local TS=$(date -u +"%Y-%m-%dT%H%M%SZ")
+    local BACKUP="$SETTINGS.pre-token-profile-uninstall-$TS"
+    cp "$SETTINGS" "$BACKUP"
+    echo "📦 Backup: $BACKUP"
+
+    python3 - "$SETTINGS" <<'PYEOF'
+import json, sys
+path = sys.argv[1]
+with open(path) as f:
+    data = json.load(f)
+removed = 0
+new_post = []
+for entry in data.get("hooks", {}).get("PostToolUse", []):
+    new_hooks = [h for h in entry.get("hooks", []) if "aegis-token-profile.sh" not in h.get("command", "")]
+    if len(new_hooks) != len(entry.get("hooks", [])):
+        removed += len(entry.get("hooks", [])) - len(new_hooks)
+    if new_hooks:
+        entry["hooks"] = new_hooks
+        new_post.append(entry)
+data.setdefault("hooks", {})["PostToolUse"] = new_post
+with open(path, "w") as f:
+    json.dump(data, f, indent=2)
+    f.write("\n")
+print(f"✏️  Removed {removed} aegis-token-profile.sh hook entr(ies)")
+PYEOF
+
+    if ! python3 -c "import json, sys; json.load(open(sys.argv[1]))" "$SETTINGS" 2>/dev/null; then
+        echo "❌ Validation FAILED — restoring backup" >&2
+        cp "$BACKUP" "$SETTINGS"
+        exit 2
+    fi
+    echo "✅ Token profile hook removed. Restart Claude Code."
+}
+
+if [[ "$MODE" == "install" ]]; then settings_install; exit 0; fi
+if [[ "$MODE" == "uninstall" ]]; then settings_uninstall; exit 0; fi
 
 # ── Helper: estimate tokens from character count ────────────────────────────
 
