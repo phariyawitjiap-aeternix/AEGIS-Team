@@ -39,7 +39,15 @@ Agent ตัวไหนอ่านไฟล์นี้ตรงก็ได�
 ## 🔔 Pending / รอดำเนินการ
 
 <!-- PENDING_START -->
-_No pending items. / ไม่มีคิวรอ._
+### [2026-04-25] EXTERNAL — Apply token-profile hook installer (sprint v10-02 Story A activation) / Apply token-profile hook installer (เปิดใช้งาน Story A ของ v10-02)
+
+- **EN**: Sprint v10-02 shipped tools/aegis-token-profile.sh with --install flag. Wires a PostToolUse hook that records every tool call's category + token estimate to .aegis/brain/metrics/token-profile-<date>.jsonl. Apply between sessions (guard-write blocks mid-session per ADR-004): close Claude Code, run 'bash tools/aegis-token-profile.sh --install', restart. Then use AEGIS normally for >=3 sessions and run 'bash tools/aegis-token-profile.sh --summary' to answer Loki's killshot question (Bash vs Read/Grep/Glob token breakdown). This is a passive, no-risk measurement step. Rollback: 'bash tools/aegis-token-profile.sh --uninstall'.
+- **TH**: Sprint v10-02 ส่ง tools/aegis-token-profile.sh พร้อม --install flag แล้ว. เพิ่ม PostToolUse hook ที่บันทึก category + token estimate ทุก tool call ลง .aegis/brain/metrics/token-profile-<date>.jsonl. ติดตั้งระหว่างเซสชัน (guard-write บล็อกระหว่างเซสชัน per ADR-004): ปิด Claude Code, รัน 'bash tools/aegis-token-profile.sh --install', เปิดใหม่. ใช้งาน AEGIS ปกติ >=3 sessions แล้วรัน 'bash tools/aegis-token-profile.sh --summary' เพื่อตอบคำถาม killshot ของ Loki. Passive measurement, ไม่มี risk. Rollback ง่าย: 'bash tools/aegis-token-profile.sh --uninstall'.
+- **Category**: External access
+- **Raised by**: main-agent
+- **Blocks**: Sprint v10-02 Story A is built but not collecting data; Loki's killshot question (Bash vs Read/Grep/Glob %) cannot be answered until hook is active for ≥3 real sessions
+- **Raised**: 2026-04-25T05:39:20Z
+- **Resolved**: _(pending)_
 <!-- PENDING_END -->
 
 ---
