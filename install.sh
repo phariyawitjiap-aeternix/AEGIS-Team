@@ -288,6 +288,7 @@ directories=(
     "${TARGET_DIR}/.claude"
     "${TARGET_DIR}/.claude/agents"
     "${TARGET_DIR}/.claude/commands"
+    "${TARGET_DIR}/.claude/hooks"
     "${TARGET_DIR}/.claude/references"
     "${TARGET_DIR}/.claude/teams"
     "${TARGET_DIR}/docs"
@@ -475,6 +476,7 @@ copy_dir_contents() {
 
 copy_dir_contents "${SCRIPT_DIR}/.claude/agents"     "${TARGET_DIR}/.claude/agents"     "agent definitions"
 copy_dir_contents "${SCRIPT_DIR}/.claude/commands"    "${TARGET_DIR}/.claude/commands"   "commands"
+copy_dir_contents "${SCRIPT_DIR}/.claude/hooks"       "${TARGET_DIR}/.claude/hooks"      "hook scripts"
 copy_dir_contents "${SCRIPT_DIR}/.claude/references"  "${TARGET_DIR}/.claude/references" "reference files"
 copy_dir_contents "${SCRIPT_DIR}/.claude/teams"       "${TARGET_DIR}/.claude/teams"      "team configs"
 
