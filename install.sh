@@ -336,12 +336,21 @@ fi
 # --------------------------------------------------------------------------
 info "Creating .gitignore..."
 
-cat > "${TARGET_DIR}/.gitignore" <<'GITIGNORE'
-# AEGIS Framework
+# AEGIS section is bracketed by markers so we can update it idempotently
+# without nuking project-specific rules above/below.
+AEGIS_GITIGNORE_BLOCK=$(cat <<'GITIGNORE'
+# >>> AEGIS Framework (managed by install.sh — do not edit between markers) >>>
 _aegis-output/*.tmp
 _aegis-output/.cache/
-*.log
+_aegis-backup/
+_aegis-backup-*/
+.aegis/brain/logs/*.log
 !.aegis/brain/logs/activity.log
+.aegis/brain/state/
+.claude/worktrees/
+.claude/settings.json.v8-backup
+.claude/settings.json.pre-task-id-fix-*
+.claude/hooks/*.log
 
 # Environment & Secrets
 .env
@@ -350,6 +359,26 @@ _aegis-output/.cache/
 *.pem
 *secret*
 credentials.*
+# <<< AEGIS Framework <<<
+GITIGNORE
+)
+
+if [[ -f "${TARGET_DIR}/.gitignore" ]]; then
+    # Existing project .gitignore — preserve it. Replace any prior AEGIS
+    # block (between markers) or append if no block exists.
+    if grep -q "^# >>> AEGIS Framework" "${TARGET_DIR}/.gitignore"; then
+        # Remove old block and append fresh one
+        awk '/^# >>> AEGIS Framework/,/^# <<< AEGIS Framework <<<$/ {next} {print}' \
+            "${TARGET_DIR}/.gitignore" > "${TARGET_DIR}/.gitignore.tmp"
+        mv "${TARGET_DIR}/.gitignore.tmp" "${TARGET_DIR}/.gitignore"
+    fi
+    # Append AEGIS block (with leading blank line for readability)
+    printf "\n%s\n" "${AEGIS_GITIGNORE_BLOCK}" >> "${TARGET_DIR}/.gitignore"
+    success ".gitignore updated (AEGIS block managed; project rules preserved)"
+else
+    # Fresh install — write a complete .gitignore with AEGIS + sensible defaults
+    cat > "${TARGET_DIR}/.gitignore" <<GITIGNORE_FRESH
+${AEGIS_GITIGNORE_BLOCK}
 
 # OS
 .DS_Store
@@ -374,9 +403,9 @@ dist/
 build/
 *.o
 *.so
-GITIGNORE
-
-success ".gitignore created"
+GITIGNORE_FRESH
+    success ".gitignore created"
+fi
 
 # --------------------------------------------------------------------------
 # Brain Resonance Files
@@ -431,16 +460,23 @@ success "Brain resonance files created"
 # --------------------------------------------------------------------------
 # Copy CLAUDE*.md files from source
 # --------------------------------------------------------------------------
-info "Installing CLAUDE*.md files..."
+info "Installing CLAUDE*.md + PROJECT_INDEX.md..."
 
-claude_files=("CLAUDE.md" "CLAUDE_safety.md" "CLAUDE_agents.md" "CLAUDE_skills.md" "CLAUDE_lessons.md")
+# CLAUDE_lessons.md and PROJECT_INDEX.md are user-managed (lessons accumulated
+# over time, project index curated per-project) — preserve on upgrade if present.
+claude_files=("CLAUDE.md" "CLAUDE_safety.md" "CLAUDE_agents.md" "CLAUDE_skills.md" "CLAUDE_lessons.md" "PROJECT_INDEX.md")
+preserve_on_upgrade=("CLAUDE_lessons.md" "PROJECT_INDEX.md")
 
 for f in "${claude_files[@]}"; do
     src="${SCRIPT_DIR}/${f}"
     dst="${TARGET_DIR}/${f}"
     if [[ -f "$src" ]]; then
-        if [[ "$UPGRADE" == true && "$f" == "CLAUDE_lessons.md" && -f "$dst" ]]; then
-            info "Preserving ${f} (user patterns — backup has copy)"
+        is_preserved=false
+        for p in "${preserve_on_upgrade[@]}"; do
+            [[ "$f" == "$p" ]] && is_preserved=true && break
+        done
+        if [[ "$UPGRADE" == true && "$is_preserved" == true && -f "$dst" ]]; then
+            info "Preserving ${f} (user-managed — backup has copy)"
         else
             cp "$src" "$dst"
         fi
@@ -642,17 +678,23 @@ success "${iso_count} ISO 29110 document templates installed"
 # --------------------------------------------------------------------------
 # Initial Activity Log + Welcome Data (new installs only)
 # --------------------------------------------------------------------------
-if [[ "$UPGRADE" != true ]]; then
-    info "Creating initial activity log and welcome data..."
-
-    # Activity log with install entry
+# activity.log: required by brain protocol — create on fresh install,
+# and on upgrade if it's missing (was a bug pre-2026-04-25: upgrade
+# branch never created it, leaving consumer projects with the file
+# referenced in CLAUDE.md but not on disk).
+if [[ ! -f "${TARGET_DIR}/.aegis/brain/logs/activity.log" ]]; then
+    info "Seeding activity.log..."
     cat > "${TARGET_DIR}/.aegis/brain/logs/activity.log" <<ACTLOG
 # AEGIS Activity Log — Append Only
 # Format: [ISO-8601] [AGENT_EMOJI] [STATUS] — [message]
 # ---
-[$(date +%Y-%m-%dT%H:%M:%S)] 🧬 INSTALL | version=${VERSION} | profile=${PROFILE} | project=${PROJECT_NAME:-"unnamed"}
+[$(date +%Y-%m-%dT%H:%M:%S)] 🧬 INSTALL | version=${VERSION} | profile=${PROFILE} | project=${PROJECT_NAME:-"unnamed"} | upgrade=${UPGRADE}
 [$(date +%Y-%m-%dT%H:%M:%S)] 🧬 SESSION_READY | Run /aegis-start to activate Mother Brain
 ACTLOG
+fi
+
+if [[ "$UPGRADE" != true ]]; then
+    info "Creating welcome data (heartbeat, sprint-0)..."
 
     # Heartbeat log so dashboard shows "installed" not "dead"
     echo "[$(date '+%Y-%m-%d %H:%M')] PULSE | status=installed | agents=0 | context=0%" \
