@@ -121,9 +121,24 @@ try:
         r'(what|which|how).{0,40}(do you|would you|should).{0,60}\?',
         r'(let me know|tell me|your call)',
     ]
+    # SOFT-ASK patterns (v10-04): catches the JingJai-style stops where the
+    # agent hands the next action back to the human as a recommendation
+    # instead of executing it or routing through Nick Fury. These fire on
+    # their own (no need for an option-menu pattern alongside).
+    soft_ask_patterns = [
+        r'recommend\s+(running\s+)?[\\\\/]?aegis-',
+        r'recommend\s+\w+\s+after\s+you',
+        r'natural\s+(continuation|next\s+step|next\s+sprint)',
+        r'next\s+chain\s+step\s*:',
+        r'(sprint\s+\d+\s+planning|planning\s+(is|would\s+be))\s+the\s+natural',
+        r'after\s+you\s+(decide|confirm|approve|review)\s+(on\s+)?the',
+    ]
     has_option = any(re.search(p, tail, re.IGNORECASE|re.MULTILINE) for p in option_patterns)
     has_open = any(re.search(p, tail.strip(), re.IGNORECASE|re.MULTILINE) for p in open_patterns)
-    if has_option and has_open:
+    has_soft_ask = any(re.search(p, tail, re.IGNORECASE|re.MULTILINE) for p in soft_ask_patterns)
+    # Two ways to fire: classic A/B menu + open question, OR soft-ask pattern alone
+    # (soft-ask is by itself a violation: rec + wait without execution).
+    if (has_option and has_open) or has_soft_ask:
         print('violation')
     else:
         print('clean')
