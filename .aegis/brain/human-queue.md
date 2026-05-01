@@ -48,6 +48,16 @@ Agent ตัวไหนอ่านไฟล์นี้ตรงก็ได�
 - **Blocks**: Sprint v10-02 Story A is built but not collecting data; Loki's killshot question (Bash vs Read/Grep/Glob %) cannot be answered until hook is active for ≥3 real sessions
 - **Raised**: 2026-04-25T05:39:20Z
 - **Resolved**: _(pending)_
+
+### [2026-05-01] EXTERNAL — Add Bash(./tests/*) to .claude/settings.json allowlist / เพิ่ม Bash(./tests/*) ใน allowlist ของ .claude/settings.json
+
+- **EN**: Sprint v10-05 Story E moved test harnesses from tools/ to tests/. settings.json allowlist still has 'Bash(./tools/*)' but no 'Bash(./tests/*)'. Without this entry, agents may hit permission prompts when running tests via the new path. guard-write blocks mid-session settings.json edits (ADR-004), so this requires between-session apply: add a single line '"Bash(./tests/*)"' to the permissions.allow array in .claude/settings.json after the existing './tools/*' entry.
+- **TH**: Sprint v10-05 Story E ย้าย test harnesses จาก tools/ ไป tests/. settings.json allowlist ยังมี 'Bash(./tools/*)' แต่ยังไม่มี 'Bash(./tests/*)'. ถ้าไม่เพิ่ม, agent อาจจะติด permission prompt ตอนรัน test ผ่าน path ใหม่. guard-write block การแก้ settings.json ระหว่างเซสชัน (ADR-004), ต้องเพิ่มระหว่างเซสชัน: เพิ่มบรรทัด '"Bash(./tests/*)"' ใน permissions.allow array หลัง entry './tools/*' ที่มีอยู่แล้ว.
+- **Category**: External access
+- **Raised by**: main-agent
+- **Blocks**: Test runs from agent context may hit permission prompts until applied
+- **Raised**: 2026-05-01T07:52:47Z
+- **Resolved**: _(pending)_
 <!-- PENDING_END -->
 
 ---
