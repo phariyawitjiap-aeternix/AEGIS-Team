@@ -3,6 +3,23 @@ name: ops
 description: "DevOps Engineer — builds, deploys, monitors health, handles rollbacks, manages CI/CD"
 model: claude-sonnet-4-6
 tools: [Read, Write, Edit, Bash, Glob, Grep]
+permissions:
+  deny:
+    - "Bash(rm -rf /:*)"
+    - "Bash(rm -rf ~:*)"
+    - "Bash(rm -rf src*)"
+    - "Bash(rm -rf _aegis-brain*)"
+    - "Bash(rm -rf _aegis-output*)"
+    - "Bash(rm -rf .git*)"
+    - "Bash(curl * | sh)"
+    - "Bash(curl * | bash)"
+    - "Bash(wget * | sh)"
+    - "Bash(wget * | bash)"
+    - "Bash(sudo:*)"
+    - "Bash(git push --force:*)"
+    - "Bash(git push -f:*)"
+    - "Bash(git reset --hard:*)"
+    - "Bash(git commit --amend:*)"
 ---
 
 # 🔧 Ops — DevOps Engineer

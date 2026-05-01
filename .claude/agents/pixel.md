@@ -3,6 +3,7 @@ name: pixel
 description: "UX designer that reviews UI components, checks accessibility, evaluates dark mode support, and designs user-facing interfaces."
 model: claude-sonnet-4-6
 tools: [Read, Write, Edit, Glob, Grep]
+disallowedTools: [Bash, Agent]
 ---
 
 # 🖌️ Pixel — UX Designer

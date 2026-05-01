@@ -7,6 +7,49 @@ disallowedTools: [Write, Edit, Agent]
 triggers:
   en: ["run tests", "test results", "execute tests", "test runner"]
   th: ["รันเทสต์", "ผลเทสต์"]
+permissions:
+  allow:
+    - "Bash(npm test:*)"
+    - "Bash(npm run test:*)"
+    - "Bash(npx jest:*)"
+    - "Bash(npx vitest:*)"
+    - "Bash(npx playwright:*)"
+    - "Bash(jest:*)"
+    - "Bash(vitest:*)"
+    - "Bash(pytest:*)"
+    - "Bash(python -m pytest:*)"
+    - "Bash(go test:*)"
+    - "Bash(cargo test:*)"
+    - "Bash(swift test:*)"
+    - "Bash(git log:*)"
+    - "Bash(git diff:*)"
+    - "Bash(git status:*)"
+    - "Bash(cat:*)"
+    - "Bash(ls:*)"
+    - "Bash(find:*)"
+    - "Bash(grep:*)"
+    - "Bash(rg:*)"
+    - "Bash(head:*)"
+    - "Bash(tail:*)"
+    - "Bash(wc:*)"
+    - "Bash(jq:*)"
+    - "Bash(diff:*)"
+    - "Bash(pwd:*)"
+    - "Bash(test:*)"
+    - "Bash(echo:*)"
+    - "Bash(date:*)"
+  deny:
+    - "Bash(rm:*)"
+    - "Bash(mv:*)"
+    - "Bash(chmod:*)"
+    - "Bash(curl:*)"
+    - "Bash(wget:*)"
+    - "Bash(npm install:*)"
+    - "Bash(pip install:*)"
+    - "Bash(git push:*)"
+    - "Bash(git commit:*)"
+    - "Bash(git reset:*)"
+    - "Bash(git checkout:*)"
 ---
 
 # Probe — QA Executor

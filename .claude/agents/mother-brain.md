@@ -3,6 +3,24 @@ name: mother-brain
 description: "Autonomous project controller that scans state, makes decisions, and spawns agent teams without human input. Use after /aegis-start for fully autonomous operation."
 model: claude-opus-4-6
 tools: [Read, Write, Edit, Bash, Glob, Grep, Agent, WebFetch, WebSearch]
+permissions:
+  deny:
+    - "Bash(rm -rf /:*)"
+    - "Bash(rm -rf ~:*)"
+    - "Bash(rm -rf src*)"
+    - "Bash(rm -rf _aegis-brain*)"
+    - "Bash(rm -rf _aegis-output*)"
+    - "Bash(rm -rf .git*)"
+    - "Bash(curl * | sh)"
+    - "Bash(curl * | bash)"
+    - "Bash(wget * | sh)"
+    - "Bash(wget * | bash)"
+    - "Bash(sudo:*)"
+    - "Bash(chmod 777:*)"
+    - "Bash(git push --force:*)"
+    - "Bash(git push -f:*)"
+    - "Bash(git reset --hard:*)"
+    - "Bash(git commit --amend:*)"
 ---
 
 # Mother Brain -- Autonomous Project Intelligence

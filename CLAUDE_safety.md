@@ -163,6 +163,50 @@ The framework runs with `defaultMode: "bypassPermissions"`, so the deny list is 
 
 When adding new always-blocked commands, update **both** the Markdown list above and `AEGIS-Team/.claude/settings.json` `permissions.deny`.
 
+### Per-Agent Allow Matrix
+
+The framework enforces three layers of permission control, from most permissive to most restrictive:
+
+1. **Global floor** (`.claude/settings.json`) — `deny` rules apply to all agents and cannot be bypassed; `allow` rules represent the project's auto-approved baseline of safe verbs.
+2. **Agent tool whitelist** (`tools` / `disallowedTools` in `.claude/agents/<name>.md` frontmatter) — restricts which top-level tools (Bash, Write, Edit, Agent, …) a given agent may invoke.
+3. **Per-agent permissions** (`permissions.allow` / `permissions.deny` in agent frontmatter) — narrows or denies specific Bash subcommand patterns for that role only.
+
+The four broad verbs `Bash(rm:*)`, `Bash(chmod:*)`, `Bash(curl:*)`, `Bash(wget:*)` are no longer in the global `allow` list. Agents that genuinely need them must opt in via their own `permissions.allow` block; agents that should never use them carry an explicit `permissions.deny` entry.
+
+| Agent | Tier | Bash | Write | Edit | Agent | Per-Agent Notes |
+|-------|------|------|-------|------|-------|-----------------|
+| Vigil | Read-only reviewer | yes (read-only verbs) | no | no | no | `permissions.allow`: `git log`, `git diff`, `git show`, `git blame`, `cat`, `ls`, `grep`, `rg`, `find`, `head`, `tail`, `wc`, `jq`, `diff`. `deny`: all mutation, network, install, build verbs. |
+| Forge | Read-only scanner | yes (read-only + dependency inspection) | no | no | no | Adds `npm list/outdated/audit/view`, `pip list/show`. WebFetch/WebSearch handle HTTP — `curl`/`wget` denied. |
+| Probe | Test executor | yes (test runners + read-only) | no | no | no | `permissions.allow`: `npm test`, `pytest`, `jest`, `vitest`, `playwright`, `go test`, `cargo test`, `swift test`, plus diagnostics. `deny`: install, push/commit, mutation. |
+| Sentinel | QA lead | yes (test runners + read-only) | no | no | no | Same profile as Probe; reviews test results, gates releases. |
+| Bolt | Executor | yes (build/test/git via global allow) | yes | yes | no | `permissions.deny`: `Bash(rm:*)`, `Bash(curl:*)`, `Bash(wget:*)`, `Bash(chmod:*)`, `Bash(sudo:*)`, force-push, hard-reset, amend, `clean -f`. |
+| Ops | DevOps | yes (build/deploy/cloud) | yes | yes | no | Floor `deny` mirrored in frontmatter (project-destructive `rm`, pipe-to-shell, `sudo`, force-push, hard-reset, amend). |
+| Navi | Orchestrator | yes (broad) | yes | yes | yes | Floor `deny` mirrored; one of two roles with the `Agent` tool. |
+| Mother-Brain | Autonomous orchestrator | yes (broad) | yes | yes | yes | Same profile as Navi; runs autonomous mode. |
+| Sage | Architect | no | yes | yes | no | `disallowedTools: [Bash, Agent]` — docs and specs only. |
+| Pixel | UX designer | no | yes | yes | no | `disallowedTools: [Bash, Agent]`. |
+| Muse | Content | no | yes | yes | no | `disallowedTools: [Bash, Agent]`. |
+| Scribe | Compliance docs | no | yes | yes | no | `disallowedTools: [Bash, Agent]`. |
+| Havoc | Adversarial review | no | yes | no | no | `disallowedTools: [Bash, Agent]` — read + critique notes only. |
+
+#### Why per-agent layering matters
+
+Under `defaultMode: "bypassPermissions"`, the global `allow` list is largely cosmetic for the parent session — bypass mode skips approval prompts. The actual enforcement gates are:
+
+- The **global `deny`** (floor) — always applied.
+- The **per-agent `tools` whitelist** — controls whether an agent can call a top-level tool at all.
+- The **per-agent `permissions.deny`** — blocks specific Bash patterns even when the agent's tools list includes Bash.
+
+So Vigil's read-only posture is achieved by **(a)** removing `Edit` from `tools` (in addition to `Write`, already disallowed) and **(b)** denying every mutation verb in `permissions.deny`, not by relying on the global `allow` list.
+
+#### When adding a new agent
+
+1. Pick the tier (read-only / doc-only / executor / orchestrator).
+2. Set `tools` to the smallest viable set; add `disallowedTools` for any tool the tier should never use (always include `Agent` unless the agent is an orchestrator).
+3. If the agent uses Bash, add a `permissions` block with explicit `allow` for the verbs it needs and `deny` for the floor protections (`rm`, `curl`, `wget`, `chmod`, `sudo`, force-push, hard-reset, amend).
+4. Add the agent to the matrix above.
+5. Validate by spawning the agent and attempting a denied verb — confirm the gate fires.
+
 ---
 
 ## 6. Secret Safety

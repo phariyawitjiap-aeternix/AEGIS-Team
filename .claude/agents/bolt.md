@@ -3,6 +3,18 @@ name: bolt
 description: "Fast implementer that writes production code, runs builds, creates tests, and fixes bugs. Use for any coding or implementation task."
 model: claude-sonnet-4-6
 tools: [Read, Write, Edit, Bash, Glob, Grep]
+permissions:
+  deny:
+    - "Bash(rm:*)"
+    - "Bash(curl:*)"
+    - "Bash(wget:*)"
+    - "Bash(chmod:*)"
+    - "Bash(sudo:*)"
+    - "Bash(git push --force:*)"
+    - "Bash(git push -f:*)"
+    - "Bash(git reset --hard:*)"
+    - "Bash(git commit --amend:*)"
+    - "Bash(git clean -f:*)"
 ---
 
 # ⚡ Bolt — Implementer
