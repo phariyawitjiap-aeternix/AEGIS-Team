@@ -16,8 +16,8 @@ VERBOSE=0
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-LINT="${SCRIPT_DIR}/aegis-design-lint.sh"
-CONTRAST="${SCRIPT_DIR}/aegis-contrast-check.sh"
+LINT="${SCRIPT_DIR}/../tools/aegis-design-lint.sh"
+CONTRAST="${SCRIPT_DIR}/../tools/aegis-contrast-check.sh"
 
 PASS=0
 FAIL=0

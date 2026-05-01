@@ -20,7 +20,7 @@ PASS=0
 FAIL=0
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-TOOL="${SCRIPT_DIR}/aegis-instinct-promote.sh"
+TOOL="${SCRIPT_DIR}/../tools/aegis-instinct-promote.sh"
 
 if [[ ! -f "$TOOL" ]]; then
     echo "ERROR: $TOOL not found"

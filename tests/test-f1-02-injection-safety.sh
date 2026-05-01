@@ -7,8 +7,8 @@ set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/aegis-test-harness-template.sh"
 
-INSTINCT_PROMOTE="${SCRIPT_DIR}/aegis-instinct-promote.sh"
-LOG_DECISION="${SCRIPT_DIR}/aegis-log-decision.sh"
+INSTINCT_PROMOTE="${SCRIPT_DIR}/../tools/aegis-instinct-promote.sh"
+LOG_DECISION="${SCRIPT_DIR}/../tools/aegis-log-decision.sh"
 
 echo "=== F1-02: argv injection safety ==="
 echo ""

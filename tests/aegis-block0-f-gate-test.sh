@@ -16,7 +16,7 @@ set -uo pipefail
 # ── Source canonical UI patterns (SSOT — S3-05) ───────────────────────────
 _SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=./aegis-ui-patterns.sh
-source "${_SCRIPT_DIR}/aegis-ui-patterns.sh"
+source "${_SCRIPT_DIR}/../tools/aegis-ui-patterns.sh"
 
 VERBOSE=0
 [[ "${1:-}" == "--verbose" ]] && VERBOSE=1

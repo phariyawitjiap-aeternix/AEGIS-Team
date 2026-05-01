@@ -17,7 +17,7 @@ set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-BRAIN_WRITE="${SCRIPT_DIR}/aegis-brain-write.sh"
+BRAIN_WRITE="${SCRIPT_DIR}/../tools/aegis-brain-write.sh"
 
 # Colors
 RED='\033[0;31m'
