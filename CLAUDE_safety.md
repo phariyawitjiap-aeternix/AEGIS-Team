@@ -135,6 +135,34 @@ sudo anything
 chmod 777
 ```
 
+### Enforced Deny Rules (`.claude/settings.json`)
+The framework runs with `defaultMode: "bypassPermissions"`, so the deny list is the only line of defense against destructive bash. The following deny rules are enforced for every agent and **cannot be bypassed**:
+
+**Pipe-to-shell (remote code execution):**
+- `Bash(curl * | sh)`
+- `Bash(curl * | bash)`
+- `Bash(wget * | sh)`
+- `Bash(wget * | bash)`
+
+**Project-destructive `rm -rf`:**
+- `Bash(rm -rf /:*)` — root
+- `Bash(rm -rf ~:*)` — home
+- `Bash(rm -rf /*:*)` — anything under `/`
+- `Bash(rm -rf src*)` — source tree
+- `Bash(rm -rf _aegis-brain*)` — agent memory
+- `Bash(rm -rf _aegis-output*)` — agent outputs
+- `Bash(rm -rf .git*)` — git history
+
+**Destructive git:**
+- `Bash(git push --force:*)`, `Bash(git push -f:*)`
+- `Bash(git reset --hard:*)`
+- `Bash(git clean -f:*)`
+- `Bash(git commit --amend:*)`
+
+> **Note:** Pattern matching is glob-based against the literal command string. Pipe-to-shell rules cover the common `curl ... | sh` form but cannot stop every variant (e.g. `curl ... > /tmp/x && sh /tmp/x`). Treat the deny list as a hard floor, not a complete sandbox — see also Section 4 (Blast Radius Containment) for per-agent scope limits.
+
+When adding new always-blocked commands, update **both** the Markdown list above and `AEGIS-Team/.claude/settings.json` `permissions.deny`.
+
 ---
 
 ## 6. Secret Safety
