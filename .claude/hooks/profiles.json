@@ -22,8 +22,7 @@
       "guard-ask-user",
       "post-tool-use",
       "post-edit-accumulate",
-      "on-stop",
-      "tinman-heartbeat"
+      "on-stop"
     ]
   },
   "notes": {

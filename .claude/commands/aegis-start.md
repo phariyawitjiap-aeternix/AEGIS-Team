@@ -182,7 +182,6 @@ Agent tool call:
     - ALWAYS spawn sub-agents with run_in_background=true
     - ALWAYS include SUCCESS CRITERIA in sub-agent prompts
     - ALWAYS instruct sub-agents to SendMessage back when done
-    - Log every heartbeat pulse to .aegis/brain/logs/heartbeat.log
     - Log every decision to .aegis/brain/logs/activity.log
 ```
 

@@ -85,8 +85,6 @@ These commands output their report and return. They do **not** present "what nex
 | `/aegis-memory --ingest` | Research ingested → return to Nick Fury |
 | `/aegis-mode` | Mode switched → return to Nick Fury |
 | `/aegis-memory --iso` | Compliance audit → report → return to Nick Fury |
-| (deprecated) `/aegis-reengineer` | Use `/aegis-start` on existing codebase; shim redirects |
-
 ### Deprecated Commands (removed v10-05)
 
 The 17 legacy shim files were removed in sprint v10-05. Only the 12 canonical
