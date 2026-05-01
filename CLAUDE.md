@@ -27,7 +27,7 @@
    - ✅ When you need a decision: send `QUESTION_TO_BRAIN` to Nick Fury (see `.claude/references/context-rules.md`)
    - ✅ When a command finishes: apply the chain in [`.claude/references/command-chain.md`](.claude/references/command-chain.md) — no "what next?" menus
    - ✅ Only 4 categories ever reach the human (Identity / Irreversible scope / External access / Explicit approval gate) — and only Nick Fury escalates
-   - ✅ If Nick Fury is offline (no heartbeat): make the best call from brain/instincts/ADRs, log it to `.aegis/brain/logs/activity.log`, continue — do NOT fall back to asking the human
+   - ✅ If Nick Fury is offline (no recent Agent dispatch): make the best call from brain/instincts/ADRs, log it to `.aegis/brain/logs/activity.log`, continue — do NOT fall back to asking the human
    - 🛡️ Loki auto-REJECTs any spec or response that violates this rule
    - 🛡️ `guard-ask-user.sh` hook blocks `AskUserQuestion` calls from non-Nick-Fury callers at the tool level
    - 🛡️ `on-stop.sh` hook scans the last response for the option-menu pattern and logs violations
@@ -60,7 +60,7 @@ Default autonomy: L3 (Autonomous) with Nick Fury active
 | /aegis-memory | Memory management (--adr, --instinct, --distill, --evolve, --ingest, --lint, --iso modes) |
 | /aegis-mode | Switch autonomy level or profile |
 
-> 17 legacy aliases exist as shims; see `.claude/references/command-chain.md` for the mapping.
+> Legacy shims removed in v10-05. 12 canonical commands above are the full set.
 
 ## Applying AEGIS to Other Projects
 See [`docs/AEGIS_APPLICATION_PLAYBOOK.md`](docs/AEGIS_APPLICATION_PLAYBOOK.md) for a step-by-step guide covering brain seeding, persona assembly, CLAUDE.md tailoring, BLOCK 0 bootstrap, and a greenfield React app walkthrough.
@@ -91,7 +91,7 @@ for the single-page breakdown.
 - S2-02 retro-summary wiring (needs Nick Fury to first log decisions at runtime).
 - S2-03/04 BLOCK 0 lite-mode switching (general gate is live; lite-mode skip logic not wired).
 - S4-02 Nick Fury proxy dispatch loop (blocked on `memory_20250818` tool availability).
-- S6-06 29→12 command cut (deferred pending user-pain signal).
+- S6-06 29→12 command cut (shipped v10-05: 18 shims removed, 12 canonical remain).
 
 **Correctly deferred (not in-repo work)**: v9-07/08/09 brain-tier (infra),
 v9-10/11 plugin (SDK), v9-12/13 MCP (infra), v9-14/15 migration+GA (6mo

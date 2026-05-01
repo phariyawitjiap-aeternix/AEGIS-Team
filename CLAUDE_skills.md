@@ -5,7 +5,7 @@
 |---------|:------:|:-------:|
 | minimal | 7 | ~3K tokens |
 | standard | 15 | ~6K tokens |
-| full | 29 | ~12K tokens |
+| full | 28 | ~12K tokens |
 
 ## Skills List
 | # | Skill | Profile | Triggers |
@@ -35,7 +35,6 @@
 | 23 | aegis-builder | full | build skill, create skill, meta |
 | 24 | qa-pipeline | full | QA, quality assurance, test pipeline |
 | 25 | iso-29110-docs | full | ISO, 29110, compliance, audit docs |
-| 26 | sprint-tracker | full | sprint tracker legacy (superseded by #12) |
 | 27 | aegis-deploy | full | deploy, release, rollback, health check |
 | 28 | aegis-adr | full | ADR, architecture decision, decision record |
 | 29 | aegis-dashboard | full | dashboard, status, overview, metrics |
@@ -44,7 +43,7 @@
 ```
 /aegis-mode minimal    # 7 core skills
 /aegis-mode standard   # 15 skills (default)
-/aegis-mode full       # All 29 skills
+/aegis-mode full       # All 28 skills
 /aegis-mode custom personas,code-review,security-audit
 ```
 

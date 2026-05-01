@@ -23,7 +23,7 @@ Full sprint lifecycle management. Captain America (opus) orchestrates all ceremo
 
 - **Sprint data**: `.aegis/brain/sprints/sprint-<N>/`
 - **Orchestrator**: Captain America (opus) — ceremony facilitator, single writer to kanban
-- **Skill reference**: `skills/sprint-tracker.md` (full templates and rules)
+- **Skill reference**: `skills/sprint-manager.md` (full templates and rules)
 
 ### ⚠️ MANDATORY: ISO 29110 Documents Per Sprint
 
@@ -127,7 +127,7 @@ Map each task to the appropriate agent by type:
 
 #### Step 6: Create Sprint Directory and Files
 - Create `.aegis/brain/sprints/sprint-<N>/` and `daily/` subdirectory.
-- Write `plan.md` using the Sprint Plan Template from `skills/sprint-tracker.md`.
+- Write `plan.md` using the Sprint Plan Template from `skills/sprint-manager.md`.
 - Write `.aegis/brain/sprints/sprint-<N>/metrics.json` with initial values:
   - `sprint`: "sprint-<N>"
   - `started`: current date
@@ -201,7 +201,7 @@ Sprint <N> Planning Complete
 
 #### Step 4: Write Standup
 - Write to `.aegis/brain/sprints/sprint-<N>/daily/YYYY-MM-DD.md` using the
-  Daily Standup Template from `skills/sprint-tracker.md`.
+  Daily Standup Template from `skills/sprint-manager.md`.
 
 #### Step 5: Display Summary
 ```
@@ -235,7 +235,7 @@ Daily Standup: <YYYY-MM-DD> (Sprint <N>, Day <D>/<total>)
 
 #### Step 4: Write Review
 - Write to `.aegis/brain/sprints/sprint-<N>/review.md` using the Sprint Review
-  Template from `skills/sprint-tracker.md`.
+  Template from `skills/sprint-manager.md`.
 - Log to `.aegis/brain/logs/activity.log`:
   ```
   [YYYY-MM-DD HH:MM] SPRINT_REVIEW | sprint=<N> | completed=<pts>/<total> | goal=ACHIEVED/PARTIAL/NOT_ACHIEVED
@@ -272,7 +272,7 @@ Sprint <N> Review
 
 #### Step 3: Write Retrospective
 - Write to `.aegis/brain/sprints/sprint-<N>/retro.md` using the Sprint
-  Retrospective Template from `skills/sprint-tracker.md`.
+  Retrospective Template from `skills/sprint-manager.md`.
 - Feed "What went wrong" and "Action items" into `/aegis-retro` for long-term
   storage in `.aegis/brain/learnings/`.
 
@@ -366,7 +366,7 @@ No file is written for status — it is a read-only display. Do NOT write to met
   - Set final `tasks` counts from meta.json files.
   - Set `carry_over` object (step 3).
 - Write to `.aegis/brain/sprints/sprint-<N>/close.md` using the Sprint Close
-  Template from `skills/sprint-tracker.md`.
+  Template from `skills/sprint-manager.md`.
 
 #### Step 5: Compute and Save Token Usage
 - Read `.aegis/brain/metrics/token-usage.json`.

@@ -87,34 +87,15 @@ These commands output their report and return. They do **not** present "what nex
 | `/aegis-memory --iso` | Compliance audit → report → return to Nick Fury |
 | (deprecated) `/aegis-reengineer` | Use `/aegis-start` on existing codebase; shim redirects |
 
-### Deprecated Commands (17 shims)
+### Deprecated Commands (removed v10-05)
 
-The following commands have been consolidated. Their shim files redirect to the canonical form.
-See `.claude/commands/aegis-*.md` for each shim.
-
-| Deprecated | Canonical |
-|-----------|-----------|
-| `/aegis-kanban` | `/aegis-status --kanban` |
-| `/aegis-dashboard` | `/aegis-status --dashboard` |
-| `/aegis-context` | `/aegis-status --context` |
-| `/aegis-qa` | `/aegis-pipeline --qa` |
-| `/aegis-flow` | `/aegis-pipeline --flow` |
-| `/aegis-team-build` | `/aegis-team build` |
-| `/aegis-team-review` | `/aegis-team review` |
-| `/aegis-team-debate` | `/aegis-team debate` |
-| `/aegis-doctor` | `/aegis-verify --doctor` |
-| `/aegis-launch` | `/aegis-deploy --launch` |
-| `/aegis-adr` | `/aegis-memory --adr` |
-| `/aegis-instinct` | `/aegis-memory --instinct` |
-| `/aegis-distill` | `/aegis-memory --distill` |
-| `/aegis-evolve` | `/aegis-memory --evolve` |
-| `/aegis-ingest` | `/aegis-memory --ingest` |
-| `/aegis-lint` | `/aegis-memory --lint` |
-| `/aegis-compliance` | `/aegis-memory --iso` |
+The 17 legacy shim files were removed in sprint v10-05. Only the 12 canonical
+commands listed above remain. If a user types an old name, Claude Code will
+not find a matching command file -- the user should use the canonical form.
 
 ## Fallback rules
 
-**If Nick Fury is offline** (no heartbeat in `.aegis/brain/logs/heartbeat.log`):
+**If Nick Fury is offline** (no recent Agent dispatch in session):
 - Apply the chain-defined next action directly
 - Log the decision to `.aegis/brain/logs/activity.log`
 - Do NOT fall back to asking the human as a substitute
