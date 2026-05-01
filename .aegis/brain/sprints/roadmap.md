@@ -16,7 +16,7 @@ external dependencies (new SDK features, infra, migration calendar).
 
 ## Tally (update on every sprint close)
 
-_Last updated: 2026-04-25 · by: main agent (sprint-v10-04 close · MBP soft-ask detection)_
+_Last updated: 2026-05-01 · by: Nick Fury (sprint-v10-05 close · honest cleanup)_
 
 | Sprint | Points Selected | Points Done | Stretch Done | Status |
 |--------|-----------------|-------------|--------------|--------|
@@ -29,8 +29,9 @@ _Last updated: 2026-04-25 · by: main agent (sprint-v10-04 close · MBP soft-ask
 | **v9 in-repo total** | **69** | **73** | **0** | **100%** |
 | sprint-v10-01 (traceability wiki) | 13 | 13 | 0 | CLOSED (100%) |
 | sprint-v10-02 (RTK readiness) | 5 | 5 | 0 | CLOSED (100%) |
-| sprint-v10-04 (MBP soft-ask detection) | 3 | 3 | 0 | **CLOSED (100%)** |
-| **v10 in-repo total** | **21** | **21** | **0** | **100%** |
+| sprint-v10-04 (MBP soft-ask detection) | 3 | 3 | 0 | CLOSED (100%) |
+| sprint-v10-05 (honest cleanup) | 8 | 8 | 0 | **CLOSED (100%)** |
+| **v10 in-repo total** | **29** | **29** | **0** | **100%** |
 
 ## Why delivered > denominator this sprint
 
