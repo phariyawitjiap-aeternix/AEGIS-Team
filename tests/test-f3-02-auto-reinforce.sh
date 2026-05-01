@@ -9,8 +9,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/aegis-test-harness-template.sh"
 
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-AUTO_REINFORCE="${SCRIPT_DIR}/aegis-instinct-auto-reinforce.sh"
-PROMOTE="${SCRIPT_DIR}/aegis-instinct-promote.sh"
+AUTO_REINFORCE="${SCRIPT_DIR}/../tools/aegis-instinct-auto-reinforce.sh"
+PROMOTE="${SCRIPT_DIR}/../tools/aegis-instinct-promote.sh"
 NICK_FURY_MD="${REPO_ROOT}/.claude/agents/nick-fury.md"
 AUDIT_PROTOCOL_MD="${REPO_ROOT}/.claude/references/decision-audit-protocol.md"
 

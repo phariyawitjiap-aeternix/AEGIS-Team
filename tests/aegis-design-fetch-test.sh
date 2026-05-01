@@ -9,7 +9,7 @@ set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-FETCH_TOOL="${SCRIPT_DIR}/aegis-design-fetch.sh"
+FETCH_TOOL="${SCRIPT_DIR}/../tools/aegis-design-fetch.sh"
 LIBRARY_DIR="${REPO_ROOT}/.aegis/brain/design-library"
 
 pass=0

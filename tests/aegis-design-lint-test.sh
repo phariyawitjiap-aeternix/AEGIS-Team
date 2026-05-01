@@ -9,8 +9,8 @@ set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-LINT="${SCRIPT_DIR}/aegis-design-lint.sh"
-INIT="${SCRIPT_DIR}/aegis-design-init.sh"
+LINT="${SCRIPT_DIR}/../tools/aegis-design-lint.sh"
+INIT="${SCRIPT_DIR}/../tools/aegis-design-init.sh"
 LIBRARY_DIR="${REPO_ROOT}/.aegis/brain/design-library"
 
 pass=0

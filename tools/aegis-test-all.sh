@@ -16,11 +16,12 @@ cd "$REPO_ROOT"
 
 # Suites to run: "label:path"
 # Label is printed in the summary; path is relative to repo root.
+# Tests moved from tools/ to tests/ in v10-05.
 SUITES=(
-    "brain-adversarial:tools/aegis-brain-adversarial-test.sh"
-    "maintainer-mode:tools/aegis-maintainer-test.sh"
-    "distill-counter:tools/aegis-distill-counter-test.sh"
-    "block0-mode:tools/aegis-block0-mode-test.sh"
+    "brain-adversarial:tests/aegis-brain-adversarial-test.sh"
+    "maintainer-mode:tests/aegis-maintainer-test.sh"
+    "distill-counter:tests/aegis-distill-counter-test.sh"
+    "block0-mode:tests/aegis-block0-mode-test.sh"
 )
 
 GREEN='\033[0;32m'

@@ -11,7 +11,7 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-OVERRIDE_SH="${SCRIPT_DIR}/aegis-s204-override.sh"
+OVERRIDE_SH="${SCRIPT_DIR}/../tools/aegis-s204-override.sh"
 
 PASS=0
 FAIL=0
@@ -49,7 +49,7 @@ EOF
   # Create a no-op activity log
   touch "${tmpdir}/.aegis/brain/logs/activity.log"
   # Symlink tools so aegis-security-paths.sh is accessible
-  ln -s "${SCRIPT_DIR}/aegis-security-paths.sh" "${tmpdir}/tools/aegis-security-paths.sh"
+  ln -s "${SCRIPT_DIR}/../tools/aegis-security-paths.sh" "${tmpdir}/tools/aegis-security-paths.sh"
   echo "$tmpdir"
 }
 

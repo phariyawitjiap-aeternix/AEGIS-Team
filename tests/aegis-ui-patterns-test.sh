@@ -18,7 +18,7 @@ PASS=0
 FAIL=0
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PATTERNS_FILE="${SCRIPT_DIR}/aegis-ui-patterns.sh"
+PATTERNS_FILE="${SCRIPT_DIR}/../tools/aegis-ui-patterns.sh"
 
 # Verify the SSOT file exists
 if [[ ! -f "$PATTERNS_FILE" ]]; then

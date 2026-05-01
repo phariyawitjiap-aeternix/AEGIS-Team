@@ -7,7 +7,7 @@ set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/aegis-test-harness-template.sh"
 
-LINTER="${SCRIPT_DIR}/aegis-shell-lint.sh"
+LINTER="${SCRIPT_DIR}/../tools/aegis-shell-lint.sh"
 
 echo "=== F1-05: Shell-command pre-flight linter ==="
 echo ""

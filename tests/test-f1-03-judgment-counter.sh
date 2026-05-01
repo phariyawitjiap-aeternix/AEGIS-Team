@@ -7,7 +7,7 @@ set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/aegis-test-harness-template.sh"
 
-LOG_DECISION="${SCRIPT_DIR}/aegis-log-decision.sh"
+LOG_DECISION="${SCRIPT_DIR}/../tools/aegis-log-decision.sh"
 
 echo "=== F1-03: Judgment counter exit code ==="
 echo ""

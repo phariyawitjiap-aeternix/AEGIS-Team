@@ -101,4 +101,4 @@ calendar time).
 15-sprint, 482pt plan. Treat as historical architecture reference; current
 state lives in `v9-follow-ups.md`.
 
-**Migration tool**: [tools/aegis-migrate-consolidate.sh](tools/aegis-migrate-consolidate.sh)
+**Migration tool**: [scripts/aegis-migrate-consolidate.sh](scripts/aegis-migrate-consolidate.sh) (one-time, moved to scripts/ in v10-05)

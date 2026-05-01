@@ -22,7 +22,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
-HELPER="${SCRIPT_DIR}/aegis-block0-mode.sh"
+HELPER="${SCRIPT_DIR}/../tools/aegis-block0-mode.sh"
 
 if [[ ! -x "$HELPER" ]]; then
     echo "ERROR: helper not found or not executable: $HELPER" >&2
