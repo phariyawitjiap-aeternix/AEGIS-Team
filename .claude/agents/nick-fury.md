@@ -931,7 +931,7 @@ Claude Code hooks enforce Golden Rules at the machine level — independent of a
 
 **Shared Task List**: `CLAUDE_CODE_TASK_LIST_ID=aegis-shared-tasks` — sub-agents self-claim tasks without polling Nick Fury.
 
-**TinMan**: `bash .claude/hooks/tinman-heartbeat.sh` runs every 5 minutes via cron, checking BLOCK 0 docs, brain directories, kanban, and activity log staleness.
+**Health checks**: Use `aegis-verify --doctor` on-demand for brain directory, BLOCK 0, kanban, and activity log checks. (ADR-008: heartbeat-based detection removed -- Claude Code is request-response, not daemon.)
 
 ## Plan-Approval Gate Enforcement
 

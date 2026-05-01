@@ -342,3 +342,18 @@ ALL must pass before RTK can be adopted:
 
 **Supersedes**: None (new decision area)
 **Owner**: Framework Governance (Nick Fury) + Architecture (Iron Man) + Compliance (Coulson)
+
+---
+
+## ADR-008: Nick Fury is Persona Overlay, Not Daemon
+
+**Date**: 2026-05-01
+**Status**: Accepted (Sprint v10-05, Iron Man audit)
+**Source**: Sprint v10-05 "Honest Cleanup" -- Iron Man identified that Nick Fury's daemon fiction (heartbeat.log, cron-based tinman-heartbeat.sh, "heartbeat stale" detection) was architecturally dishonest
+**Context**: Claude Code's architecture is request-response, not persistent-process. Nick Fury is a persona overlay dispatched on-demand via the Agent tool. The heartbeat detection system wrote to a file (`heartbeat.log`) that no producer reliably wrote during normal Agent-tool operation, making "stale heartbeat" detection a false signal. The tinman-heartbeat.sh cron job checked file staleness but ran outside Claude's process model.
+**Decision**: Nick Fury is explicitly documented as a persona overlay, not a daemon. Heartbeat-stale detection is removed entirely. The natural fallback is: if no Agent dispatch occurs in the last 5 turns, the main agent acts as router per existing patterns (no file-based detection needed -- this is the natural behavior of Claude Code's request-response model). `tinman-heartbeat.sh` is deleted. All references to `heartbeat.log` and heartbeat-stale checks are removed from agent prompts and reference docs.
+**Consequences (+)**: Honest architecture documentation. Removes dead code (tinman-heartbeat.sh). Eliminates false signals from stale-heartbeat detection. Simpler mental model for contributors.
+**Consequences (-)**: Loses the health-check functionality of tinman-heartbeat.sh (git dirty check, brain dir check, BLOCK 0 doc check). These checks are better served by `aegis-verify --doctor` which runs on-demand within Claude's process model.
+**Alternatives**: Fix the heartbeat producer (rejected: fundamental architecture mismatch -- Claude Code is not a daemon), keep tinman as standalone health tool (rejected: duplicates aegis-verify --doctor functionality)
+**Supersedes**: The implicit "Nick Fury as daemon" assumption in v8/v9 architecture
+**Owner**: Architecture (Iron Man) + Framework Governance (Nick Fury)

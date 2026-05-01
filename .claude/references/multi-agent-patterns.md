@@ -78,26 +78,19 @@ Reduces orchestration overhead by ~40% in parallel workloads.
 
 ---
 
-## Pattern 5: TinMan Heartbeat (Background Monitor)
+## Pattern 5: On-Demand Health Checks (formerly TinMan Heartbeat)
 
-**Source**: TinMan project + ELF framework (30s heartbeat)
-**Status**: ✅ Script at `.claude/hooks/tinman-heartbeat.sh`
+**Source**: TinMan project + ELF framework (30s heartbeat) -- adapted per ADR-008
+**Status**: Replaced by `aegis-verify --doctor` (on-demand, within Claude's process model)
 
-Zero-dependency health monitor runs on cron (every 5 minutes):
+The original TinMan heartbeat ran as a cron-based background monitor writing to
+`heartbeat.log`. Per ADR-008, this was architecturally dishonest: Claude Code is
+request-response, not a daemon. The health checks (brain dirs, BLOCK 0 docs,
+kanban, activity log staleness) are now served by `aegis-verify --doctor` which
+runs on-demand within Claude's actual process model.
 
-**Checks**:
-- Git working directory clean?
-- Brain directories intact (`resonance/`, `tasks/`, `logs/`, `sprints/current/`)
-- Kanban board exists?
-- BLOCK 0 docs present (PM.01, SI.01, SI.02)?
-- Activity log written in last 24h?
-
-**Install**:
-```bash
-bash .claude/hooks/tinman-heartbeat.sh --install-cron
-```
-
-**Log**: `.aegis/brain/logs/heartbeat.log` (last 500 lines, auto-trimmed)
+**Fallback**: If no Agent dispatch occurs in the last 5 turns, the main agent
+naturally acts as router -- no file-based detection needed.
 
 ---
 
@@ -252,11 +245,9 @@ for ambiguous decisions downstream.
 - `.claude/hooks/on-stop.sh` — Stop reminder + batched format/typecheck
 - `.claude/hooks/run-with-flags.sh` — Profile/disable wrapper for all hooks
 - `.claude/hooks/profiles.json` — Hook profile registry (minimal/standard/strict)
-- `.claude/hooks/tinman-heartbeat.sh` — Background monitor
 - `.claude/settings.json` — Hook wiring + env vars (AEGIS_HOOK_PROFILE)
 - `.aegis/brain/instincts/` — Instinct registry (pending/active/promoted/retired)
-- `.claude/commands/aegis-instinct.md` — Instinct management command
-- `.claude/commands/aegis-evolve.md` — Cluster + merge + promote command
+- `.claude/commands/aegis-memory.md` — Memory management (--instinct, --evolve, etc.)
 - `skills/design-system-md.md` — DESIGN.md 9-section skeleton (Wasp-owned)
 - `skills/super-spec.md` — §8 Do's/Don'ts mandatory
 - `skills/aegis-reengineer.md` — §6 Do's/Don'ts + §7 Agent Prompt Guide

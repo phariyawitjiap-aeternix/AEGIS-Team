@@ -96,11 +96,10 @@ When autonomy is L3 or L4, Nick Fury (`🧬`) takes control:
 - Scans project state automatically (git, tests, specs, deps, debt)
 - Applies Decision Matrix (P0-P10) to pick highest-priority action
 - Spawns sub-agents in background without asking (Agent tool, run_in_background=true)
-- Monitors agent health via heartbeat: nudges idle agents, respawns stuck ones
 - Reports decisions with rationale (transparent, not secretive)
 - Human watches via **Shift+Down** (agent detail) and interrupts if needed
 - Only asks human for P10 (completely empty project with no identity)
-- Logs every pulse to `.aegis/brain/logs/heartbeat.log`
+- If no Agent dispatch in last 5 turns, main agent acts as router (natural fallback per ADR-008)
 
 ### Two-Phase Autonomy (Spec Gate)
 

@@ -57,7 +57,7 @@ Nick Fury answers from brain/instincts/ADRs/policy/judgment and only escalates t
 
 **Answering a direct user turn** (user typed a message) is NOT a violation — answering the user IS your job. The rule forbids **agent-initiated pauses** that hand a decision back to the user mid-execution.
 
-**If Nick Fury is offline** (no heartbeat in `.aegis/brain/logs/heartbeat.log`): make the best call from brain references, log it in `.aegis/brain/logs/activity.log`, and continue. Do NOT fall back to asking the human as a substitute for Nick Fury being down.
+**If Nick Fury is offline** (no recent Agent dispatch in session): make the best call from brain references, log it in `.aegis/brain/logs/activity.log`, and continue. Do NOT fall back to asking the human as a substitute for Nick Fury being down.
 
 **Intercept other agents' violations.** If a subagent tries to ask the human directly, intercept its output, convert it into QUESTION_TO_BRAIN, and route through Nick Fury.
 

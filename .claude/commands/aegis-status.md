@@ -25,13 +25,11 @@ of what AEGIS is doing.
 
 ## Full Instructions
 
-### Step 1: Check Nick Fury Heartbeat
-- Read `.aegis/brain/logs/heartbeat.log` for latest PULSE entry.
-- Determine Nick Fury state:
-  - If heartbeat.log has a PULSE within last 60 seconds: **ALIVE**
-  - If heartbeat.log exists but last PULSE > 60 seconds ago: **STALE** (may need respawn)
-  - If heartbeat.log doesn't exist: **OFFLINE** (Nick Fury not running)
-- Display heartbeat status prominently at top of dashboard.
+### Step 1: Check Nick Fury Status (ADR-008)
+- Nick Fury is a persona overlay, not a daemon. Status is determined by recent Agent dispatches.
+- Check `.aegis/brain/logs/activity.log` for recent Agent dispatch entries.
+- If dispatches exist in current session: **ACTIVE**
+- If no dispatches yet this session: **STANDBY** (waiting for /aegis-start)
 
 ### Step 2: Check Active Agents
 - Determine which agents/teammates are currently active in this session.
@@ -43,7 +41,7 @@ of what AEGIS is doing.
   - Name and role emoji
   - Current task (if any)
   - Status: idle / working / waiting / blocked / done
-  - Last heartbeat check result (alive / unresponsive / respawned)
+  - Last activity timestamp
   - Progress percentage (estimate based on task completion)
 
 ### Step 3: Display Agent Status Table
