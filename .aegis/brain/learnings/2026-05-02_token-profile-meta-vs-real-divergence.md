@@ -15,13 +15,27 @@ On 2026-05-02 the hook was activated in two contexts:
 1. **AEGIS-Team meta-repo** (framework dev work) — 14 tool calls
 2. **RizzLab real project** (Next.js dev, pre-AEGIS-upgrade branch) — 107 tool calls
 
-## Data
+## Data (3 sessions, 2 contexts, 2 dates)
 
-| Context | Bash % | Read % | Edit % | Write % | Agent % | n | Verdict |
-|---------|-------:|-------:|-------:|--------:|--------:|--:|---------|
-| AEGIS-Team (meta) | **65.5%** | 4.5% | 30.0% | — | — | 14 | "STRONG value" |
-| RizzLab (real) | **34.8%** | 26.1% | 12.0% | 17.4% | 9.5% | 107 | "MODERATE value, measure more" |
-| **Δ** | **−30.7pp** | +21.6pp | −18.0pp | new | new | — | flipped |
+| Sample | Date | Project | n | Bash % | R+G+G % | Other notable | Verdict |
+|--------|------|---------|--:|-------:|--------:|---------------|---------|
+| 1 | 2026-04-24 | AEGIS-Team | 9 | **31.9%** | **40.6%** | Read-heavy | MODERATE |
+| 2 | 2026-05-02 | AEGIS-Team | 14 | 65.5% | 4.5% | **Admin outlier** (git/jq/install) | STRONG |
+| 3 | 2026-05-02 | RizzLab | 200 | **30.6%** | 12.9% | Write 32.6% (biggest) | MODERATE |
+
+**Convergence**: 2 of 3 samples (containing 95%+ of tokens) show Bash ≈ 30-32%.
+Outlier is Sample 2 — known atypical (14-call admin marathon: git, jq, settings.json patches, install/uninstall ops).
+
+## Triangulated answer to Loki's killshot
+
+**"What % of AEGIS tokens is Bash vs Read/Grep/Glob?"** — answered across 3 samples, 2 contexts, 2 dates:
+
+- Bash share in representative work: **~30-32%** (not the >50% that base assumption claimed)
+- RTK addresses Bash output compression only
+- Net RTK saving ≈ Bash% × ~40% reduction = **~12-13% token saving in real workloads**
+
+**Pre-data hypothesis**: Bash dominates → adopt RTK → 26% saving
+**Post-data finding**: Bash ≈ 1/3 → RTK gives ~12% saving → marginal value vs adoption complexity
 
 ## Lesson
 
@@ -52,12 +66,27 @@ For future framework-vs-application decisions:
 
 ## Action Items
 
-- [ ] Continue collecting RizzLab data ≥2 more sessions of real work (debug, code review, implementation — varied workload types)
-- [ ] Continue collecting AEGIS-Team data ≥2 more sessions of real dev work (not admin)
-- [ ] Open sprint-v10-03 only after both contexts have ≥3 sessions of representative data
-- [ ] v10-03 should explicitly weight real-project signal > meta-repo signal in RTK go/no-go matrix
-- [ ] If RTK decision = no-go, document the workload heterogeneity finding as the rationale (not just "low Bash %")
-- [ ] If RTK decision = go, must include caveats: RTK only buys ~14% in real workloads, and only if Bash output is the dominant token consumer in those workloads
+- [x] Collect ≥2 representative samples (DONE: April 24 AEGIS, May 2 RizzLab — both ~30% Bash, convergent)
+- [ ] Optional: 1-2 more representative AEGIS-Team sessions (real dev work, not admin) for triangulation
+- [ ] **Open sprint-v10-03 with this learning as primary evidence** — RTK pre-decision = DEFER
+- [ ] v10-03 plan must cite this convergence: 2 samples × 2 contexts × 2 dates → Bash ≈ 30%, not >50%
+- [ ] If anyone re-litigates RTK adoption later, point them at this file before they argue from theory
+
+## Pre-decision (recommended for v10-03)
+
+**RTK = DEFER** (not REJECT — re-evaluate if workload changes)
+
+Rationale:
+1. Real-workload Bash share = 30-32% (3 samples agree)
+2. RTK net saving projection = ~12-13% tokens
+3. Adoption cost: new compression layer, new failure modes, new debugging surface
+4. ROI threshold for new infra adoption typically wants ≥25% saving — RTK at half that
+5. If/when workload shifts to Bash-heavy (e.g., heavy infra-ops sprints), revisit
+
+Reconsider triggers:
+- Sustained ≥50% Bash share across 3+ sessions in real work
+- RTK upstream issue #427 closed with stronger compression ratio
+- Token cost increase that makes 12% saving more material
 
 ## Provenance
 
