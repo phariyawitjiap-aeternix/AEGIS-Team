@@ -195,21 +195,43 @@ if [[ "$YES" != "true" ]]; then
 fi
 
 # ── Invoke source install.sh --upgrade ─────────────────────────────────────
-# Preserve profile + project name from target if available
-PROFILE_ARG=""
-PROJECT_ARG=""
-if [[ -f "$TARGET_DIR/.aegis/brain/resonance/project-identity.md" ]]; then
-    NAME=$(grep -iE "^- *name:|^Name:" "$TARGET_DIR/.aegis/brain/resonance/project-identity.md" 2>/dev/null | head -1 | sed -E 's/^[^:]*: *//' | tr -d '"')
-    [[ -n "$NAME" ]] && PROJECT_ARG="--project-name $NAME"
-    PROFILE=$(grep -iE "^- *profile:|^Profile:" "$TARGET_DIR/.aegis/brain/resonance/project-identity.md" 2>/dev/null | head -1 | sed -E 's/^[^:]*: *//' | tr -d '"' | awk '{print $1}')
-    [[ -n "$PROFILE" ]] && PROFILE_ARG="--profile $PROFILE"
+# Preserve profile + project name from target if available.
+# - Tolerates markdown-bold identity rows ("- **Name**: Foo Bar") in addition
+#   to plain "- name: foo" / "Name: foo" forms.
+# - Uses an array so multi-word names ("Rizz Lab") survive expansion when
+#   passed to install.sh — unquoted $PROJECT_ARG was splitting on spaces and
+#   blowing up install.sh with `Unknown option: Lab`.
+# - `|| true` and `${VAR:-}` defaults keep `set -e -o pipefail` from killing
+#   the script when grep finds no match.
+EXTRA_ARGS=()
+IDFILE="$TARGET_DIR/.aegis/brain/resonance/project-identity.md"
+if [[ -f "$IDFILE" ]]; then
+    NAME=$(grep -iE '^- *(\*\*)?name(\*\*)? *:|^Name:' "$IDFILE" 2>/dev/null \
+            | head -1 | sed -E 's/^[^:]*: *//' | tr -d '*"' \
+            | sed -E 's/^ +| +$//g' || true)
+    NAME=${NAME:-}
+    [[ -n "$NAME" ]] && EXTRA_ARGS+=(--project-name "$NAME")
+
+    PROFILE=$(grep -iE '^- *(\*\*)?profile(\*\*)? *:|^Profile:' "$IDFILE" 2>/dev/null \
+                | head -1 | sed -E 's/^[^:]*: *//' | tr -d '*"' \
+                | awk '{print $1}' || true)
+    PROFILE=${PROFILE:-}
+    [[ -n "$PROFILE" ]] && EXTRA_ARGS+=(--profile "$PROFILE")
 fi
 
 echo ""
-info "Running: bash '$SOURCE_DIR/install.sh' --upgrade --target-dir '$TARGET_DIR' $PROFILE_ARG $PROJECT_ARG"
-echo ""
-
-bash "$SOURCE_DIR/install.sh" --upgrade --target-dir "$TARGET_DIR" $PROFILE_ARG $PROJECT_ARG
+# Guard the array expansion: under `set -u` on bash 3.2 (macOS default),
+# "${EXTRA_ARGS[@]}" on an empty array errors with "unbound variable".
+# Branch instead of relying on `[@]:-` (which would pass a stray empty "").
+if [[ ${#EXTRA_ARGS[@]} -gt 0 ]]; then
+    info "Running: bash '$SOURCE_DIR/install.sh' --upgrade --target-dir '$TARGET_DIR' ${EXTRA_ARGS[*]}"
+    echo ""
+    bash "$SOURCE_DIR/install.sh" --upgrade --target-dir "$TARGET_DIR" "${EXTRA_ARGS[@]}"
+else
+    info "Running: bash '$SOURCE_DIR/install.sh' --upgrade --target-dir '$TARGET_DIR'"
+    echo ""
+    bash "$SOURCE_DIR/install.sh" --upgrade --target-dir "$TARGET_DIR"
+fi
 
 # ── Record upgrade in target's brain log ───────────────────────────────────
 LOG="$TARGET_DIR/.aegis/brain/logs/activity.log"
