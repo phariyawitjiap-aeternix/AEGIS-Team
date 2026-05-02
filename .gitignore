@@ -89,6 +89,9 @@ dashboard/node_modules/
 .claude/settings.json.pre-mbp-backup
 # Timestamped settings.json backups from aegis-fix-* tools (transient)
 .claude/settings.json.pre-*-fix-*
+# All settings.json backups from helper scripts and manual edits (transient safety nets)
+.claude/settings.json.pre-*
+.claude/settings.json.*.bak
 
 # <<< AEGIS-V9-END >>>
 

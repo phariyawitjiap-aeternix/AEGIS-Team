@@ -53,6 +53,15 @@
             "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/run-with-flags.sh\" post-edit-accumulate \"$CLAUDE_PROJECT_DIR/.claude/hooks/post-edit-accumulate.sh\""
           }
         ]
+      },
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/tools/aegis-token-profile.sh\""
+          }
+        ]
       }
     ],
     "Stop": [
@@ -80,36 +89,37 @@
     "_comment_design": "AEGIS v9 hardened permission model (S1-04 + S1-05). defaultMode acceptEdits auto-approves Edit/Write only. Bash requires explicit allow. Removed wildcards on rm/curl/docker/kubectl/terraform that previously bypassed safety. Allow list = 20 safe commands (down from 60+). Deny list = 26 dangerous patterns (up from 8).",
     "defaultMode": "acceptEdits",
     "allow": [
-      "Read",
-      "Write",
+      "Agent",
+      "Bash(./tests/*)",
+      "Bash(./tools/*)",
+      "Bash(cat:*)",
+      "Bash(date:*)",
+      "Bash(diff:*)",
+      "Bash(echo:*)",
+      "Bash(find:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git status:*)",
+      "Bash(grep:*)",
+      "Bash(head:*)",
+      "Bash(jq:*)",
+      "Bash(ls:*)",
+      "Bash(mkdir:*)",
+      "Bash(pwd:*)",
+      "Bash(rg:*)",
+      "Bash(tail:*)",
+      "Bash(test:*)",
+      "Bash(wc:*)",
       "Edit",
       "Glob",
       "Grep",
-      "Agent",
+      "Read",
+      "SendMessage",
       "TeamCreate",
       "TeamDelete",
-      "SendMessage",
-      "Bash(ls:*)",
-      "Bash(cat:*)",
-      "Bash(head:*)",
-      "Bash(tail:*)",
-      "Bash(wc:*)",
-      "Bash(grep:*)",
-      "Bash(rg:*)",
-      "Bash(find:*)",
-      "Bash(echo:*)",
-      "Bash(date:*)",
-      "Bash(pwd:*)",
-      "Bash(diff:*)",
-      "Bash(test:*)",
-      "Bash(jq:*)",
-      "Bash(mkdir:*)",
-      "Bash(git status:*)",
-      "Bash(git diff:*)",
-      "Bash(git log:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
-      "Bash(./tools/*)"
+      "Write"
     ],
     "deny": [
       "Bash(rm -rf /:*)",
