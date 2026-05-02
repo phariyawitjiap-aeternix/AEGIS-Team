@@ -114,7 +114,31 @@ fi
 # Use parameterized-style escaping by doubling single quotes.
 escape_sql() { printf '%s' "$1" | sed "s/'/''/g"; }
 
-SAFE_QUERY=$(escape_sql "$QUERY")
+# FTS5 treats unquoted hyphens as the NOT operator, so a bare query like
+# "ADR-007" parses as "ADR NOT 007" and fails with "no such column: 007".
+# Wrap hyphenated identifiers (alnum_ on both sides of a hyphen) in double
+# quotes so FTS5 sees them as phrases. Tokens already inside a quoted phrase
+# pass through untouched.
+preprocess_fts_query() {
+  local query="$1" out="" tok="" in_q=0 i ch
+  local re='^[[:alnum:]_]+(-[[:alnum:]_]+)+$'
+  for ((i=0; i<${#query}; i++)); do
+    ch="${query:i:1}"
+    if (( in_q )); then
+      out+="$ch"; [[ "$ch" == '"' ]] && in_q=0
+    elif [[ "$ch" == '"' || "$ch" == ' ' || "$ch" == $'\t' ]]; then
+      if [[ "$tok" =~ $re ]]; then out+="\"$tok\""; else out+="$tok"; fi
+      tok=""; out+="$ch"
+      [[ "$ch" == '"' ]] && in_q=1
+    else
+      tok+="$ch"
+    fi
+  done
+  if [[ "$tok" =~ $re ]]; then out+="\"$tok\""; else out+="$tok"; fi
+  printf '%s' "$out"
+}
+
+SAFE_QUERY=$(escape_sql "$(preprocess_fts_query "$QUERY")")
 
 WHERE_CLAUSES=("entries_fts MATCH '$SAFE_QUERY'")
 if [[ -n "$TYPE_FILTER" ]]; then
