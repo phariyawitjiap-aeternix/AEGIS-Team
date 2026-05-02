@@ -507,7 +507,26 @@ copy_dir_contents() {
         cp "$f" "$dst_dir/"
         count=$((count + 1))
     done
-    success "${count} ${label} installed"
+
+    # Also copy any subdirectories recursively (e.g. hooks/lib/, agents/_archived/).
+    # Without this, files like .claude/hooks/lib/quality-check.sh — sourced by
+    # on-stop.sh — never reach downstream projects, and every Claude Code stop
+    # event errors with "lib/quality-check.sh: No such file or directory".
+    local subdir_count=0
+    for d in "$src_dir"/*/; do
+        [[ -d "$d" ]] || continue
+        local subdir_name
+        subdir_name="$(basename "$d")"
+        mkdir -p "$dst_dir/$subdir_name"
+        cp -R "$d." "$dst_dir/$subdir_name/"
+        subdir_count=$((subdir_count + 1))
+    done
+
+    if [[ $subdir_count -gt 0 ]]; then
+        success "${count} ${label} installed (+ ${subdir_count} subdirectories)"
+    else
+        success "${count} ${label} installed"
+    fi
 }
 
 copy_dir_contents "${SCRIPT_DIR}/.claude/agents"     "${TARGET_DIR}/.claude/agents"     "agent definitions"
