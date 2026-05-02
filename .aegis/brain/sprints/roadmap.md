@@ -16,7 +16,7 @@ external dependencies (new SDK features, infra, migration calendar).
 
 ## Tally (update on every sprint close)
 
-_Last updated: 2026-05-01 · by: Nick Fury (sprint-v10-05 close · honest cleanup)_
+_Last updated: 2026-05-02 · by: Nick Fury (sprint-v10-06 close · searchable brain / Hermes L1)_
 
 | Sprint | Points Selected | Points Done | Stretch Done | Status |
 |--------|-----------------|-------------|--------------|--------|
@@ -30,8 +30,9 @@ _Last updated: 2026-05-01 · by: Nick Fury (sprint-v10-05 close · honest cleanu
 | sprint-v10-01 (traceability wiki) | 13 | 13 | 0 | CLOSED (100%) |
 | sprint-v10-02 (RTK readiness) | 5 | 5 | 0 | CLOSED (100%) |
 | sprint-v10-04 (MBP soft-ask detection) | 3 | 3 | 0 | CLOSED (100%) |
-| sprint-v10-05 (honest cleanup) | 8 | 8 | 0 | **CLOSED (100%)** |
-| **v10 in-repo total** | **29** | **29** | **0** | **100%** |
+| sprint-v10-05 (honest cleanup) | 8 | 8 | 0 | CLOSED (100%) |
+| sprint-v10-06 (searchable brain · Hermes L1) | 5 | 5 | 0 | **CLOSED (100%)** |
+| **v10 in-repo total** | **34** | **34** | **0** | **100%** |
 
 ## Why delivered > denominator this sprint
 
@@ -89,6 +90,10 @@ framework to real projects."
 - ADR-006 memory integration plan documented -- DONE
 - SDK readiness checker (`tools/aegis-sdk-readiness-check.sh`) -- DONE
 - Project-wide traceability wiki (sprint-v10-01, 13pt) -- DONE
+- **Hermes adoption (v10-06/07/08)**: 3-sprint roadmap to adopt Nous Research Hermes Agent's compounding-intelligence pattern (observed-only, no LLM-generated skills, ISO 29110 audit trail preserved)
+  - L1 — Searchable brain (FTS5 over `.aegis/brain/`) — sprint-v10-06 — **DONE 2026-05-02**
+  - L2 — Pattern miner over `decision-audit.log` — sprint-v10-07 — DEFERRED (planned)
+  - L3 — Instinct refinement loop — sprint-v10-08 — DEFERRED (needs L2 measurement first)
 - Real-project application sprints (first AEGIS-powered project delivery)
 - Feedback loop: lessons from real usage feed back into framework improvements
 

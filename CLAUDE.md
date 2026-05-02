@@ -72,6 +72,8 @@ See [`docs/AEGIS_APPLICATION_PLAYBOOK.md`](docs/AEGIS_APPLICATION_PLAYBOOK.md) f
 | `tools/aegis-team-chat.sh` | Append inter-agent dialogue event (DISPATCH / REPORT / VERDICT / etc.) to today's chat log. Surfaces team conversation during processing — not just final results. |
 | `tools/aegis-progress.sh` | Compute grand-total progress % against the roadmap. Denominator = all selected + planned scope. `--bar` / `--json` flags available. |
 | `tools/aegis-log-decision.sh` | Nick Fury's decision-audit logger (S2-02). Every non-trivial decision gets one JSONL entry. |
+| `tools/aegis-brain-index.sh` | Build/refresh FTS5 search index over `.aegis/brain/` (handoffs, retros, learnings, resonance, sprints, logs). v10-06 Hermes L1. `--full` / `--incremental` / `--stats`. |
+| `tools/aegis-brain-search.sh` | Query the FTS5 brain index with ranked snippets + provenance. Filters: `--type` / `--since` / `--limit` / `--json`. v10-06 Hermes L1. |
 | `.aegis/brain/sprints/roadmap.md` | Single source of truth for "how close are we to 100% done". Update on every sprint open/close. |
 
 ## v9 Transition State (largely shipped)
