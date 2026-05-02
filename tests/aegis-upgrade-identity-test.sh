@@ -63,13 +63,19 @@ EXTRACT_BLOCK=$(awk '
   capture && /^fi$/   { exit }
 ' "$UPGRADE_SH")
 
-# Extract from EXTRA_ARGS=() through the install.sh bash call (closing `fi` of
-# the second guard block). This is what Test 4 exercises — a regression
-# guard against any rewrite that re-introduces unquoted/string args.
+# Extract from EXTRA_ARGS=() through the install.sh bash call (closing `fi`
+# of the if/else block that branches on EXTRA_ARGS length). This is what
+# Test 4 exercises — a regression guard against any rewrite that
+# re-introduces unquoted/string args.
+#
+# Stops at the third `fi` because the script structure is now:
+#   1st fi — closes `if [[ -f "$IDFILE" ]]; then ... fi` (identity extraction)
+#   2nd fi — closes `if [[ -f "$LOG" ]]; then ... fi`     (pre-install log)
+#   3rd fi — closes `if [[ ${#EXTRA_ARGS[@]} -gt 0 ]]`    (install.sh call)
 EXTRACT_FULL=$(awk '
   /^EXTRA_ARGS=\(\)/                      { capture=1; n_fi=0 }
   capture                                  { print }
-  capture && /^fi$/                        { n_fi++; if (n_fi == 2) exit }
+  capture && /^fi$/                        { n_fi++; if (n_fi == 3) exit }
 ' "$UPGRADE_SH")
 
 if [[ -z "$EXTRACT_BLOCK" ]]; then
@@ -187,6 +193,11 @@ bash -c "
   export ARGV_FILE='$ARGV_FILE'
   TARGET_DIR='$T4'
   SOURCE_DIR='$SRC'
+  # The extracted block now includes the pre-install log step which
+  # references TARGET_AEGIS_VER and SOURCE_VERSION. Stub them so set -u
+  # is happy; values don't matter for argv assertion.
+  TARGET_AEGIS_VER='9.0'
+  SOURCE_VERSION='9.0'
   info() { :; }   # stub
   $EXTRACT_FULL
 " >/dev/null 2>"$TEST_DIR/e2e.err"
