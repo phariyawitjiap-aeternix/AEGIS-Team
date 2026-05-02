@@ -16,7 +16,7 @@ external dependencies (new SDK features, infra, migration calendar).
 
 ## Tally (update on every sprint close)
 
-_Last updated: 2026-05-02 · by: Nick Fury (sprint-v10-03 close · RTK adoption decision = DEFER)_
+_Last updated: 2026-05-02 · by: Nick Fury (sprint-v10-09 close · per-agent allow lists, replaces stale PR #87)_
 
 | Sprint | Points Selected | Points Done | Stretch Done | Status |
 |--------|-----------------|-------------|--------------|--------|
@@ -29,11 +29,12 @@ _Last updated: 2026-05-02 · by: Nick Fury (sprint-v10-03 close · RTK adoption 
 | **v9 in-repo total** | **69** | **73** | **0** | **100%** |
 | sprint-v10-01 (traceability wiki) | 13 | 13 | 0 | CLOSED (100%) |
 | sprint-v10-02 (RTK readiness) | 5 | 5 | 0 | CLOSED (100%) |
-| sprint-v10-03 (RTK adoption decision = DEFER) | 2 | 2 | 0 | **CLOSED (100%)** |
+| sprint-v10-03 (RTK adoption decision = DEFER) | 2 | 2 | 0 | CLOSED (100%) |
 | sprint-v10-04 (MBP soft-ask detection) | 3 | 3 | 0 | CLOSED (100%) |
 | sprint-v10-05 (honest cleanup) | 8 | 8 | 0 | CLOSED (100%) |
 | sprint-v10-06 (searchable brain · Hermes L1) | 5 | 5 | 0 | CLOSED (100%) |
-| **v10 in-repo total** | **36** | **36** | **0** | **100%** |
+| sprint-v10-09 (per-agent allow lists · v9 personas) | 3 | 3 | 0 | **CLOSED (100%)** |
+| **v10 in-repo total** | **39** | **39** | **0** | **100%** |
 
 ## Why delivered > denominator this sprint
 
