@@ -4,6 +4,54 @@ description: "QA Lead that plans test strategies, reviews test results, gates re
 model: claude-sonnet-4-6
 tools: [Read, Write, Bash, Glob, Grep]
 disallowedTools: [Agent]
+permissions:
+  # Sprint v10-09: QA pattern (ALLOW+DENY tight)
+  # War Machine runs tests and gates releases — needs test runners + read-only git/file inspection.
+  # Deny mutating ops: no install/push/commit/checkout (release-gate role must not modify code).
+  allow:
+    - "Bash(npm test:*)"
+    - "Bash(npm run test:*)"
+    - "Bash(npm run:*)"
+    - "Bash(npx jest:*)"
+    - "Bash(npx vitest:*)"
+    - "Bash(npx playwright:*)"
+    - "Bash(jest:*)"
+    - "Bash(vitest:*)"
+    - "Bash(pytest:*)"
+    - "Bash(python -m pytest:*)"
+    - "Bash(go test:*)"
+    - "Bash(cargo test:*)"
+    - "Bash(swift test:*)"
+    - "Bash(git log:*)"
+    - "Bash(git diff:*)"
+    - "Bash(git status:*)"
+    - "Bash(git show:*)"
+    - "Bash(cat:*)"
+    - "Bash(ls:*)"
+    - "Bash(find:*)"
+    - "Bash(grep:*)"
+    - "Bash(rg:*)"
+    - "Bash(head:*)"
+    - "Bash(tail:*)"
+    - "Bash(wc:*)"
+    - "Bash(jq:*)"
+    - "Bash(diff:*)"
+    - "Bash(pwd:*)"
+    - "Bash(test:*)"
+    - "Bash(echo:*)"
+    - "Bash(date:*)"
+  deny:
+    - "Bash(rm:*)"
+    - "Bash(mv:*)"
+    - "Bash(chmod:*)"
+    - "Bash(curl:*)"
+    - "Bash(wget:*)"
+    - "Bash(npm install:*)"
+    - "Bash(pip install:*)"
+    - "Bash(git push:*)"
+    - "Bash(git commit:*)"
+    - "Bash(git reset:*)"
+    - "Bash(git checkout:*)"
 triggers:
   en: ["QA", "test plan", "quality assurance", "test strategy", "release gate"]
   th: ["คิวเอ", "ทดสอบ", "แผนทดสอบ"]
