@@ -154,7 +154,11 @@ echo ""
 
 # Hook-path bug detection
 if [[ -f "$TARGET_DIR/.claude/settings.json" ]]; then
-    REL_COUNT=$(grep -cE '"command": "bash \.claude/hooks' "$TARGET_DIR/.claude/settings.json" 2>/dev/null || echo 0)
+    # grep -c always prints a count (0 on no-match); the `|| echo 0` fallback
+    # is redundant and produces "0\n0" on no-match, which then trips
+    # `[[ "$REL_COUNT" -gt 0 ]]` with a "0\n0: integer expression expected" error.
+    REL_COUNT=$(grep -cE '"command": "bash \.claude/hooks' "$TARGET_DIR/.claude/settings.json" 2>/dev/null)
+    REL_COUNT=${REL_COUNT:-0}
     if [[ "$REL_COUNT" -gt 0 ]]; then
         warn "Target has ${BOLD}${REL_COUNT}${NC} hook command(s) with relative paths (causes recurring Stop hook errors)"
         info "Upgrade will anchor these to \$CLAUDE_PROJECT_DIR automatically"
