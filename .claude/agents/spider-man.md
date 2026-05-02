@@ -3,6 +3,21 @@ name: spider-man
 description: "Fast implementer that writes production code, runs builds, creates tests, and fixes bugs. Use for any coding or implementation task."
 model: claude-sonnet-4-6
 tools: [Read, Write, Edit, Bash, Glob, Grep]
+permissions:
+  # Sprint v10-09: implementer pattern (DENY-only)
+  # Spider-Man writes code and runs builds — broad Bash access by role.
+  # Deny destructive ops + git history rewrites. Project-level deny list (settings.json) is the first layer; this is defense-in-depth.
+  deny:
+    - "Bash(rm:*)"
+    - "Bash(curl:*)"
+    - "Bash(wget:*)"
+    - "Bash(chmod:*)"
+    - "Bash(sudo:*)"
+    - "Bash(git push --force:*)"
+    - "Bash(git push -f:*)"
+    - "Bash(git reset --hard:*)"
+    - "Bash(git commit --amend:*)"
+    - "Bash(git clean -f:*)"
 ---
 
 # ⚡ Spider-Man — Implementer

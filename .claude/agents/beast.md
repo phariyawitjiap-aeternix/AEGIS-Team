@@ -4,6 +4,63 @@ description: "Fast scanner and researcher that gathers codebase metrics, searche
 model: claude-haiku-4-5-20251001
 tools: [Read, Glob, Grep, Bash, WebFetch, WebSearch, code_execution_20260120]
 disallowedTools: [Write, Edit, Agent]
+permissions:
+  # Sprint v10-09: researcher pattern (ALLOW+DENY tight)
+  # Beast is read-only by role — explicit allow list for read-only commands; broad deny on anything mutating.
+  allow:
+    - "Bash(git log:*)"
+    - "Bash(git diff:*)"
+    - "Bash(git show:*)"
+    - "Bash(git status:*)"
+    - "Bash(git blame:*)"
+    - "Bash(git ls-files:*)"
+    - "Bash(cat:*)"
+    - "Bash(ls:*)"
+    - "Bash(find:*)"
+    - "Bash(grep:*)"
+    - "Bash(rg:*)"
+    - "Bash(head:*)"
+    - "Bash(tail:*)"
+    - "Bash(wc:*)"
+    - "Bash(sort:*)"
+    - "Bash(uniq:*)"
+    - "Bash(cut:*)"
+    - "Bash(tr:*)"
+    - "Bash(jq:*)"
+    - "Bash(diff:*)"
+    - "Bash(pwd:*)"
+    - "Bash(basename:*)"
+    - "Bash(dirname:*)"
+    - "Bash(realpath:*)"
+    - "Bash(test:*)"
+    - "Bash(echo:*)"
+    - "Bash(date:*)"
+    - "Bash(which:*)"
+    - "Bash(npm list:*)"
+    - "Bash(npm outdated:*)"
+    - "Bash(npm audit:*)"
+    - "Bash(npm view:*)"
+    - "Bash(pip list:*)"
+    - "Bash(pip show:*)"
+  deny:
+    - "Bash(rm:*)"
+    - "Bash(mv:*)"
+    - "Bash(cp:*)"
+    - "Bash(chmod:*)"
+    - "Bash(mkdir:*)"
+    - "Bash(touch:*)"
+    - "Bash(curl:*)"
+    - "Bash(wget:*)"
+    - "Bash(npm install:*)"
+    - "Bash(pip install:*)"
+    - "Bash(make:*)"
+    - "Bash(docker:*)"
+    - "Bash(git push:*)"
+    - "Bash(git commit:*)"
+    - "Bash(git reset:*)"
+    - "Bash(git rebase:*)"
+    - "Bash(git checkout:*)"
+    - "Bash(git clean:*)"
 ---
 
 # 🔧 Beast — Scanner & Research Agent

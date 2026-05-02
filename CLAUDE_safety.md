@@ -135,6 +135,26 @@ sudo anything
 chmod 777
 ```
 
+### Per-Agent Permissions (sprint-v10-09)
+
+Defense in depth: project-level deny list (`.claude/settings.json`) blocks at one layer; per-agent `permissions:` blocks in agent frontmatter add a second, role-aware layer.
+
+Two patterns are used:
+
+**DENY-only** (broad-access roles): implementer/orchestrator/DevOps agents that legitimately need wide Bash access. Block destructive ops + history rewrites + critical-path destruction.
+- Applied to: `spider-man`, `nick-fury`, `captain-america`, `thor`
+
+**ALLOW + DENY tight** (read-mostly roles): scanner/reviewer/QA agents whose role is read-only or limited. Explicit allow list of safe commands; broad deny on anything mutating.
+- Applied to: `beast`, `war-machine`, `black-panther`
+
+**Skipped agents** (no Bash tool, restriction redundant): `wasp`, `iron-man`, `loki`, `coulson` — already restricted via tools list omission.
+
+**Decision tree for new agents**:
+1. Does the agent need Bash? If no → omit from `tools:` list, skip permissions block.
+2. Is the agent's role broad (writes code / orchestrates / deploys)? → DENY-only pattern.
+3. Is the agent's role read-mostly (reviews / scans / runs tests)? → ALLOW + DENY tight pattern.
+4. Document the choice + rationale in the agent's permissions block as a comment.
+
 ---
 
 ## 6. Secret Safety
