@@ -154,10 +154,13 @@ echo ""
 
 # Hook-path bug detection
 if [[ -f "$TARGET_DIR/.claude/settings.json" ]]; then
-    # grep -c always prints a count (0 on no-match); the `|| echo 0` fallback
-    # is redundant and produces "0\n0" on no-match, which then trips
-    # `[[ "$REL_COUNT" -gt 0 ]]` with a "0\n0: integer expression expected" error.
-    REL_COUNT=$(grep -cE '"command": "bash \.claude/hooks' "$TARGET_DIR/.claude/settings.json" 2>/dev/null)
+    # `grep -c` prints "0" on no-match AND exits 1, so we need `|| true` to
+    # absorb the exit under `set -e -o pipefail`. The earlier fix dropped
+    # `|| echo 0` (which double-printed "0\n0") but missed restoring an
+    # exit-code absorber, leaving the wrapper silently aborting on targets
+    # whose settings.json had no relative-path hooks. `${REL_COUNT:-0}`
+    # then defaults the empty-stdout case (e.g. file missing entirely).
+    REL_COUNT=$(grep -cE '"command": "bash \.claude/hooks' "$TARGET_DIR/.claude/settings.json" 2>/dev/null || true)
     REL_COUNT=${REL_COUNT:-0}
     if [[ "$REL_COUNT" -gt 0 ]]; then
         warn "Target has ${BOLD}${REL_COUNT}${NC} hook command(s) with relative paths (causes recurring Stop hook errors)"
@@ -219,6 +222,18 @@ if [[ -f "$IDFILE" ]]; then
     [[ -n "$PROFILE" ]] && EXTRA_ARGS+=(--profile "$PROFILE")
 fi
 
+# ── Record upgrade in target's brain log BEFORE running install.sh ────────
+# install.sh copies tools/* from source to target — including this script.
+# When the wrapper is run from the target's own tools/ (the common case),
+# bash may have read only part of the script into memory. The mid-flight
+# overwrite can then truncate execution, dropping any post-install log step.
+# Logging the attempt up front guarantees an audit trail regardless.
+LOG="$TARGET_DIR/.aegis/brain/logs/activity.log"
+if [[ -f "$LOG" ]]; then
+    TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+    echo "[${TS}] [UPGRADE] from v${TARGET_AEGIS_VER} to v${SOURCE_VERSION} (source=${SOURCE_DIR})" >> "$LOG" 2>/dev/null || true
+fi
+
 echo ""
 # Guard the array expansion: under `set -u` on bash 3.2 (macOS default),
 # "${EXTRA_ARGS[@]}" on an empty array errors with "unbound variable".
@@ -231,13 +246,6 @@ else
     info "Running: bash '$SOURCE_DIR/install.sh' --upgrade --target-dir '$TARGET_DIR'"
     echo ""
     bash "$SOURCE_DIR/install.sh" --upgrade --target-dir "$TARGET_DIR"
-fi
-
-# ── Record upgrade in target's brain log ───────────────────────────────────
-LOG="$TARGET_DIR/.aegis/brain/logs/activity.log"
-if [[ -f "$LOG" ]]; then
-    TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-    echo "[${TS}] [UPGRADE] from v${TARGET_AEGIS_VER} to v${SOURCE_VERSION} (source=${SOURCE_DIR})" >> "$LOG" 2>/dev/null || true
 fi
 
 echo ""
