@@ -39,15 +39,14 @@ Agent ตัวไหนอ่านไฟล์นี้ตรงก็ได�
 ## 🔔 Pending / รอดำเนินการ
 
 <!-- PENDING_START -->
-### [2026-04-25] EXTERNAL — Apply token-profile hook installer (sprint v10-02 Story A activation) / Apply token-profile hook installer (เปิดใช้งาน Story A ของ v10-02)
+_No pending items. / ไม่มีคิวรอ._
+<!-- PENDING_END -->
 
-- **EN**: Sprint v10-02 shipped tools/aegis-token-profile.sh with --install flag. Wires a PostToolUse hook that records every tool call's category + token estimate to .aegis/brain/metrics/token-profile-<date>.jsonl. Apply between sessions (guard-write blocks mid-session per ADR-004): close Claude Code, run 'bash tools/aegis-token-profile.sh --install', restart. Then use AEGIS normally for >=3 sessions and run 'bash tools/aegis-token-profile.sh --summary' to answer Loki's killshot question (Bash vs Read/Grep/Glob token breakdown). This is a passive, no-risk measurement step. Rollback: 'bash tools/aegis-token-profile.sh --uninstall'.
-- **TH**: Sprint v10-02 ส่ง tools/aegis-token-profile.sh พร้อม --install flag แล้ว. เพิ่ม PostToolUse hook ที่บันทึก category + token estimate ทุก tool call ลง .aegis/brain/metrics/token-profile-<date>.jsonl. ติดตั้งระหว่างเซสชัน (guard-write บล็อกระหว่างเซสชัน per ADR-004): ปิด Claude Code, รัน 'bash tools/aegis-token-profile.sh --install', เปิดใหม่. ใช้งาน AEGIS ปกติ >=3 sessions แล้วรัน 'bash tools/aegis-token-profile.sh --summary' เพื่อตอบคำถาม killshot ของ Loki. Passive measurement, ไม่มี risk. Rollback ง่าย: 'bash tools/aegis-token-profile.sh --uninstall'.
-- **Category**: External access
-- **Raised by**: main-agent
-- **Blocks**: Sprint v10-02 Story A is built but not collecting data; Loki's killshot question (Bash vs Read/Grep/Glob %) cannot be answered until hook is active for ≥3 real sessions
-- **Raised**: 2026-04-25T05:39:20Z
-- **Resolved**: _(pending)_
+---
+
+## ✅ Resolved / แก้ไขแล้ว
+
+<!-- RESOLVED_START -->
 
 ### [2026-05-01] EXTERNAL — Add Bash(./tests/*) to .claude/settings.json allowlist / เพิ่ม Bash(./tests/*) ใน allowlist ของ .claude/settings.json
 
@@ -57,15 +56,16 @@ Agent ตัวไหนอ่านไฟล์นี้ตรงก็ได�
 - **Raised by**: main-agent
 - **Blocks**: Test runs from agent context may hit permission prompts until applied
 - **Raised**: 2026-05-01T07:52:47Z
-- **Resolved**: _(pending)_
-<!-- PENDING_END -->
+- **Resolved**: 2026-05-02T05:39:20Z — Applied via jq one-liner on 2026-05-02: '.permissions.allow |= (. + ["Bash(./tests/*)"] | unique)'. JSON validity confirmed; both './tools/*' and './tests/*' entries present.
+### [2026-04-25] EXTERNAL — Apply token-profile hook installer (sprint v10-02 Story A activation) / Apply token-profile hook installer (เปิดใช้งาน Story A ของ v10-02)
 
----
-
-## ✅ Resolved / แก้ไขแล้ว
-
-<!-- RESOLVED_START -->
-
+- **EN**: Sprint v10-02 shipped tools/aegis-token-profile.sh with --install flag. Wires a PostToolUse hook that records every tool call's category + token estimate to .aegis/brain/metrics/token-profile-<date>.jsonl. Apply between sessions (guard-write blocks mid-session per ADR-004): close Claude Code, run 'bash tools/aegis-token-profile.sh --install', restart. Then use AEGIS normally for >=3 sessions and run 'bash tools/aegis-token-profile.sh --summary' to answer Loki's killshot question (Bash vs Read/Grep/Glob token breakdown). This is a passive, no-risk measurement step. Rollback: 'bash tools/aegis-token-profile.sh --uninstall'.
+- **TH**: Sprint v10-02 ส่ง tools/aegis-token-profile.sh พร้อม --install flag แล้ว. เพิ่ม PostToolUse hook ที่บันทึก category + token estimate ทุก tool call ลง .aegis/brain/metrics/token-profile-<date>.jsonl. ติดตั้งระหว่างเซสชัน (guard-write บล็อกระหว่างเซสชัน per ADR-004): ปิด Claude Code, รัน 'bash tools/aegis-token-profile.sh --install', เปิดใหม่. ใช้งาน AEGIS ปกติ >=3 sessions แล้วรัน 'bash tools/aegis-token-profile.sh --summary' เพื่อตอบคำถาม killshot ของ Loki. Passive measurement, ไม่มี risk. Rollback ง่าย: 'bash tools/aegis-token-profile.sh --uninstall'.
+- **Category**: External access
+- **Raised by**: main-agent
+- **Blocks**: Sprint v10-02 Story A is built but not collecting data; Loki's killshot question (Bash vs Read/Grep/Glob %) cannot be answered until hook is active for ≥3 real sessions
+- **Raised**: 2026-04-25T05:39:20Z
+- **Resolved**: 2026-05-02T05:39:15Z — Installed via 'bash tools/aegis-token-profile.sh --install' on 2026-05-02; PostToolUse hook wired with matcher='.*'. Verified via grep on settings.json. Will collect ≥3 sessions of data before running --summary.
 ### [2026-04-24] EXTERNAL — Prune stale ~/.claude/tasks/aegis-shared-tasks/ once all AEGIS projects are migrated / ลบ ~/.claude/tasks/aegis-shared-tasks/ ที่ค้าง หลัง AEGIS projects ทั้งหมดย้ายเรียบร้อย
 
 - **EN**: After upgrading AEGIS-Team, DriveWiki-MCP, and RizzLab to the per-project task-list-ID (PR #70), verify each now writes to its own aegis-tasks-<slug>/ directory. Then remove the old shared dir: rm -rf ~/.claude/tasks/aegis-shared-tasks/. This purges the 44 cross-contaminated tasks including the recurring 'Cloud Build GitHub triggers' ghost. Safe only AFTER all 3 projects have been upgraded + verified.

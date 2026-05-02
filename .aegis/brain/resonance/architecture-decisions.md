@@ -243,9 +243,10 @@ Tags: aegis, brain-layer, category, sprint-id
 
 ## ADR-007: Shell Output Compression — Governance + ISO 29110 NFR-05 Impact
 
-**Date**: 2026-04-25
-**Status**: DEFERRED pending measurement + upstream fix + canary pass
-**Source**: Team vote (sprint-v10-02 planning session), Loki adversarial review
+**Date**: 2026-04-25 (decided), 2026-05-02 (measured + finalized)
+**Status**: **DEFERRED based on measurement (sprint-v10-03 close, 2026-05-02)** — Bash share at threshold (~30-32% across 3 samples × 2 contexts × 2 dates), RTK net saving projection ~12-13%, below ROI threshold. Reconsider if workload shifts ≥50% Bash, or RTK upstream improves compression ≥60%, or Anthropic does not ship native compression for >12 months.
+**Source**: Team vote (sprint-v10-02 planning session), Loki adversarial review, sprint-v10-03 measurement-based decision
+**Evidence**: `.aegis/brain/sprints/sprint-v10-03/close.md` + `.aegis/brain/learnings/2026-05-02_token-profile-meta-vs-real-divergence.md`
 **Context**: RTK (Rust Token Killer) is a Rust-based compression proxy that intercepts shell output to reduce token consumption in LLM agent workflows. The team evaluated RTK adoption for AEGIS with the following vote result:
 
 | Agent | Vote | Key Concern |

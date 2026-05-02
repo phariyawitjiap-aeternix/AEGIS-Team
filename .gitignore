@@ -79,10 +79,19 @@ dashboard/node_modules/
 .aegis/logs/
 .aegis/brain/tasks/*/history.md
 
+# v10-06 brain FTS5 index — regenerated on demand, machine-local
+.aegis/brain/index.db
+.aegis/brain/index.db-shm
+.aegis/brain/index.db-wal
+.aegis/brain/index-backups/
+
 # MBP rollout backup (transient — safety net, not committed)
 .claude/settings.json.pre-mbp-backup
 # Timestamped settings.json backups from aegis-fix-* tools (transient)
 .claude/settings.json.pre-*-fix-*
+# All settings.json backups from helper scripts and manual edits (transient safety nets)
+.claude/settings.json.pre-*
+.claude/settings.json.*.bak
 
 # <<< AEGIS-V9-END >>>
 
