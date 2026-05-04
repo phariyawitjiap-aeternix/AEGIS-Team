@@ -16,7 +16,7 @@ external dependencies (new SDK features, infra, migration calendar).
 
 ## Tally (update on every sprint close)
 
-_Last updated: 2026-05-02 · by: Nick Fury (sprint-v10-09 close · per-agent allow lists, replaces stale PR #87)_
+_Last updated: 2026-05-04 · by: Nick Fury (v11-01 preflight · AEGIS-Plus Mega Plan adopted)_
 
 | Sprint | Points Selected | Points Done | Stretch Done | Status |
 |--------|-----------------|-------------|--------------|--------|
@@ -33,8 +33,26 @@ _Last updated: 2026-05-02 · by: Nick Fury (sprint-v10-09 close · per-agent all
 | sprint-v10-04 (MBP soft-ask detection) | 3 | 3 | 0 | CLOSED (100%) |
 | sprint-v10-05 (honest cleanup) | 8 | 8 | 0 | CLOSED (100%) |
 | sprint-v10-06 (searchable brain · Hermes L1) | 5 | 5 | 0 | CLOSED (100%) |
-| sprint-v10-09 (per-agent allow lists · v9 personas) | 3 | 3 | 0 | **CLOSED (100%)** |
+| sprint-v10-09 (per-agent allow lists · v9 personas) | 3 | 3 | 0 | CLOSED (100%) |
 | **v10 in-repo total** | **39** | **39** | **0** | **100%** |
+| sprint-v11-01 (aegis-live-tail · always-on terminal stream) | 5 | – | 0 | **PLANNED** |
+| sprint-v11-02 (aegis-activity-logger · JSONL audit) | 5 | – | 0 | planned |
+| sprint-v11-03 (aegis-issue-thread · YAML tickets) | 5 | – | 0 | planned |
+| sprint-v11-04 (aegis-parallel-dispatch · Agent fan-out skill) | 3 | – | 0 | planned |
+| **v11 Phase-1 (selected)** | **18** | **0** | **0** | open |
+| sprint-v11-05 (aegis-approval-gate · PreToolUse blocker) | 8 | – | 0 | deferred — pending P1 pilot |
+| sprint-v11-06 (aegis-router · model-tier picker) | 8 | – | 0 | deferred |
+| sprint-v11-07 (aegis-run-logger · Stop hook archive) | 8 | – | 0 | deferred |
+| sprint-v11-08 (aegis-trace-export · PII redaction) | 8 | – | 0 | deferred |
+| **v11 Phase-2 (deferred)** | **32** | – | – | gated by P1 pilot outcome |
+
+## v11 Plan Reference
+
+Source: `~/Documents/AEGIS-PLUS-MEGA-PLAN.md` v1.1 (2026-05-02). Adopted into roadmap on
+2026-05-04 after pre-flight verification (tmux 3.6a, node v25.8.2, kam-tong-ham pilot dir
+exists, settings.json backup taken). Phase 1 = 4 skills / 18pt / 1–2 sessions per skill.
+Phase 2 = 4 skills / 32pt / gated on Phase 1 pilot outcome per plan §10 Step 3.
+Phase 3 (resume, multi-tenant) = on-demand only — no roadmap entry until concrete trigger.
 
 ## Why delivered > denominator this sprint
 
