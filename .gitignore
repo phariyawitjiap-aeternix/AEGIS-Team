@@ -97,3 +97,7 @@ dashboard/node_modules/
 
 # Runtime inter-agent chat logs (per-session, per-machine)
 .aegis/brain/conversations/
+
+# aegis-live-tail named pipe + socket (transient, created on demand)
+.aegis/brain/live/current.fifo
+.aegis/brain/live/*.sock

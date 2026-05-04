@@ -1,0 +1,30 @@
+# aegis-live-tail format.yaml — display config for the live event stream.
+# Read by tools/aegis-live-tail/{emit,watch}.mjs at run time.
+# Override per project by editing this file; defaults applied if absent.
+#
+# v1.1 spec: plan §6.1.
+
+width: 120
+show_timestamps: true
+show_persona: true
+show_tool: true
+truncate_args_to: 60
+
+highlight:
+  error: red
+  warning: yellow
+  success: green
+  block: red
+  info: blue
+  # persona-specific (lowercased keys)
+  persona_spider-man: cyan
+  persona_iron-man: magenta
+  persona_war-machine: red
+  persona_black-panther: yellow
+  persona_thor: blue
+  persona_beast: green
+  persona_captain-america: bold-cyan
+  persona_nick-fury: bold-magenta
+  persona_loki: bold-yellow
+  persona_coulson: gray
+  persona_wasp: green
