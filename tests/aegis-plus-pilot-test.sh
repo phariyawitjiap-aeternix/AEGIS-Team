@@ -124,6 +124,14 @@ else
   fi
 fi
 
+# 4.a.1 — 0-signals run must not emit "unbound variable" for empty notes[@]
+# (regression guard for bash 3.2 set -u empty-array bug)
+if grep -qE "unbound variable|notes\[@\]" "$GATE_OUT"; then
+  fail "4.a.1 empty-notes guard" "0-signal output leaked 'unbound variable': $(grep -E 'unbound|notes' "$GATE_OUT")"
+else
+  pass "4.a.1 0-signal output is clean (no empty-array warnings)"
+fi
+
 # 4.b — friction log mention triggers Signal 3
 echo "I had to replay an old session to reconstruct context" >> "$PILOT/.aegis/brain/memory/aegis-plus-feedback.md"
 GATE2_OUT="$TEST_DIR/gate-s3.out"
