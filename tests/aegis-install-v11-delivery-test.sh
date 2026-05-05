@@ -93,9 +93,9 @@ for f in aegis-live-tail/emit.mjs aegis-issue-thread/issue.mjs aegis-plus-pilot/
     fi
 done
 
-# ── Group 4: hooks chained correctly ────────────────────────────────────
+# ── Group 4: hooks chained correctly + every wired tool actually delivered ─
 echo ""
-echo "--- Group 4: PostToolUse hook wiring ---"
+echo "--- Group 4: PostToolUse hook wiring + delivery ---"
 if grep -q "aegis-live-tail/emit.mjs" "$PILOT/.claude/settings.json"; then
     pass "live-tail emit hook wired in settings.json"
 else
@@ -106,6 +106,22 @@ if grep -q "aegis-activity-logger/log.mjs" "$PILOT/.claude/settings.json"; then
 else
     fail "activity-logger hook" "not in settings.json"
 fi
+# Every tools/<name> referenced as a hook command in settings.json must
+# exist on disk after install. Catches the "wired but not shipped" bug
+# class — we hit this with both aegis-token-profile.sh and the v11 packages.
+# Restrict to paths that look like real script files (.sh / .mjs / .js),
+# extracted only from "command": ".../tools/..." lines.
+WIRED_PATHS=$(grep -E '"command"' "$PILOT/.claude/settings.json" \
+              | grep -oE 'tools/[A-Za-z0-9_/-]+\.(sh|mjs|js)' \
+              | sort -u)
+while IFS= read -r rel; do
+    [[ -z "$rel" ]] && continue
+    if [[ -e "$PILOT/$rel" ]]; then
+        pass "wired tool exists: $rel"
+    else
+        fail "wired-but-missing" "$rel referenced in settings.json but not delivered"
+    fi
+done <<< "$WIRED_PATHS"
 
 # ── Group 5: install banner reflects VERSION ────────────────────────────
 echo ""
