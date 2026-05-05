@@ -15,7 +15,7 @@
   <img src="https://img.shields.io/badge/license-MIT-purple?style=for-the-badge" alt="MIT License"/>
 </p>
 
-# :shield: AEGIS v9.0 — AI Agent Team Framework for Claude Code
+# :shield: AEGIS v11.0 — AI Agent Team Framework for Claude Code
 
 > **"Context is King, Memory is Soul"**
 >
@@ -187,7 +187,7 @@ claude --dangerously-skip-permissions
 
 ```
 🛡️ ═══════════════════════════════════════════════════
-🛡️  AEGIS v9.0 — Session Started
+🛡️  AEGIS v11.0 — Session Started
 🛡️  "Context is King, Memory is Soul"
 🛡️ ═══════════════════════════════════════════════════
 

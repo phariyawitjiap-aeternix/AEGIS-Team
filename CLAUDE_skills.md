@@ -1,4 +1,4 @@
-# AEGIS Skills Catalog v9.0
+# AEGIS Skills Catalog v11.0
 
 ## Profiles
 | Profile | Skills | Context |
