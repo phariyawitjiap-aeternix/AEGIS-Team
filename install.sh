@@ -587,6 +587,7 @@ runtime_helpers=(
     "aegis-queue-resolve.sh"   # Resolve items in human-queue.md
     "aegis-brain-index.sh"     # FTS5 brain indexer (v10-06 Hermes L1)
     "aegis-brain-search.sh"    # Search the FTS5 brain index
+    "aegis-token-profile.sh"   # PostToolUse token-cost profiler (wired in settings.json)
 )
 delivered_tools=0
 for tool in "${upgrade_toolkit[@]}" "${runtime_helpers[@]}"; do
