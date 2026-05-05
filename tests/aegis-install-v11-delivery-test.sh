@@ -48,7 +48,7 @@ fi
 # ── Group 1: v11 skills ─────────────────────────────────────────────────
 echo ""
 echo "--- Group 1: v11 skills landed ---"
-for s in aegis-live-tail aegis-activity-logger aegis-issue-thread aegis-parallel-dispatch aegis-plus-pilot; do
+for s in aegis-live-tail aegis-activity-logger aegis-issue-thread aegis-parallel-dispatch aegis-plus-pilot aegis-approval-gate; do
     if [[ -f "$PILOT/skills/${s}.md" ]]; then
         pass "skill: ${s}.md present"
     else
@@ -73,6 +73,11 @@ declare -a expected_files=(
     "aegis-plus-pilot/bootstrap.sh"
     "aegis-plus-pilot/daily-eod.sh"
     "aegis-plus-pilot/gate-check.sh"
+    "aegis-approval-gate/check.mjs"
+    "aegis-approval-gate/grant.mjs"
+    "aegis-approval-gate/list.mjs"
+    "aegis-approval-gate/revoke.mjs"
+    "aegis-approval-gate/lib.mjs"
 )
 for f in "${expected_files[@]}"; do
     if [[ -f "$PILOT/tools/$f" ]]; then
@@ -105,6 +110,16 @@ if grep -q "aegis-activity-logger/log.mjs" "$PILOT/.claude/settings.json"; then
     pass "activity-logger log hook wired in settings.json"
 else
     fail "activity-logger hook" "not in settings.json"
+fi
+if grep -q "aegis-approval-gate/check.mjs" "$PILOT/.claude/settings.json"; then
+    pass "approval-gate check hook wired in settings.json"
+else
+    fail "approval-gate hook" "not in settings.json"
+fi
+if [[ -f "$PILOT/.aegis/brain/gate-rules.yaml" ]]; then
+    pass "gate-rules.yaml seeded under .aegis/brain/"
+else
+    fail "gate-rules.yaml" "not seeded"
 fi
 # Every tools/<name> referenced as a hook command in settings.json must
 # exist on disk after install. Catches the "wired but not shipped" bug
