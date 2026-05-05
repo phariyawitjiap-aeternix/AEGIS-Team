@@ -28,6 +28,11 @@ for name in alpha beta; do
   P="$TEST_DIR/$name"
   mkdir -p "$P/.aegis/brain/activity" "$P/.aegis/brain/issues"
   echo "11.0" > "$P/AEGIS_VERSION"
+  # alpha also has a misleading project-level VERSION file (e.g. its app's
+  # semver). mt.mjs must NOT use this as the AEGIS version when AEGIS_VERSION
+  # is present, and must NOT use it as a fallback when the project lacks
+  # install.sh/CLAUDE.md (i.e. is not the meta repo).
+  [[ "$name" == "alpha" ]] && echo "1.2.3" > "$P/VERSION"
   TODAY=$(date -u +%Y-%m-%d)
   echo "{\"ts\":\"${TODAY}T10:00:00Z\",\"tool\":\"Edit\",\"target\":\"src/${name}.ts\",\"persona\":\"spider-man\",\"status\":\"ok\"}" \
     > "$P/.aegis/brain/activity/${TODAY}.jsonl"
@@ -121,6 +126,27 @@ if echo "$JSON" | node -e 'const a=JSON.parse(require("fs").readFileSync(0,"utf8
   pass "2.b list --json valid array of 2"
 else
   fail "2.b json" "$JSON"
+fi
+
+# 2.b.1 — version reported is from AEGIS_VERSION, not the project's VERSION file
+ALPHA_V=$(echo "$JSON" | node -e 'const a=JSON.parse(require("fs").readFileSync(0,"utf8")); console.log((a.find(p=>p.name==="alpha")||{}).version||"")')
+if [[ "$ALPHA_V" == "11.0" ]]; then
+  pass "2.b.1 list reports AEGIS_VERSION (11.0), not project VERSION (1.2.3)"
+else
+  fail "2.b.1 version source" "got=$ALPHA_V expected=11.0"
+fi
+
+# 2.b.2 — non-meta project without AEGIS_VERSION must show "?", NOT fall back to a stray VERSION file
+GAMMA="$TEST_DIR/gamma"
+mkdir -p "$GAMMA/.aegis/brain"
+echo "9.9.9" > "$GAMMA/VERSION"
+node "$MT" register --path "$GAMMA" --name gamma --role experiment >/dev/null
+JSON2=$(node "$MT" list --json)
+GAMMA_V=$(echo "$JSON2" | node -e 'const a=JSON.parse(require("fs").readFileSync(0,"utf8")); console.log((a.find(p=>p.name==="gamma")||{}).version||"")')
+if [[ "$GAMMA_V" == "?" ]]; then
+  pass "2.b.2 non-meta project without AEGIS_VERSION → reports '?' (no misleading fallback)"
+else
+  fail "2.b.2 fallback isolation" "got=$GAMMA_V expected=?"
 fi
 
 # 2.c — where alpha returns the path

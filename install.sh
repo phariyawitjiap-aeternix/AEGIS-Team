@@ -458,6 +458,15 @@ TEAMSTATE
 success "Brain resonance files created"
 
 # --------------------------------------------------------------------------
+# Write AEGIS_VERSION pin file. The directory-tree printout (line ~928) has
+# always advertised this file, but the installer historically never wrote it,
+# so downstream projects had no clean way to report which AEGIS version they
+# track. Now seeded on every install/upgrade.
+# --------------------------------------------------------------------------
+echo "${VERSION}" > "${TARGET_DIR}/AEGIS_VERSION"
+success "AEGIS_VERSION pin set: v${VERSION}"
+
+# --------------------------------------------------------------------------
 # Brain config seeds (framework-shipped YAML — preserved if user customized).
 # v11-05 introduced .aegis/brain/gate-rules.yaml for aegis-approval-gate.
 # Subsequent v11 sprints may add more.
