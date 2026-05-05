@@ -139,6 +139,19 @@ if [[ -f "$PILOT/.aegis/brain/redaction/patterns.yaml" ]]; then
 else
     fail "redaction/patterns.yaml" "not seeded"
 fi
+
+# AEGIS_VERSION pin file (advertised in install.sh tree printout — must exist)
+META_V=$(cat "$REPO_ROOT/VERSION" | tr -d '[:space:]')
+if [[ -f "$PILOT/AEGIS_VERSION" ]]; then
+    PIN=$(cat "$PILOT/AEGIS_VERSION" | tr -d '[:space:]')
+    if [[ "$PIN" == "$META_V" ]]; then
+        pass "AEGIS_VERSION pin file written and matches meta VERSION ($PIN)"
+    else
+        fail "AEGIS_VERSION content" "pin=$PIN expected=$META_V"
+    fi
+else
+    fail "AEGIS_VERSION pin" "tree printout claims file but install.sh did not write it"
+fi
 # Every tools/<name> referenced as a hook command in settings.json must
 # exist on disk after install. Catches the "wired but not shipped" bug
 # class — we hit this with both aegis-token-profile.sh and the v11 packages.

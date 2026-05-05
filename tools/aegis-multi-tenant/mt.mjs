@@ -106,10 +106,19 @@ function parseFlags(argv) {
 
 // ── helpers ───────────────────────────────────────────────────────────
 function readVersion(p) {
-  const fp = path.join(p, "AEGIS_VERSION");
-  if (fs.existsSync(fp)) return fs.readFileSync(fp, "utf8").trim();
-  const v = path.join(p, "VERSION");
-  if (fs.existsSync(v)) return fs.readFileSync(v, "utf8").trim();
+  // Prefer AEGIS_VERSION (the installed pin written by install.sh).
+  const pin = path.join(p, "AEGIS_VERSION");
+  if (fs.existsSync(pin)) return fs.readFileSync(pin, "utf8").trim();
+  // Fall back to top-level VERSION ONLY if this looks like the meta source
+  // repo (has install.sh + a top-level VERSION file). Other projects often
+  // have an unrelated VERSION file (e.g. their app's semver) that would be
+  // misleading to show as the AEGIS version.
+  const isMeta = fs.existsSync(path.join(p, "install.sh"))
+              && fs.existsSync(path.join(p, "CLAUDE.md"));
+  if (isMeta) {
+    const v = path.join(p, "VERSION");
+    if (fs.existsSync(v)) return fs.readFileSync(v, "utf8").trim() + " (meta)";
+  }
   return "?";
 }
 
