@@ -82,6 +82,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/run-with-flags.sh\" on-stop \"$CLAUDE_PROJECT_DIR/.claude/hooks/on-stop.sh\""
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/tools/aegis-run-logger/archive.mjs\""
           }
         ]
       }
