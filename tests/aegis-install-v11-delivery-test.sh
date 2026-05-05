@@ -48,7 +48,7 @@ fi
 # ── Group 1: v11 skills ─────────────────────────────────────────────────
 echo ""
 echo "--- Group 1: v11 skills landed ---"
-for s in aegis-live-tail aegis-activity-logger aegis-issue-thread aegis-parallel-dispatch aegis-plus-pilot aegis-approval-gate aegis-router aegis-run-logger aegis-trace-export; do
+for s in aegis-live-tail aegis-activity-logger aegis-issue-thread aegis-parallel-dispatch aegis-plus-pilot aegis-approval-gate aegis-router aegis-run-logger aegis-trace-export aegis-multi-tenant; do
     if [[ -f "$PILOT/skills/${s}.md" ]]; then
         pass "skill: ${s}.md present"
     else
@@ -85,6 +85,7 @@ declare -a expected_files=(
     "aegis-trace-export/export.mjs"
     "aegis-trace-export/validate.mjs"
     "aegis-trace-export/lib.mjs"
+    "aegis-multi-tenant/mt.mjs"
 )
 for f in "${expected_files[@]}"; do
     if [[ -f "$PILOT/tools/$f" ]]; then
