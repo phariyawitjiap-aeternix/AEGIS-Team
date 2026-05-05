@@ -473,6 +473,19 @@ if [[ -f "$GATE_RULES_SRC" ]]; then
     fi
 fi
 
+# v11-06 routing/policy.yaml seed
+ROUTING_DST="${TARGET_DIR}/.aegis/brain/routing/policy.yaml"
+ROUTING_SRC="${SCRIPT_DIR}/.aegis/brain/routing/policy.yaml"
+if [[ -f "$ROUTING_SRC" ]]; then
+    mkdir -p "${TARGET_DIR}/.aegis/brain/routing"
+    if [[ -f "$ROUTING_DST" && "${UPGRADE:-false}" == "true" ]]; then
+        info "Preserving existing routing/policy.yaml (upgrade mode)"
+    else
+        cp "$ROUTING_SRC" "$ROUTING_DST"
+        success "routing/policy.yaml installed (default model-tier rules)"
+    fi
+fi
+
 # --------------------------------------------------------------------------
 # Copy CLAUDE*.md files from source
 # --------------------------------------------------------------------------
@@ -626,6 +639,7 @@ tool_packages=(
     "aegis-parallel-dispatch"  # v11-04 — Agent fan-out skill
     "aegis-plus-pilot"         # v11-pilot — bootstrap/daily-eod/gate-check
     "aegis-approval-gate"      # v11-05 — PreToolUse destructive-op blocker
+    "aegis-router"             # v11-06 — model-tier picker (quality fit)
 )
 delivered_pkgs=0
 for pkg in "${tool_packages[@]}"; do
@@ -650,7 +664,7 @@ info "Installing skills for profile: ${PROFILE}..."
 
 # Skill lists per profile
 minimal_skills=("ai-personas" "orchestrator" "code-review" "code-standards" "git-workflow" "bug-lifecycle" "project-navigator")
-standard_skills=("super-spec" "test-architect" "security-audit" "tech-debt-tracker" "sprint-tracker" "api-docs" "sprint-manager" "kanban-board" "work-breakdown" "aegis-live-tail" "aegis-activity-logger" "aegis-issue-thread" "aegis-parallel-dispatch" "aegis-plus-pilot" "aegis-approval-gate")
+standard_skills=("super-spec" "test-architect" "security-audit" "tech-debt-tracker" "sprint-tracker" "api-docs" "sprint-manager" "kanban-board" "work-breakdown" "aegis-live-tail" "aegis-activity-logger" "aegis-issue-thread" "aegis-parallel-dispatch" "aegis-plus-pilot" "aegis-approval-gate" "aegis-router")
 full_skills=("aegis-distill" "aegis-observe" "adversarial-review" "code-coverage" "retrospective" "course-correction" "skill-marketplace" "aegis-builder" "qa-pipeline" "iso-29110-docs")
 
 copy_skill() {
