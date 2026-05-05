@@ -181,6 +181,15 @@ else
   fail "3.d --json" "out=$OUT_3D"
 fi
 
+# 3.e --today flag (regression — wasn't accepted in original ship; guide
+# instructions said `stats --today` but stats only had --week/--month/--since)
+OUT_3E=$(node "$STATS_MJS" --today 2>&1)
+if echo "$OUT_3E" | grep -qE "unknown flag|Unknown"; then
+  fail "3.e --today flag" "rejected: $OUT_3E"
+else
+  pass "3.e --today flag accepted"
+fi
+
 # ── Group 4: end-to-end ───────────────────────────────────────────────────
 echo ""
 echo "--- Group 4: end-to-end ---"

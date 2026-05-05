@@ -142,6 +142,20 @@ else
   fail "4.b signal 3" "$(cat "$GATE2_OUT" | tail -15)"
 fi
 
+# 4.b.1 — Signal 3 with NO matches must not trigger arithmetic syntax error
+# (regression guard for grep -c "0\n0" pattern in REPLAY_HITS / SIGNAL_HITS)
+NO_MATCH_FB="$TEST_DIR/no-match-pilot/.aegis/brain/memory/aegis-plus-feedback.md"
+mkdir -p "$(dirname "$NO_MATCH_FB")"
+echo "no relevant words here at all" > "$NO_MATCH_FB"
+mkdir -p "$TEST_DIR/no-match-pilot/.aegis/brain"
+GATE_NM_OUT="$TEST_DIR/gate-no-match.out"
+bash "$GATE" "$TEST_DIR/no-match-pilot" >"$GATE_NM_OUT" 2>&1 || true
+if grep -qE "syntax error in expression|integer expression expected" "$GATE_NM_OUT"; then
+  fail "4.b.1 signal-3 grep-c guard" "0\\n0 arithmetic error leaked: $(grep -E 'syntax|integer' "$GATE_NM_OUT")"
+else
+  pass "4.b.1 signal-3 with no replay matches → no arithmetic error"
+fi
+
 # 4.c — gate-check rejects non-AEGIS dir
 if bash "$GATE" "$TEST_DIR" >/dev/null 2>&1; then
   fail "4.c gate non-aegis" "should reject (exit 2)"
