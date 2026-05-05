@@ -109,7 +109,12 @@ fi
 echo ""
 hr
 echo -e "${bold}Verdict:${nc} $signal_count of 3 signals met"
-for n in "${notes[@]}"; do echo "  · $n"; done
+# Guard the array expansion: under `set -u` on bash 3.2 (macOS default),
+# "${notes[@]}" on an empty array errors with "unbound variable". Same
+# class as the EXTRA_ARGS guard added in PR #92 for aegis-upgrade.sh.
+if [[ ${#notes[@]} -gt 0 ]]; then
+    for n in "${notes[@]}"; do echo "  · $n"; done
+fi
 hr
 
 if [[ $signal_count -ge 2 ]]; then
