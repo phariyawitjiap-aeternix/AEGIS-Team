@@ -39,7 +39,15 @@ Agent ตัวไหนอ่านไฟล์นี้ตรงก็ได�
 ## 🔔 Pending / รอดำเนินการ
 
 <!-- PENDING_START -->
-_No pending items. / ไม่มีคิวรอ._
+### [2026-05-05] EXTERNAL — Bootstrap AEGIS into kam-tong-ham (pilot project) / ติดตั้ง AEGIS ลงใน kam-tong-ham (pilot project)
+
+- **EN**: Day-0 of the v11 Phase-1 pilot week. Runs bash install.sh --target-dir ~/Documents/kam-tong-ham --project-name 'kam-tong-ham' --profile standard. Modifies an external project outside the meta repo — explicit human go required. Once approved, run: bash tools/aegis-plus-pilot/bootstrap.sh ~/Documents/kam-tong-ham
+- **TH**: Day-0 ของ pilot week (v11 Phase-1) จะรัน install.sh ใส่ kam-tong-ham — แตะ external project นอก meta repo ต้องได้อนุมัติจากมนุษย์ก่อน เมื่อพร้อมรัน: bash tools/aegis-plus-pilot/bootstrap.sh ~/Documents/kam-tong-ham
+- **Category**: External access
+- **Raised by**: nick-fury
+- **Blocks**: Phase-2 gate measurement (D6 from Mega Plan)
+- **Raised**: 2026-05-05T03:32:24Z
+- **Resolved**: _(pending)_
 <!-- PENDING_END -->
 
 ---
