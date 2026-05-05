@@ -126,27 +126,30 @@ function checkMemoryAndUptime() {
 }
 
 // ── ensure fifo exists ───────────────────────────────────────────────────────
+import { spawnSync } from "node:child_process";
+
 function ensureFifo() {
   fs.mkdirSync(LIVE_DIR, { recursive: true });
   if (!fs.existsSync(FIFO)) {
-    // mkfifo via Node: use child_process
-    const { spawnSync } = require("node:child_process");
     spawnSync("mkfifo", [FIFO], { stdio: "ignore" });
-  }
-  if (!fs.statSync(FIFO).isFIFO?.() && !fs.statSync(FIFO).isFIFO) {
-    // Some Node versions return a Stats whose isFIFO() check works; also tolerate plain stat object.
   }
 }
 
 // ── main loop ────────────────────────────────────────────────────────────────
+//
+// Implementation note: we open the fifo in O_RDWR mode rather than O_RDONLY.
+// On a fifo with no writer, a non-blocking O_RDONLY reader receives EOF
+// immediately as soon as a transient writer (e.g. the emit hook) closes
+// — which closes the read stream and exits node when there's nothing else
+// holding the event loop. Opening O_RDWR keeps us simultaneously a writer,
+// so the kernel never reports EOF to our reader stream. The classic
+// "self-pinned fifo" trick. We never actually write through this fd.
 function start() {
   ensureFifo();
 
-  // Open fifo for reading. To avoid blocking on open when no writer exists,
-  // we open in non-blocking mode then create a read stream.
   let fd;
   try {
-    fd = fs.openSync(FIFO, fs.constants.O_RDONLY | fs.constants.O_NONBLOCK);
+    fd = fs.openSync(FIFO, fs.constants.O_RDWR);
   } catch (err) {
     process.stderr.write(`[live-tail] cannot open fifo ${FIFO}: ${err.message}\n`);
     process.exit(1);
@@ -154,7 +157,6 @@ function start() {
 
   const rs = fs.createReadStream(null, { fd, autoClose: false });
   rs.on("error", (err) => {
-    // ENXIO / EAGAIN happens when there's no writer yet — keep going.
     if (err.code === "EAGAIN" || err.code === "ENXIO") return;
     process.stderr.write(`[live-tail] read error: ${err.message}\n`);
   });
@@ -165,11 +167,9 @@ function start() {
     const out = flags.noColor ? _internal.stripAnsi(line) : line;
     process.stdout.write(out + "\n");
   });
-  rl.on("close", () => {
-    // fifo writer hung up — re-open after a short delay so we keep tailing
-    // across multiple writers (one per hook fire).
-    setTimeout(start, 200);
-  });
+  // With O_RDWR pinning the fd open, rl.close should not fire spontaneously;
+  // if it does (signal-driven shutdown), the SIGINT/SIGTERM handlers below
+  // will exit cleanly.
 
   memTimer = setInterval(checkMemoryAndUptime, MEM_CHECK_MS);
   memTimer.unref?.();

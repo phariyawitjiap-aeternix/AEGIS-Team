@@ -37,8 +37,10 @@ cmd_start() {
     fi
     ensure_fifo
     # Split current pane horizontally — bottom 30%.
+    # Wrap watcher in a restart loop so a transient watcher exit does not
+    # collapse the pane silently. The 1s sleep prevents tight crash loops.
     tmux split-window -v -p 30 \
-        "node '$WATCH_MJS' || (echo 'live-tail exited'; sleep 5)"
+        "while true; do node '$WATCH_MJS'; echo '[live-tail] watcher exited (rc=$?), restarting in 1s'; sleep 1; done"
     # Refocus top pane.
     tmux select-pane -U
     echo "live-tail pane spawned in tmux (bottom 30%). fifo: $FIFO"

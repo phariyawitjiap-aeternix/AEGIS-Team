@@ -349,6 +349,45 @@ else
 fi
 
 echo ""
+echo "--- Group 6: watcher survives multiple writers (O_RDWR pin regression) ---"
+# Bug observed during kam-tong-ham pilot bootstrap: watcher exited after the
+# first emit closed its writer end of the fifo, collapsing the tmux pane.
+# Fix: open fifo in O_RDWR mode so the kernel never reports EOF to the read
+# stream. Test: spawn watcher, fire 3 sequential emits, assert all 3 lines
+# arrive AND the watcher process is still alive afterward.
+
+rm -f "$FIFO"; mkfifo "$FIFO"
+G6_OUT="$TEST_DIR/g6.out"
+G6_PID_FILE="$TEST_DIR/g6.pid"
+( node "$WATCH" --no-color > "$G6_OUT" 2>&1 & echo $! > "$G6_PID_FILE" )
+sleep 0.3
+for i in 1 2 3; do
+  printf '%s' "{\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"survive-${i}\"}}" \
+    | AEGIS_PERSONA=spider-man node "$EMIT"
+  sleep 0.15
+done
+sleep 0.5
+G6_LINES=$(grep -c "survive-" "$G6_OUT" || true)
+G6_PID=$(cat "$G6_PID_FILE")
+G6_ALIVE="no"
+kill -0 "$G6_PID" 2>/dev/null && G6_ALIVE="yes"
+
+if [[ "$G6_LINES" -eq 3 ]]; then
+  pass "6.a all 3 sequential emits reached the watcher"
+else
+  fail "6.a sequential coverage" "got $G6_LINES/3 — content: $(cat "$G6_OUT")"
+fi
+
+if [[ "$G6_ALIVE" == "yes" ]]; then
+  pass "6.b watcher still alive after writer close cycles (O_RDWR pin holds)"
+else
+  fail "6.b watcher survival" "watcher exited after first writer cycle"
+fi
+
+kill -TERM "$G6_PID" 2>/dev/null || true
+wait "$G6_PID" 2>/dev/null || true
+
+echo ""
 echo "============================================"
 echo "RESULTS: ${PASS_COUNT} passed, ${FAIL_COUNT} failed, ${SKIP_COUNT} skipped"
 echo "============================================"
