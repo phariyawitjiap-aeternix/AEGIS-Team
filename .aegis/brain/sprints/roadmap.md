@@ -16,7 +16,7 @@ external dependencies (new SDK features, infra, migration calendar).
 
 ## Tally (update on every sprint close)
 
-_Last updated: 2026-05-04 · by: Nick Fury (v11 Phase-1 complete · 4 skills shipped, 18/18pt 100%)_
+_Last updated: 2026-05-05 · by: Nick Fury (sprint-v11-05 close · aegis-approval-gate shipped — Phase-2 8/32pt)_
 
 | Sprint | Points Selected | Points Done | Stretch Done | Status |
 |--------|-----------------|-------------|--------------|--------|
@@ -40,11 +40,11 @@ _Last updated: 2026-05-04 · by: Nick Fury (v11 Phase-1 complete · 4 skills shi
 | sprint-v11-03 (aegis-issue-thread · YAML tickets) | 5 | 5 | 0 | CLOSED (100%) |
 | sprint-v11-04 (aegis-parallel-dispatch · Agent fan-out skill) | 3 | 3 | 0 | **CLOSED (100%)** |
 | **v11 Phase-1 (selected)** | **18** | **18** | **0** | **100%** |
-| sprint-v11-05 (aegis-approval-gate · PreToolUse blocker) | 8 | – | 0 | deferred — pending P1 pilot |
-| sprint-v11-06 (aegis-router · model-tier picker) | 8 | – | 0 | deferred |
-| sprint-v11-07 (aegis-run-logger · Stop hook archive) | 8 | – | 0 | deferred |
-| sprint-v11-08 (aegis-trace-export · PII redaction) | 8 | – | 0 | deferred |
-| **v11 Phase-2 (deferred)** | **32** | – | – | gated by P1 pilot outcome |
+| sprint-v11-05 (aegis-approval-gate · PreToolUse blocker) | 8 | 8 | 0 | **CLOSED (100%)** |
+| sprint-v11-06 (aegis-router · model-tier picker) | 8 | – | 0 | planned |
+| sprint-v11-07 (aegis-run-logger · Stop hook archive) | 8 | – | 0 | planned |
+| sprint-v11-08 (aegis-trace-export · PII redaction) | 8 | – | 0 | planned |
+| **v11 Phase-2 (in flight)** | **32** | **8** | **0** | 25% |
 
 ## v11 Plan Reference
 

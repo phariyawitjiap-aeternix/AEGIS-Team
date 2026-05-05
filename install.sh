@@ -458,6 +458,22 @@ TEAMSTATE
 success "Brain resonance files created"
 
 # --------------------------------------------------------------------------
+# Brain config seeds (framework-shipped YAML — preserved if user customized).
+# v11-05 introduced .aegis/brain/gate-rules.yaml for aegis-approval-gate.
+# Subsequent v11 sprints may add more.
+# --------------------------------------------------------------------------
+GATE_RULES_DST="${TARGET_DIR}/.aegis/brain/gate-rules.yaml"
+GATE_RULES_SRC="${SCRIPT_DIR}/.aegis/brain/gate-rules.yaml"
+if [[ -f "$GATE_RULES_SRC" ]]; then
+    if [[ -f "$GATE_RULES_DST" && "${UPGRADE:-false}" == "true" ]]; then
+        info "Preserving existing gate-rules.yaml (upgrade mode — user-customized)"
+    else
+        cp "$GATE_RULES_SRC" "$GATE_RULES_DST"
+        success "gate-rules.yaml installed (default destructive-op rule set)"
+    fi
+fi
+
+# --------------------------------------------------------------------------
 # Copy CLAUDE*.md files from source
 # --------------------------------------------------------------------------
 info "Installing CLAUDE*.md + PROJECT_INDEX.md..."
@@ -609,6 +625,7 @@ tool_packages=(
     "aegis-issue-thread"       # v11-03 — YAML ticket layer
     "aegis-parallel-dispatch"  # v11-04 — Agent fan-out skill
     "aegis-plus-pilot"         # v11-pilot — bootstrap/daily-eod/gate-check
+    "aegis-approval-gate"      # v11-05 — PreToolUse destructive-op blocker
 )
 delivered_pkgs=0
 for pkg in "${tool_packages[@]}"; do
@@ -633,7 +650,7 @@ info "Installing skills for profile: ${PROFILE}..."
 
 # Skill lists per profile
 minimal_skills=("ai-personas" "orchestrator" "code-review" "code-standards" "git-workflow" "bug-lifecycle" "project-navigator")
-standard_skills=("super-spec" "test-architect" "security-audit" "tech-debt-tracker" "sprint-tracker" "api-docs" "sprint-manager" "kanban-board" "work-breakdown" "aegis-live-tail" "aegis-activity-logger" "aegis-issue-thread" "aegis-parallel-dispatch" "aegis-plus-pilot")
+standard_skills=("super-spec" "test-architect" "security-audit" "tech-debt-tracker" "sprint-tracker" "api-docs" "sprint-manager" "kanban-board" "work-breakdown" "aegis-live-tail" "aegis-activity-logger" "aegis-issue-thread" "aegis-parallel-dispatch" "aegis-plus-pilot" "aegis-approval-gate")
 full_skills=("aegis-distill" "aegis-observe" "adversarial-review" "code-coverage" "retrospective" "course-correction" "skill-marketplace" "aegis-builder" "qa-pipeline" "iso-29110-docs")
 
 copy_skill() {
