@@ -1,4 +1,4 @@
-# PROJECT INDEX -- AEGIS v9.0 AI Agent Team Framework
+# PROJECT INDEX -- AEGIS v11.0 AI Agent Team Framework
 
 > Single canonical cross-reference wiki for the entire project.
 > Every document, requirement, module, function, task, spec, and sprint is reachable from here.
@@ -8,7 +8,7 @@
 
 ## 1. Project Identity
 
-AEGIS v9.0 is an AI Agent Team Framework for Claude Code. It provides 11 agent personas,
+AEGIS v11.0 is an AI Agent Team Framework for Claude Code. It provides 11 agent personas,
 30 canonical commands, 61 operational tools, and a persistent brain directory -- all
 implemented as markdown and bash with zero external runtime dependencies.
 
