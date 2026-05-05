@@ -152,9 +152,10 @@ function cmdList(flags) {
   if (flags.json) { process.stdout.write(JSON.stringify(enriched, null, 2) + "\n"); return; }
   if (enriched.length === 0) { console.log("(no projects registered)"); return; }
   const w = (s, n) => String(s ?? "").padEnd(n).slice(0, n);
-  console.log(`${w("NAME", 22)} ${w("ROLE", 12)} ${w("VERSION", 10)} ${w("EXISTS", 6)} PATH`);
+  // VERSION is 14 wide so "11.0 (meta)" (11 chars) and future "11.5-rc1 (meta)" fit cleanly.
+  console.log(`${w("NAME", 22)} ${w("ROLE", 12)} ${w("VERSION", 14)} ${w("EXISTS", 6)} PATH`);
   for (const p of enriched) {
-    console.log(`${w(p.name, 22)} ${w(p.role, 12)} ${w(p.version || "-", 10)} ${w(p.exists ? "yes" : "no", 6)} ${p.path}`);
+    console.log(`${w(p.name, 22)} ${w(p.role, 12)} ${w(p.version || "-", 14)} ${w(p.exists ? "yes" : "no", 6)} ${p.path}`);
   }
 }
 
