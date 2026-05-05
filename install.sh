@@ -585,6 +585,8 @@ runtime_helpers=(
     "aegis-log-decision.sh"    # Nick Fury decision-audit logger (S2-02)
     "aegis-queue-human.sh"     # Append items to human-queue.md
     "aegis-queue-resolve.sh"   # Resolve items in human-queue.md
+    "aegis-brain-index.sh"     # FTS5 brain indexer (v10-06 Hermes L1)
+    "aegis-brain-search.sh"    # Search the FTS5 brain index
 )
 delivered_tools=0
 for tool in "${upgrade_toolkit[@]}" "${runtime_helpers[@]}"; do
@@ -597,8 +599,30 @@ for tool in "${upgrade_toolkit[@]}" "${runtime_helpers[@]}"; do
         warn "tools/${tool} missing from source — not delivered"
     fi
 done
-if [[ "$delivered_tools" -gt 0 ]]; then
-    success "${delivered_tools} helper tools delivered (upgrade toolkit + CLAUDE.md-advertised runtime helpers)"
+
+# Multi-file tool packages (each lives in its own subdirectory).
+# v11 Phase-1 (AEGIS-Plus) ships 4 such packages; v11-pilot ships 1.
+tool_packages=(
+    "aegis-live-tail"          # v11-01 — always-on terminal stream
+    "aegis-activity-logger"    # v11-02 — JSONL append-only audit
+    "aegis-issue-thread"       # v11-03 — YAML ticket layer
+    "aegis-parallel-dispatch"  # v11-04 — Agent fan-out skill
+    "aegis-plus-pilot"         # v11-pilot — bootstrap/daily-eod/gate-check
+)
+delivered_pkgs=0
+for pkg in "${tool_packages[@]}"; do
+    src="${SCRIPT_DIR}/tools/${pkg}"
+    if [[ -d "$src" ]]; then
+        mkdir -p "${TARGET_DIR}/tools/${pkg}"
+        cp -R "${src}/." "${TARGET_DIR}/tools/${pkg}/"
+        find "${TARGET_DIR}/tools/${pkg}" -type f \( -name "*.sh" -o -name "*.mjs" \) -exec chmod +x {} +
+        delivered_pkgs=$((delivered_pkgs + 1))
+    else
+        warn "tools/${pkg}/ missing from source — not delivered (v11 package)"
+    fi
+done
+if [[ "$delivered_tools" -gt 0 || "$delivered_pkgs" -gt 0 ]]; then
+    success "${delivered_tools} helper tools + ${delivered_pkgs} multi-file packages delivered"
 fi
 
 # --------------------------------------------------------------------------
@@ -608,7 +632,7 @@ info "Installing skills for profile: ${PROFILE}..."
 
 # Skill lists per profile
 minimal_skills=("ai-personas" "orchestrator" "code-review" "code-standards" "git-workflow" "bug-lifecycle" "project-navigator")
-standard_skills=("super-spec" "test-architect" "security-audit" "tech-debt-tracker" "sprint-tracker" "api-docs" "sprint-manager" "kanban-board" "work-breakdown")
+standard_skills=("super-spec" "test-architect" "security-audit" "tech-debt-tracker" "sprint-tracker" "api-docs" "sprint-manager" "kanban-board" "work-breakdown" "aegis-live-tail" "aegis-activity-logger" "aegis-issue-thread" "aegis-parallel-dispatch" "aegis-plus-pilot")
 full_skills=("aegis-distill" "aegis-observe" "adversarial-review" "code-coverage" "retrospective" "course-correction" "skill-marketplace" "aegis-builder" "qa-pipeline" "iso-29110-docs")
 
 copy_skill() {
