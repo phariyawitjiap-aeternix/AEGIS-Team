@@ -486,6 +486,19 @@ if [[ -f "$ROUTING_SRC" ]]; then
     fi
 fi
 
+# v11-08 redaction/patterns.yaml seed
+REDACTION_DST="${TARGET_DIR}/.aegis/brain/redaction/patterns.yaml"
+REDACTION_SRC="${SCRIPT_DIR}/.aegis/brain/redaction/patterns.yaml"
+if [[ -f "$REDACTION_SRC" ]]; then
+    mkdir -p "${TARGET_DIR}/.aegis/brain/redaction"
+    if [[ -f "$REDACTION_DST" && "${UPGRADE:-false}" == "true" ]]; then
+        info "Preserving existing redaction/patterns.yaml (upgrade mode)"
+    else
+        cp "$REDACTION_SRC" "$REDACTION_DST"
+        success "redaction/patterns.yaml installed (default PII patterns)"
+    fi
+fi
+
 # --------------------------------------------------------------------------
 # Copy CLAUDE*.md files from source
 # --------------------------------------------------------------------------
@@ -641,6 +654,7 @@ tool_packages=(
     "aegis-approval-gate"      # v11-05 — PreToolUse destructive-op blocker
     "aegis-router"             # v11-06 — model-tier picker (quality fit)
     "aegis-run-logger"         # v11-07 — Stop hook session archiver
+    "aegis-trace-export"       # v11-08 — PII-redacted activity export
 )
 delivered_pkgs=0
 for pkg in "${tool_packages[@]}"; do
@@ -665,7 +679,7 @@ info "Installing skills for profile: ${PROFILE}..."
 
 # Skill lists per profile
 minimal_skills=("ai-personas" "orchestrator" "code-review" "code-standards" "git-workflow" "bug-lifecycle" "project-navigator")
-standard_skills=("super-spec" "test-architect" "security-audit" "tech-debt-tracker" "sprint-tracker" "api-docs" "sprint-manager" "kanban-board" "work-breakdown" "aegis-live-tail" "aegis-activity-logger" "aegis-issue-thread" "aegis-parallel-dispatch" "aegis-plus-pilot" "aegis-approval-gate" "aegis-router" "aegis-run-logger")
+standard_skills=("super-spec" "test-architect" "security-audit" "tech-debt-tracker" "sprint-tracker" "api-docs" "sprint-manager" "kanban-board" "work-breakdown" "aegis-live-tail" "aegis-activity-logger" "aegis-issue-thread" "aegis-parallel-dispatch" "aegis-plus-pilot" "aegis-approval-gate" "aegis-router" "aegis-run-logger" "aegis-trace-export")
 full_skills=("aegis-distill" "aegis-observe" "adversarial-review" "code-coverage" "retrospective" "course-correction" "skill-marketplace" "aegis-builder" "qa-pipeline" "iso-29110-docs")
 
 copy_skill() {

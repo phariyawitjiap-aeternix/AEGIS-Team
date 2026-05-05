@@ -48,7 +48,7 @@ fi
 # ── Group 1: v11 skills ─────────────────────────────────────────────────
 echo ""
 echo "--- Group 1: v11 skills landed ---"
-for s in aegis-live-tail aegis-activity-logger aegis-issue-thread aegis-parallel-dispatch aegis-plus-pilot aegis-approval-gate aegis-router aegis-run-logger; do
+for s in aegis-live-tail aegis-activity-logger aegis-issue-thread aegis-parallel-dispatch aegis-plus-pilot aegis-approval-gate aegis-router aegis-run-logger aegis-trace-export; do
     if [[ -f "$PILOT/skills/${s}.md" ]]; then
         pass "skill: ${s}.md present"
     else
@@ -82,6 +82,9 @@ declare -a expected_files=(
     "aegis-run-logger/archive.mjs"
     "aegis-run-logger/replay.mjs"
     "aegis-run-logger/list.mjs"
+    "aegis-trace-export/export.mjs"
+    "aegis-trace-export/validate.mjs"
+    "aegis-trace-export/lib.mjs"
 )
 for f in "${expected_files[@]}"; do
     if [[ -f "$PILOT/tools/$f" ]]; then
@@ -129,6 +132,11 @@ if [[ -f "$PILOT/.aegis/brain/routing/policy.yaml" ]]; then
     pass "routing/policy.yaml seeded under .aegis/brain/"
 else
     fail "routing/policy.yaml" "not seeded"
+fi
+if [[ -f "$PILOT/.aegis/brain/redaction/patterns.yaml" ]]; then
+    pass "redaction/patterns.yaml seeded under .aegis/brain/"
+else
+    fail "redaction/patterns.yaml" "not seeded"
 fi
 # Every tools/<name> referenced as a hook command in settings.json must
 # exist on disk after install. Catches the "wired but not shipped" bug
