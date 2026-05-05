@@ -136,6 +136,19 @@ else
   fail "2.b.1 version source" "got=$ALPHA_V expected=11.0"
 fi
 
+# 2.b.3 — meta-tagged version "X.Y (meta)" must not be truncated in text view
+META_DIR_FAKE="$TEST_DIR/fake-meta"
+mkdir -p "$META_DIR_FAKE/.aegis"
+echo "11.0" > "$META_DIR_FAKE/VERSION"
+touch "$META_DIR_FAKE/install.sh" "$META_DIR_FAKE/CLAUDE.md"
+node "$MT" register --path "$META_DIR_FAKE" --name fakemeta --role meta >/dev/null
+TEXT=$(node "$MT" list)
+if echo "$TEXT" | grep -qE "fakemeta\s+meta\s+11\.0 \(meta\)\s+yes"; then
+  pass "2.b.3 '(meta)' tag not clipped in list text output"
+else
+  fail "2.b.3 meta tag clipping" "$(echo "$TEXT" | grep fakemeta)"
+fi
+
 # 2.b.2 — non-meta project without AEGIS_VERSION must show "?", NOT fall back to a stray VERSION file
 GAMMA="$TEST_DIR/gamma"
 mkdir -p "$GAMMA/.aegis/brain"
