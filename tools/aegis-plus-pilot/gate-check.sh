@@ -90,8 +90,13 @@ fi
 echo -e "\n${bold}Signal 3 — Run-replay value (friction log)${nc}"
 FB="$PILOT/.aegis/brain/memory/aegis-plus-feedback.md"
 if [[ -f "$FB" ]]; then
-    REPLAY_HITS=$(grep -ciE 'replay|reconstruct|looked? back|gone back' "$FB" 2>/dev/null || echo 0)
-    SIGNAL_HITS=$(grep -ciE 'run.?replay|signal[- ]?3' "$FB" 2>/dev/null || echo 0)
+    # `grep -c` prints "0" on no-match AND exits 1. The historical `|| echo 0`
+    # pattern double-prints "0\n0" — same bug class as PR #91 fix. Use
+    # `|| true` to absorb the exit and ${VAR:-0} as a defensive default.
+    REPLAY_HITS=$(grep -ciE 'replay|reconstruct|looked? back|gone back' "$FB" 2>/dev/null || true)
+    SIGNAL_HITS=$(grep -ciE 'run.?replay|signal[- ]?3' "$FB" 2>/dev/null || true)
+    REPLAY_HITS=${REPLAY_HITS:-0}
+    SIGNAL_HITS=${SIGNAL_HITS:-0}
     TOTAL=$((REPLAY_HITS + SIGNAL_HITS))
     echo "  feedback log mentions replay/reconstruction: $TOTAL"
     if [[ $TOTAL -ge 1 ]]; then
