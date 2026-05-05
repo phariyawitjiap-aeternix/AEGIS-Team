@@ -16,7 +16,7 @@ external dependencies (new SDK features, infra, migration calendar).
 
 ## Tally (update on every sprint close)
 
-_Last updated: 2026-05-05 · by: Nick Fury (sprint-v11-07 close · aegis-run-logger shipped — Phase-2 24/32pt)_
+_Last updated: 2026-05-05 · by: Nick Fury (v11 COMPLETE · 8 skills, 50/50pt — AEGIS-Plus Mega Plan v1.1 delivered)_
 
 | Sprint | Points Selected | Points Done | Stretch Done | Status |
 |--------|-----------------|-------------|--------------|--------|
@@ -42,9 +42,10 @@ _Last updated: 2026-05-05 · by: Nick Fury (sprint-v11-07 close · aegis-run-log
 | **v11 Phase-1 (selected)** | **18** | **18** | **0** | **100%** |
 | sprint-v11-05 (aegis-approval-gate · PreToolUse blocker) | 8 | 8 | 0 | CLOSED (100%) |
 | sprint-v11-06 (aegis-router · model-tier picker) | 8 | 8 | 0 | CLOSED (100%) |
-| sprint-v11-07 (aegis-run-logger · Stop hook archive) | 8 | 8 | 0 | **CLOSED (100%)** |
-| sprint-v11-08 (aegis-trace-export · PII redaction) | 8 | – | 0 | planned |
-| **v11 Phase-2 (in flight)** | **32** | **24** | **0** | 75% |
+| sprint-v11-07 (aegis-run-logger · Stop hook archive) | 8 | 8 | 0 | CLOSED (100%) |
+| sprint-v11-08 (aegis-trace-export · PII redaction) | 8 | 8 | 0 | **CLOSED (100%)** |
+| **v11 Phase-2 (selected)** | **32** | **32** | **0** | **100%** |
+| **v11 TOTAL (P1 + P2)** | **50** | **50** | **0** | **100%** |
 
 ## v11 Plan Reference
 
