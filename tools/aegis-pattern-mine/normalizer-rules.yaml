@@ -1,0 +1,63 @@
+# aegis-pattern-mine normalizer rules (sprint-v10-07)
+#
+# Versioned text normalization rules applied to decision-audit-log questions
+# before clustering. Bumping `version` forces a deliberate reflection on
+# whether existing _proposed/ candidates need re-mining.
+#
+# Spec: AEGIS Knowledge-Layer Mega Plan derivation; sprint-v10-07 plan.md §B.
+
+version: 1.0.0
+
+# Each rule is { pattern: <regex>, replace: <string>, flags: <regex flags> }.
+# Applied in order, top-down. All matches are case-insensitive AFTER lowercase.
+rules:
+  # 1. Lowercase first (implicit, applied before regex rules)
+
+  # 2. File paths (strip extensions + directories) — MOST SPECIFIC FIRST
+  - pattern: '[\w\-./]+\.(?:md|sh|mjs|js|yaml|yml|json|ts|tsx|jsx|py|sql|toml|html|css|scss|svg|png)\b'
+    replace: '<file>'
+    flags: 'g'
+
+  # 3. Sprint / decision / story IDs
+  - pattern: '\b(?:sprint-)?v\d+-\d+\b'      # v9-01, v10-06, sprint-v11-04
+    replace: '<sprint>'
+    flags: 'g'
+  - pattern: '\bd-\d+\b'                      # D-001, D-087
+    replace: '<decision>'
+    flags: 'g'
+  - pattern: '\bs\d+-\d+\b'                   # S2-02, S4-05
+    replace: '<story>'
+    flags: 'g'
+  - pattern: '\badr-\d+\b'                    # ADR-001
+    replace: '<adr>'
+    flags: 'g'
+  - pattern: '\bpr\s*#\s*\d+\b'               # PR #117, PR#117
+    replace: '<pr>'
+    flags: 'g'
+  - pattern: '#\d+'                           # #117 (bare hash-number)
+    replace: '<issue>'
+    flags: 'g'
+
+  # 4. Standalone numbers (after IDs to avoid eating them).
+  #    Note: no \b boundaries — "8pt" has no word-boundary between digit and
+  #    letter, so \b\d+\b would miss it. Order matters here: floats first to
+  #    catch "1.0.0" before plain \d+ swallows just the "1".
+  - pattern: '\d+\.\d+(?:\.\d+)*'             # 1.0.0, 2.5, 1.0.0.1
+    replace: '<float>'
+    flags: 'g'
+  - pattern: '\d+'                            # 8, 32, 100, 8 in "8pt"
+    replace: '<n>'
+    flags: 'g'
+
+  # 5. Quoted strings — collapse the content
+  - pattern: '"[^"]*"'
+    replace: '<str>'
+    flags: 'g'
+  - pattern: "'[^']*'"
+    replace: '<str>'
+    flags: 'g'
+
+  # 6. Whitespace collapse — always last
+  - pattern: '\s+'
+    replace: ' '
+    flags: 'g'
