@@ -39,15 +39,7 @@ Agent ตัวไหนอ่านไฟล์นี้ตรงก็ได�
 ## 🔔 Pending / รอดำเนินการ
 
 <!-- PENDING_START -->
-### [2026-05-05] EXTERNAL — Bootstrap AEGIS into kam-tong-ham (pilot project) / ติดตั้ง AEGIS ลงใน kam-tong-ham (pilot project)
-
-- **EN**: Day-0 of the v11 Phase-1 pilot week. Runs bash install.sh --target-dir ~/Documents/kam-tong-ham --project-name 'kam-tong-ham' --profile standard. Modifies an external project outside the meta repo — explicit human go required. Once approved, run: bash tools/aegis-plus-pilot/bootstrap.sh ~/Documents/kam-tong-ham
-- **TH**: Day-0 ของ pilot week (v11 Phase-1) จะรัน install.sh ใส่ kam-tong-ham — แตะ external project นอก meta repo ต้องได้อนุมัติจากมนุษย์ก่อน เมื่อพร้อมรัน: bash tools/aegis-plus-pilot/bootstrap.sh ~/Documents/kam-tong-ham
-- **Category**: External access
-- **Raised by**: nick-fury
-- **Blocks**: Phase-2 gate measurement (D6 from Mega Plan)
-- **Raised**: 2026-05-05T03:32:24Z
-- **Resolved**: _(pending)_
+_No pending items. / ไม่มีคิวรอ._
 <!-- PENDING_END -->
 
 ---
@@ -56,6 +48,15 @@ Agent ตัวไหนอ่านไฟล์นี้ตรงก็ได�
 
 <!-- RESOLVED_START -->
 
+### [2026-05-05] EXTERNAL — Bootstrap AEGIS into kam-tong-ham (pilot project) / ติดตั้ง AEGIS ลงใน kam-tong-ham (pilot project)
+
+- **EN**: Day-0 of the v11 Phase-1 pilot week. Runs bash install.sh --target-dir ~/Documents/kam-tong-ham --project-name 'kam-tong-ham' --profile standard. Modifies an external project outside the meta repo — explicit human go required. Once approved, run: bash tools/aegis-plus-pilot/bootstrap.sh ~/Documents/kam-tong-ham
+- **TH**: Day-0 ของ pilot week (v11 Phase-1) จะรัน install.sh ใส่ kam-tong-ham — แตะ external project นอก meta repo ต้องได้อนุมัติจากมนุษย์ก่อน เมื่อพร้อมรัน: bash tools/aegis-plus-pilot/bootstrap.sh ~/Documents/kam-tong-ham
+- **Category**: External access
+- **Raised by**: nick-fury
+- **Blocks**: Phase-2 gate measurement (D6 from Mega Plan)
+- **Raised**: 2026-05-05T03:32:24Z
+- **Resolved**: 2026-05-06T11:46:23Z — User gave imperative 'go' on 2026-05-06. Bootstrap ran successfully — all 4 steps OK, backup at _aegis-backup-20260506-184557, 12 v11 artifacts verified, hooks wired (live-tail + activity-logger), issue prefix set to KAM. Decision D-087.
 ### [2026-05-01] EXTERNAL — Add Bash(./tests/*) to .claude/settings.json allowlist / เพิ่ม Bash(./tests/*) ใน allowlist ของ .claude/settings.json
 
 - **EN**: Sprint v10-05 Story E moved test harnesses from tools/ to tests/. settings.json allowlist still has 'Bash(./tools/*)' but no 'Bash(./tests/*)'. Without this entry, agents may hit permission prompts when running tests via the new path. guard-write blocks mid-session settings.json edits (ADR-004), so this requires between-session apply: add a single line '"Bash(./tests/*)"' to the permissions.allow array in .claude/settings.json after the existing './tools/*' entry.
