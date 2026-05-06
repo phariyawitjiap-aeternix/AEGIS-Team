@@ -16,7 +16,7 @@ external dependencies (new SDK features, infra, migration calendar).
 
 ## Tally (update on every sprint close)
 
-_Last updated: 2026-05-06 · by: Captain America (v12-04 CLOSED 8/8pt · aegis-brain-graph build → NDJSON · 234 nodes / 257 edges on real meta · cold build 360ms · 28/28 assertions · v12 grand-total 26/39pt · 67%)_
+_Last updated: 2026-05-06 · by: Captain America (v12-05 CLOSED 8/8pt · 5 graph queries shipped · all p95 < 200ms on real meta · 28/28 assertions · v12 grand-total 34/39pt · 87%)_
 
 | Sprint | Points Selected | Points Done | Stretch Done | Status |
 |--------|-----------------|-------------|--------------|--------|
@@ -52,7 +52,7 @@ _Last updated: 2026-05-06 · by: Captain America (v12-04 CLOSED 8/8pt · aegis-b
 | sprint-v12-02 (GUARDRAILS.md · Sign migration) | 5 | 5 | 0 | **CLOSED (100%)** |
 | sprint-v12-03 (skill/tool/sprint frontmatter convergence) | 5 | 5 | 0 | **CLOSED (100%)** |
 | sprint-v12-04 (aegis-brain-graph build · NDJSON) | 8 | 8 | 0 | **CLOSED (100%)** |
-| sprint-v12-05 (aegis-brain-graph query · 5 subcommands) | 8 | 0 | 0 | planned |
+| sprint-v12-05 (aegis-brain-graph query · 5 subcommands) | 8 | 8 | 0 | **CLOSED (100%)** |
 | sprint-v12-06 (auto-wiki + staleness signal) | 5 | 0 | 0 | planned |
 | **v12 TOTAL (Phase A doc canon + Phase B graph)** | **39** | **0** | **0** | **PLANNED** |
 
