@@ -31,6 +31,7 @@ const DEFAULT_DOCS = [
   'CLAUDE_lessons.md',
   'DoD.md',
   'ARCHITECTURE.md',
+  'GUARDRAILS.md',
 ];
 
 const VERSION_RE = /^<!--\s*version:\s*(\d+\.\d+\.\d+)\s*-->/m;
