@@ -8,18 +8,19 @@
 
 ---
 
-## 0. TL;DR — ที่เหลือทั้งหมด 3 items (was 4 — A done 2026-05-06)
+## 0. TL;DR — ที่เหลือ 0 items (was 4 — all done 2026-05-06)
 
 ```
-✅ A — settings-patch apply       (DONE 2026-05-06 23:29 · D-090 logged · activates on next Desktop reload)
-🟡 B — kam-tong-ham remediate     (External Access · USER imperative by-name)
-⏸️ C — open sprint-v10-07         (SCOPED, awaiting "open v10-07" go)
-⏸️ D — sprint-v10-08 Hermes L3    (blocked on v10-07 measurement)
+✅ A — settings-patch apply       (DONE · D-090 · activates on next Desktop reload)
+✅ B — kam-tong-ham remediate     (DONE · D-092 · F1 self-heal clean / F3 untracked 2 dirs)
+                                   USER must commit .gitignore in kam-tong-ham terminal
+✅ C — open sprint-v10-07         (DONE · CLOSED 8/8 pt · PR #130 · 20/20 assertions)
+✅ D — scope sprint-v10-08        (DONE · SCOPED-DEFERRED · plan.md w/ 3 unblock conditions)
 
 🟢 optional — distill memory · stale doc cleanup · TODO/FIXME prose markers
 ```
 
-ทำลำดับ B → C → D ตามอารมณ์ หรือข้ามไปไหนก็ได้
+**Forward plan exhausted.** AEGIS framework at clean rest state.
 
 ---
 
@@ -112,7 +113,24 @@ cp .claude/settings.json.pre-v12-04-backup .claude/settings.json
 
 ---
 
-## 2. Item B — kam-tong-ham retroactive remediate (USER imperative by-name)
+## 2. Item B — kam-tong-ham retroactive remediate ✅ DONE 2026-05-06
+
+**Status:** COMPLETED 2026-05-06 by user "remediate kam-tong-ham" imperative · D-092 logged
+
+**Outcome:**
+- F1 (hook self-heal): `copied=0 dropped=0` — bootstrap.sh step-5 self-heal already cleaned the chain on the earlier 2026-05-06 bootstrap run (D-087)
+- F3 (untrack runtime brain dirs): 2 dirs untracked (activity/ + logs/) · 2 .gitignore lines added
+- Backup: `~/Documents/kam-tong-ham/.claude/settings.json.pre-remediate.1778086759.bak`
+
+**Remaining manual step (USER, in kam-tong-ham terminal):**
+
+```bash
+cd ~/Documents/kam-tong-ham
+git add .gitignore
+git commit -m 'chore: untrack runtime brain dirs (pilot remediation F3)'
+```
+
+**Below sections kept for reference / rollback:**
 
 **Why:** kam-tong-ham pilot project ถูก bootstrap ก่อน v12-04 fixes พร้อม → มี tracked runtime brain dirs (race กับ merge) + hooks ที่อ้างถึง `aegis-token-profile.sh` ที่ไม่มีใน pilot's tools/
 
@@ -253,18 +271,16 @@ Last-updated 2026-04-20 · CLAUDE.md note บอกว่าเป็น "Histor
 
 ---
 
-## 6. Sequencing & priority — ลำดับที่แนะนำ
+## 6. Sequencing & priority — all done
 
 ```
-✅ A (settings-patch)             ← DONE 2026-05-06 (D-090)
-1. B (kam-tong-ham remediate)    ← ทำเมื่อพร้อมจะกลับไปใช้ pilot
-2. C (open v10-07)               ← ทำเมื่ออยากเดินหน้า framework intelligence
-3. D (Hermes L3)                 ← unblocks หลัง C เสร็จ + 1 use-cycle
+✅ A (settings-patch)             DONE 2026-05-06 (D-090) · activates on next reload
+✅ B (kam-tong-ham remediate)    DONE 2026-05-06 (D-092) · USER must commit .gitignore in pilot
+✅ C (open v10-07)               DONE 2026-05-06 (PR #130) · CLOSED 8/8 pt · 20/20 assertions
+✅ D (Hermes L3)                 DONE 2026-05-06 (PR #130) · plan.md SCOPED-DEFERRED w/ 3 unblock conditions
 ```
 
-**B independent** — ทำเมื่ออารมณ์มา · ไม่มี dependency
-
-**C → D เป็น sequential** — L3 ต้องรอ L2
+**Plan exhausted — all forward items handled in this session.**
 
 ---
 
