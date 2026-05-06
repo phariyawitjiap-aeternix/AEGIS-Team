@@ -16,7 +16,7 @@ external dependencies (new SDK features, infra, migration calendar).
 
 ## Tally (update on every sprint close)
 
-_Last updated: 2026-05-05 · by: Nick Fury (v11 COMPLETE incl. Phase-3 multi-tenant · 9 sprints, 55/55pt — AEGIS-Plus Mega Plan v1.1 + §8.2 delivered)_
+_Last updated: 2026-05-05 · by: Nick Fury (v11 COMPLETE incl. Phase-3 resume override · 10 sprints, 63/63pt — Mega Plan v1.1 §6 + §7 + §8 delivered)_
 
 | Sprint | Points Selected | Points Done | Stretch Done | Status |
 |--------|-----------------|-------------|--------------|--------|
@@ -45,9 +45,9 @@ _Last updated: 2026-05-05 · by: Nick Fury (v11 COMPLETE incl. Phase-3 multi-ten
 | sprint-v11-07 (aegis-run-logger · Stop hook archive) | 8 | 8 | 0 | CLOSED (100%) |
 | sprint-v11-08 (aegis-trace-export · PII redaction) | 8 | 8 | 0 | CLOSED (100%) |
 | **v11 Phase-2 (selected)** | **32** | **32** | **0** | **100%** |
-| sprint-v11-09 (aegis-multi-tenant · cross-project · Phase-3 §8.2) | 5 | 5 | 0 | **CLOSED (100%)** |
-| sprint-v11-10 (aegis-resume · Phase-3 §8.1) | – | – | – | deferred — trigger not met (≥2 crash-loss incidents) |
-| **v11 TOTAL (P1 + P2 + P3-on-demand)** | **55** | **55** | **0** | **100%** |
+| sprint-v11-09 (aegis-multi-tenant · cross-project · Phase-3 §8.2) | 5 | 5 | 0 | CLOSED (100%) |
+| sprint-v11-10 (aegis-resume · Phase-3 §8.1 · gate-override) | 8 | 8 | 0 | **CLOSED (100%)** |
+| **v11 TOTAL (P1 + P2 + P3 incl. override)** | **63** | **63** | **0** | **100%** |
 
 ## v11 Plan Reference
 
