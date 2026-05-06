@@ -16,7 +16,7 @@ external dependencies (new SDK features, infra, migration calendar).
 
 ## Tally (update on every sprint close)
 
-_Last updated: 2026-05-06 · by: Captain America (★ v12 COMPLETE 39/39pt · all 6 sprints CLOSED in single session · auto-wiki + staleness shipped · 22/22 wiki+staleness assertions · all v12 PRs stacked: #117 → #119 → #120 → #121 → #122 → #123)_
+_Last updated: 2026-05-06 · by: Captain America (post-v12 cleanup · graph files untracked · CURRENT symlink → sprint-v12-06 · README bumped to v12.0 · sprint-v10-07 Hermes L2 SCOPED with plan.md grounded in 120 decision-audit entries · ★ v12 COMPLETE 39/39pt remains)_
 
 | Sprint | Points Selected | Points Done | Stretch Done | Status |
 |--------|-----------------|-------------|--------------|--------|
@@ -33,8 +33,9 @@ _Last updated: 2026-05-06 · by: Captain America (★ v12 COMPLETE 39/39pt · al
 | sprint-v10-04 (MBP soft-ask detection) | 3 | 3 | 0 | CLOSED (100%) |
 | sprint-v10-05 (honest cleanup) | 8 | 8 | 0 | CLOSED (100%) |
 | sprint-v10-06 (searchable brain · Hermes L1) | 5 | 5 | 0 | CLOSED (100%) |
+| sprint-v10-07 (Hermes L2 · pattern miner over decision-audit.log) | 8 | 0 | 0 | **SCOPED** (plan.md authored 2026-05-06; awaiting "open v10-07" go) |
 | sprint-v10-09 (per-agent allow lists · v9 personas) | 3 | 3 | 0 | CLOSED (100%) |
-| **v10 in-repo total** | **39** | **39** | **0** | **100%** |
+| **v10 in-repo total** | **39** | **39** | **0** | **100%** (v10-07 SCOPED, not in denominator until opened) |
 | sprint-v11-01 (aegis-live-tail · always-on terminal stream) | 5 | 5 | 0 | CLOSED (100%) |
 | sprint-v11-02 (aegis-activity-logger · JSONL audit) | 5 | 5 | 0 | CLOSED (100%) |
 | sprint-v11-03 (aegis-issue-thread · YAML tickets) | 5 | 5 | 0 | CLOSED (100%) |
