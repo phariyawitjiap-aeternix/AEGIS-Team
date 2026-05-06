@@ -96,6 +96,63 @@ Bootstrap ran successfully (`bash tools/aegis-plus-pilot/bootstrap.sh ~/Document
 
 ---
 
+### 2026-05-06 — Pilot week compressed (Day-7-equivalent retro on user request)
+
+User decision (2026-05-06, by-name): "ต้องการให้เสร็จตอนนี้ ไม่อยากรอ 7 วัน" — compress the 7-day pilot week into a single Day-7-equivalent gate-check + remediation cycle. Reasonable given the only day of real signal (Day 0) already produced enough data to act on.
+
+**gate-check.sh result on kam-tong-ham (Day 1 of pilot):**
+
+```
+Signal 1 — Prevented-incident value:    0 events     ✗
+Signal 2 — Audit-query value:           3 queries    ✓
+Signal 3 — Run-replay value:            1 mention    ✓
+Verdict:                                2 of 3 met → GATE OPEN
+```
+
+Phase-2 (v11-05..08) was already shipped eagerly during the v11 burst; this gate-check **retroactively validates that decision** with real pilot data. Signal 1 is empty because pilot use was 1 day only — would grow with longer pilot. Signal 2 + Signal 3 hit threshold even on Day-1 data.
+
+**Day-7-equivalent fixes shipped (this PR):**
+
+| Signal | Fix | How |
+|---|---|---|
+| F1 (low) | Bootstrap self-heal + remediate.sh | New step 5/6 in `bootstrap.sh` scans wired hooks for missing target files; copies them from meta if available, drops the entry otherwise. New `remediate.sh` does the same idempotently for already-bootstrapped pilots. |
+| F2 (low) | Already shipped in PR #125 | `aegis-log-decision.sh` now has `-h/--help` + better unknown-arg error |
+| F3 (medium) | Bootstrap auto-untrack + .gitignore add + remediate.sh | New step 6/6 in `bootstrap.sh` runs `git rm --cached -r` on `.aegis/brain/{activity,runs,logs,state}/` if tracked, and adds them to the pilot's `.gitignore`. Same logic in `remediate.sh`. **Meta repo's own tracked runtime dirs also untracked in this PR.** |
+| F4 (positive) | None needed | MBP option-menu Stop hook confirmed working in the wild |
+
+**Verification commands (all green):**
+
+```
+$ node tools/aegis-doc-canon/lint.mjs                        # 8/8 governance docs
+$ node tools/aegis-doc-canon/skill-frontmatter.mjs --lint    # 39/39 skills satisfy schema
+$ node tools/aegis-brain-graph/build.mjs --full --quiet      # graph rebuilds clean
+$ bash -n tools/aegis-plus-pilot/{bootstrap,remediate}.sh    # syntax OK
+```
+
+**Pilot week — closed.**
+- Phase-1 (4 skills · 18pt) shipped: ✓
+- Phase-2 (4 skills · 32pt) shipped + gate-validated: ✓
+- Phase-3 (resume + multi-tenant · 13pt) shipped early on user "ship it": ✓
+- v11 + v12 stacked PRs all merged on main
+- Bootstrap fixes for next pilot landing on this PR
+
+**To remediate the existing kam-tong-ham bootstrap (NOT auto-run — External Access):**
+
+```bash
+bash tools/aegis-plus-pilot/remediate.sh ~/Documents/kam-tong-ham
+cd ~/Documents/kam-tong-ham
+git add .gitignore && git commit -m "chore: untrack runtime brain dirs (pilot remediation F3)"
+```
+
+This fixes the F1 hook noise and the F3 stash-race in kam-tong-ham retroactively. Single by-name command from user, hook permitting.
+
+**Forward chain (post-merge):**
+- Hermes L2 (v10-07) — still DEFERRED, but `decision-audit.log` now has D-086, D-087, D-088 — enough to think about pattern shape next session
+- Settings-patch.md apply (between-session) — for v12-04 PostToolUse + v12-06 SessionStart hooks
+- Otherwise: AEGIS framework is at a clean rest state, all roadmap items closed.
+
+---
+
 ## Decision log (mirrored from sprint plans for one-stop visibility)
 
 | Decision | Resolution | Date | Source |
