@@ -1,4 +1,4 @@
-<!-- version: 1.0.0 -->
+<!-- version: 1.0.1 -->
 <!-- Last updated: 2026-05-06 -->
 
 Last reviewed: 2026-05-06
@@ -8,12 +8,17 @@ Last reviewed: 2026-05-06
 > This file is a living document. Updated via /aegis-retro at the end of each session.
 > New entries are appended at the top of each section.
 > Last updated: 2026-04-20 (v9 dogfood + Sprint 1)
+>
+> **See also:** `GUARDRAILS.md` — Sign-shaped quick-reference catalog of the
+> recurring failure modes captured here in long form. When a pattern in this
+> file repeats, migrate it to a Sign via `node tools/aegis-doc-canon/add-sign.mjs`.
 
 ## Changelog
 
 | Date | Version | Change |
 |------|---------|--------|
 | 2026-05-06 | 1.0.0 | Version header pattern introduced (sprint-v12-01). |
+| 2026-05-06 | 1.0.1 | Added cross-reference pointer to GUARDRAILS.md (sprint-v12-02). |
 
 ---
 
