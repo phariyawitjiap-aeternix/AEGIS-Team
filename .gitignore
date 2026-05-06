@@ -101,3 +101,13 @@ dashboard/node_modules/
 # aegis-live-tail named pipe + socket (transient, created on demand)
 .aegis/brain/live/current.fifo
 .aegis/brain/live/*.sock
+
+# v11 runtime brain dirs (session artifacts — not knowledge)
+# activity:  sprint v11-02 PostToolUse JSONL (one file per UTC day)
+# runs:      sprint v11-07 Stop hook session-transcript archives
+# approvals: sprint v11-05 short-TTL one-shot approval markers (default 1h)
+# exports:   sprint v11-08 redacted trace exports (regenerable from activity/)
+.aegis/brain/activity/
+.aegis/brain/runs/
+.aegis/brain/approvals/
+.aegis/brain/exports/
