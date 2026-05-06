@@ -16,7 +16,7 @@ external dependencies (new SDK features, infra, migration calendar).
 
 ## Tally (update on every sprint close)
 
-_Last updated: 2026-05-06 · by: Captain America (post-v12 cleanup · graph files untracked · CURRENT symlink → sprint-v12-06 · README bumped to v12.0 · sprint-v10-07 Hermes L2 SCOPED with plan.md grounded in 120 decision-audit entries · ★ v12 COMPLETE 39/39pt remains)_
+_Last updated: 2026-05-06 · by: Captain America (sprint-v10-07 Hermes L2 CLOSED 8/8pt · pattern miner + propose + 20/20 assertions · live mine produces honest 0 clusters at default thresholds · v10-08 L3 SCOPED-DEFERRED with unblock condition · v10 in-repo now 47/47pt · grand total 222/218pt)_
 
 | Sprint | Points Selected | Points Done | Stretch Done | Status |
 |--------|-----------------|-------------|--------------|--------|
@@ -33,9 +33,10 @@ _Last updated: 2026-05-06 · by: Captain America (post-v12 cleanup · graph file
 | sprint-v10-04 (MBP soft-ask detection) | 3 | 3 | 0 | CLOSED (100%) |
 | sprint-v10-05 (honest cleanup) | 8 | 8 | 0 | CLOSED (100%) |
 | sprint-v10-06 (searchable brain · Hermes L1) | 5 | 5 | 0 | CLOSED (100%) |
-| sprint-v10-07 (Hermes L2 · pattern miner over decision-audit.log) | 8 | 0 | 0 | **SCOPED** (plan.md authored 2026-05-06; awaiting "open v10-07" go) |
+| sprint-v10-07 (Hermes L2 · pattern miner over decision-audit.log) | 8 | 8 | 0 | **CLOSED (100%)** |
+| sprint-v10-08 (Hermes L3 · instinct refinement loop) | 5 | 0 | 0 | **SCOPED-DEFERRED** (plan.md authored; needs L2 data accumulation ≥3-6mo OR human-seeded instinct + 3 use-cycles) |
 | sprint-v10-09 (per-agent allow lists · v9 personas) | 3 | 3 | 0 | CLOSED (100%) |
-| **v10 in-repo total** | **39** | **39** | **0** | **100%** (v10-07 SCOPED, not in denominator until opened) |
+| **v10 in-repo total** | **47** | **47** | **0** | **100%** (v10-08 SCOPED-DEFERRED, not in denominator until unblocked) |
 | sprint-v11-01 (aegis-live-tail · always-on terminal stream) | 5 | 5 | 0 | CLOSED (100%) |
 | sprint-v11-02 (aegis-activity-logger · JSONL audit) | 5 | 5 | 0 | CLOSED (100%) |
 | sprint-v11-03 (aegis-issue-thread · YAML tickets) | 5 | 5 | 0 | CLOSED (100%) |
