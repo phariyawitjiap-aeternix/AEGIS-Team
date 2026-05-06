@@ -1,8 +1,19 @@
+<!-- version: 1.0.0 -->
+<!-- Last updated: 2026-05-06 -->
+
+Last reviewed: 2026-05-06
+
 # AEGIS v11.0 -- Lessons Learned
 
 > This file is a living document. Updated via /aegis-retro at the end of each session.
 > New entries are appended at the top of each section.
 > Last updated: 2026-04-20 (v9 dogfood + Sprint 1)
+
+## Changelog
+
+| Date | Version | Change |
+|------|---------|--------|
+| 2026-05-06 | 1.0.0 | Version header pattern introduced (sprint-v12-01). |
 
 ---
 

@@ -16,7 +16,7 @@ external dependencies (new SDK features, infra, migration calendar).
 
 ## Tally (update on every sprint close)
 
-_Last updated: 2026-05-05 · by: Nick Fury (v11 COMPLETE incl. Phase-3 resume override · 10 sprints, 63/63pt — Mega Plan v1.1 §6 + §7 + §8 delivered)_
+_Last updated: 2026-05-06 · by: Captain America (v12-01 CLOSED 8/8pt · DoD.md + ARCHITECTURE.md + version headers + lint shipped · 18/18 lint assertions pass · v12 grand-total 8/39pt · 21%)_
 
 | Sprint | Points Selected | Points Done | Stretch Done | Status |
 |--------|-----------------|-------------|--------------|--------|
@@ -48,6 +48,23 @@ _Last updated: 2026-05-05 · by: Nick Fury (v11 COMPLETE incl. Phase-3 resume ov
 | sprint-v11-09 (aegis-multi-tenant · cross-project · Phase-3 §8.2) | 5 | 5 | 0 | CLOSED (100%) |
 | sprint-v11-10 (aegis-resume · Phase-3 §8.1 · gate-override) | 8 | 8 | 0 | **CLOSED (100%)** |
 | **v11 TOTAL (P1 + P2 + P3 incl. override)** | **63** | **63** | **0** | **100%** |
+| sprint-v12-01 (DoD.md + ARCHITECTURE.md + version headers + lint) | 8 | 8 | 0 | **CLOSED (100%)** |
+| sprint-v12-02 (GUARDRAILS.md · Sign migration) | 5 | 0 | 0 | planned |
+| sprint-v12-03 (skill/tool/sprint frontmatter convergence) | 5 | 0 | 0 | planned |
+| sprint-v12-04 (aegis-brain-graph build · NDJSON) | 8 | 0 | 0 | planned |
+| sprint-v12-05 (aegis-brain-graph query · 5 subcommands) | 8 | 0 | 0 | planned |
+| sprint-v12-06 (auto-wiki + staleness signal) | 5 | 0 | 0 | planned |
+| **v12 TOTAL (Phase A doc canon + Phase B graph)** | **39** | **0** | **0** | **PLANNED** |
+
+## v12 Plan Reference
+
+Source: `~/Documents/AEGIS-KNOWLEDGE-MEGA-PLAN.md` v1.1 (2026-05-06). Adopted into roadmap on
+2026-05-06 by explicit human approval (decision D-086 — pilot-week gate overridden).
+Phase A = 3 sprints / 18pt — doc canon (DoD, ARCHITECTURE, GUARDRAILS, frontmatter).
+Phase B = 3 sprints / 21pt — knowledge graph (NDJSON build + query + auto-wiki + staleness).
+Storage decision (D2): NDJSON files at `.aegis/brain/graph/{nodes,edges}.ndjson` + `meta.json`
+(replaces v1.0 SQLite proposal — preserves file-as-contract principle). FTS5 `index.db` from
+v10-06 stays untouched.
 
 ## v11 Plan Reference
 
