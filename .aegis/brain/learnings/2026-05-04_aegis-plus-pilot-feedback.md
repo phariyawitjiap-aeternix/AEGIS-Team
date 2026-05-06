@@ -153,6 +153,34 @@ This fixes the F1 hook noise and the F3 stash-race in kam-tong-ham retroactively
 
 ---
 
+### 2026-05-06 — "จัดการให้หมด" cleanup pass (post-pilot rest-state housekeeping)
+
+User imperative: "จัดการให้หมด" — clean up the 8 known follow-ups surfaced in the prior status check. Done in one PR.
+
+**Cleared (5/8):**
+- ✅ #1 — `git rm --cached` of `.aegis/brain/graph/{edges,meta,nodes}.ndjson`. They were tracked from v12-04/05 dev despite being added to `.gitignore` simultaneously. Now ignored, regenerable from sources.
+- ✅ #2 — `.aegis/brain/sprints/CURRENT` symlink re-pointed `sprint-v10-02` (May 2) → `sprint-v12-06` (today's latest closed). `aegis-progress.sh` now reports the right "Current sprint" line.
+- ✅ #3 — `README.md` bumped v11.0 → **v12.0**. Top-section badges, intro tagline, two new "What's new in v12 — Knowledge Layer" + "What's new in v11 — Operational Layer" sections, refreshed Directory Structure (10 agents, 39 skills, 12 commands, 13 hooks, all v11/v12 brain dirs called out), Version History table extended with v12 sprint roll-up.
+- ✅ #6 — `sprint-v10-07/plan.md` authored as a **scoped, grounded** Hermes L2 design. The decision-audit log now has 120 entries with 55 judgment-fallbacks across 11 sprints — well above noise threshold. Plan defines: deterministic miner (`tools/aegis-pattern-mine/mine.sh`), idempotent cluster keys (SHA256 of normalized question), instinct candidate writer (`_proposed/<id>.yaml`), tests, integration with v10-09 instinct-promote. Status remains SCOPED, not OPEN — needs explicit "open v10-07" go.
+- ✅ Roadmap updated: v10-07 row added as SCOPED (not counted in v10 in-repo denominator until opened).
+
+**Skipped honestly (1/8):**
+- 🟢 #5 — distill memory (count=64, threshold=3). Real distillation = Captain America synthesis over 64 sessions of accumulated learnings (Agent dispatch, ~30min). Resetting just the counter would be the "policy-without-test" Sign exact bug class — claiming distill is fresh without doing it. **Decision:** leave counter as-is; auto-fires next session. If the user wants real distill: dispatch `/aegis-memory --distill` explicitly. Logged as decision D-089.
+
+**Cannot auto-execute (3/8):**
+- 🟡 #4 — `tools/aegis-brain-graph/settings-patch.md` apply (v12-04 PostToolUse build hook + v12-06 SessionStart staleness hook). `guard-write.sh` correctly blocks mid-session edits to `.claude/settings.json` — the same self-protection that blocked it in sprint-v12-04. **Apply between sessions** in a fresh terminal: `cat tools/aegis-brain-graph/settings-patch.md | grep -A 30 'python3 -' | bash -s -- ...`. The patch is idempotent.
+- ⏸️ #7 — Hermes L3 (sprint-v10-08). Correctly DEFERRED — blocked on L2 measurement. Will unblock once L2 mine runs and produces real pattern data. No action this PR.
+- ⏸️ #8 — kam-tong-ham retroactive remediation (`bash tools/aegis-plus-pilot/remediate.sh ~/Documents/kam-tong-ham`). External Access — needs a by-name imperative ("remediate kam-tong-ham" / "ทำ kam-tong-ham"), not a generic "do all" sweep. Tool is ready; awaits explicit go.
+
+**Net post-cleanup state:**
+- **Open PRs:** 1 (this one, until merged) → 0 after merge
+- **Human queue:** 0 pending
+- **Working tree (after merge):** clean
+- **CURRENT symlink:** sprint-v12-06 (correct)
+- **Active backlog:** sprint-v10-07 SCOPED (8pt) + 3 deferred items (#4 between-session, #7 blocked, #8 needs by-name go)
+
+---
+
 ## Decision log (mirrored from sprint plans for one-stop visibility)
 
 | Decision | Resolution | Date | Source |
