@@ -5,6 +5,11 @@ profile: full
 triggers:
   en: ["course correction", "scope change", "re-plan", "change plan", "pivot"]
   th: ["เปลี่ยนแผน", "course correction", "ปรับแผน", "เปลี่ยนสโคป"]
+reads: []
+writes: []
+wires: []
+tests: []
+supersedes: []
 ---
 
 ## Quick Reference

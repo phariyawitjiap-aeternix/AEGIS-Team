@@ -5,6 +5,11 @@ profile: full
 triggers:
   en: ["code coverage", "test coverage", "coverage report", "missing tests"]
   th: ["ครอบคลุมเทสต์", "coverage", "รายงาน coverage"]
+reads: []
+writes: []
+wires: []
+tests: []
+supersedes: []
 ---
 
 ## Quick Reference

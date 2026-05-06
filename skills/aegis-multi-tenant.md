@@ -5,6 +5,11 @@ profile: standard
 triggers:
   en: ["list projects", "register project", "where is project", "activity across projects", "all my AEGIS", "cross-project", "multi-project", "multi-tenant"]
   th: ["รวมโปรเจกต์", "ดูทุกโปรเจกต์", "หาโปรเจกต์", "ลงทะเบียนโปรเจกต์"]
+reads: []
+writes: []
+wires: []
+tests: ["tests/aegis-multi-tenant-test.sh"]
+supersedes: []
 ---
 
 ## Quick Reference

@@ -1,0 +1,90 @@
+{
+  "$schema": "skill-schema.md v1.0.0",
+  "$comment": "v12-03 graph values for tool-backed skills. Skills NOT in this manifest have empty arrays (set by --backfill). Edit this file (not the skill YAML) when graph values change.",
+  "skills": {
+    "aegis-activity-logger": {
+      "reads": [".aegis/brain/activity/"],
+      "writes": [".aegis/brain/activity/YYYY-MM-DD.jsonl"],
+      "wires": ["PostToolUse:.*:tools/aegis-activity-logger/log.mjs"],
+      "tests": ["tests/aegis-activity-logger-test.sh"],
+      "supersedes": []
+    },
+    "aegis-approval-gate": {
+      "reads": [".aegis/brain/gate-rules.yaml", ".aegis/brain/approvals/"],
+      "writes": [".aegis/brain/approvals/"],
+      "wires": ["PreToolUse:Bash:tools/aegis-approval-gate/check.mjs"],
+      "tests": ["tests/aegis-approval-gate-test.sh"],
+      "supersedes": []
+    },
+    "aegis-issue-thread": {
+      "reads": [".aegis/brain/issues/"],
+      "writes": [".aegis/brain/issues/"],
+      "wires": [],
+      "tests": ["tests/aegis-issue-thread-test.sh"],
+      "supersedes": []
+    },
+    "aegis-live-tail": {
+      "reads": [".aegis/brain/live/current.fifo"],
+      "writes": [".aegis/brain/live/current.fifo"],
+      "wires": ["PostToolUse:.*:tools/aegis-live-tail/emit.mjs"],
+      "tests": ["tests/aegis-live-tail-test.sh"],
+      "supersedes": []
+    },
+    "aegis-multi-tenant": {
+      "reads": [],
+      "writes": [],
+      "wires": [],
+      "tests": ["tests/aegis-multi-tenant-test.sh"],
+      "supersedes": []
+    },
+    "aegis-parallel-dispatch": {
+      "reads": [],
+      "writes": [],
+      "wires": [],
+      "tests": ["tests/aegis-parallel-dispatch-test.sh"],
+      "supersedes": []
+    },
+    "aegis-plus-pilot": {
+      "reads": [],
+      "writes": [],
+      "wires": [],
+      "tests": ["tests/aegis-plus-pilot-test.sh"],
+      "supersedes": []
+    },
+    "aegis-resume": {
+      "reads": [".aegis/brain/state/", ".aegis/brain/runs/"],
+      "writes": [".aegis/brain/state/"],
+      "wires": ["SessionStart:startup:tools/aegis-resume/session-start.mjs"],
+      "tests": ["tests/aegis-resume-test.sh"],
+      "supersedes": []
+    },
+    "aegis-router": {
+      "reads": [".aegis/brain/routing/policy.yaml"],
+      "writes": [],
+      "wires": [],
+      "tests": ["tests/aegis-router-test.sh"],
+      "supersedes": []
+    },
+    "aegis-run-logger": {
+      "reads": [".aegis/brain/runs/"],
+      "writes": [".aegis/brain/runs/"],
+      "wires": ["Stop::tools/aegis-run-logger/archive.mjs"],
+      "tests": ["tests/aegis-run-logger-test.sh"],
+      "supersedes": []
+    },
+    "aegis-trace-export": {
+      "reads": [".aegis/brain/redaction/patterns.yaml", ".aegis/brain/runs/"],
+      "writes": [".aegis/brain/exports/"],
+      "wires": [],
+      "tests": ["tests/aegis-trace-export-test.sh"],
+      "supersedes": []
+    },
+    "aegis-distill": {
+      "reads": [".aegis/brain/learnings/", ".aegis/brain/resonance/"],
+      "writes": [".aegis/brain/resonance/"],
+      "wires": [],
+      "tests": ["tests/aegis-distill-counter-test.sh"],
+      "supersedes": []
+    }
+  }
+}

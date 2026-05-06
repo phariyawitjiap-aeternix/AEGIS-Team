@@ -5,6 +5,11 @@ profile: full
 triggers:
   en: ["retrospective", "retro", "sprint review", "what went well"]
   th: ["ย้อนดู sprint", "retrospective", "ทบทวน sprint"]
+reads: []
+writes: []
+wires: []
+tests: []
+supersedes: []
 ---
 
 ## Quick Reference

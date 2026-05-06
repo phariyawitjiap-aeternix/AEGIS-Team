@@ -1,11 +1,17 @@
 ---
 name: aegis-reengineer
 trigger: /aegis-reengineer
-description: >
-  Re-engineer an existing project — upgrade tech stack, add features, improve performance.
-  100% local. Beast scans current state → Iron Man drafts target architecture → Loki critiques →
-  Iron Man writes the full re-engineering spec → AEGIS pipeline executes.
+description: "Re-engineer an existing project — upgrade tech stack, add features, improve performance. 100% local. Beast scans current state → Iron Man drafts target architecture → Loki critiques → Iron Man writes the full re-engineering spec → AEGIS pipeline executes."
+profile: full
+triggers:
+  en: ["reengineer", "re-engineer", "upgrade stack", "modernize"]
+  th: ["รีเอนจิเนียร์", "อัพเกรด stack"]
 agents: [nick-fury, beast, iron-man, loki, coulson]
+reads: []
+writes: []
+wires: []
+tests: []
+supersedes: []
 ---
 
 # /aegis-reengineer

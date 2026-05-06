@@ -5,6 +5,11 @@ profile: standard
 triggers:
   en: ["export trace", "anonymize log", "share session", "redact PII", "export feedback", "redact log"]
   th: ["ส่งออก trace", "ปกปิด PII", "redact log", "เซ็นเซอร์ log"]
+reads: [".aegis/brain/redaction/patterns.yaml", ".aegis/brain/runs/"]
+writes: [".aegis/brain/exports/"]
+wires: []
+tests: ["tests/aegis-trace-export-test.sh"]
+supersedes: []
 ---
 
 ## Quick Reference

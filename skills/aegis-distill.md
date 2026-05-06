@@ -5,6 +5,11 @@ profile: full
 triggers:
   en: ["distill", "compress learnings", "knowledge distillation", "promote patterns"]
   th: ["กลั่นกรองความรู้", "distill", "สรุปความรู้"]
+reads: [".aegis/brain/learnings/", ".aegis/brain/resonance/"]
+writes: [".aegis/brain/resonance/"]
+wires: []
+tests: ["tests/aegis-distill-counter-test.sh"]
+supersedes: []
 ---
 
 ## Quick Reference

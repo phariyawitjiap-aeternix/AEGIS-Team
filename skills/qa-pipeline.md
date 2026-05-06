@@ -5,6 +5,11 @@ profile: full
 triggers:
   en: ["QA pipeline", "test pipeline", "quality pipeline", "run QA", "full QA"]
   th: ["คิวเอ", "ทดสอบทั้งหมด", "ไปป์ไลน์ทดสอบ"]
+reads: []
+writes: []
+wires: []
+tests: []
+supersedes: []
 ---
 
 ## Quick Reference

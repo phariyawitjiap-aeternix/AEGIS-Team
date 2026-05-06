@@ -1,14 +1,15 @@
 ---
 name: aegis-doctor
 description: "Post-install health check — validates all 13 AEGIS agents, teams, references, and brain structure. Reports pass/warn/fail per component."
+profile: full
 triggers:
-  - doctor
-  - health check
-  - verify install
-  - check agents
-  - validate aegis
-  - ตรวจสุขภาพ
-  - เช็คติดตั้ง
+  en: ["doctor", "health check", "verify install", "check agents", "validate aegis"]
+  th: ["ตรวจสุขภาพ", "เช็คติดตั้ง"]
+reads: []
+writes: []
+wires: []
+tests: []
+supersedes: []
 ---
 
 # /aegis-doctor — AEGIS Health Check

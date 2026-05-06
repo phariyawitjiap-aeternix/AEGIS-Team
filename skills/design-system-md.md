@@ -1,13 +1,18 @@
 ---
 name: design-system-md
 trigger: /design-system, /design-md, DESIGN.md, design system
-description: >
-  Generate a DESIGN.md visual design system document following the Google Stitch
-  9-section format (adopted from VoltAgent/awesome-design-md). Defines how a project
-  should LOOK and FEEL so downstream builder agents generate pixel-consistent UI.
-  Owned by Wasp with Iron Man review.
+description: "Generate a DESIGN.md visual design system document following the Google Stitch 9-section format. Defines how a project should LOOK and FEEL so downstream builder agents generate pixel-consistent UI. Owned by Wasp with Iron Man review."
+profile: full
+triggers:
+  en: ["design system", "design-md", "DESIGN.md"]
+  th: ["ระบบดีไซน์", "เดไซน์ซิสเต็ม"]
 agents: [wasp, iron-man, loki]
 owner: wasp
+reads: []
+writes: []
+wires: []
+tests: []
+supersedes: []
 ---
 
 # /design-system-md

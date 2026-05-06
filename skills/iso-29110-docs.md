@@ -1,3 +1,17 @@
+---
+name: iso-29110-docs
+description: "Generate and maintain ISO/IEC 29110 Basic profile compliant work products from AEGIS agent outputs. Covers Project Management (PM) and Software Implementation (SI) processes."
+profile: full
+triggers:
+  en: ["ISO", "29110", "compliance", "audit docs", "work products"]
+  th: ["ไอเอสโอ", "เอกสารมาตรฐาน", "ตรวจสอบ"]
+reads: []
+writes: []
+wires: []
+tests: []
+supersedes: []
+---
+
 # Skill: iso-29110-docs
 > Profile: full
 > Triggers EN: ISO, 29110, compliance, audit docs, work products

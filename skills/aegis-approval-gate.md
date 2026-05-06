@@ -5,6 +5,11 @@ profile: standard
 triggers:
   en: ["grant approval", "approve destructive", "list approvals", "revoke approval", "gate rules", "approval gate", "block destructive op"]
   th: ["อนุมัติ destructive", "ดู approval", "ยกเลิก approval", "เปิด gate"]
+reads: [".aegis/brain/gate-rules.yaml", ".aegis/brain/approvals/"]
+writes: [".aegis/brain/approvals/"]
+wires: ["PreToolUse:Bash:tools/aegis-approval-gate/check.mjs"]
+tests: ["tests/aegis-approval-gate-test.sh"]
+supersedes: []
 ---
 
 ## Quick Reference
