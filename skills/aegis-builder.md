@@ -5,6 +5,11 @@ profile: full
 triggers:
   en: ["build skill", "create skill", "new persona", "extend AEGIS", "customize AEGIS"]
   th: ["สร้าง skill ใหม่", "ขยาย AEGIS", "สร้าง persona", "ปรับแต่ง AEGIS"]
+reads: []
+writes: []
+wires: []
+tests: []
+supersedes: []
 ---
 
 ## Quick Reference

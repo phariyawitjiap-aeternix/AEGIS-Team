@@ -5,6 +5,11 @@ profile: standard
 triggers:
   en: ["replay session", "list runs", "show old session", "archive transcript", "session archive"]
   th: ["รีเพลย์ session", "ดู session เก่า", "ดู run เก่า", "เปิด archive"]
+reads: [".aegis/brain/runs/"]
+writes: [".aegis/brain/runs/"]
+wires: ["Stop::tools/aegis-run-logger/archive.mjs"]
+tests: ["tests/aegis-run-logger-test.sh"]
+supersedes: []
 ---
 
 ## Quick Reference

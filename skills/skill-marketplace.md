@@ -5,6 +5,11 @@ profile: full
 triggers:
   en: ["skill marketplace", "find skill", "install skill", "share skill", "browse skills"]
   th: ["ตลาด skill", "หา skill", "ติดตั้ง skill", "แชร์ skill"]
+reads: []
+writes: []
+wires: []
+tests: []
+supersedes: []
 ---
 
 ## Quick Reference

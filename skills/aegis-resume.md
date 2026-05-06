@@ -5,6 +5,11 @@ profile: standard
 triggers:
   en: ["checkpoint session", "resume run", "list interrupted", "resume brief", "pick up where I left off", "session resume"]
   th: ["รีซูม session", "จุด checkpoint", "ทำต่อจากเมื่อวาน", "เซฟ session"]
+reads: [".aegis/brain/state/", ".aegis/brain/runs/"]
+writes: [".aegis/brain/state/"]
+wires: ["SessionStart:startup:tools/aegis-resume/session-start.mjs"]
+tests: ["tests/aegis-resume-test.sh"]
+supersedes: []
 ---
 
 ## Quick Reference

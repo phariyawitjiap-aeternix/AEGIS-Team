@@ -5,6 +5,11 @@ profile: full
 triggers:
   en: ["adversarial review", "devil's advocate", "challenge", "stress test design"]
   th: ["ท้าทายการตัดสินใจ", "adversarial", "ทดสอบข้อสมมติ"]
+reads: []
+writes: []
+wires: []
+tests: []
+supersedes: []
 ---
 
 ## Quick Reference

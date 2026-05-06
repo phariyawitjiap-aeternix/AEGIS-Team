@@ -5,6 +5,11 @@ profile: standard
 triggers:
   en: ["route to model", "pick model", "which model for", "model tier", "audit routing", "router decide"]
   th: ["เลือก model", "ใช้ opus หรือ sonnet", "router", "เลือกโมเดล"]
+reads: [".aegis/brain/routing/policy.yaml"]
+writes: []
+wires: []
+tests: ["tests/aegis-router-test.sh"]
+supersedes: []
 ---
 
 ## Quick Reference

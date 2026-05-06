@@ -1,4 +1,4 @@
-<!-- version: 1.0.0 -->
+<!-- version: 1.0.1 -->
 <!-- Last updated: 2026-05-06 -->
 
 Last reviewed: 2026-05-06
@@ -14,6 +14,7 @@ Last reviewed: 2026-05-06
 | Date | Version | Change |
 |------|---------|--------|
 | 2026-05-06 | 1.0.0 | Initial ARCHITECTURE authored as part of sprint-v12-01. Captures repo layout, concern→path map, hook DAG, brain ingestion DAG. Pre-graph (graph DAG arrives in v12-04). |
+| 2026-05-06 | 1.0.1 | Added §6.1 (Skill Frontmatter Schema) pointer for sprint-v12-03; backfill tool + manifest documented at `tools/aegis-doc-canon/skill-schema.md`. |
 
 ---
 
@@ -238,6 +239,16 @@ Single-file tools live directly under `tools/` as `<name>.sh` or `<name>.mjs`.
 ---
 
 ## 6. Skill Resolution
+
+### 6.1 Frontmatter schema (v12-03)
+
+Every `skills/<name>.md` file must satisfy a uniform YAML frontmatter shape. Required keys: `name`, `description`, `profile`, `triggers`, plus 5 graph keys (`reads`, `writes`, `wires`, `tests`, `supersedes`) — present-required, value-may-be-empty-array.
+
+The schema is documented in [`tools/aegis-doc-canon/skill-schema.md`](tools/aegis-doc-canon/skill-schema.md). Validated by `node tools/aegis-doc-canon/skill-frontmatter.mjs --lint`. Backfill missing keys with `--backfill` (idempotent). Set non-empty graph values for tool-backed skills via [`tools/aegis-doc-canon/skill-graph-manifest.json`](tools/aegis-doc-canon/skill-graph-manifest.json) + `--apply-manifest`.
+
+This schema is the **input contract** for the v12-04 knowledge-graph builder; without it, the graph cannot generate `READS` / `WRITES` / `WIRES` / `TESTS` / `SUPERSEDES` edges from skills.
+
+### 6.2 Resolution flow
 
 A skill resolves through this chain when an agent considers "should I invoke this?":
 

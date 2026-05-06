@@ -5,6 +5,11 @@ profile: full
 triggers:
   en: ["observe", "observability", "agent logs", "cost tracking", "decision trace"]
   th: ["สังเกตการณ์", "observe", "ดู log", "ติดตามค่าใช้จ่าย"]
+reads: []
+writes: []
+wires: []
+tests: []
+supersedes: []
 ---
 
 ## Quick Reference

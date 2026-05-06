@@ -16,7 +16,7 @@ external dependencies (new SDK features, infra, migration calendar).
 
 ## Tally (update on every sprint close)
 
-_Last updated: 2026-05-06 · by: Captain America (v12-02 CLOSED 5/5pt · GUARDRAILS.md w/ 12 Signs + add-sign.mjs · 20/20 add-sign assertions pass · v12 grand-total 13/39pt · 33%)_
+_Last updated: 2026-05-06 · by: Captain America (v12-03 CLOSED 5/5pt · skill frontmatter schema + 39 skills backfilled + 12 manifest-driven tool-backed skills · 22/22 assertions pass · Phase A COMPLETE 18/18pt · v12 grand-total 18/39pt · 46%)_
 
 | Sprint | Points Selected | Points Done | Stretch Done | Status |
 |--------|-----------------|-------------|--------------|--------|
@@ -50,7 +50,7 @@ _Last updated: 2026-05-06 · by: Captain America (v12-02 CLOSED 5/5pt · GUARDRA
 | **v11 TOTAL (P1 + P2 + P3 incl. override)** | **63** | **63** | **0** | **100%** |
 | sprint-v12-01 (DoD.md + ARCHITECTURE.md + version headers + lint) | 8 | 8 | 0 | **CLOSED (100%)** |
 | sprint-v12-02 (GUARDRAILS.md · Sign migration) | 5 | 5 | 0 | **CLOSED (100%)** |
-| sprint-v12-03 (skill/tool/sprint frontmatter convergence) | 5 | 0 | 0 | planned |
+| sprint-v12-03 (skill/tool/sprint frontmatter convergence) | 5 | 5 | 0 | **CLOSED (100%)** |
 | sprint-v12-04 (aegis-brain-graph build · NDJSON) | 8 | 0 | 0 | planned |
 | sprint-v12-05 (aegis-brain-graph query · 5 subcommands) | 8 | 0 | 0 | planned |
 | sprint-v12-06 (auto-wiki + staleness signal) | 5 | 0 | 0 | planned |
