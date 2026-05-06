@@ -101,3 +101,12 @@ dashboard/node_modules/
 # aegis-live-tail named pipe + socket (transient, created on demand)
 .aegis/brain/live/current.fifo
 .aegis/brain/live/*.sock
+
+# v12-04 knowledge graph — rebuildable from sources, machine-local
+.aegis/brain/graph/
+
+# v11-02 activity logger output — JSONL audit, regenerated per session
+.aegis/brain/activity/
+
+# v11-07 run logger archives — per-session transcripts
+.aegis/brain/runs/
