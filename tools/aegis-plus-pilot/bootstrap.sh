@@ -187,12 +187,22 @@ if [[ -d "$PILOT/.git" ]]; then
             (cd "$PILOT" && git rm --cached -rq "$p" 2>/dev/null) && untracked_count=$((untracked_count+1))
         fi
     done
-    # Ensure entries are in .gitignore
+    # Ensure entries are in .gitignore.
+    # Use anchored regex so e.g. ".aegis/brain/logs/*.log" doesn't make us
+    # think ".aegis/brain/logs/" is already there. Also disable any explicit
+    # "!<path>/<file>" re-include lines that would undo our intent (this was
+    # the bug that let kam-tong-ham re-track activity.log after F3).
     GI="$PILOT/.gitignore"
     for p in "${UNTRACK_PATHS[@]}"; do
         line="$p/"
-        if [[ -f "$GI" ]] && ! grep -qF "$line" "$GI"; then
-            echo "$line" >> "$GI"
+        if [[ -f "$GI" ]]; then
+            if ! grep -qE "^${line}$" "$GI"; then
+                echo "$line" >> "$GI"
+            fi
+            if grep -qE "^!${p}/" "$GI"; then
+                sed -i.bak "s|^!${p}/|# disabled-by-bootstrap: !${p}/|g" "$GI"
+                rm -f "$GI.bak"
+            fi
         fi
     done
     if [[ $untracked_count -gt 0 ]]; then

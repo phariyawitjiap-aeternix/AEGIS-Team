@@ -122,17 +122,31 @@ if [[ -d "$PILOT/.git" ]]; then
     done
     GI="$PILOT/.gitignore"
     gi_added=0
+    gi_unignored=0
     for p in "${UNTRACK_PATHS[@]}"; do
         line="$p/"
+        unignore_line="!$p/"
         if [[ -f "$GI" ]]; then
-            if ! grep -qF "$line" "$GI"; then
+            # Use anchored regex (line-start + line-end) so e.g. "$p/*.log"
+            # does NOT count as having "$p/" — that was the bug that let
+            # kam-tong-ham keep tracking .aegis/brain/logs/activity.log via
+            # an explicit `!` re-include from an old install.sh template.
+            if ! grep -qE "^${line}$" "$GI"; then
                 echo "$line" >> "$GI"
                 gi_added=$((gi_added+1))
             fi
+            # Strip any explicit re-include lines for files under this dir
+            # (e.g. "!.aegis/brain/logs/activity.log") — they undo our intent.
+            if grep -qE "^!${p}/" "$GI"; then
+                # Comment out rather than delete, so operators can audit later
+                sed -i.bak "s|^!${p}/|# disabled-by-remediate: !${p}/|g" "$GI"
+                rm -f "$GI.bak"
+                gi_unignored=$((gi_unignored+1))
+            fi
         fi
     done
-    if [[ $untracked_count -gt 0 || $gi_added -gt 0 ]]; then
-        success "untracked $untracked_count dir(s) ($untracked_files files); added $gi_added .gitignore line(s)."
+    if [[ $untracked_count -gt 0 || $gi_added -gt 0 || $gi_unignored -gt 0 ]]; then
+        success "untracked $untracked_count dir(s) ($untracked_files files); added $gi_added line(s); disabled $gi_unignored re-include line(s) in .gitignore"
         warn "you must commit this change manually:"
         echo "    cd $PILOT && git add .gitignore && git commit -m 'chore: untrack runtime brain dirs (pilot remediation F3)'"
     else
