@@ -8,10 +8,10 @@
 
 ---
 
-## 0. TL;DR — ที่เหลือทั้งหมด 4 items
+## 0. TL;DR — ที่เหลือทั้งหมด 3 items (was 4 — A done 2026-05-06)
 
 ```
-🟡 A — settings-patch apply       (between-session · USER must run)
+✅ A — settings-patch apply       (DONE 2026-05-06 23:29 · D-090 logged · activates on next Desktop reload)
 🟡 B — kam-tong-ham remediate     (External Access · USER imperative by-name)
 ⏸️ C — open sprint-v10-07         (SCOPED, awaiting "open v10-07" go)
 ⏸️ D — sprint-v10-08 Hermes L3    (blocked on v10-07 measurement)
@@ -19,11 +19,22 @@
 🟢 optional — distill memory · stale doc cleanup · TODO/FIXME prose markers
 ```
 
-ทำตามลำดับ A → C → D นี้ได้เลย หรือข้ามไปไหนก็ได้แล้วแต่ต้องการ B แยกเดี่ยวเมื่อพร้อม
+ทำลำดับ B → C → D ตามอารมณ์ หรือข้ามไปไหนก็ได้
 
 ---
 
-## 1. Item A — settings-patch.json apply (USER must run)
+## 1. Item A — settings-patch.json apply ✅ DONE 2026-05-06
+
+**Status:** COMPLETED 2026-05-06 23:29 by user via separate macOS Terminal.app · D-090 logged
+
+**Outcome verified:**
+- `PostToolUse[matcher="Edit|Write|MultiEdit"]` → 2 commands: existing `post-edit-accumulate` + new `tools/aegis-brain-graph/hook.sh`
+- `SessionStart[matcher="startup"]` → 2 commands: existing `aegis-resume/session-start.mjs` + new `tools/aegis-brain-graph/staleness.mjs`
+- Backup at `.claude/settings.json.pre-v12-04-backup`
+
+**Activates on next Claude Desktop session reload** (close project tab → reopen, or `Cmd+Q` → relaunch). Current session still uses old in-memory settings; that's fine — next session picks up new hooks automatically.
+
+**Below sections kept for reference / rollback:**
 
 **Why:** v12-04 PostToolUse graph-build hook + v12-06 SessionStart staleness banner ยังไม่ได้ wire ใน meta `.claude/settings.json` เพราะ `guard-write.sh` (v9-01 self-protection) block การแก้ settings.json ระหว่าง Claude session กำลังรัน
 
@@ -245,29 +256,30 @@ Last-updated 2026-04-20 · CLAUDE.md note บอกว่าเป็น "Histor
 ## 6. Sequencing & priority — ลำดับที่แนะนำ
 
 ```
-1. A (settings-patch)            ← ทำได้เลยเมื่อสะดวก, ไม่ blocking
-2. B (kam-tong-ham remediate)    ← ทำเมื่อพร้อมจะกลับไปใช้ pilot
-3. C (open v10-07)               ← ทำเมื่ออยากเดินหน้า framework intelligence
-4. D (Hermes L3)                 ← unblocks หลัง C เสร็จ + 1 use-cycle
+✅ A (settings-patch)             ← DONE 2026-05-06 (D-090)
+1. B (kam-tong-ham remediate)    ← ทำเมื่อพร้อมจะกลับไปใช้ pilot
+2. C (open v10-07)               ← ทำเมื่ออยากเดินหน้า framework intelligence
+3. D (Hermes L3)                 ← unblocks หลัง C เสร็จ + 1 use-cycle
 ```
 
-**Independent items** — A กับ B ไม่มี dependency · ทำพร้อมกันก็ได้ · slot เข้าหา session ใหม่ตามอารมณ์
+**B independent** — ทำเมื่ออารมณ์มา · ไม่มี dependency
 
 **C → D เป็น sequential** — L3 ต้องรอ L2
 
 ---
 
-## 7. State snapshot ตอนเขียนแผนนี้
+## 7. State snapshot ตอนเขียนแผนนี้ (updated 2026-05-06 post-Item-A)
 
 ```
 Branch:                 main
-Last commit:            ffc8b13 chore: finish rest — graph untrack, CURRENT fix, README v12, L2 scope (#127)
+Last commit (pre-A):    f46f0a5 docs: post-v12 forward plan handoff (#128)
 Open PRs:               0
 Human queue:            0 pending / ไม่มีคิวรอ
-Working tree:           clean (after this PR commits + merges)
+Working tree:           clean
 Roadmap "Current":      sprint-v12-06 (last closed)
-Hooks active:           v11 chain (10 hooks); v12-04+v12-06 NOT yet wired
-Decision audit:         120 entries · 55 judgment-fallbacks · ready for L2 mine
+Hooks wired on disk:    v11 chain + v12-04 PostToolUse build hook + v12-06 SessionStart staleness ✅
+Hooks active in-mem:    next Claude Desktop reload activates v12 hooks (current session still old)
+Decision audit:         121 entries · 56 judgment-fallbacks · ready for L2 mine
 Pilot:                  kam-tong-ham bootstrapped 2026-05-06 (D-087); awaiting remediate
 
 v9 :  73 / 69  pt  (CLOSED, 100% + stretch)
