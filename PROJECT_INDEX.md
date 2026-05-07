@@ -1,6 +1,6 @@
 <!-- Auto-generated from .aegis/brain/graph/ — edit topic pages under _aegis-output/wiki/ -->
-<!-- built_at: 2026-05-07T14:18:50.574Z -->
-<!-- node_count: 312 edge_count: 449 -->
+<!-- built_at: 2026-05-07T14:30:53.390Z -->
+<!-- node_count: 314 edge_count: 450 -->
 
 # AEGIS Project Index
 
@@ -90,7 +90,7 @@
 - [v9-05](_aegis-output/wiki/sprint-v9-05.md) — CLOSED · 46pt
 - [v9-06](_aegis-output/wiki/sprint-v9-06.md) — CLOSED
 
-## Tools (16 packages, 84 files)
+## Tools (16 packages, 85 files)
 
 - **_archived** (5 files)
 - **aegis-activity-logger** (3 files)
@@ -107,7 +107,7 @@
 - **aegis-router** (1 files)
 - **aegis-run-logger** (3 files)
 - **aegis-trace-export** (3 files)
-- **misc** (37 files)
+- **misc** (38 files)
 
 ## Hooks (15)
 
