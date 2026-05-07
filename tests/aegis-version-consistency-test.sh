@@ -48,6 +48,31 @@ check_banner "README.md"         "AEGIS v${MAJOR}\\.[0-9]+ — AI Agent Team Fra
 check_banner "install-remote.sh" "AEGIS v${MAJOR}\\.[0-9]+ — Remote Installer"             "install-remote.sh banner"
 check_banner "assets/logo/README.md" "Brand assets for AEGIS v${MAJOR}\\.[0-9]+"           "assets/logo banner"
 
+# Brain resonance files often mention the framework version too. Scan
+# .aegis/brain/resonance/*.md for any "AEGIS v<N>." mention and confirm
+# it matches MAJOR. Added in sprint-v13-01 Phase B chunk-1 after the
+# SessionStart staleness hook caught project-identity.md drift that this
+# test was previously missing.
+RESONANCE_DRIFT=()
+if [[ -d "$REPO_ROOT/.aegis/brain/resonance" ]]; then
+  while IFS= read -r f; do
+    # Look for any "AEGIS v<MAJOR_OTHER>" line where MAJOR_OTHER != MAJOR
+    if grep -nE "AEGIS v[0-9]+\\.[0-9]+" "$f" 2>/dev/null \
+       | grep -vE "AEGIS v${MAJOR}\\." > /dev/null 2>&1; then
+      mismatch=$(grep -nE "AEGIS v[0-9]+\\.[0-9]+" "$f" 2>/dev/null \
+                 | grep -vE "AEGIS v${MAJOR}\\." | head -1 || true)
+      RESONANCE_DRIFT+=("${f#${REPO_ROOT}/}: $mismatch")
+    fi
+  done < <(find "$REPO_ROOT/.aegis/brain/resonance" -name '*.md' -type f 2>/dev/null)
+fi
+if [[ ${#RESONANCE_DRIFT[@]} -eq 0 ]]; then
+  pass "brain resonance files all reference v${MAJOR} (or no version at all)"
+else
+  for d in "${RESONANCE_DRIFT[@]}"; do
+    fail "resonance drift" "$d"
+  done
+fi
+
 echo ""
 echo "============================================"
 echo "RESULTS: ${PASS} passed, ${FAIL} failed"
