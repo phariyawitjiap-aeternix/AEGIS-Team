@@ -16,7 +16,7 @@ external dependencies (new SDK features, infra, migration calendar).
 
 ## Tally (update on every sprint close)
 
-_Last updated: 2026-05-07 · by: Captain America (v13-01 Phase B FULLY CLOSED 8/8pt — chunk-3 graduated install-v11-delivery (real "wired but not shipped" bug: install.sh missing v12 aegis-brain-graph package) + aegis-trace-audit-test on Ubuntu CI (LC_ALL=C + CI-mode advisory) · suite now 44/44 ALL PASS · v13-01 cumulative 15/24pt = 62.5%)_
+_Last updated: 2026-05-07 · by: Captain America (v13-01 Phase C CLOSED 3/3pt — agent visibility: 23→5 orphans (5 surviving are architecturally agent-invisible: internal helpers + cron + security) · v12-04 graph build now indexes single-file aegis-*.sh + agent files · graph 262→310 nodes, 319→446 edges · suite still 44/44 ALL PASS · v13-01 cumulative 18/24pt = 75%)_
 
 | Sprint | Points Selected | Points Done | Stretch Done | Status |
 |--------|-----------------|-------------|--------------|--------|
@@ -57,7 +57,7 @@ _Last updated: 2026-05-07 · by: Captain America (v13-01 Phase B FULLY CLOSED 8/
 | sprint-v12-05 (aegis-brain-graph query · 5 subcommands) | 8 | 8 | 0 | **CLOSED (100%)** |
 | sprint-v12-06 (auto-wiki + staleness signal) | 5 | 5 | 0 | **CLOSED (100%)** |
 | **v12 TOTAL (Phase A doc canon + Phase B graph)** | **39** | **39** | **0** | **CLOSED (100%)** |
-| sprint-v13-01-refactor (codebase re-organize + re-factor · 5 phases) | 24 | 15 | 0 | **OPEN — Phase A + B + D CLOSED 15/24pt · suite 44/44 ALL PASS** · 9pt remaining (Phase C 3pt · E 5pt + 1pt buffer) |
+| sprint-v13-01-refactor (codebase re-organize + re-factor · 5 phases) | 24 | 18 | 0 | **OPEN — Phase A + B + C + D CLOSED 18/24pt · suite 44/44 ALL PASS** · 6pt remaining (Phase E 5pt + 1pt buffer) |
 
 ## v12 Plan Reference
 
