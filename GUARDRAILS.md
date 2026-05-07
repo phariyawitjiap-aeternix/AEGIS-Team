@@ -1,7 +1,7 @@
-<!-- version: 1.0.0 -->
-<!-- Last updated: 2026-05-06 -->
+<!-- version: 1.0.1 -->
+<!-- Last updated: 2026-05-07 -->
 
-Last reviewed: 2026-05-06
+Last reviewed: 2026-05-07
 
 # AEGIS Guardrails
 
@@ -16,6 +16,7 @@ Last reviewed: 2026-05-06
 | Date | Version | Change |
 |------|---------|--------|
 | 2026-05-06 | 1.0.0 | Initial GUARDRAILS authored as part of sprint-v12-02 (Knowledge-Layer Mega Plan Phase A). Migrated 12 Signs from CLAUDE_lessons / auto-memory / recent v11 PR fix-classes. |
+| 2026-05-07 | 1.0.1 | Strengthened "AskUserQuestion option-menu" Sign with Thai phrasings + Human=Board / Nick=CEO mental model. Cross-references the on-stop hook fix (mbp-scan Thai patterns + closing-text trigger) that finally pins the regression. |
 
 ---
 
@@ -81,9 +82,9 @@ If a Sign below appears to override a non-negotiable, the non-negotiable wins.
 
 ### `AskUserQuestion` option-menu (MBP violation)
 
-- **Trigger:** You're about to end a response with "Options: A / B / C — what do you want?" or "Should I run X next? Y? Z?" or any tool call to `AskUserQuestion` from a non-Nick-Fury caller.
-- **Do:** STOP. (1) If a decision is needed, send `QUESTION_TO_BRAIN` to Nick Fury per `.claude/references/context-rules.md`. (2) If Nick Fury is offline, make the best call from brain/instincts/ADRs and log via `tools/aegis-log-decision.sh --source judgment` with `--reasoning`. (3) Apply the chain in `.claude/references/command-chain.md`. Never "ask the human" as a fallback for the chain.
-- **Why:** Golden Rule #7 — the most-violated AEGIS rule. Surfaced repeatedly in pre-v9 sessions; `guard-ask-user.sh` blocks tool-level violations now, but the *response-text* violation pattern still slips through. The right loop is: agent → judgment → log → continue, NOT agent → menu → human.
+- **Trigger:** You're about to end a response with ANY of these: "Options: A / B / C — what do you want?" · "Should I run X next? Y? Z?" · "ต้องการอะไรต่อ — X หรือ Y" · "ต่อไปจะทำอะไร" · "อยากให้ทำอะไรต่อ" · "ทำอันไหนก่อน" · "เลือกตามใจ" · "pick by name" · "what's next?" · "anything else?" · "your call —" · or any tool call to `AskUserQuestion` from a non-Nick-Fury caller.
+- **Do:** STOP. (1) If a decision is needed, send `QUESTION_TO_BRAIN` to Nick Fury per `.claude/references/context-rules.md`. (2) If Nick Fury is offline, make the best call from brain/instincts/ADRs and log via `tools/aegis-log-decision.sh --source judgment` with `--reasoning`. (3) Apply the chain in `.claude/references/command-chain.md`. Never "ask the human" as a fallback for the chain. **Mental model:** human = Board (governance — Identity / Irreversible / External access / Explicit approval gate). Nick Fury = CEO (operational decisions). Asking the Board what to do operationally is reverse-delegation.
+- **Why:** Golden Rule #7 — the most-violated AEGIS rule, and a recurring regression class. Surfaced repeatedly in pre-v9 sessions; surfaced AGAIN on 2026-05-07 when the user pointed out it kept coming back despite "fixes." Root cause was structural: `mbp-scan.sh` had English-only patterns + an AND-gate that required option-menu AND open-question to fire together, so Thai endings like "ต้องการอะไรต่อ — X หรือ Y" slipped through every time. Fix landed 2026-05-07: 11 Thai patterns added, 7 broader English patterns, closing-text-only trigger, and 21-fixture regression test in `tests/aegis-mbp-scan-thai-test.sh` pinning the violations. The right loop is: agent → judgment → log → continue, NOT agent → menu → human.
 
 ### Hook fail-CLOSED bug locks user out
 
