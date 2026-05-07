@@ -131,7 +131,7 @@ run_lint_one() {
 
 # ─── Test 1: live tree passes ──────────────────────────────────────────────
 echo
-echo "T1: live tree lint (all 7 governance docs)"
+echo "T1: live tree lint (all governance docs)"
 OUT=$(node "$LINT" --dir "$REPO_ROOT" 2>&1)
 RC=$?
 if [[ $RC -eq 0 ]]; then
@@ -139,10 +139,12 @@ if [[ $RC -eq 0 ]]; then
 else
     fail "live tree lint exits 0" "exit=$RC, output:\n$OUT"
 fi
-if echo "$OUT" | grep -q "all 7 governance docs pass"; then
-    pass "live tree lint reports all 7 pass"
+# Match any "all <N> governance docs pass" — count grows as governance corpus expands.
+if echo "$OUT" | grep -qE "all [0-9]+ governance docs pass"; then
+    DOC_COUNT=$(echo "$OUT" | grep -oE "all [0-9]+ governance" | grep -oE "[0-9]+")
+    pass "live tree lint reports all $DOC_COUNT pass"
 else
-    fail "live tree lint reports all 7 pass" "output did not contain summary"
+    fail "live tree lint reports all governance docs pass" "output did not contain summary"
 fi
 
 # ─── Test 2: passing fixture ───────────────────────────────────────────────

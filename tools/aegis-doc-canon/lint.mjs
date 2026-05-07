@@ -32,6 +32,7 @@ const DEFAULT_DOCS = [
   'DoD.md',
   'ARCHITECTURE.md',
   'GUARDRAILS.md',
+  'SPRINT_RULES.md',
 ];
 
 const VERSION_RE = /^<!--\s*version:\s*(\d+\.\d+\.\d+)\s*-->/m;
