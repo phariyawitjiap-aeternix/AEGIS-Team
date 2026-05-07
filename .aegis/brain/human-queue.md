@@ -39,15 +39,7 @@ Agent ตัวไหนอ่านไฟล์นี้ตรงก็ได�
 ## 🔔 Pending / รอดำเนินการ
 
 <!-- PENDING_START -->
-### [2026-05-07] EXTERNAL — Enable Tier-1 branch protection on main / เปิด branch protection (Tier-1) บน main
-
-- **EN**: Per sprint-v13-02 AI-3: main has no protection rules — explains the v13-01 'merge through red CI' pattern that hid the install-v11 brain-graph delivery bug for ~1 month. Run the gh API call in .aegis/brain/sprints/sprint-v13-02-cleanup/ai-3-branch-protection-audit.md to enable Tier-1 (status checks required, no force-push, no main-deletion, admins still allowed override).
-- **TH**: ตาม AI-3 ของ sprint-v13-02: main ยังไม่มี protection — อธิบาย pattern 'merge ทั้งที่ CI แดง' ที่ซ่อน bug install-v11 brain-graph เกือบ 1 เดือน — รัน gh API ในไฟล์ ai-3-branch-protection-audit.md เพื่อเปิด Tier-1 (ต้องผ่าน CI, ห้าม force push / ลบ main, admin override ได้)
-- **Category**: External access
-- **Raised by**: thor
-- **Blocks**: future PRs that are CI-flake-merged
-- **Raised**: 2026-05-07T14:43:19Z
-- **Resolved**: _(pending)_
+_No pending items. / ไม่มีคิวรอ._
 <!-- PENDING_END -->
 
 ---
@@ -56,6 +48,15 @@ Agent ตัวไหนอ่านไฟล์นี้ตรงก็ได�
 
 <!-- RESOLVED_START -->
 
+### [2026-05-07] EXTERNAL — Enable Tier-1 branch protection on main / เปิด branch protection (Tier-1) บน main
+
+- **EN**: Per sprint-v13-02 AI-3: main has no protection rules — explains the v13-01 'merge through red CI' pattern that hid the install-v11 brain-graph delivery bug for ~1 month. Run the gh API call in .aegis/brain/sprints/sprint-v13-02-cleanup/ai-3-branch-protection-audit.md to enable Tier-1 (status checks required, no force-push, no main-deletion, admins still allowed override).
+- **TH**: ตาม AI-3 ของ sprint-v13-02: main ยังไม่มี protection — อธิบาย pattern 'merge ทั้งที่ CI แดง' ที่ซ่อน bug install-v11 brain-graph เกือบ 1 เดือน — รัน gh API ในไฟล์ ai-3-branch-protection-audit.md เพื่อเปิด Tier-1 (ต้องผ่าน CI, ห้าม force push / ลบ main, admin override ได้)
+- **Category**: External access
+- **Raised by**: thor
+- **Blocks**: future PRs that are CI-flake-merged
+- **Raised**: 2026-05-07T14:43:19Z
+- **Resolved**: 2026-05-07T16:03:50Z — User approved ("approve") in the same conversation turn that asked about AI-3 specifically — clear by-name go in context. Ran gh API PUT on repos/phariyawitjiap-aeternix/AEGIS-Team/branches/main/protection with Tier-1 config from sprint-v13-02 audit doc. Verified via read-back: required_status_checks (6 contexts) + strict + force-push/delete disabled + enforce_admins=false (allows user override). Branch protection is now live.
 ### [2026-05-05] EXTERNAL — Bootstrap AEGIS into kam-tong-ham (pilot project) / ติดตั้ง AEGIS ลงใน kam-tong-ham (pilot project)
 
 - **EN**: Day-0 of the v11 Phase-1 pilot week. Runs bash install.sh --target-dir ~/Documents/kam-tong-ham --project-name 'kam-tong-ham' --profile standard. Modifies an external project outside the meta repo — explicit human go required. Once approved, run: bash tools/aegis-plus-pilot/bootstrap.sh ~/Documents/kam-tong-ham
