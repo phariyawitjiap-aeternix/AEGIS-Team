@@ -65,9 +65,12 @@ block0f_check() {
         return
     fi
 
-    # Run lint in strict mode
+    # Run lint in strict mode. The lint script lives in tools/, not tests/.
+    # Pre-v13-01 this had `$(dirname "$0")` which resolved to tests/ and
+    # silently fell through to FAIL on every "valid DESIGN.md" case
+    # (TC-2 + TC-7). Fixed in sprint-v13-01 Phase B chunk-1.
     local lint_out
-    lint_out=$(bash "$(dirname "$0")/aegis-design-lint.sh" --strict --file "${DESIGN_MD_PATH}" 2>&1) || {
+    lint_out=$(bash "${_SCRIPT_DIR}/../tools/aegis-design-lint.sh" --strict --file "${DESIGN_MD_PATH}" 2>&1) || {
         echo "FAIL"
         return
     }

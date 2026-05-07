@@ -15,9 +15,13 @@
 # Created: sprint-v13-01 Phase D — to unblock CI without papering over real bugs.
 # Graduation target: sprint-v13-01 Phase B (8pt test-coverage sprint).
 
-# Surface-only test (2 assertions) flagged in v13-01 plan.md audit §6.
-# Phase B story B2: strengthen to ≥15 assertions.
-aegis-block0-f-gate-test
+# GRADUATED 2026-05-07 in sprint-v13-01-phase-b-chunk1 — see commit history.
+# Audit was wrong: test had 11 cases, 2 failing, not "2 assertions surface-only."
+# Real bug: `$(dirname "$0")/aegis-design-lint.sh` resolved to tests/ but the
+# lint script is in tools/. Silent FAIL on every "valid DESIGN.md" case
+# (TC-2, TC-7). Fixed by using ${_SCRIPT_DIR}/../tools/. Test now 11/11 PASS.
+# (No longer in this list — entry kept here as graduation provenance.)
+# aegis-block0-f-gate-test
 
 # v11-specific install delivery check; test predates v12 graph + doc-canon
 # additions and now fails because expected v11 file inventory has grown.
