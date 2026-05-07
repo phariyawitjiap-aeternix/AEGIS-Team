@@ -72,3 +72,18 @@ jobs:
           cmp -s /tmp/nodes-1.ndjson .aegis/brain/graph/nodes.ndjson \
             && cmp -s /tmp/edges-1.ndjson .aegis/brain/graph/edges.ndjson \
             && echo "graph rebuild is deterministic ✓"
+
+  shell-footgun-scan:
+    name: shell footgun scan (cross-platform bash patterns)
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: aegis-shell-footgun-scan (sprint-v13-02 AI-2 follow-on)
+        # Detects 3 patterns that have bitten this codebase historically:
+        # FOOTGUN-1: set -e + `[[ ]] && X` last-line of function
+        # FOOTGUN-2: find -perm + (GNU-incompatible since 2005)
+        # FOOTGUN-3: sed -i '' (BSD-only; GNU sed treats '' as the script)
+        # Repo is currently CLEAN (97 files scanned, 0 footguns). Job blocks
+        # any new instance from landing in main.
+        run: bash tools/aegis-shell-footgun-scan.sh
