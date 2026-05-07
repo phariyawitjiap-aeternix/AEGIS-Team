@@ -1,6 +1,6 @@
 <!-- Auto-generated from .aegis/brain/graph/ — edit topic pages under _aegis-output/wiki/ -->
-<!-- built_at: 2026-05-07T14:04:46.567Z -->
-<!-- node_count: 310 edge_count: 446 -->
+<!-- built_at: 2026-05-07T14:18:50.574Z -->
+<!-- node_count: 312 edge_count: 449 -->
 
 # AEGIS Project Index
 
@@ -58,7 +58,7 @@
 - [test-architect](_aegis-output/wiki/skill-test-architect.md) — _standard_
 - [work-breakdown](_aegis-output/wiki/skill-work-breakdown.md) — _standard_
 
-## Sprints (28)
+## Sprints (29)
 
 - [v10-01](_aegis-output/wiki/sprint-v10-01.md) — CLOSED
 - [v10-02](_aegis-output/wiki/sprint-v10-02.md) — CLOSED
@@ -83,6 +83,7 @@
 - [v12-04](_aegis-output/wiki/sprint-v12-04.md) — CLOSED · 8pt
 - [v12-05](_aegis-output/wiki/sprint-v12-05.md) — CLOSED · 8pt
 - [v12-06](_aegis-output/wiki/sprint-v12-06.md) — CLOSED · 5pt
+- [v13-01-refactor](_aegis-output/wiki/sprint-v13-01-refactor.md) — CLOSED · 24pt
 - [v9-02](_aegis-output/wiki/sprint-v9-02.md) — CLOSED
 - [v9-03](_aegis-output/wiki/sprint-v9-03.md) — CLOSED
 - [v9-04](_aegis-output/wiki/sprint-v9-04.md) — CLOSED · 14pt

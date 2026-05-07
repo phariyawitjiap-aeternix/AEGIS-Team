@@ -1,11 +1,11 @@
-<!-- version: 1.0.0 -->
+<!-- version: 1.1.0 -->
 <!-- Last updated: 2026-05-07 -->
 
 Last reviewed: 2026-05-07
 
 # AEGIS Sprint Operating Rules
 
-> **The 5 rules that govern how a sprint runs.** Written down because they kept regressing as implicit conventions. Loki auto-rejects any sprint plan or close.md that violates these. `mbp-scan.sh` (on-stop hook) blocks responses that ask the human to fill the team's role.
+> **The 6 rules that govern how a sprint runs.** Written down because they kept regressing as implicit conventions. Loki auto-rejects any sprint plan or close.md that violates these. `mbp-scan.sh` (on-stop hook) blocks responses that ask the human to fill the team's role.
 >
 > Mental model: **human = Board** (governance — Identity / Irreversible / External access / Explicit approval gate). **Nick Fury = CEO** (operational decisions). **The team = the org.** The Board does not pick stories from the backlog; the Board does not vote on tactics; the Board approves the four governance categories and otherwise delegates.
 
@@ -14,6 +14,7 @@ Last reviewed: 2026-05-07
 | Date | Version | Change |
 |------|---------|--------|
 | 2026-05-07 | 1.0.0 | Initial SPRINT_RULES authored after user feedback (2026-05-07) that the team kept stopping mid-sprint to ask the human for operational input. Codifies 5 rules + voting protocol that were previously implicit. Cross-referenced from DoD.md §3, ARCHITECTURE.md §7, CLAUDE.md Golden Rules. |
+| 2026-05-07 | 1.1.0 | Added **Rule 6** — Graduate-by-running, not graduate-by-reading. Codified after sprint-v13-01 retro found audit verdicts were wrong about half the time across the sprint, but each wrongness revealed a real bug. Action item AI-1 from v13-01 close retro. |
 
 ---
 
@@ -101,6 +102,41 @@ Tested in early v6 — produced ties that needed a tiebreaker, which became Nick
 
 **The closest thing to "veto":** if Loki rejects an Iron Man spec on adversarial review, Nick can override but the override goes into the audit log for retro mining. Repeated overrides on the same axis surface as a pattern in v10-07 mining.
 
+## Rule 6 — Graduate-by-running, not graduate-by-reading
+
+**Bar.** When opening graduation work for a known-failure (`tests/_known-failures.txt` entry) OR starting a refactor flagged in a sprint plan §"Audit findings" section, the FIRST move is to **run the test or read the code end-to-end** — not to trust the audit verdict written in the plan.
+
+- ✅ Step 1: `bash tests/<name>.sh` standalone (or `cat tools/<name>.sh` for a refactor target).
+- ✅ Step 2: Compare actual failure mode / actual code structure to what the audit claimed.
+- ✅ Step 3: If they diverge, trust reality and document the divergence in the close.md.
+- ❌ The team does NOT skip Step 1 because the audit verdict "sounds plausible". Audit verdicts are inputs, not decisions.
+
+**Why this matters.** Sprint v13-01 ran 5 phases / 7 PRs / 24 points. The plan §6 audit's verdicts were wrong about **half the time**, but each wrong verdict revealed a real bug nearby:
+
+| Phase | Audit said | Reality |
+|-------|-----------|---------|
+| A audit error | aegis-test-all is dead | Actually load-bearing — false-positive caught by Rule 3 |
+| B/c1 | block0-f-gate "surface-only" | `$(dirname "$0")` misuse |
+| B/c2 | instinct-promote "fixture-dependent" | `set -e` + `&&` short-circuit silent exit |
+| B/c2 | trace-audit "needs more assertions" | Real ghost-ref drift in SI.02 |
+| B/c3 | install-v11 "v11-specific outdated" | Real "wired but not shipped" bug for v12 brain-graph |
+| C | "23 orphan tools" | 5 surviving are *correctly* architecturally invisible |
+| E | sprint-tracker "needs split" | Splitting harms cohesion; TOC suffices |
+| E | instinct-promote "needs refactor" | Already well-factored at avg 33 LOC/function |
+
+The other half of the time the audit was directionally correct but the fix was **smaller than the audit suggested** (e.g. "needs split" → TOC was enough; "complexity review" → no refactor needed).
+
+**Pattern**: an audit verdict is a hypothesis, not a verdict. The test or the code is the verdict.
+
+**Enforcement:**
+- Sprint close.md template includes an "Audit verdict vs reality" subsection when graduation work is part of the sprint. If the audit was wrong, the close.md must record what the actual bug was.
+- Loki challenges any close.md that graduates a known-failure without showing the diff between audit claim and reality.
+- Captain America logs the divergence to decision-audit when it surfaces a recurring pattern (e.g. "two of last three audits called things 'fixture-dependent' when they were actually `set -e` footguns" → flag for next-sprint sweep).
+
+**Examples:**
+- v13-01 close.md mining produced the 9 audit-vs-reality rows above; this is the canonical example.
+- Future sprint that graduates a known-failure should follow the same audit-vs-reality table format in its close.md.
+
 ---
 
 ## How these rules interlock
@@ -163,6 +199,6 @@ Decisions all along the way: **Rule 5** — Nick / Captain / Black Panther+Loki 
 - A rule regresses and the user has to flag it manually → strengthen the existing rule's "Enforcement" section AND add the corresponding test fixture.
 - A new decision class emerges that doesn't fit Rule 5 → add a row to the Rule 5 table.
 - A human-queue category is added or removed → update Rule 1's exception list.
-- A new sprint shape is needed (e.g. spike sprints, research sprints) → add Rule 6+, do NOT silently bend Rule 4.
+- A new sprint shape is needed (e.g. spike sprints, research sprints) → add Rule 7+, do NOT silently bend Rule 4.
 
 The version-header pattern requires a Changelog row on every substantive edit.
