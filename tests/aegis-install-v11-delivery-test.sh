@@ -54,12 +54,16 @@ if bash "$INSTALL_SH" --target-dir "$PILOT" --project-name "fixture" --profile s
     pass "1.a install.sh fresh standard install exits 0"
 else
     INSTALL_RC=$?
-    fail "1.a install exit" "rc=${INSTALL_RC} tail: $(tail -20 "$INSTALL_OUT")"
-    # When install.sh fails, every downstream check is meaningless.
-    # Dump the full install log so CI captures what actually broke.
-    echo "----- install.sh full output (rc=${INSTALL_RC}) -----" >&2
+    fail "1.a install exit" "rc=${INSTALL_RC}"
+    # If install.sh failed, every downstream assertion is meaningless and the
+    # cascade of "settings.json: No such file or directory" hides the real
+    # failure. Dump install.sh's full output and abort early so the diagnostic
+    # lands in run-all.sh's "last 20 lines" capture.
+    echo "" >&2
+    echo "===== install.sh full output (rc=${INSTALL_RC}) =====" >&2
     cat "$INSTALL_OUT" >&2
-    echo "----- end install.sh output -----" >&2
+    echo "===== end install.sh output =====" >&2
+    exit 1
 fi
 
 # ── Group 1: v11 skills ─────────────────────────────────────────────────
