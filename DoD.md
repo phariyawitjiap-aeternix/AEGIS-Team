@@ -1,7 +1,7 @@
-<!-- version: 1.0.0 -->
-<!-- Last updated: 2026-05-06 -->
+<!-- version: 1.1.0 -->
+<!-- Last updated: 2026-05-07 -->
 
-Last reviewed: 2026-05-06
+Last reviewed: 2026-05-07
 
 # AEGIS Definition of Done
 
@@ -14,6 +14,7 @@ Last reviewed: 2026-05-06
 | Date | Version | Change |
 |------|---------|--------|
 | 2026-05-06 | 1.0.0 | Initial DoD authored as part of sprint-v12-01 (Knowledge-Layer Mega Plan Phase A). 9 sub-bars adapted from GitNexus to AEGIS specifics. |
+| 2026-05-07 | 1.1.0 | Split §5 into §5.1 (Runtime budget — ≤120s Ubuntu, ≤150s macOS-CI) and §5.2 (CI-graceful fallbacks, references the new `.claude/references/ci-graceful-fallback.md`). Action items AI-5 + AI-4 from sprint-v13-02 retro. |
 
 ---
 
