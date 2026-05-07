@@ -16,7 +16,7 @@ external dependencies (new SDK features, infra, migration calendar).
 
 ## Tally (update on every sprint close)
 
-_Last updated: 2026-05-07 · by: Captain America (sprint-v13-01-refactor FULLY CLOSED 24/24pt = 100%) — Phase E archived AEGIS_v9_PROGRESS_TRACKER.md to docs/_archived/, reviewed instinct-promote.sh + sprint-tracker.md (well-factored / cohesive — no refactor needed; added TOC to sprint-tracker for navigation). Recurring lesson across all 5 phases: audit verdicts were wrong half the time, but the wrongness consistently revealed real bugs (silent-exits, locale drift, "wired but not shipped"). Suite 44/44 GREEN on macOS + Ubuntu CI._
+_Last updated: 2026-05-07 · by: Captain America (sprint-v13-02-cleanup CLOSED 6/6 — closed all 6 v13-01 retro action items: Rule 6 in SPRINT_RULES, shell-footgun-scan tool ships + caught a real brain-benchmark bug, branch-protection audit (queued in human-queue), CI-graceful pattern reference, DoD §5.1+5.2 runtime budget + CI-graceful bar, empty-cache validation checklist. Suite 45/45 GREEN. v13-01 + v13-02 both CLOSED._
 
 | Sprint | Points Selected | Points Done | Stretch Done | Status |
 |--------|-----------------|-------------|--------------|--------|
@@ -58,6 +58,7 @@ _Last updated: 2026-05-07 · by: Captain America (sprint-v13-01-refactor FULLY C
 | sprint-v12-06 (auto-wiki + staleness signal) | 5 | 5 | 0 | **CLOSED (100%)** |
 | **v12 TOTAL (Phase A doc canon + Phase B graph)** | **39** | **39** | **0** | **CLOSED (100%)** |
 | sprint-v13-01-refactor (codebase re-organize + re-factor · 5 phases) | 24 | 24 | 0 | **CLOSED** — all 5 phases done; suite 44/44 GREEN on macOS + Ubuntu CI; knowledge graph 310 nodes / 446 edges |
+| sprint-v13-02-cleanup (close v13-01 retro action items · 6 AIs) | 6 | 6 | 0 | **CLOSED** — Rule 6 in SPRINT_RULES, shell-footgun scanner shipped (caught a real brain-benchmark bug), branch-protection audit (gh API queued), CI-graceful pattern reference, DoD §5.1+5.2, empty-cache CI validation checklist. Suite 45/45 GREEN. |
 
 ## v12 Plan Reference
 

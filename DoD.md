@@ -1,7 +1,7 @@
-<!-- version: 1.0.0 -->
-<!-- Last updated: 2026-05-06 -->
+<!-- version: 1.1.0 -->
+<!-- Last updated: 2026-05-07 -->
 
-Last reviewed: 2026-05-06
+Last reviewed: 2026-05-07
 
 # AEGIS Definition of Done
 
@@ -14,6 +14,7 @@ Last reviewed: 2026-05-06
 | Date | Version | Change |
 |------|---------|--------|
 | 2026-05-06 | 1.0.0 | Initial DoD authored as part of sprint-v12-01 (Knowledge-Layer Mega Plan Phase A). 9 sub-bars adapted from GitNexus to AEGIS specifics. |
+| 2026-05-07 | 1.1.0 | Split §5 into §5.1 (Runtime budget — ≤120s Ubuntu, ≤150s macOS-CI) and §5.2 (CI-graceful fallbacks, references the new `.claude/references/ci-graceful-fallback.md`). Action items AI-5 + AI-4 from sprint-v13-02 retro. |
 
 ---
 
@@ -83,6 +84,25 @@ Last reviewed: 2026-05-06
 - [ ] Tests run from the canonical entrypoint `bash tests/run-all.sh` (sprint-v13-01 Phase D) and exit non-zero on any failure.
 - [ ] CI gate: `.github/workflows/test.yml` runs `tests/run-all.sh` on every PR (Linux + macOS matrix); `.github/workflows/lint.yml` runs governance + skill-schema + graph-determinism. PRs cannot merge red.
 - [ ] **(applicable when adding hooks)** New hook scripts have a fixture that simulates a tool call and asserts the hook's exit code + output.
+
+### 5.1 Runtime budget
+
+**Bar.** `bash tests/run-all.sh` completes in ≤120 seconds on a clean Ubuntu CI runner (≤150 seconds on macOS-latest given its slower disk I/O).
+
+- [ ] If a sprint adds tests that push the suite over 120s on Ubuntu CI, the close.md must justify the runtime growth (rule of thumb: each new test gets a ~1-2s budget; large integration fixtures up to 10s).
+- [ ] Tests that exceed 30s individually need an inline comment naming the slow operation (usually a real-tree mine, a network-bound fetch, or a build).
+- [ ] If the suite hits 180s (Ubuntu) or 240s (macOS), it's tagged as a quality-debt item and the next sprint inherits a "tighten suite runtime" story.
+
+**Why this budget.** Sprint v13-01 Phase E observed the suite at 74s macOS / 60s Ubuntu, and the v13-01 plan §6 acceptance criterion claimed "<30s" — that was aspirational, not realistic given the assertion volume (44 test files, ~400+ assertions). 120s gives ~3-5x safety margin while still keeping CI fast enough to retry per PR (~2 min for the matrix). Codified in sprint-v13-02 AI-5.
+
+### 5.2 CI-graceful fallbacks
+
+**Bar.** Tests that depend on accumulated runtime state (decision-audit log, FTS5 index, claude CLI, etc.) implement the [CI-graceful-fallback pattern](.claude/references/ci-graceful-fallback.md) — local-dev assertions stay strict; CI falls back to the weakest meaningful check rather than failing.
+
+- [ ] Sprint close.md notes any new test that uses the `${CI:-}=true` graceful path, with reference to the missing artifact and which Pattern (A/B/C/D from the reference doc) it applies.
+- [ ] Tests must NOT skip in CI in ways that erase coverage — the fallback assertion should still detect a fundamental break.
+
+**Why.** Sprint v13-01 chunk-3 had to fix 4 different tests that assumed accumulated state. The pattern is now codified and reusable.
 
 **Why.** Sprint v9-06 surfaced a recurring "policy-without-test" bug class — rules claiming "MUST/enforces/auto-REJECTs" without matching hook/test/assertion code. This bar makes that class structurally impossible to ship.
 
