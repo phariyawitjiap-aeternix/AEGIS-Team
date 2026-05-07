@@ -30,7 +30,18 @@ trap 'rm -rf "$TEST_DIR"' EXIT INT TERM
 PILOT="$TEST_DIR/pilot"
 mkdir -p "$PILOT"
 # install.sh does a `git rev-parse` early — give it a real repo.
-( cd "$PILOT" && git init -q && git commit -q --allow-empty -m "init" )
+# CI runners lack global git user.{name,email}; set repo-local config so
+# `git commit --allow-empty` works. (sprint-v13-01-phase-b-chunk3 — chunk-3
+# CI exposed this when install-v11 graduated out of known-failures and the
+# test ran for real, revealing every assertion failing because install.sh
+# exited early when the dummy repo couldn't even initialize.)
+(
+  cd "$PILOT" \
+    && git init -q \
+    && git config user.email "test@aegis.local" \
+    && git config user.name "AEGIS Test" \
+    && git commit -q --allow-empty -m "init"
+) || { echo "FATAL: cannot init test repo at $PILOT" >&2; exit 2; }
 
 echo "============================================"
 echo "AEGIS install — v11 artifact delivery"
