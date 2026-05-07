@@ -62,6 +62,13 @@ run_test() {
         FAIL=$((FAIL + 1))
         echo "  FAIL [TC-${num}]: ${desc}"
     fi
+    # Explicit return 0. Without this, the `[[ $VERBOSE -eq 1 ]] && echo ...`
+    # short-circuit returns NON-zero when VERBOSE=0, which is the function's
+    # exit status. Combined with `set -e` (enabled mid-test in several TCs to
+    # validate exit codes from the SUT), that silently kills the entire test
+    # script after run_test 3 with no further output. Caught + fixed in
+    # sprint-v13-01-phase-b-chunk2.
+    return 0
 }
 
 get_field() {

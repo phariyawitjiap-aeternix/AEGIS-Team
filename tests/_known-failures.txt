@@ -28,12 +28,22 @@
 # Phase B story B2: rewrite to enumerate from a manifest, not hardcode.
 aegis-install-v11-delivery-test
 
-# Brain-state-dependent test; passes in clean fixture, fails when meta repo's
-# real instinct dir has accumulated state. Needs proper fixture isolation.
-# Phase B story B1: rewrite with mktemp + isolated CLAUDE_PROJECT_DIR.
-aegis-instinct-promote-test
+# GRADUATED 2026-05-07 in sprint-v13-01-phase-b-chunk2 — see commit history.
+# Audit was wrong: not "brain-state-dependent". Real bug was a silent-exit in
+# run_test() — `[[ $VERBOSE -eq 1 ]] && echo ...` returned non-zero when
+# VERBOSE=0, and `set -e` (enabled mid-test on lines 114/130/165/204) killed
+# the script after run_test 3. Fixed with explicit `return 0` in run_test.
+# Test now 10/10 pass with no fixture changes needed.
+# (No longer in this list — entry kept here as graduation provenance.)
+# aegis-instinct-promote-test
 
-# Surface-only test (6 assertions) flagged in v13-01 plan.md audit §6.
-# Tests trace-export but doesn't cover redaction edge cases.
-# Phase B story B2: strengthen to ≥15 assertions including PII patterns.
-aegis-trace-audit-test
+# GRADUATED 2026-05-07 in sprint-v13-01-phase-b-chunk2 — see commit history.
+# Audit was wrong: not "surface-only with 6 assertions". Test had 4 cases that
+# were all valid; failing because trace-audit found 15 real ghost references in
+# SI.02 (path drift from sprints that moved tools/→tests/ + 2 from Phase A
+# archive + 3 truly-stale). Two-pronged fix: (a) trace-audit teaches itself to
+# recognize `_archived/` and `tests/` fallback locations, (b) SI.02 paths
+# updated to match disk truth. Audit now 5/5 pass + 2 archived warnings; test
+# now 4/4 pass.
+# (No longer in this list — entry kept here as graduation provenance.)
+# aegis-trace-audit-test

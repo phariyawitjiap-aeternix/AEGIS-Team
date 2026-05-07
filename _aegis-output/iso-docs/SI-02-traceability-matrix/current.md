@@ -41,20 +41,20 @@ is unimplemented or untested.
 | FR-08 | Autonomy levels (L1/L2/L3) | Nick Fury, /aegis-mode | CLAUDE.md, `.claude/agents/nick-fury.md`, `.claude/commands/aegis-mode.md` | TC-08 | Current |
 | FR-09 | Nick Fury orchestration | Decision Matrix (SI.03 S4) | `.claude/agents/nick-fury.md` | TC-09 | Current |
 | FR-10 | In-process agent execution | Layer 0: Framework Core | CLAUDE.md | TC-10 | Current (tmux mode deprecated v9-01; in-process only) |
-| FR-11 | Post-install verification (/aegis-doctor) | Health check layer | `.claude/commands/aegis-doctor.md` | TC-001..TC-008 | Current |
+| FR-11 | Post-install verification (/aegis-doctor) | Health check layer | `skills/aegis-doctor.md` | TC-001..TC-008 | Current |
 
 ### 2.2 New Requirements (v9.0 series, FR-12 through FR-21)
 
 | Req ID | Requirement | Design Element | Implementation File(s) | Test Case(s) | Sprint |
 |--------|-------------|---------------|----------------------|-------------|--------|
 | FR-12 | Master Brain Protocol (MBP) — agents ask Nick Fury, not human | Nick Fury proxy, guard-ask-user hook | `.claude/agents/nick-fury.md`, `.claude/hooks/guard-ask-user.sh`, `tools/aegis-apply-mbp-guard.sh` | `tools/aegis-nick-fury-loop-harness.sh` (20 assertions) | v9-01 |
-| FR-13 | BLOCK 0 pre-work documentation gate | Gate 0: 5-check pipeline (0A-0E) | `.claude/agents/nick-fury.md` (BLOCK 0 section), `tools/aegis-block0-mode.sh` | `tools/aegis-block0-gate-test.sh`, `tools/aegis-block0-mode-test.sh` | v9-01 |
-| FR-14 | Enforcement hooks (guard-bash, guard-write, guard-ui-edit) | Hook layer | `.claude/hooks/guard-bash.sh`, `guard-write.sh`, `guard-ui-edit.sh` | `tools/aegis-guard-write-test.sh`, `tools/aegis-guard-ui-edit-test.sh` | v9-01 |
-| FR-15 | Decision audit logging | Decision audit protocol | `tools/aegis-log-decision.sh`, `.claude/references/decision-audit-protocol.md` | `tools/test-f1-03-judgment-counter.sh` | v9-02 |
-| FR-16 | Captain America fallback (judgment threshold) | Tier-2 brain escalation | `.claude/references/captain-america-fallback.md`, `.claude/agents/captain-america.md` | `tools/test-f1-03-judgment-counter.sh` (threshold check) | v9-02 |
-| FR-17 | Visual design layer (DESIGN.md, BLOCK 0F) | Wasp design system | `.claude/agents/wasp.md`, `tools/aegis-design-init.sh`, `tools/aegis-design-lint.sh`, `tools/aegis-design-fetch.sh` | `tools/aegis-block0-f-gate-test.sh`, `tools/aegis-design-lint-test.sh`, `tools/aegis-design-fetch-test.sh` | v9-03 |
+| FR-13 | BLOCK 0 pre-work documentation gate | Gate 0: 5-check pipeline (0A-0E) | `.claude/agents/nick-fury.md` (BLOCK 0 section), `tools/aegis-block0-mode.sh` | `tests/aegis-block0-gate-test.sh`, `tests/aegis-block0-mode-test.sh` | v9-01 |
+| FR-14 | Enforcement hooks (guard-bash, guard-write, guard-ui-edit) | Hook layer | `.claude/hooks/guard-bash.sh`, `.claude/hooks/guard-write.sh`, `.claude/hooks/guard-ui-edit.sh` | `tests/aegis-guard-write-test.sh`, `tests/aegis-guard-ui-edit-test.sh` | v9-01 |
+| FR-15 | Decision audit logging | Decision audit protocol | `tools/aegis-log-decision.sh`, `.claude/references/decision-audit-protocol.md` | `tests/aegis-distill-counter-test.sh` | v9-02 |
+| FR-16 | Captain America fallback (judgment threshold) | Tier-2 brain escalation | `.claude/references/captain-america-fallback.md`, `.claude/agents/captain-america.md` | `tests/aegis-distill-counter-test.sh` (threshold check) | v9-02 |
+| FR-17 | Visual design layer (DESIGN.md, BLOCK 0F) | Wasp design system | `.claude/agents/wasp.md`, `tools/aegis-design-init.sh`, `tools/aegis-design-lint.sh`, `tools/aegis-design-fetch.sh` | `tests/aegis-block0-f-gate-test.sh`, `tests/aegis-design-lint-test.sh`, `tests/aegis-design-fetch-test.sh` | v9-03 |
 | FR-18 | Sprint lifecycle (/aegis-sprint plan/close/status) | Sprint management | `.claude/commands/aegis-sprint.md`, `.aegis/brain/sprints/` | Manual (sprint artifact verification) | v9-01 |
-| FR-19 | Policy-without-test audit | Enforcement verification | `tools/aegis-policy-audit.sh` | `tools/test-s2-10-policy-audit.sh` (8 assertions) | v9-06 |
+| FR-19 | Policy-without-test audit | Enforcement verification | `tools/aegis-policy-audit.sh` | Manual audit + CI lint workflow (sprint-v13-01-D) | v9-06 |
 | FR-20 | Hook governance (ADR-005) | Architectural decision record | `.aegis/brain/resonance/architecture-decisions.md` (ADR-005) | `tools/aegis-policy-audit.sh` (covers hook completeness) | v9-06 |
 | FR-21 | Application playbook (framework adoption guide) | Layer 7: Documentation | `docs/AEGIS_APPLICATION_PLAYBOOK.md` | Manual (walkthrough verification) | v9-06 |
 
@@ -69,7 +69,7 @@ is unimplemented or untested.
 | NFR-05 | Audit trail | Layer 4 + Layer 5 + decision log | `.aegis/brain/`, `_aegis-output/`, `tools/aegis-log-decision.sh` | TC-15 | Current |
 | NFR-06 | Bilingual operator interface | Songbird (consolidated into Vision), language rules | CLAUDE.md (language rules) | TC-16 | Current (Songbird persona retired v9-03) |
 | NFR-07 | Version compatibility | CLAUDE.md version header | CLAUDE.md | TC-17 | Current |
-| NFR-08 | Test harness self-validation | Template-based testing | `tools/aegis-test-harness-template.sh` | `tools/test-f1-04-harness-self-test.sh` | v9-06 |
+| NFR-08 | Test harness self-validation | Template-based testing | `tests/run-all.sh` (sprint-v13-01-D), `.github/workflows/test.yml` | `tests/aegis-doc-canon-lint-test.sh` (template demonstration) | v9-06 (refreshed v13-01-D) |
 
 ## 3. Design Element --> Requirements Coverage
 
@@ -114,7 +114,6 @@ is unimplemented or untested.
 | `.claude/hooks/guard-ui-edit.sh` | FR-14 |
 | `.claude/hooks/guard-ask-user.sh` | FR-12 |
 | `.claude/hooks/on-stop.sh` | FR-12 |
-| `.claude/hooks/tinman-heartbeat.sh` | FR-13 |
 | `tools/aegis-log-decision.sh` | FR-15, NFR-05 |
 | `tools/aegis-block0-mode.sh` | FR-13 |
 | `tools/aegis-policy-audit.sh` | FR-19 |
