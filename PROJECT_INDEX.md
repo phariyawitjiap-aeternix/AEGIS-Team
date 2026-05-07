@@ -1,6 +1,6 @@
 <!-- Auto-generated from .aegis/brain/graph/ — edit topic pages under _aegis-output/wiki/ -->
-<!-- built_at: 2026-05-06T09:34:40.941Z -->
-<!-- node_count: 244 edge_count: 282 -->
+<!-- built_at: 2026-05-07T10:44:24.024Z -->
+<!-- node_count: 262 edge_count: 318 -->
 
 # AEGIS Project Index
 
@@ -58,13 +58,14 @@
 - [test-architect](_aegis-output/wiki/skill-test-architect.md) — _standard_
 - [work-breakdown](_aegis-output/wiki/skill-work-breakdown.md) — _standard_
 
-## Sprints (26)
+## Sprints (28)
 
 - [v10-01](_aegis-output/wiki/sprint-v10-01.md) — CLOSED
 - [v10-02](_aegis-output/wiki/sprint-v10-02.md) — CLOSED
 - [v10-03](_aegis-output/wiki/sprint-v10-03.md) — CLOSED · 2pt
 - [v10-05](_aegis-output/wiki/sprint-v10-05.md) — CLOSED · 8pt
 - [v10-06](_aegis-output/wiki/sprint-v10-06.md) — CLOSED · 5pt
+- [v10-07](_aegis-output/wiki/sprint-v10-07.md) — CLOSED · 8pt
 - [v10-09](_aegis-output/wiki/sprint-v10-09.md) — CLOSED · 3pt
 - [v11-01](_aegis-output/wiki/sprint-v11-01.md) — CLOSED · 5pt
 - [v11-02](_aegis-output/wiki/sprint-v11-02.md) — CLOSED
@@ -81,14 +82,16 @@
 - [v12-03](_aegis-output/wiki/sprint-v12-03.md) — CLOSED · 5pt
 - [v12-04](_aegis-output/wiki/sprint-v12-04.md) — CLOSED · 8pt
 - [v12-05](_aegis-output/wiki/sprint-v12-05.md) — CLOSED · 8pt
+- [v12-06](_aegis-output/wiki/sprint-v12-06.md) — CLOSED · 5pt
 - [v9-02](_aegis-output/wiki/sprint-v9-02.md) — CLOSED
 - [v9-03](_aegis-output/wiki/sprint-v9-03.md) — CLOSED
 - [v9-04](_aegis-output/wiki/sprint-v9-04.md) — CLOSED · 14pt
 - [v9-05](_aegis-output/wiki/sprint-v9-05.md) — CLOSED · 46pt
 - [v9-06](_aegis-output/wiki/sprint-v9-06.md) — CLOSED
 
-## Tools (13 packages, 38 files)
+## Tools (15 packages, 47 files)
 
+- **_archived** (5 files)
 - **aegis-activity-logger** (3 files)
 - **aegis-approval-gate** (5 files)
 - **aegis-brain-graph** (6 files)
@@ -97,27 +100,30 @@
 - **aegis-live-tail** (4 files)
 - **aegis-multi-tenant** (1 files)
 - **aegis-parallel-dispatch** (1 files)
-- **aegis-plus-pilot** (3 files)
+- **aegis-pattern-mine** (3 files)
+- **aegis-plus-pilot** (4 files)
 - **aegis-resume** (4 files)
 - **aegis-router** (1 files)
 - **aegis-run-logger** (3 files)
 - **aegis-trace-export** (3 files)
 
-## Hooks (13)
+## Hooks (15)
 
-- **PostToolUse** (5)
+- **PostToolUse** (6)
   - `.*` → `node "$CLAUDE_PROJECT_DIR/tools/aegis-activity-logger/log.mjs"`
   - `.*` → `node "$CLAUDE_PROJECT_DIR/tools/aegis-live-tail/emit.mjs"`
   - `.*` → `bash "$CLAUDE_PROJECT_DIR/tools/aegis-token-profile.sh"`
   - `Bash` → `bash "$CLAUDE_PROJECT_DIR/.claude/hooks/run-with-flags.sh" post-tool-use "$CLAUDE_PROJECT_DIR/.claude/hooks/post-tool-use.sh"`
   - `Edit|Write|MultiEdit` → `bash "$CLAUDE_PROJECT_DIR/.claude/hooks/run-with-flags.sh" post-edit-accumulate "$CLAUDE_PROJECT_DIR/.claude/hooks/post-edit-accumulate.sh"`
+  - `Edit|Write|MultiEdit` → `bash "$CLAUDE_PROJECT_DIR/tools/aegis-brain-graph/hook.sh"`
 - **PreToolUse** (4)
   - `AskUserQuestion` → `bash "$CLAUDE_PROJECT_DIR/.claude/hooks/run-with-flags.sh" guard-ask-user "$CLAUDE_PROJECT_DIR/.claude/hooks/guard-ask-user.sh"`
   - `Bash` → `bash "$CLAUDE_PROJECT_DIR/.claude/hooks/run-with-flags.sh" guard-bash "$CLAUDE_PROJECT_DIR/.claude/hooks/guard-bash.sh"`
   - `Bash` → `node "$CLAUDE_PROJECT_DIR/tools/aegis-approval-gate/check.mjs"`
   - `Edit|Write|MultiEdit` → `bash "$CLAUDE_PROJECT_DIR/.claude/hooks/run-with-flags.sh" guard-write "$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.sh"`
-- **SessionStart** (2)
+- **SessionStart** (3)
   - `` → `bash "$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.sh"`
+  - `startup` → `node "$CLAUDE_PROJECT_DIR/tools/aegis-brain-graph/staleness.mjs"`
   - `startup` → `node "$CLAUDE_PROJECT_DIR/tools/aegis-resume/session-start.mjs"`
 - **Stop** (2)
   - `` → `bash "$CLAUDE_PROJECT_DIR/.claude/hooks/run-with-flags.sh" on-stop "$CLAUDE_PROJECT_DIR/.claude/hooks/on-stop.sh"`

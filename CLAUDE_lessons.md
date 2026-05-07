@@ -3,7 +3,7 @@
 
 Last reviewed: 2026-05-06
 
-# AEGIS v11.0 -- Lessons Learned
+# AEGIS v12.0 -- Lessons Learned
 
 > This file is a living document. Updated via /aegis-retro at the end of each session.
 > New entries are appended at the top of each section.

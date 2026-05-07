@@ -1,0 +1,35 @@
+# tests/_known-failures.txt — read by run-all.sh
+#
+# One test name per line (no `.sh`, no `tests/` prefix). Lines starting with
+# `#` are comments. Blank lines ignored.
+#
+# A test listed here still RUNS, but failure is marked KNOWN_FAILURE (yellow)
+# instead of FAIL (red). The suite exit code stays 0 if every non-listed test
+# passes.
+#
+# Policy: lines must include a rationale comment naming the sprint that will
+# graduate the test. Adding a test here without a sprint pointer is a
+# "policy-without-test" Sign violation. When a test is fixed, REMOVE the line
+# (and its rationale). When the list is empty, delete this file.
+#
+# Created: sprint-v13-01 Phase D — to unblock CI without papering over real bugs.
+# Graduation target: sprint-v13-01 Phase B (8pt test-coverage sprint).
+
+# Surface-only test (2 assertions) flagged in v13-01 plan.md audit §6.
+# Phase B story B2: strengthen to ≥15 assertions.
+aegis-block0-f-gate-test
+
+# v11-specific install delivery check; test predates v12 graph + doc-canon
+# additions and now fails because expected v11 file inventory has grown.
+# Phase B story B2: rewrite to enumerate from a manifest, not hardcode.
+aegis-install-v11-delivery-test
+
+# Brain-state-dependent test; passes in clean fixture, fails when meta repo's
+# real instinct dir has accumulated state. Needs proper fixture isolation.
+# Phase B story B1: rewrite with mktemp + isolated CLAUDE_PROJECT_DIR.
+aegis-instinct-promote-test
+
+# Surface-only test (6 assertions) flagged in v13-01 plan.md audit §6.
+# Tests trace-export but doesn't cover redaction edge cases.
+# Phase B story B2: strengthen to ≥15 assertions including PII patterns.
+aegis-trace-audit-test

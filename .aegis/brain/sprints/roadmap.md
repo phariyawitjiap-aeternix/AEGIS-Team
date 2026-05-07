@@ -57,7 +57,7 @@ _Last updated: 2026-05-07 · by: Captain America (v13-01 Phase A CLOSED 3/3pt ·
 | sprint-v12-05 (aegis-brain-graph query · 5 subcommands) | 8 | 8 | 0 | **CLOSED (100%)** |
 | sprint-v12-06 (auto-wiki + staleness signal) | 5 | 5 | 0 | **CLOSED (100%)** |
 | **v12 TOTAL (Phase A doc canon + Phase B graph)** | **39** | **39** | **0** | **CLOSED (100%)** |
-| sprint-v13-01-refactor (codebase re-organize + re-factor · 5 phases) | 24 | 3 | 0 | **OPEN — Phase A CLOSED 3/3pt** · 21pt remaining (Phase B/C/D/E) |
+| sprint-v13-01-refactor (codebase re-organize + re-factor · 5 phases) | 24 | 8 | 0 | **OPEN — Phase A + D CLOSED 8/24pt** · 16pt remaining (Phase B 7pt · C 3pt · E 5pt; B3 absorbed into D) |
 
 ## v12 Plan Reference
 

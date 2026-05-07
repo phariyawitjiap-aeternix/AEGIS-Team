@@ -79,8 +79,9 @@ Last reviewed: 2026-05-06
 **Bar.** Every sprint Acceptance Criterion has ≥1 corresponding assertion in a regression test that runs in CI.
 
 - [ ] Each AC bullet maps to one (or more) test assertions; the mapping is referenced in `close.md`.
-- [ ] Tests live in `tests/sprint-<id>/` (preferred) or in the tool package's own `tests/` dir.
-- [ ] Tests run from a top-level entrypoint (`bash tests/run-all.sh` or equivalent) and exit non-zero on any failure.
+- [ ] Tests live in `tests/sprint-<id>/` (preferred) or in the tool package's own `tests/` dir, and follow the `tests/aegis-<name>-test.sh` naming convention.
+- [ ] Tests run from the canonical entrypoint `bash tests/run-all.sh` (sprint-v13-01 Phase D) and exit non-zero on any failure.
+- [ ] CI gate: `.github/workflows/test.yml` runs `tests/run-all.sh` on every PR (Linux + macOS matrix); `.github/workflows/lint.yml` runs governance + skill-schema + graph-determinism. PRs cannot merge red.
 - [ ] **(applicable when adding hooks)** New hook scripts have a fixture that simulates a tool call and asserts the hook's exit code + output.
 
 **Why.** Sprint v9-06 surfaced a recurring "policy-without-test" bug class — rules claiming "MUST/enforces/auto-REJECTs" without matching hook/test/assertion code. This bar makes that class structurally impossible to ship.

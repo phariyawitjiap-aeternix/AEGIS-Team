@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================================
-# AEGIS v11.0 — Remote Installer (one-liner, no clone needed)
+# AEGIS v12.0 — Remote Installer (one-liner, no clone needed)
 #
 # New install:
 #   cd ~/Documents/my-project && git init && git commit --allow-empty -m "init"
