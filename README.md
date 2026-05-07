@@ -103,7 +103,7 @@ Principled override channel so the framework can evolve in-session when the huma
 - `guard-bash.sh` blocks Golden Rule violations + dangerous ops
 
 ### New ops tools
-- `aegis-status-brief.sh` — single-command repo dashboard
+- `/aegis-status` — multi-mode status dashboard (skill, supersedes the v9 `aegis-status-brief.sh` shell tool which was archived in sprint-v13-01 Phase A)
 - `aegis-test-all.sh` — unified runner across 4 test suites (76/76 green)
 - `aegis-agent-tools-matrix.sh` — subagent tool availability pre-flight
 - `aegis-pending-items.sh` — spec-freshness audit primitive

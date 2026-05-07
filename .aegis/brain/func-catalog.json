@@ -1160,44 +1160,12 @@
     "description": "Agent wasp capability: Workflow"
   },
   {
-    "id": "FUNC-F0E076",
-    "name": "/aegis-adr",
-    "source_file": ".claude/commands/aegis-adr.md",
-    "type": "command",
-    "module": "MOD-COMMANDS",
-    "description": "Command: /aegis-adr"
-  },
-  {
     "id": "FUNC-038831",
     "name": "/aegis-breakdown",
     "source_file": ".claude/commands/aegis-breakdown.md",
     "type": "command",
     "module": "MOD-COMMANDS",
     "description": "Command: /aegis-breakdown"
-  },
-  {
-    "id": "FUNC-B1A84A",
-    "name": "/aegis-compliance",
-    "source_file": ".claude/commands/aegis-compliance.md",
-    "type": "command",
-    "module": "MOD-COMMANDS",
-    "description": "Command: /aegis-compliance"
-  },
-  {
-    "id": "FUNC-A2D4E8",
-    "name": "/aegis-context",
-    "source_file": ".claude/commands/aegis-context.md",
-    "type": "command",
-    "module": "MOD-COMMANDS",
-    "description": "Command: /aegis-context"
-  },
-  {
-    "id": "FUNC-7A32FC",
-    "name": "/aegis-dashboard",
-    "source_file": ".claude/commands/aegis-dashboard.md",
-    "type": "command",
-    "module": "MOD-COMMANDS",
-    "description": "Command: /aegis-dashboard"
   },
   {
     "id": "FUNC-8362A9",
@@ -1208,84 +1176,12 @@
     "description": "Command: /aegis-deploy"
   },
   {
-    "id": "FUNC-3E4194",
-    "name": "/aegis-distill",
-    "source_file": ".claude/commands/aegis-distill.md",
-    "type": "command",
-    "module": "MOD-COMMANDS",
-    "description": "Command: /aegis-distill"
-  },
-  {
-    "id": "FUNC-2CAE6C",
-    "name": "/aegis-doctor",
-    "source_file": ".claude/commands/aegis-doctor.md",
-    "type": "command",
-    "module": "MOD-COMMANDS",
-    "description": "Command: /aegis-doctor"
-  },
-  {
-    "id": "FUNC-7A3296",
-    "name": "/aegis-evolve",
-    "source_file": ".claude/commands/aegis-evolve.md",
-    "type": "command",
-    "module": "MOD-COMMANDS",
-    "description": "Command: /aegis-evolve"
-  },
-  {
-    "id": "FUNC-3EB7CD",
-    "name": "/aegis-flow",
-    "source_file": ".claude/commands/aegis-flow.md",
-    "type": "command",
-    "module": "MOD-COMMANDS",
-    "description": "Command: /aegis-flow"
-  },
-  {
     "id": "FUNC-164964",
     "name": "/aegis-handoff",
     "source_file": ".claude/commands/aegis-handoff.md",
     "type": "command",
     "module": "MOD-COMMANDS",
     "description": "Command: /aegis-handoff"
-  },
-  {
-    "id": "FUNC-743303",
-    "name": "/aegis-ingest",
-    "source_file": ".claude/commands/aegis-ingest.md",
-    "type": "command",
-    "module": "MOD-COMMANDS",
-    "description": "Command: /aegis-ingest"
-  },
-  {
-    "id": "FUNC-F6C4CA",
-    "name": "/aegis-instinct",
-    "source_file": ".claude/commands/aegis-instinct.md",
-    "type": "command",
-    "module": "MOD-COMMANDS",
-    "description": "Command: /aegis-instinct"
-  },
-  {
-    "id": "FUNC-A9D6EE",
-    "name": "/aegis-kanban",
-    "source_file": ".claude/commands/aegis-kanban.md",
-    "type": "command",
-    "module": "MOD-COMMANDS",
-    "description": "Command: /aegis-kanban"
-  },
-  {
-    "id": "FUNC-4EC6A4",
-    "name": "/aegis-launch",
-    "source_file": ".claude/commands/aegis-launch.md",
-    "type": "command",
-    "module": "MOD-COMMANDS",
-    "description": "Command: /aegis-launch"
-  },
-  {
-    "id": "FUNC-B2D952",
-    "name": "/aegis-lint",
-    "source_file": ".claude/commands/aegis-lint.md",
-    "type": "command",
-    "module": "MOD-COMMANDS",
-    "description": "Command: /aegis-lint"
   },
   {
     "id": "FUNC-32522B",
@@ -1310,22 +1206,6 @@
     "type": "command",
     "module": "MOD-COMMANDS",
     "description": "Command: /aegis-pipeline"
-  },
-  {
-    "id": "FUNC-C2CBC3",
-    "name": "/aegis-qa",
-    "source_file": ".claude/commands/aegis-qa.md",
-    "type": "command",
-    "module": "MOD-COMMANDS",
-    "description": "Command: /aegis-qa"
-  },
-  {
-    "id": "FUNC-A99427",
-    "name": "/aegis-reengineer",
-    "source_file": ".claude/commands/aegis-reengineer.md",
-    "type": "command",
-    "module": "MOD-COMMANDS",
-    "description": "Command: /aegis-reengineer"
   },
   {
     "id": "FUNC-0A5DEF",
@@ -1368,28 +1248,12 @@
     "description": "Command: /aegis-team"
   },
   {
-    "id": "FUNC-988863",
-    "name": "/aegis-team-build",
-    "source_file": ".claude/commands/aegis-team-build.md",
+    "id": "FUNC-214CF3",
+    "name": "/aegis-upgrade",
+    "source_file": ".claude/commands/aegis-upgrade.md",
     "type": "command",
     "module": "MOD-COMMANDS",
-    "description": "Command: /aegis-team-build"
-  },
-  {
-    "id": "FUNC-B4E87C",
-    "name": "/aegis-team-debate",
-    "source_file": ".claude/commands/aegis-team-debate.md",
-    "type": "command",
-    "module": "MOD-COMMANDS",
-    "description": "Command: /aegis-team-debate"
-  },
-  {
-    "id": "FUNC-1FA7EF",
-    "name": "/aegis-team-review",
-    "source_file": ".claude/commands/aegis-team-review.md",
-    "type": "command",
-    "module": "MOD-COMMANDS",
-    "description": "Command: /aegis-team-review"
+    "description": "Command: /aegis-upgrade"
   },
   {
     "id": "FUNC-381484",
@@ -1445,7 +1309,7 @@
     "source_file": ".claude/hooks/on-stop.sh",
     "type": "hook",
     "module": "MOD-HOOKS",
-    "description": "AEGIS Hook — on-stop.sh"
+    "description": "AEGIS Hook -- on-stop.sh (orchestrator)"
   },
   {
     "id": "FUNC-A19A69",
@@ -1480,54 +1344,6 @@
     "description": "AEGIS Session Start Hook -- Runs on every Claude Code session start"
   },
   {
-    "id": "FUNC-670FD8",
-    "name": "tinman-heartbeat",
-    "source_file": ".claude/hooks/tinman-heartbeat.sh",
-    "type": "hook",
-    "module": "MOD-HOOKS",
-    "description": "AEGIS TinMan — tinman-heartbeat.sh"
-  },
-  {
-    "id": "FUNC-4B0F42",
-    "name": "FAIL",
-    "source_file": "tools/aegis-test-harness-template.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-test-harness-template"
-  },
-  {
-    "id": "FUNC-3CC618",
-    "name": "FAIL_FAST",
-    "source_file": "tools/aegis-test-harness-template.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-test-harness-template"
-  },
-  {
-    "id": "FUNC-4AED60",
-    "name": "PASS",
-    "source_file": "tools/aegis-test-harness-template.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-test-harness-template"
-  },
-  {
-    "id": "FUNC-B72943",
-    "name": "_canonicalize",
-    "source_file": "tools/test-f1-01-realpath-warn.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in test-f1-01-realpath-warn"
-  },
-  {
-    "id": "FUNC-ACE114",
-    "name": "_cleanup",
-    "source_file": "tools/aegis-test-harness-template.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-test-harness-template"
-  },
-  {
     "id": "FUNC-13AEBB",
     "name": "add_result",
     "source_file": "tools/aegis-brain-benchmark.sh",
@@ -1544,30 +1360,6 @@
     "description": "AEGIS Agent Tools Matrix (dogfood-observation #2 -- subagent tool availability pre-flight)"
   },
   {
-    "id": "FUNC-B057C5",
-    "name": "aegis-apply-mbp-guard",
-    "source_file": "tools/aegis-apply-mbp-guard.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "aegis-apply-mbp-guard.sh — one-shot between-session applier for MBP guard settings."
-  },
-  {
-    "id": "FUNC-DAA124",
-    "name": "aegis-block0-f-gate-test",
-    "source_file": "tools/aegis-block0-f-gate-test.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "AEGIS Test — aegis-block0-f-gate-test.sh (S3-03)"
-  },
-  {
-    "id": "FUNC-7C4870",
-    "name": "aegis-block0-gate-test",
-    "source_file": "tools/aegis-block0-gate-test.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "AEGIS BLOCK 0 Gate Test (Sprint v9-02 S2-03 — D-01)"
-  },
-  {
     "id": "FUNC-EEC722",
     "name": "aegis-block0-mode",
     "source_file": "tools/aegis-block0-mode.sh",
@@ -1576,28 +1368,28 @@
     "description": "AEGIS BLOCK 0 Mode Determiner (Sprint v9-02 S2-03/04)"
   },
   {
-    "id": "FUNC-B116F2",
-    "name": "aegis-block0-mode-test",
-    "source_file": "tools/aegis-block0-mode-test.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "AEGIS BLOCK 0 Mode Regression Test (Sprint v9-02 S2-03/04)"
-  },
-  {
-    "id": "FUNC-336428",
-    "name": "aegis-brain-adversarial-test",
-    "source_file": "tools/aegis-brain-adversarial-test.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "AEGIS Brain Write -- Adversarial Corruption Tests (S4-05)"
-  },
-  {
     "id": "FUNC-D6168C",
     "name": "aegis-brain-benchmark",
     "source_file": "tools/aegis-brain-benchmark.sh",
     "type": "bash",
     "module": "MOD-TOOLS",
     "description": "AEGIS Brain Benchmark -- Performance measurements for brain-write/sync (S4-06)"
+  },
+  {
+    "id": "FUNC-8F851F",
+    "name": "aegis-brain-index",
+    "source_file": "tools/aegis-brain-index.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-brain-index.sh — Build FTS5 search index over .aegis/brain/ content"
+  },
+  {
+    "id": "FUNC-5C91AA",
+    "name": "aegis-brain-search",
+    "source_file": "tools/aegis-brain-search.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-brain-search.sh — Query the FTS5 brain index built by aegis-brain-index.sh"
   },
   {
     "id": "FUNC-F9BB90",
@@ -1616,14 +1408,6 @@
     "description": "AEGIS Brain Write -- Write to brain with automatic MEMORY.md regeneration"
   },
   {
-    "id": "FUNC-FFB48E",
-    "name": "aegis-claude-md-lift",
-    "source_file": "tools/aegis-claude-md-lift.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "============================================================================="
-  },
-  {
     "id": "FUNC-DFD3F7",
     "name": "aegis-contrast-check",
     "source_file": "tools/aegis-contrast-check.sh",
@@ -1638,14 +1422,6 @@
     "type": "bash",
     "module": "MOD-TOOLS",
     "description": "AEGIS Design Fetch Tool (S3-01)"
-  },
-  {
-    "id": "FUNC-C31DAE",
-    "name": "aegis-design-fetch-test",
-    "source_file": "tools/aegis-design-fetch-test.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "AEGIS Design Fetch Tool Tests (S3-01, spec §3.3)"
   },
   {
     "id": "FUNC-875248",
@@ -1664,22 +1440,6 @@
     "description": "AEGIS Design Linter (S3-02)"
   },
   {
-    "id": "FUNC-5B85E3",
-    "name": "aegis-design-lint-test",
-    "source_file": "tools/aegis-design-lint-test.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "AEGIS Design Lint Tests (S3-02, spec §4.3)"
-  },
-  {
-    "id": "FUNC-FB12CB",
-    "name": "aegis-distill-counter-test",
-    "source_file": "tools/aegis-distill-counter-test.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "AEGIS Distill Counter Regression Test (Sprint v9-06 S6-01)"
-  },
-  {
     "id": "FUNC-F18774",
     "name": "aegis-distill-reset",
     "source_file": "tools/aegis-distill-reset.sh",
@@ -1688,36 +1448,28 @@
     "description": "AEGIS Distill Counter Reset (Sprint v9-06 S6-01 Pattern A)"
   },
   {
+    "id": "FUNC-8B2BEC",
+    "name": "aegis-fix-hook-paths",
+    "source_file": "tools/aegis-fix-hook-paths.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-fix-hook-paths.sh — anchor hook commands to $CLAUDE_PROJECT_DIR"
+  },
+  {
+    "id": "FUNC-59952E",
+    "name": "aegis-fix-task-list-id",
+    "source_file": "tools/aegis-fix-task-list-id.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-fix-task-list-id.sh — give each project its own Claude Code task list"
+  },
+  {
     "id": "FUNC-195947",
     "name": "aegis-func-catalog",
     "source_file": "tools/aegis-func-catalog.sh",
     "type": "bash",
     "module": "MOD-TOOLS",
     "description": "aegis-func-catalog.sh — Auto-generate FUNC-XX catalog from tools, agents, and commands"
-  },
-  {
-    "id": "FUNC-0F8CD3",
-    "name": "aegis-func-catalog-test",
-    "source_file": "tools/aegis-func-catalog-test.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "aegis-func-catalog-test.sh — Idempotency + drift test for FUNC catalog"
-  },
-  {
-    "id": "FUNC-5F4FDE",
-    "name": "aegis-guard-ui-edit-test",
-    "source_file": "tools/aegis-guard-ui-edit-test.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "AEGIS Test — aegis-guard-ui-edit-test.sh (S3-04)"
-  },
-  {
-    "id": "FUNC-BA0BC7",
-    "name": "aegis-guard-write-test",
-    "source_file": "tools/aegis-guard-write-test.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "AEGIS Test — aegis-guard-write-test.sh"
   },
   {
     "id": "FUNC-73281A",
@@ -1736,14 +1488,6 @@
     "description": "AEGIS Tool — aegis-instinct-promote.sh (S2-05)"
   },
   {
-    "id": "FUNC-C804AE",
-    "name": "aegis-instinct-promote-test",
-    "source_file": "tools/aegis-instinct-promote-test.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "AEGIS Test — aegis-instinct-promote-test.sh (S2-05)"
-  },
-  {
     "id": "FUNC-F64F2B",
     "name": "aegis-log-decision",
     "source_file": "tools/aegis-log-decision.sh",
@@ -1760,44 +1504,12 @@
     "description": "AEGIS Maintainer Grant (ADR-004 Phase 2)"
   },
   {
-    "id": "FUNC-3A7F6B",
-    "name": "aegis-maintainer-test",
-    "source_file": "tools/aegis-maintainer-test.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "AEGIS Maintainer Mode Test Matrix (ADR-004 Phase 2)"
-  },
-  {
     "id": "FUNC-4FE422",
     "name": "aegis-merge-worktree",
     "source_file": "tools/aegis-merge-worktree.sh",
     "type": "bash",
     "module": "MOD-TOOLS",
     "description": "AEGIS Worktree Merge Script (Sprint v9-05, S5-04)"
-  },
-  {
-    "id": "FUNC-E969B8",
-    "name": "aegis-migrate-consolidate",
-    "source_file": "tools/aegis-migrate-consolidate.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "============================================================================="
-  },
-  {
-    "id": "FUNC-728D91",
-    "name": "aegis-migrate-v9",
-    "source_file": "tools/aegis-migrate-v9.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "============================================================================="
-  },
-  {
-    "id": "FUNC-7D72A3",
-    "name": "aegis-nick-fury-loop-harness",
-    "source_file": "tools/aegis-nick-fury-loop-harness.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "aegis-nick-fury-loop-harness.sh (S2-07) -- Validates Nick Fury's decision"
   },
   {
     "id": "FUNC-4A061A",
@@ -1856,22 +1568,6 @@
     "description": "AEGIS BLOCK 0 Lite-Mode Security Path Override (Sprint v9-02 S2-04)"
   },
   {
-    "id": "FUNC-EBB69B",
-    "name": "aegis-s204-override-test",
-    "source_file": "tools/aegis-s204-override-test.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "AEGIS S2-04 Override Test Harness"
-  },
-  {
-    "id": "FUNC-F1E86F",
-    "name": "aegis-sdk-readiness-check",
-    "source_file": "tools/aegis-sdk-readiness-check.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "aegis-sdk-readiness-check.sh -- Reports SDK feature availability for AEGIS."
-  },
-  {
     "id": "FUNC-C9D07B",
     "name": "aegis-security-paths",
     "source_file": "tools/aegis-security-paths.sh",
@@ -1886,14 +1582,6 @@
     "type": "bash",
     "module": "MOD-TOOLS",
     "description": "aegis-shell-lint.sh (F1-05) — Shell-command pre-flight linter for spec files."
-  },
-  {
-    "id": "FUNC-4F5BAA",
-    "name": "aegis-spec-tracking-test",
-    "source_file": "tools/aegis-spec-tracking-test.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "AEGIS Test — aegis-spec-tracking-test.sh (S2-06)"
   },
   {
     "id": "FUNC-31BFAB",
@@ -1920,12 +1608,12 @@
     "description": "AEGIS Unified Test Runner"
   },
   {
-    "id": "FUNC-8BB348",
-    "name": "aegis-test-harness-template",
-    "source_file": "tools/aegis-test-harness-template.sh",
+    "id": "FUNC-045E63",
+    "name": "aegis-token-profile",
+    "source_file": "tools/aegis-token-profile.sh",
     "type": "bash",
     "module": "MOD-TOOLS",
-    "description": "aegis-test-harness-template.sh — Source this, do not execute directly."
+    "description": "aegis-token-profile.sh — Bash vs Read/Grep/Glob token accounting"
   },
   {
     "id": "FUNC-770B0E",
@@ -1936,14 +1624,6 @@
     "description": "aegis-trace-audit.sh — Verify project-wide traceability (closes TI-01)"
   },
   {
-    "id": "FUNC-157B7B",
-    "name": "aegis-trace-audit-test",
-    "source_file": "tools/aegis-trace-audit-test.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "aegis-trace-audit-test.sh — Test suite for aegis-trace-audit.sh"
-  },
-  {
     "id": "FUNC-5AD8B7",
     "name": "aegis-ui-patterns",
     "source_file": "tools/aegis-ui-patterns.sh",
@@ -1952,20 +1632,12 @@
     "description": "tools/aegis-ui-patterns.sh — SSOT for UI file patterns (S3-05)"
   },
   {
-    "id": "FUNC-F4BC4C",
-    "name": "aegis-ui-patterns-test",
-    "source_file": "tools/aegis-ui-patterns-test.sh",
+    "id": "FUNC-5BFF70",
+    "name": "aegis-upgrade",
+    "source_file": "tools/aegis-upgrade.sh",
     "type": "bash",
     "module": "MOD-TOOLS",
-    "description": "AEGIS Test — aegis-ui-patterns-test.sh (S3-05)"
-  },
-  {
-    "id": "FUNC-654FD8",
-    "name": "aegis-wasp-generate-test",
-    "source_file": "tools/aegis-wasp-generate-test.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "AEGIS Wasp Generate Test (S3-06, spec §6)"
+    "description": "aegis-upgrade.sh — upgrade an AEGIS installation to the latest framework"
   },
   {
     "id": "FUNC-96671C",
@@ -1976,164 +1648,12 @@
     "description": "============================================================================="
   },
   {
-    "id": "FUNC-1EA1C5",
-    "name": "asse",
-    "source_file": "tools/aegis-migrate-v9.sh",
+    "id": "FUNC-AE956C",
+    "name": "backup_db",
+    "source_file": "tools/aegis-brain-index.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-v9"
-  },
-  {
-    "id": "FUNC-892F1E",
-    "name": "assert",
-    "source_file": "tools/aegis-func-catalog-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-func-catalog-test"
-  },
-  {
-    "id": "FUNC-1E9B3B",
-    "name": "assert",
-    "source_file": "tools/aegis-trace-audit-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-trace-audit-test"
-  },
-  {
-    "id": "FUNC-94A7B3",
-    "name": "assert_eq",
-    "source_file": "tools/aegis-test-harness-template.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-test-harness-template"
-  },
-  {
-    "id": "FUNC-B3FEE2",
-    "name": "assert_exit",
-    "source_file": "tools/aegis-test-harness-template.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-test-harness-template"
-  },
-  {
-    "id": "FUNC-E8CF25",
-    "name": "assert_fail",
-    "source_file": "tools/aegis-s204-override-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-s204-override-test"
-  },
-  {
-    "id": "FUNC-D70158",
-    "name": "assert_file_absent",
-    "source_file": "tools/aegis-block0-gate-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-block0-gate-test"
-  },
-  {
-    "id": "FUNC-0B719F",
-    "name": "assert_file_absent",
-    "source_file": "tools/aegis-test-harness-template.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-test-harness-template"
-  },
-  {
-    "id": "FUNC-427010",
-    "name": "assert_file_contain",
-    "source_file": "tools/aegis-test-harness-template.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-test-harness-template"
-  },
-  {
-    "id": "FUNC-A02C68",
-    "name": "assert_file_exist",
-    "source_file": "tools/aegis-block0-gate-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-block0-gate-test"
-  },
-  {
-    "id": "FUNC-6DFD0D",
-    "name": "assert_file_exist",
-    "source_file": "tools/aegis-test-harness-template.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-test-harness-template"
-  },
-  {
-    "id": "FUNC-F3BC19",
-    "name": "assert_file_not_contain",
-    "source_file": "tools/aegis-test-harness-template.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-test-harness-template"
-  },
-  {
-    "id": "FUNC-61C1A6",
-    "name": "assert_log_contain",
-    "source_file": "tools/aegis-block0-gate-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-block0-gate-test"
-  },
-  {
-    "id": "FUNC-251A88",
-    "name": "assert_log_not_contain",
-    "source_file": "tools/aegis-block0-gate-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-block0-gate-test"
-  },
-  {
-    "id": "FUNC-421731",
-    "name": "assert_mode",
-    "source_file": "tools/aegis-block0-mode-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-block0-mode-test"
-  },
-  {
-    "id": "FUNC-B86B53",
-    "name": "assert_neq",
-    "source_file": "tools/aegis-test-harness-template.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-test-harness-template"
-  },
-  {
-    "id": "FUNC-DC9CE7",
-    "name": "assert_pa",
-    "source_file": "tools/aegis-s204-override-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-s204-override-test"
-  },
-  {
-    "id": "FUNC-437012",
-    "name": "assert_stderr_contain",
-    "source_file": "tools/aegis-test-harness-template.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-test-harness-template"
-  },
-  {
-    "id": "FUNC-F5956E",
-    "name": "assert_stdout_contain",
-    "source_file": "tools/aegis-test-harness-template.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-test-harness-template"
-  },
-  {
-    "id": "FUNC-B9E543",
-    "name": "assert_task_mode",
-    "source_file": "tools/aegis-block0-mode-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-block0-mode-test"
+    "description": "Internal function in aegis-brain-index"
   },
   {
     "id": "FUNC-C6C35E",
@@ -2142,14 +1662,6 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-brain-benchmark"
-  },
-  {
-    "id": "FUNC-59DF93",
-    "name": "block0f_check",
-    "source_file": "tools/aegis-block0-f-gate-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-block0-f-gate-test"
   },
   {
     "id": "FUNC-512A80",
@@ -2168,12 +1680,12 @@
     "description": "Internal function in aegis-brain-write"
   },
   {
-    "id": "FUNC-9D04C0",
-    "name": "build_gitignore_block",
-    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "id": "FUNC-DD16C6",
+    "name": "categorize_tool",
+    "source_file": "tools/aegis-token-profile.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-consolidate"
+    "description": "Internal function in aegis-token-profile"
   },
   {
     "id": "FUNC-1DE465",
@@ -2184,140 +1696,12 @@
     "description": "Internal function in aegis-trace-audit"
   },
   {
-    "id": "FUNC-9CA62B",
-    "name": "check_adaptive_thinking",
-    "source_file": "tools/aegis-sdk-readiness-check.sh",
+    "id": "FUNC-BC6B48",
+    "name": "classify_source",
+    "source_file": "tools/aegis-brain-index.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-sdk-readiness-check"
-  },
-  {
-    "id": "FUNC-186179",
-    "name": "check_agent_team",
-    "source_file": "tools/aegis-sdk-readiness-check.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-sdk-readiness-check"
-  },
-  {
-    "id": "FUNC-D0E917",
-    "name": "check_category_count",
-    "source_file": "tools/aegis-s204-override-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-s204-override-test"
-  },
-  {
-    "id": "FUNC-C7E2B0",
-    "name": "check_code_execution",
-    "source_file": "tools/aegis-sdk-readiness-check.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-sdk-readiness-check"
-  },
-  {
-    "id": "FUNC-CD467C",
-    "name": "check_dst_clean",
-    "source_file": "tools/aegis-migrate-consolidate.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-consolidate"
-  },
-  {
-    "id": "FUNC-06425B",
-    "name": "check_git_clean",
-    "source_file": "tools/aegis-migrate-consolidate.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-consolidate"
-  },
-  {
-    "id": "FUNC-65CE47",
-    "name": "check_log_has_override",
-    "source_file": "tools/aegis-s204-override-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-s204-override-test"
-  },
-  {
-    "id": "FUNC-FF42A6",
-    "name": "check_memory_tool",
-    "source_file": "tools/aegis-sdk-readiness-check.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-sdk-readiness-check"
-  },
-  {
-    "id": "FUNC-A6D994",
-    "name": "check_mode",
-    "source_file": "tools/aegis-s204-override-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-s204-override-test"
-  },
-  {
-    "id": "FUNC-C12CD0",
-    "name": "check_override_present",
-    "source_file": "tools/aegis-s204-override-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-s204-override-test"
-  },
-  {
-    "id": "FUNC-C6BF51",
-    "name": "check_prompt_caching",
-    "source_file": "tools/aegis-sdk-readiness-check.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-sdk-readiness-check"
-  },
-  {
-    "id": "FUNC-9CD893",
-    "name": "check_recent_length",
-    "source_file": "tools/aegis-s204-override-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-s204-override-test"
-  },
-  {
-    "id": "FUNC-B51C12",
-    "name": "check_total_override",
-    "source_file": "tools/aegis-s204-override-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-s204-override-test"
-  },
-  {
-    "id": "FUNC-61D63C",
-    "name": "check_worktree_isolation",
-    "source_file": "tools/aegis-sdk-readiness-check.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-sdk-readiness-check"
-  },
-  {
-    "id": "FUNC-BBB6EF",
-    "name": "classify_file",
-    "source_file": "tools/aegis-claude-md-lift.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-claude-md-lift"
-  },
-  {
-    "id": "FUNC-3D1C68",
-    "name": "clean_state",
-    "source_file": "tools/aegis-maintainer-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-maintainer-test"
-  },
-  {
-    "id": "FUNC-677800",
-    "name": "cleanup",
-    "source_file": "tools/aegis-brain-adversarial-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-brain-adversarial-test"
+    "description": "Internal function in aegis-brain-index"
   },
   {
     "id": "FUNC-966169",
@@ -2328,30 +1712,6 @@
     "description": "Internal function in aegis-brain-benchmark"
   },
   {
-    "id": "FUNC-CE16FA",
-    "name": "cleanup",
-    "source_file": "tools/aegis-distill-counter-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-distill-counter-test"
-  },
-  {
-    "id": "FUNC-A9BFA4",
-    "name": "cleanup",
-    "source_file": "tools/aegis-maintainer-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-maintainer-test"
-  },
-  {
-    "id": "FUNC-BF49F3",
-    "name": "cleanup_task",
-    "source_file": "tools/aegis-block0-mode-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-block0-mode-test"
-  },
-  {
     "id": "FUNC-A8A53E",
     "name": "cmd_activate",
     "source_file": "tools/aegis-instinct-promote.sh",
@@ -2360,36 +1720,12 @@
     "description": "Internal function in aegis-instinct-promote"
   },
   {
-    "id": "FUNC-A8DC70",
-    "name": "cmd_apply",
-    "source_file": "tools/aegis-claude-md-lift.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-claude-md-lift"
-  },
-  {
-    "id": "FUNC-AFF1E0",
-    "name": "cmd_apply",
-    "source_file": "tools/aegis-migrate-consolidate.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-consolidate"
-  },
-  {
     "id": "FUNC-FCAA21",
     "name": "cmd_create",
     "source_file": "tools/aegis-instinct-promote.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-instinct-promote"
-  },
-  {
-    "id": "FUNC-3EC10F",
-    "name": "cmd_dry_run",
-    "source_file": "tools/aegis-migrate-consolidate.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-consolidate"
   },
   {
     "id": "FUNC-EDEC83",
@@ -2424,60 +1760,12 @@
     "description": "Internal function in aegis-instinct-promote"
   },
   {
-    "id": "FUNC-2F99D1",
-    "name": "cmd_rollback",
-    "source_file": "tools/aegis-claude-md-lift.sh",
+    "id": "FUNC-A1BC6D",
+    "name": "delta_marker",
+    "source_file": "tools/aegis-upgrade.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-claude-md-lift"
-  },
-  {
-    "id": "FUNC-631398",
-    "name": "cmd_rollback",
-    "source_file": "tools/aegis-migrate-consolidate.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-consolidate"
-  },
-  {
-    "id": "FUNC-E6402C",
-    "name": "cmd_rollback",
-    "source_file": "tools/aegis-migrate-v9.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-v9"
-  },
-  {
-    "id": "FUNC-D19104",
-    "name": "count",
-    "source_file": "tools/aegis-distill-counter-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-distill-counter-test"
-  },
-  {
-    "id": "FUNC-3B4617",
-    "name": "count_file",
-    "source_file": "tools/aegis-migrate-consolidate.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-consolidate"
-  },
-  {
-    "id": "FUNC-FCAC91",
-    "name": "detect_state",
-    "source_file": "tools/aegis-claude-md-lift.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-claude-md-lift"
-  },
-  {
-    "id": "FUNC-777F47",
-    "name": "die",
-    "source_file": "tools/aegis-migrate-consolidate.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-consolidate"
+    "description": "Internal function in aegis-upgrade"
   },
   {
     "id": "FUNC-4E7AC5",
@@ -2504,12 +1792,44 @@
     "description": "Internal function in aegis-func-catalog"
   },
   {
+    "id": "FUNC-BE41D2",
+    "name": "ensure_dir",
+    "source_file": "tools/aegis-brain-index.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-brain-index"
+  },
+  {
     "id": "FUNC-DFC3DC",
     "name": "ensure_dir",
     "source_file": "tools/aegis-instinct-promote.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-instinct-promote"
+  },
+  {
+    "id": "FUNC-A44896",
+    "name": "error",
+    "source_file": "tools/aegis-upgrade.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-upgrade"
+  },
+  {
+    "id": "FUNC-1C8B94",
+    "name": "escape_sql",
+    "source_file": "tools/aegis-brain-search.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-brain-search"
+  },
+  {
+    "id": "FUNC-8EBBCC",
+    "name": "estimate_token",
+    "source_file": "tools/aegis-token-profile.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-token-profile"
   },
   {
     "id": "FUNC-98F8FF",
@@ -2520,36 +1840,12 @@
     "description": "Internal function in aegis-shell-lint"
   },
   {
-    "id": "FUNC-5FA55D",
-    "name": "fail",
-    "source_file": "tools/aegis-block0-gate-test.sh",
+    "id": "FUNC-211CF8",
+    "name": "extract_t",
+    "source_file": "tools/aegis-brain-index.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-block0-gate-test"
-  },
-  {
-    "id": "FUNC-E89FD8",
-    "name": "fail",
-    "source_file": "tools/aegis-block0-mode-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-block0-mode-test"
-  },
-  {
-    "id": "FUNC-B40A25",
-    "name": "fail",
-    "source_file": "tools/aegis-brain-adversarial-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-brain-adversarial-test"
-  },
-  {
-    "id": "FUNC-C2A77E",
-    "name": "fail",
-    "source_file": "tools/aegis-distill-counter-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-distill-counter-test"
+    "description": "Internal function in aegis-brain-index"
   },
   {
     "id": "FUNC-801166",
@@ -2584,14 +1880,6 @@
     "description": "Internal function in aegis-func-catalog"
   },
   {
-    "id": "FUNC-218DC5",
-    "name": "get_field",
-    "source_file": "tools/aegis-instinct-promote-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-instinct-promote-test"
-  },
-  {
     "id": "FUNC-790B9C",
     "name": "get_mode_from_meta",
     "source_file": "tools/aegis-s204-override.sh",
@@ -2606,6 +1894,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-func-catalog"
+  },
+  {
+    "id": "FUNC-B76729",
+    "name": "get_stored_mtime",
+    "source_file": "tools/aegis-brain-index.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-brain-index"
   },
   {
     "id": "FUNC-BFD804",
@@ -2640,12 +1936,28 @@
     "description": "Internal function in aegis-s204-override"
   },
   {
-    "id": "FUNC-95223A",
-    "name": "info",
-    "source_file": "tools/aegis-distill-counter-test.sh",
+    "id": "FUNC-0BC735",
+    "name": "index_log_file",
+    "source_file": "tools/aegis-brain-index.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-distill-counter-test"
+    "description": "Internal function in aegis-brain-index"
+  },
+  {
+    "id": "FUNC-04D47C",
+    "name": "index_md_file",
+    "source_file": "tools/aegis-brain-index.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-brain-index"
+  },
+  {
+    "id": "FUNC-0C81DA",
+    "name": "info",
+    "source_file": "tools/aegis-upgrade.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-upgrade"
   },
   {
     "id": "FUNC-584B9B",
@@ -2656,28 +1968,12 @@
     "description": "Internal function in aegis-s204-override"
   },
   {
-    "id": "FUNC-A57BC4",
-    "name": "invoke",
-    "source_file": "tools/aegis-s204-override-test.sh",
+    "id": "FUNC-D89776",
+    "name": "init_db",
+    "source_file": "tools/aegis-brain-index.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-s204-override-test"
-  },
-  {
-    "id": "FUNC-2E3F6A",
-    "name": "invoke_guard_bash",
-    "source_file": "tools/aegis-maintainer-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-maintainer-test"
-  },
-  {
-    "id": "FUNC-55B850",
-    "name": "invoke_guard_write",
-    "source_file": "tools/aegis-maintainer-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-maintainer-test"
+    "description": "Internal function in aegis-brain-index"
   },
   {
     "id": "FUNC-2CC9DD",
@@ -2712,36 +2008,36 @@
     "description": "Internal function in aegis-func-catalog"
   },
   {
-    "id": "FUNC-9F824E",
-    "name": "ko",
-    "source_file": "tools/aegis-design-fetch-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-design-fetch-test"
-  },
-  {
-    "id": "FUNC-E4C846",
-    "name": "ko",
-    "source_file": "tools/aegis-design-lint-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-design-lint-test"
-  },
-  {
-    "id": "FUNC-3B6567",
-    "name": "ko",
-    "source_file": "tools/aegis-wasp-generate-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-wasp-generate-test"
-  },
-  {
     "id": "FUNC-007124",
     "name": "local_slug_for",
     "source_file": "tools/aegis-design-fetch.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-design-fetch"
+  },
+  {
+    "id": "FUNC-BFF9DC",
+    "name": "log",
+    "source_file": "tools/aegis-brain-index.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-brain-index"
+  },
+  {
+    "id": "FUNC-7279B4",
+    "name": "log",
+    "source_file": "tools/aegis-fix-hook-paths.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-fix-hook-paths"
+  },
+  {
+    "id": "FUNC-E5AC41",
+    "name": "log",
+    "source_file": "tools/aegis-fix-task-list-id.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-fix-task-list-id"
   },
   {
     "id": "FUNC-DA4D89",
@@ -2768,60 +2064,12 @@
     "description": "Internal function in aegis-merge-worktree"
   },
   {
-    "id": "FUNC-9D6277",
-    "name": "log_dry",
-    "source_file": "tools/aegis-migrate-consolidate.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-consolidate"
-  },
-  {
-    "id": "FUNC-842E4A",
-    "name": "log_error",
-    "source_file": "tools/aegis-claude-md-lift.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-claude-md-lift"
-  },
-  {
     "id": "FUNC-AC1F3F",
     "name": "log_error",
     "source_file": "tools/aegis-merge-worktree.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-merge-worktree"
-  },
-  {
-    "id": "FUNC-FC2843",
-    "name": "log_error",
-    "source_file": "tools/aegis-migrate-consolidate.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-consolidate"
-  },
-  {
-    "id": "FUNC-B7319D",
-    "name": "log_fail",
-    "source_file": "tools/aegis-maintainer-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-maintainer-test"
-  },
-  {
-    "id": "FUNC-1B722F",
-    "name": "log_info",
-    "source_file": "tools/aegis-claude-md-lift.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-claude-md-lift"
-  },
-  {
-    "id": "FUNC-79B0EF",
-    "name": "log_info",
-    "source_file": "tools/aegis-maintainer-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-maintainer-test"
   },
   {
     "id": "FUNC-BC2FAA",
@@ -2832,60 +2080,12 @@
     "description": "Internal function in aegis-merge-worktree"
   },
   {
-    "id": "FUNC-FB2AE9",
-    "name": "log_info",
-    "source_file": "tools/aegis-migrate-consolidate.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-consolidate"
-  },
-  {
-    "id": "FUNC-5C7A29",
-    "name": "log_judgment",
-    "source_file": "tools/test-f1-03-judgment-counter.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in test-f1-03-judgment-counter"
-  },
-  {
-    "id": "FUNC-AD1A87",
-    "name": "log_nonjudgment",
-    "source_file": "tools/test-f1-03-judgment-counter.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in test-f1-03-judgment-counter"
-  },
-  {
     "id": "FUNC-6F4D0A",
     "name": "log_override",
     "source_file": "tools/aegis-s204-override.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-s204-override"
-  },
-  {
-    "id": "FUNC-B685F4",
-    "name": "log_pa",
-    "source_file": "tools/aegis-maintainer-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-maintainer-test"
-  },
-  {
-    "id": "FUNC-BD2D42",
-    "name": "log_section",
-    "source_file": "tools/aegis-migrate-consolidate.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-consolidate"
-  },
-  {
-    "id": "FUNC-2B67A6",
-    "name": "log_warn",
-    "source_file": "tools/aegis-claude-md-lift.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-claude-md-lift"
   },
   {
     "id": "FUNC-D93715",
@@ -2896,52 +2096,12 @@
     "description": "Internal function in aegis-merge-worktree"
   },
   {
-    "id": "FUNC-27699F",
-    "name": "log_warn",
-    "source_file": "tools/aegis-migrate-consolidate.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-consolidate"
-  },
-  {
-    "id": "FUNC-D9EAD3",
-    "name": "main",
-    "source_file": "tools/aegis-migrate-consolidate.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-consolidate"
-  },
-  {
     "id": "FUNC-630774",
     "name": "main",
     "source_file": "tools/aegis-s204-override.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-s204-override"
-  },
-  {
-    "id": "FUNC-914A15",
-    "name": "make_grant",
-    "source_file": "tools/aegis-maintainer-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-maintainer-test"
-  },
-  {
-    "id": "FUNC-4126FA",
-    "name": "mk_meta",
-    "source_file": "tools/aegis-s204-override-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-s204-override-test"
-  },
-  {
-    "id": "FUNC-CFAF2A",
-    "name": "mk_test_env",
-    "source_file": "tools/aegis-s204-override-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-s204-override-test"
   },
   {
     "id": "FUNC-BB0FEE",
@@ -2960,70 +2120,6 @@
     "description": "Internal function in aegis-instinct-promote"
   },
   {
-    "id": "FUNC-3F398F",
-    "name": "ok",
-    "source_file": "tools/aegis-design-fetch-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-design-fetch-test"
-  },
-  {
-    "id": "FUNC-246CB4",
-    "name": "ok",
-    "source_file": "tools/aegis-design-lint-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-design-lint-test"
-  },
-  {
-    "id": "FUNC-C4889C",
-    "name": "ok",
-    "source_file": "tools/aegis-wasp-generate-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-wasp-generate-test"
-  },
-  {
-    "id": "FUNC-BD2561",
-    "name": "pa",
-    "source_file": "tools/aegis-block0-gate-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-block0-gate-test"
-  },
-  {
-    "id": "FUNC-F2B684",
-    "name": "pa",
-    "source_file": "tools/aegis-block0-mode-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-block0-mode-test"
-  },
-  {
-    "id": "FUNC-05DC33",
-    "name": "pa",
-    "source_file": "tools/aegis-brain-adversarial-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-brain-adversarial-test"
-  },
-  {
-    "id": "FUNC-132BDB",
-    "name": "pa",
-    "source_file": "tools/aegis-distill-counter-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-distill-counter-test"
-  },
-  {
-    "id": "FUNC-A6AC91",
-    "name": "parse_arg",
-    "source_file": "tools/aegis-migrate-consolidate.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-consolidate"
-  },
-  {
     "id": "FUNC-DC48E0",
     "name": "path_to_subtype",
     "source_file": "tools/aegis-brain-write.sh",
@@ -3040,28 +2136,28 @@
     "description": "Internal function in aegis-s204-override"
   },
   {
-    "id": "FUNC-3EDD83",
-    "name": "reminder_fire",
-    "source_file": "tools/aegis-distill-counter-test.sh",
+    "id": "FUNC-0F91BB",
+    "name": "preprocess_fts_query",
+    "source_file": "tools/aegis-brain-search.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-distill-counter-test"
+    "description": "Internal function in aegis-brain-search"
   },
   {
-    "id": "FUNC-EC9605",
-    "name": "remove_gitignore_block",
-    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "id": "FUNC-CA83E8",
+    "name": "print_usage",
+    "source_file": "tools/aegis-log-decision.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-consolidate"
+    "description": "Internal function in aegis-log-decision"
   },
   {
-    "id": "FUNC-EC5BBF",
-    "name": "report_current_state",
-    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "id": "FUNC-83F09D",
+    "name": "resolve_source",
+    "source_file": "tools/aegis-upgrade.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-consolidate"
+    "description": "Internal function in aegis-upgrade"
   },
   {
     "id": "FUNC-A7262C",
@@ -3080,54 +2176,6 @@
     "description": "Internal function in aegis-s204-override"
   },
   {
-    "id": "FUNC-1F21CC",
-    "name": "run_test",
-    "source_file": "tools/aegis-block0-f-gate-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-block0-f-gate-test"
-  },
-  {
-    "id": "FUNC-6A63EE",
-    "name": "run_test",
-    "source_file": "tools/aegis-guard-ui-edit-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-guard-ui-edit-test"
-  },
-  {
-    "id": "FUNC-2BCD60",
-    "name": "run_test",
-    "source_file": "tools/aegis-guard-write-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-guard-write-test"
-  },
-  {
-    "id": "FUNC-12B446",
-    "name": "run_test",
-    "source_file": "tools/aegis-instinct-promote-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-instinct-promote-test"
-  },
-  {
-    "id": "FUNC-EBE53B",
-    "name": "run_test",
-    "source_file": "tools/aegis-spec-tracking-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-spec-tracking-test"
-  },
-  {
-    "id": "FUNC-DF580C",
-    "name": "run_test",
-    "source_file": "tools/aegis-ui-patterns-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-ui-patterns-test"
-  },
-  {
     "id": "FUNC-DC2033",
     "name": "seed_pattern",
     "source_file": "tools/aegis-brain-benchmark.sh",
@@ -3144,156 +2192,28 @@
     "description": "Internal function in aegis-instinct-promote"
   },
   {
-    "id": "FUNC-684F70",
-    "name": "show_help",
-    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "id": "FUNC-BAAF93",
+    "name": "settings_install",
+    "source_file": "tools/aegis-token-profile.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-consolidate"
+    "description": "Internal function in aegis-token-profile"
   },
   {
-    "id": "FUNC-E2FB38",
-    "name": "simulate_block0",
-    "source_file": "tools/aegis-block0-gate-test.sh",
+    "id": "FUNC-DF9FDE",
+    "name": "settings_uninstall",
+    "source_file": "tools/aegis-token-profile.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-block0-gate-test"
+    "description": "Internal function in aegis-token-profile"
   },
   {
-    "id": "FUNC-C26E13",
-    "name": "skip",
-    "source_file": "tools/aegis-brain-adversarial-test.sh",
+    "id": "FUNC-593895",
+    "name": "succe",
+    "source_file": "tools/aegis-upgrade.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-brain-adversarial-test"
-  },
-  {
-    "id": "FUNC-8B3156",
-    "name": "skip",
-    "source_file": "tools/aegis-design-fetch-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-design-fetch-test"
-  },
-  {
-    "id": "FUNC-077E20",
-    "name": "step_claude_md",
-    "source_file": "tools/aegis-migrate-v9.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-v9"
-  },
-  {
-    "id": "FUNC-2E8510",
-    "name": "step_consolidate",
-    "source_file": "tools/aegis-migrate-v9.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-v9"
-  },
-  {
-    "id": "FUNC-FFA861",
-    "name": "step_plugin",
-    "source_file": "tools/aegis-migrate-v9.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-v9"
-  },
-  {
-    "id": "FUNC-061BAB",
-    "name": "step_setting",
-    "source_file": "tools/aegis-migrate-v9.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-v9"
-  },
-  {
-    "id": "FUNC-302C6B",
-    "name": "test-f1-01-realpath-warn",
-    "source_file": "tools/test-f1-01-realpath-warn.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "test-f1-01-realpath-warn.sh — Tests for F1-01 realpath silent-degradation warning"
-  },
-  {
-    "id": "FUNC-9C9E6E",
-    "name": "test-f1-02-injection-safety",
-    "source_file": "tools/test-f1-02-injection-safety.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "test-f1-02-injection-safety.sh — Tests for F1-02 argv injection fix"
-  },
-  {
-    "id": "FUNC-601061",
-    "name": "test-f1-03-judgment-counter",
-    "source_file": "tools/test-f1-03-judgment-counter.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "test-f1-03-judgment-counter.sh — Tests for F1-03 judgment counter exit code"
-  },
-  {
-    "id": "FUNC-1817BA",
-    "name": "test-f1-04-harness-self-test",
-    "source_file": "tools/test-f1-04-harness-self-test.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "test-f1-04-harness-self-test.sh — Self-test for aegis-test-harness-template.sh"
-  },
-  {
-    "id": "FUNC-BE7AEB",
-    "name": "test-f1-05-shell-lint",
-    "source_file": "tools/test-f1-05-shell-lint.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "test-f1-05-shell-lint.sh — Tests for F1-05 shell-command pre-flight linter"
-  },
-  {
-    "id": "FUNC-134750",
-    "name": "test-f2-01-command-shims",
-    "source_file": "tools/test-f2-01-command-shims.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "test-f2-01-command-shims.sh — Tests for F2-01 command consolidation 29→12"
-  },
-  {
-    "id": "FUNC-31FDCB",
-    "name": "test-f3-01-gitignore-paradox",
-    "source_file": "tools/test-f3-01-gitignore-paradox.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "test-f3-01-gitignore-paradox.sh — Tests for F3-01 gitignore paradox fix"
-  },
-  {
-    "id": "FUNC-4D7149",
-    "name": "test-f3-02-auto-reinforce",
-    "source_file": "tools/test-f3-02-auto-reinforce.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "test-f3-02-auto-reinforce.sh — Tests for F3-02 instinct auto-reinforce pipeline"
-  },
-  {
-    "id": "FUNC-B6B59D",
-    "name": "test-s2-10-policy-audit",
-    "source_file": "tools/test-s2-10-policy-audit.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "test-s2-10-policy-audit.sh -- Test harness for aegis-policy-audit.sh"
-  },
-  {
-    "id": "FUNC-75AB69",
-    "name": "test_result",
-    "source_file": "tools/aegis-test-harness-template.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-test-harness-template"
-  },
-  {
-    "id": "FUNC-E7BC32",
-    "name": "timestamp_iso",
-    "source_file": "tools/aegis-migrate-consolidate.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-consolidate"
+    "description": "Internal function in aegis-upgrade"
   },
   {
     "id": "FUNC-55140A",
@@ -3304,20 +2224,20 @@
     "description": "Internal function in aegis-instinct-promote"
   },
   {
-    "id": "FUNC-D694EB",
-    "name": "update_gitignore",
-    "source_file": "tools/aegis-migrate-consolidate.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-consolidate"
-  },
-  {
     "id": "FUNC-502C0E",
     "name": "upstream_slug_for",
     "source_file": "tools/aegis-design-fetch.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-design-fetch"
+  },
+  {
+    "id": "FUNC-EE8519",
+    "name": "usage",
+    "source_file": "tools/aegis-brain-search.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-brain-search"
   },
   {
     "id": "FUNC-76270C",
@@ -3368,6 +2288,14 @@
     "description": "Internal function in aegis-instinct-promote"
   },
   {
+    "id": "FUNC-B53D65",
+    "name": "ver_delta",
+    "source_file": "tools/aegis-upgrade.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-upgrade"
+  },
+  {
     "id": "FUNC-2AFAB7",
     "name": "warn",
     "source_file": "tools/aegis-trace-audit.sh",
@@ -3376,35 +2304,11 @@
     "description": "Internal function in aegis-trace-audit"
   },
   {
-    "id": "FUNC-41BB12",
-    "name": "write_log",
-    "source_file": "tools/aegis-migrate-consolidate.sh",
+    "id": "FUNC-F2EBB2",
+    "name": "warn",
+    "source_file": "tools/aegis-upgrade.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-consolidate"
-  },
-  {
-    "id": "FUNC-A73AE1",
-    "name": "write_manifest",
-    "source_file": "tools/aegis-migrate-consolidate.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-migrate-consolidate"
-  },
-  {
-    "id": "FUNC-A50227",
-    "name": "write_valid",
-    "source_file": "tools/aegis-design-lint-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-design-lint-test"
-  },
-  {
-    "id": "FUNC-BAE69D",
-    "name": "write_valid_design",
-    "source_file": "tools/aegis-wasp-generate-test.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-wasp-generate-test"
+    "description": "Internal function in aegis-upgrade"
   }
 ]

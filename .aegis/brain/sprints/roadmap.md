@@ -16,7 +16,7 @@ external dependencies (new SDK features, infra, migration calendar).
 
 ## Tally (update on every sprint close)
 
-_Last updated: 2026-05-06 · by: Captain America (sprint-v10-07 Hermes L2 CLOSED 8/8pt · pattern miner + propose + 20/20 assertions · live mine produces honest 0 clusters at default thresholds · v10-08 L3 SCOPED-DEFERRED with unblock condition · v10 in-repo now 47/47pt · grand total 222/218pt)_
+_Last updated: 2026-05-07 · by: Captain America (v13-01 Phase A CLOSED 3/3pt · 5 dead tools archived to tools/_archived/ + 1 transitive archive to scripts/_archived/ · README/install-remote/func-catalog cleaned · A3 false-positive audit correction documented per Rule 3 · 9 lint + 39 schema + 24+18 tests all green)_
 
 | Sprint | Points Selected | Points Done | Stretch Done | Status |
 |--------|-----------------|-------------|--------------|--------|
@@ -57,7 +57,7 @@ _Last updated: 2026-05-06 · by: Captain America (sprint-v10-07 Hermes L2 CLOSED
 | sprint-v12-05 (aegis-brain-graph query · 5 subcommands) | 8 | 8 | 0 | **CLOSED (100%)** |
 | sprint-v12-06 (auto-wiki + staleness signal) | 5 | 5 | 0 | **CLOSED (100%)** |
 | **v12 TOTAL (Phase A doc canon + Phase B graph)** | **39** | **39** | **0** | **CLOSED (100%)** |
-| sprint-v13-01-refactor (codebase re-organize + re-factor · 5 phases) | 24 | 0 | 0 | **SCOPED** (plan.md authored 2026-05-07 from full codebase audit; awaiting "open v13-01" go) |
+| sprint-v13-01-refactor (codebase re-organize + re-factor · 5 phases) | 24 | 3 | 0 | **OPEN — Phase A CLOSED 3/3pt** · 21pt remaining (Phase B/C/D/E) |
 
 ## v12 Plan Reference
 
