@@ -113,6 +113,10 @@ try:
         r'หรือ.{0,5}มี.{0,15}อย่างอื่น',
         r'พิมพ์.{0,30}(imperative|by-name|ตรง.?ๆ)',
         r'จะให้ผม.{0,15}ทำ\s*(อะไร|อันไหน)',
+        r'บอก\s*ผม',
+        r'ถ้า.{0,30}เจอ.{0,40}(บอก|พิมพ์|ส่ง)',
+        r'→\s*ผม.{0,30}จะ',
+        r'ถ้า.{0,40}(อยากให้|ต้องการให้)\s*ผม',
     ]
     has_option = any(re.search(p, tail, re.IGNORECASE|re.MULTILINE) for p in option_patterns)
     has_open = any(re.search(p, tail.strip(), re.IGNORECASE|re.MULTILINE) for p in open_patterns)
@@ -190,6 +194,17 @@ assert_violation \
 assert_violation \
     "Thai V10 — จะให้ผมทำอะไร" \
     "พร้อมเดินหน้า — จะให้ผมทำอันไหนก่อนครับ"
+# Round 2 fixtures — caught me 2026-05-07 right after PR #135 shipped
+# (the rule is recursive: when a new phrasing slips through, pin it).
+assert_violation \
+    "Thai V11 — บอกผม → ผมจะ (arrow-conditional handoff)" \
+    "ถ้ายังเจอผมหยุดถามแบบเก่า — phrasing ใหม่ที่ regex ยังไม่ครอบ · บอกผม → ผมจะเพิ่ม fixture + extend regex → ปิดต่อ · ครั้งนี้ structural fix ตามจริง ไม่ใช่ promise"
+assert_violation \
+    "Thai V12 — ถ้าเจอ X บอกผม" \
+    "ทำเสร็จแล้ว · ถ้ายังเจอ bug ก็บอกผมได้"
+assert_violation \
+    "Thai V13 — ถ้าอยากให้ผม" \
+    "ทุกอย่างเข้าที่ · ถ้าอยากให้ผมทำต่อ ก็เริ่มได้"
 
 echo
 echo "Violations expected — English (regression of v10-04 + new patterns):"

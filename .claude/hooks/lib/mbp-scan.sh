@@ -97,6 +97,11 @@ try:
         r'หรือ.{0,5}มี.{0,15}อย่างอื่น',                 # หรือมีอย่างอื่นค้าง
         r'พิมพ์.{0,30}(imperative|by-name|ตรง.?ๆ)',       # พิมพ์ imperative ตรง ๆ
         r'จะให้ผม.{0,15}ทำ\s*(อะไร|อันไหน)',             # จะให้ผมทำอะไร / ทำอันไหน
+        # Round 2 — caught me 2026-05-07 right after PR #135 shipped
+        r'บอก\s*ผม',                                  # "บอกผม → ผมจะ..." soft handoff
+        r'ถ้า.{0,30}เจอ.{0,40}(บอก|พิมพ์|ส่ง)',        # "ถ้ายังเจอ X — บอกผม"
+        r'→\s*ผม.{0,30}จะ',                           # "→ ผมจะเพิ่ม X" arrow-conditional
+        r'ถ้า.{0,40}(อยากให้|ต้องการให้)\s*ผม',         # "ถ้าอยากให้ผม..."
     ]
     has_option = any(re.search(p, tail, re.IGNORECASE|re.MULTILINE) for p in option_patterns)
     has_open = any(re.search(p, tail.strip(), re.IGNORECASE|re.MULTILINE) for p in open_patterns)
