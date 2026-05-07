@@ -309,7 +309,7 @@ mkdir -p "${TARGET_DIR}/tools/"
 cp "${TMP_DIR}/tools/aegis-"*.sh "${TARGET_DIR}/tools/" 2>/dev/null || true
 chmod +x "${TARGET_DIR}/tools/aegis-"*.sh 2>/dev/null || true
 TOOL_COUNT=$(ls "${TARGET_DIR}/tools/aegis-"*.sh 2>/dev/null | wc -l | tr -d ' ')
-success "${TOOL_COUNT} helper tools installed (aegis-brain-sync, aegis-brain-write, aegis-maintainer-grant, aegis-block0-mode, aegis-merge-worktree, aegis-test-all, aegis-status-brief, aegis-pending-items, aegis-agent-tools-matrix, aegis-distill-reset, ...)"
+success "${TOOL_COUNT} helper tools installed (aegis-brain-sync, aegis-brain-write, aegis-maintainer-grant, aegis-block0-mode, aegis-merge-worktree, aegis-test-all, aegis-pending-items, aegis-agent-tools-matrix, aegis-distill-reset, ...)"
 
 # ── SKILLS — profile-based selection ─────────────────────────────────────────
 mkdir -p "${TARGET_DIR}/skills/"
@@ -555,7 +555,7 @@ if [[ "$UPGRADE" == true ]]; then
     echo "  • defaultMode acceptEdits (was bypassPermissions)"
     echo "  • 26 deny patterns (was 8), 20 scoped allow (was 60+ wildcards)"
     echo ""
-    printf "%b\n" "  ${BOLD}New ops tools:${NC} aegis-status-brief, aegis-test-all,"
+    printf "%b\n" "  ${BOLD}New ops tools:${NC} aegis-test-all,"
     echo "                    aegis-agent-tools-matrix, aegis-pending-items,"
     echo "                    aegis-distill-reset, aegis-block0-mode"
     echo ""
