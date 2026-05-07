@@ -53,7 +53,13 @@ if bash "$INSTALL_SH" --target-dir "$PILOT" --project-name "fixture" --profile s
      >"$INSTALL_OUT" 2>&1; then
     pass "1.a install.sh fresh standard install exits 0"
 else
-    fail "1.a install exit" "rc=$? tail: $(tail -20 "$INSTALL_OUT")"
+    INSTALL_RC=$?
+    fail "1.a install exit" "rc=${INSTALL_RC} tail: $(tail -20 "$INSTALL_OUT")"
+    # When install.sh fails, every downstream check is meaningless.
+    # Dump the full install log so CI captures what actually broke.
+    echo "----- install.sh full output (rc=${INSTALL_RC}) -----" >&2
+    cat "$INSTALL_OUT" >&2
+    echo "----- end install.sh output -----" >&2
 fi
 
 # ── Group 1: v11 skills ─────────────────────────────────────────────────
