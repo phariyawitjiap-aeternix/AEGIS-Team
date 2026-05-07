@@ -1,0 +1,63 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# Cancel in-flight runs on the same branch when a new push lands.
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  run-all:
+    name: tests/run-all.sh (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # full history — some tests inspect git log
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Show toolchain versions
+        run: |
+          uname -a
+          bash --version | head -1
+          node --version
+          jq --version
+
+      - name: Make tests executable (defensive — should already be +x)
+        run: chmod +x tests/aegis-*-test.sh tests/run-all.sh
+
+      - name: Run full test suite
+        env:
+          # Disable color in CI logs for cleaner output.
+          NO_COLOR: '1'
+          # Hooks expect this; tests should not actually rely on it but
+          # a few may invoke decision-log.
+          CLAUDE_PROJECT_DIR: ${{ github.workspace }}
+        run: bash tests/run-all.sh --continue
+
+      - name: Upload run-all logs (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-logs-${{ matrix.os }}
+          path: |
+            .aegis/brain/logs/
+            .aegis/brain/state/
+          retention-days: 7
+          if-no-files-found: ignore

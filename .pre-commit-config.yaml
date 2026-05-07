@@ -1,0 +1,42 @@
+# AEGIS pre-commit config (sprint-v13-01 Phase D · D3 · OPT-IN)
+#
+# Install once per clone:
+#   pip install pre-commit && pre-commit install
+#
+# Or skip and rely on CI alone — these are advisory locally; CI is authoritative.
+#
+# What runs:
+#   - aegis-doc-canon governance lint (version-headers + changelog rows)
+#   - aegis-doc-canon skill frontmatter schema
+#   - shellcheck on changed shell scripts (advisory)
+#
+# What does NOT run pre-commit (deferred to CI for speed):
+#   - tests/run-all.sh (~60s, would slow every commit)
+#   - graph-build determinism (covered in lint.yml)
+#
+# Spec: SPRINT_RULES Rule 3 + DoD §5 — fast local feedback, comprehensive CI gate.
+
+repos:
+  - repo: local
+    hooks:
+      - id: aegis-doc-canon-lint
+        name: aegis-doc-canon (governance docs)
+        entry: node tools/aegis-doc-canon/lint.mjs
+        language: system
+        files: '^(CLAUDE.*\.md|DoD\.md|ARCHITECTURE\.md|GUARDRAILS\.md|SPRINT_RULES\.md)$'
+        pass_filenames: false
+
+      - id: aegis-skill-schema
+        name: aegis skill frontmatter schema
+        entry: node tools/aegis-doc-canon/skill-frontmatter.mjs --lint
+        language: system
+        files: '^skills/.+\.md$'
+        pass_filenames: false
+
+  - repo: https://github.com/koalaman/shellcheck-precommit
+    rev: v0.10.0
+    hooks:
+      - id: shellcheck
+        # Advisory — many existing scripts have known shellcheck warnings.
+        # Tighten over time as Phase B test coverage grows.
+        args: ['--severity=error', '--exclude=SC1091']

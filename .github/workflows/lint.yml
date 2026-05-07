@@ -1,0 +1,74 @@
+name: lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: lint-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  governance-docs:
+    name: governance docs (version-headers + changelog)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: aegis-doc-canon lint
+        run: node tools/aegis-doc-canon/lint.mjs
+
+  skill-schema:
+    name: skill frontmatter schema
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: aegis-doc-canon skill-frontmatter --lint
+        run: node tools/aegis-doc-canon/skill-frontmatter.mjs --lint
+
+  policy-audit:
+    name: policy-without-test scanner
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    continue-on-error: true   # advisory while we still have legacy claims
+    steps:
+      - uses: actions/checkout@v4
+      - name: aegis-policy-audit (advisory)
+        env:
+          NO_COLOR: '1'
+        run: bash tools/aegis-policy-audit.sh || true
+
+  graph-build-determinism:
+    name: knowledge graph builds byte-equal across runs
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: First build
+        run: node tools/aegis-brain-graph/build.mjs --full --quiet
+      - name: Save snapshot
+        run: |
+          cp .aegis/brain/graph/nodes.ndjson /tmp/nodes-1.ndjson
+          cp .aegis/brain/graph/edges.ndjson /tmp/edges-1.ndjson
+      - name: Second build
+        run: node tools/aegis-brain-graph/build.mjs --full --quiet
+      - name: Assert byte-equal
+        run: |
+          cmp -s /tmp/nodes-1.ndjson .aegis/brain/graph/nodes.ndjson \
+            && cmp -s /tmp/edges-1.ndjson .aegis/brain/graph/edges.ndjson \
+            && echo "graph rebuild is deterministic ✓"
