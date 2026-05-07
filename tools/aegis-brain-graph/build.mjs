@@ -78,8 +78,14 @@ function discoverSources(root) {
       ...listFiles(path.join(root, '.aegis', 'brain', 'resonance'), { recursive: true, ext: '.md' }),
       ...listFiles(path.join(root, '.aegis', 'brain', 'handoffs'), { recursive: true, ext: '.md' }),
       ...listFiles(path.join(root, '.aegis', 'brain', 'retrospectives'), { recursive: true, ext: '.md' }),
+      // Agent prompts (sprint-v13-01-phase-c): include them as graph nodes so
+      // tool references land MENTIONED_IN edges. Without this, `query mentions
+      // <tool>` returns 0 even when an agent prompt names the tool.
+      ...listFiles(path.join(root, '.claude', 'agents'), { ext: '.md' })
+        .filter((p) => !p.includes('/_archived/')),
     ],
     toolPackages: listToolPackages(path.join(root, 'tools')),
+    singleFileTools: listSingleFileTools(path.join(root, 'tools')),
   };
   // Compute global source_mtime_max across everything
   const allFiles = [
@@ -91,6 +97,7 @@ function discoverSources(root) {
     ...sources.approvals,
     ...sources.brainDocs,
     ...sources.toolPackages.flatMap((p) => p.files),
+    ...sources.singleFileTools,
   ];
   sources.maxMtime = maxMtime(allFiles);
   return sources;
@@ -107,6 +114,19 @@ function listToolPackages(toolsDir) {
     if (files.length > 0) out.push({ name: entry.name, dir: pkgDir, files });
   }
   return out;
+}
+
+// Top-level single-file tools (e.g. tools/aegis-progress.sh) are first-class
+// graph citizens too — sprint-v13-01-phase-c. Without these nodes,
+// `query mentions aegis-progress` returned 0 even after agent files referenced
+// the tool. Now every aegis-*.sh under tools/ shows up as a `kind: "tool"`
+// node and the MENTIONED_IN edges from agents/skills/closes resolve correctly.
+function listSingleFileTools(toolsDir) {
+  if (!fs.existsSync(toolsDir)) return [];
+  return fs.readdirSync(toolsDir, { withFileTypes: true })
+    .filter((e) => e.isFile())
+    .filter((e) => /^aegis-.+\.(sh|mjs|js)$/.test(e.name))
+    .map((e) => path.join(toolsDir, e.name));
 }
 
 // ─── Parsers ───────────────────────────────────────────────────────────────
@@ -378,6 +398,21 @@ function build({ root, mode }) {
   }
   const toolPkgResult = parseToolPackages(sources.toolPackages, root);
   allNodes.push(...toolPkgResult.nodes);
+
+  // Single-file tools (sprint-v13-01-phase-c): create one tool node per
+  // top-level aegis-*.sh / aegis-*.mjs in tools/. Same shape as package files.
+  for (const f of sources.singleFileTools) {
+    const rel = path.relative(root, f);
+    const name = rel.startsWith('tools/') ? rel.slice('tools/'.length) : rel;
+    allNodes.push({
+      id: nodeId('tool', name),
+      kind: 'tool',
+      name,
+      source_path: rel,
+      mtime: Math.floor(mtimeOf(f)),
+      meta: { single_file: true },
+    });
+  }
 
   // WIRES from skills (skill manifest declares wires that reference hook names).
   // We map "PostToolUse:.*:tools/aegis-live-tail/emit.mjs" → edge from hook to tool.

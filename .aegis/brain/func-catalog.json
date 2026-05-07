@@ -64,6 +64,14 @@
     "description": "Agent beast capability: References"
   },
   {
+    "id": "FUNC-CA683F",
+    "name": "beast::Tools You Can Reach For",
+    "source_file": ".claude/agents/beast.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent beast capability: Tools You Can Reach For"
+  },
+  {
     "id": "FUNC-0B1FE2",
     "name": "black-panther::5-Pass Review Methodology",
     "source_file": ".claude/agents/black-panther.md",
@@ -190,6 +198,14 @@
     "type": "agent-capability",
     "module": "MOD-AGENTS",
     "description": "Agent captain-america capability: References"
+  },
+  {
+    "id": "FUNC-135B10",
+    "name": "captain-america::Tools You Can Reach For",
+    "source_file": ".claude/agents/captain-america.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent captain-america capability: Tools You Can Reach For"
   },
   {
     "id": "FUNC-9FFFCB",
@@ -392,6 +408,14 @@
     "description": "Agent coulson capability: Team"
   },
   {
+    "id": "FUNC-97DE3F",
+    "name": "coulson::Tools You Can Reach For",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: Tools You Can Reach For"
+  },
+  {
     "id": "FUNC-CCCDDD",
     "name": "coulson::Traceability Matrix — Key Rules",
     "source_file": ".claude/agents/coulson.md",
@@ -486,6 +510,14 @@
     "type": "agent-capability",
     "module": "MOD-AGENTS",
     "description": "Agent iron-man capability: Spec Format Conventions (MANDATORY)"
+  },
+  {
+    "id": "FUNC-F13B4E",
+    "name": "iron-man::Tools You Can Reach For",
+    "source_file": ".claude/agents/iron-man.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent iron-man capability: Tools You Can Reach For"
   },
   {
     "id": "FUNC-815192",
@@ -800,6 +832,14 @@
     "description": "Agent nick-fury capability: Team Selection Logic"
   },
   {
+    "id": "FUNC-A693C7",
+    "name": "nick-fury::Tools You Can Reach For",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: Tools You Can Reach For"
+  },
+  {
     "id": "FUNC-89D172",
     "name": "nick-fury::v9 Decision Defaults (apply ASAP, full impl per sprint)",
     "source_file": ".claude/agents/nick-fury.md",
@@ -878,6 +918,14 @@
     "type": "agent-capability",
     "module": "MOD-AGENTS",
     "description": "Agent spider-man capability: References"
+  },
+  {
+    "id": "FUNC-BE3F5D",
+    "name": "spider-man::Tools You Can Reach For",
+    "source_file": ".claude/agents/spider-man.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent spider-man capability: Tools You Can Reach For"
   },
   {
     "id": "FUNC-29484D",
@@ -992,6 +1040,14 @@
     "description": "Agent thor capability: Rollback Protocol"
   },
   {
+    "id": "FUNC-BDD66A",
+    "name": "thor::Tools You Can Reach For",
+    "source_file": ".claude/agents/thor.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent thor capability: Tools You Can Reach For"
+  },
+  {
     "id": "FUNC-8B0343",
     "name": "thor::Triggers",
     "source_file": ".claude/agents/thor.md",
@@ -1072,6 +1128,14 @@
     "description": "Agent war-machine capability: References"
   },
   {
+    "id": "FUNC-59FB92",
+    "name": "war-machine::Tools You Can Reach For",
+    "source_file": ".claude/agents/war-machine.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent war-machine capability: Tools You Can Reach For"
+  },
+  {
     "id": "FUNC-15E140",
     "name": "wasp::Capabilities",
     "source_file": ".claude/agents/wasp.md",
@@ -1150,6 +1214,14 @@
     "type": "agent-capability",
     "module": "MOD-AGENTS",
     "description": "Agent wasp capability: Tool Permissions"
+  },
+  {
+    "id": "FUNC-7EE381",
+    "name": "wasp::Tools You Can Reach For",
+    "source_file": ".claude/agents/wasp.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent wasp capability: Tools You Can Reach For"
   },
   {
     "id": "FUNC-CDC8E9",
