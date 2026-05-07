@@ -158,10 +158,18 @@ fi
 
 # Check if claude CLI is available
 if ! command -v claude &>/dev/null; then
-    error "Claude Code CLI is REQUIRED but not found."
-    echo "  Install with: npm install -g @anthropic-ai/claude-code"
-    echo "  Requires Node.js 18+: brew install node"
-    exit 1
+    # CI test fixtures pass AEGIS_INSTALL_SKIP_CLAUDE_CHECK=1 since GitHub
+    # Actions runners don't have claude CLI by default. The fixture is testing
+    # delivery (file copy + settings.json wiring), not runtime usage. Real
+    # users still hit this hard error.
+    if [[ "${AEGIS_INSTALL_SKIP_CLAUDE_CHECK:-}" = "1" ]]; then
+        warn "claude CLI check skipped (AEGIS_INSTALL_SKIP_CLAUDE_CHECK=1, CI/test mode)"
+    else
+        error "Claude Code CLI is REQUIRED but not found."
+        echo "  Install with: npm install -g @anthropic-ai/claude-code"
+        echo "  Requires Node.js 18+: brew install node"
+        exit 1
+    fi
 else
     success "claude CLI found: $(claude --version 2>&1 | head -1)"
 fi
@@ -678,7 +686,10 @@ for tool in "${upgrade_toolkit[@]}" "${runtime_helpers[@]}"; do
 done
 
 # Multi-file tool packages (each lives in its own subdirectory).
-# v11 Phase-1 (AEGIS-Plus) ships 4 such packages; v11-pilot ships 1.
+# v11 Phase-1 (AEGIS-Plus) ships 10 packages; v11-pilot ships 1; v12 ships 1
+# (aegis-brain-graph — added in sprint-v13-01-phase-b-chunk3 after the
+# install-v11-delivery-test caught it as wired-but-not-shipped: settings.json
+# references hook.sh + staleness.mjs but installer never delivered them).
 tool_packages=(
     "aegis-live-tail"          # v11-01 — always-on terminal stream
     "aegis-activity-logger"    # v11-02 — JSONL append-only audit
@@ -691,6 +702,7 @@ tool_packages=(
     "aegis-trace-export"       # v11-08 — PII-redacted activity export
     "aegis-multi-tenant"       # v11-09 — cross-project registry + aggregator
     "aegis-resume"             # v11-10 — checkpoint + SessionStart resume
+    "aegis-brain-graph"        # v12-04/05/06 — NDJSON graph + wiki + staleness hook
 )
 delivered_pkgs=0
 for pkg in "${tool_packages[@]}"; do

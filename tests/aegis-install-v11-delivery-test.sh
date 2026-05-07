@@ -30,19 +30,43 @@ trap 'rm -rf "$TEST_DIR"' EXIT INT TERM
 PILOT="$TEST_DIR/pilot"
 mkdir -p "$PILOT"
 # install.sh does a `git rev-parse` early — give it a real repo.
-( cd "$PILOT" && git init -q && git commit -q --allow-empty -m "init" )
+# CI runners lack global git user.{name,email}; set repo-local config so
+# `git commit --allow-empty` works. (sprint-v13-01-phase-b-chunk3 — chunk-3
+# CI exposed this when install-v11 graduated out of known-failures and the
+# test ran for real, revealing every assertion failing because install.sh
+# exited early when the dummy repo couldn't even initialize.)
+(
+  cd "$PILOT" \
+    && git init -q \
+    && git config user.email "test@aegis.local" \
+    && git config user.name "AEGIS Test" \
+    && git commit -q --allow-empty -m "init"
+) || { echo "FATAL: cannot init test repo at $PILOT" >&2; exit 2; }
 
 echo "============================================"
 echo "AEGIS install — v11 artifact delivery"
 echo "============================================"
 
 # Run a fresh install with profile=standard.
+# Skip claude CLI check: GitHub Actions runners don't have it; we're testing
+# delivery (file copy + settings.json wiring), not runtime usage.
 INSTALL_OUT="$TEST_DIR/install.out"
-if bash "$INSTALL_SH" --target-dir "$PILOT" --project-name "fixture" --profile standard \
+if AEGIS_INSTALL_SKIP_CLAUDE_CHECK=1 \
+   bash "$INSTALL_SH" --target-dir "$PILOT" --project-name "fixture" --profile standard \
      >"$INSTALL_OUT" 2>&1; then
     pass "1.a install.sh fresh standard install exits 0"
 else
-    fail "1.a install exit" "rc=$? tail: $(tail -20 "$INSTALL_OUT")"
+    INSTALL_RC=$?
+    fail "1.a install exit" "rc=${INSTALL_RC}"
+    # If install.sh failed, every downstream assertion is meaningless and the
+    # cascade of "settings.json: No such file or directory" hides the real
+    # failure. Dump install.sh's full output and abort early so the diagnostic
+    # lands in run-all.sh's "last 20 lines" capture.
+    echo "" >&2
+    echo "===== install.sh full output (rc=${INSTALL_RC}) =====" >&2
+    cat "$INSTALL_OUT" >&2
+    echo "===== end install.sh output =====" >&2
+    exit 1
 fi
 
 # ── Group 1: v11 skills ─────────────────────────────────────────────────
@@ -90,6 +114,14 @@ declare -a expected_files=(
     "aegis-resume/resume.mjs"
     "aegis-resume/session-start.mjs"
     "aegis-resume/lib.mjs"
+    # v12 brain-graph (sprint-v13-01-phase-b-chunk3 — settings.json wires
+    # hook.sh + staleness.mjs; lib + build + query + wiki are dependencies).
+    "aegis-brain-graph/build.mjs"
+    "aegis-brain-graph/hook.sh"
+    "aegis-brain-graph/lib.mjs"
+    "aegis-brain-graph/query.mjs"
+    "aegis-brain-graph/staleness.mjs"
+    "aegis-brain-graph/wiki.mjs"
 )
 for f in "${expected_files[@]}"; do
     if [[ -f "$PILOT/tools/$f" ]]; then
