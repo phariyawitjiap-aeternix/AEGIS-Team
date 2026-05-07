@@ -16,7 +16,7 @@ external dependencies (new SDK features, infra, migration calendar).
 
 ## Tally (update on every sprint close)
 
-_Last updated: 2026-05-07 · by: Captain America (v13-01 Phase C CLOSED 3/3pt — agent visibility: 23→5 orphans (5 surviving are architecturally agent-invisible: internal helpers + cron + security) · v12-04 graph build now indexes single-file aegis-*.sh + agent files · graph 262→310 nodes, 319→446 edges · suite still 44/44 ALL PASS · v13-01 cumulative 18/24pt = 75%)_
+_Last updated: 2026-05-07 · by: Captain America (sprint-v13-01-refactor FULLY CLOSED 24/24pt = 100%) — Phase E archived AEGIS_v9_PROGRESS_TRACKER.md to docs/_archived/, reviewed instinct-promote.sh + sprint-tracker.md (well-factored / cohesive — no refactor needed; added TOC to sprint-tracker for navigation). Recurring lesson across all 5 phases: audit verdicts were wrong half the time, but the wrongness consistently revealed real bugs (silent-exits, locale drift, "wired but not shipped"). Suite 44/44 GREEN on macOS + Ubuntu CI._
 
 | Sprint | Points Selected | Points Done | Stretch Done | Status |
 |--------|-----------------|-------------|--------------|--------|
@@ -57,7 +57,7 @@ _Last updated: 2026-05-07 · by: Captain America (v13-01 Phase C CLOSED 3/3pt �
 | sprint-v12-05 (aegis-brain-graph query · 5 subcommands) | 8 | 8 | 0 | **CLOSED (100%)** |
 | sprint-v12-06 (auto-wiki + staleness signal) | 5 | 5 | 0 | **CLOSED (100%)** |
 | **v12 TOTAL (Phase A doc canon + Phase B graph)** | **39** | **39** | **0** | **CLOSED (100%)** |
-| sprint-v13-01-refactor (codebase re-organize + re-factor · 5 phases) | 24 | 18 | 0 | **OPEN — Phase A + B + C + D CLOSED 18/24pt · suite 44/44 ALL PASS** · 6pt remaining (Phase E 5pt + 1pt buffer) |
+| sprint-v13-01-refactor (codebase re-organize + re-factor · 5 phases) | 24 | 24 | 0 | **CLOSED** — all 5 phases done; suite 44/44 GREEN on macOS + Ubuntu CI; knowledge graph 310 nodes / 446 edges |
 
 ## v12 Plan Reference
 

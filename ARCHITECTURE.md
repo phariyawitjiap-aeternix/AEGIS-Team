@@ -33,7 +33,7 @@ Last reviewed: 2026-05-06
 | `PROJECT_INDEX.md` | Project-wide wiki (manual today; auto-generated from v12-06). |
 | `README.md` | External-facing intro. |
 | `AEGIS_v9_UPGRADE_PLAN.md` | Historical 482pt plan; treat as architecture reference. |
-| `AEGIS_v9_PROGRESS_TRACKER.md` | Historical v9 tracker (superseded by `.aegis/brain/sprints/roadmap.md`). |
+| `docs/_archived/AEGIS_v9_PROGRESS_TRACKER.md` | Historical v9 tracker (archived in sprint-v13-01-phase-e; superseded by `.aegis/brain/sprints/roadmap.md`). |
 | `AEGIS_v9_ECOSYSTEM_GUIDE.md` | v9 ecosystem narrative. |
 | `AEGIS_EXTERNAL_ADOPTION.md` | How external projects adopt AEGIS. |
 | `.claude/agents/` | Per-agent persona files (`captain-america.md`, `nick-fury.md`, etc.). |

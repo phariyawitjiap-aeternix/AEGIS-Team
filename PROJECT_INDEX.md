@@ -1,5 +1,5 @@
 <!-- Auto-generated from .aegis/brain/graph/ — edit topic pages under _aegis-output/wiki/ -->
-<!-- built_at: 2026-05-07T13:54:48.701Z -->
+<!-- built_at: 2026-05-07T14:04:46.567Z -->
 <!-- node_count: 310 edge_count: 446 -->
 
 # AEGIS Project Index
