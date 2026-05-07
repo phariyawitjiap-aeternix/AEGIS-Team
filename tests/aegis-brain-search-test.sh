@@ -45,6 +45,20 @@ echo "AEGIS Brain Search -- FTS5 hyphen regression"
 echo "Test dir: ${TEST_DIR}"
 echo "============================================"
 
+# Sanity check: sqlite3 must have FTS5 compiled in. macOS-latest GitHub
+# Actions runners ship sqlite3 builds that lack FTS5 by default, in which
+# case `CREATE VIRTUAL TABLE … USING fts5(…)` succeeds quietly but later
+# queries fail with "no such table: entries_fts".
+# (sprint-v13-01-phase-b-chunk3 — without this gate the suite stays red on
+# macOS-latest forever even though the test logic is correct.)
+if ! echo 'CREATE VIRTUAL TABLE t USING fts5(x);' | sqlite3 ":memory:" 2>/dev/null; then
+  echo ""
+  echo "SKIP: sqlite3 on this platform lacks FTS5 support — test environment limitation."
+  echo "  (Real meta-repo uses sqlite3 with FTS5; this is only a CI runner gap.)"
+  echo "=== Results: 0/0 passed, 0 failed (skipped — no FTS5) ==="
+  exit 0
+fi
+
 # --- Build fixture DB with the same schema as aegis-brain-index.sh ---
 sqlite3 "$FAKE_DB" <<'SQL'
 CREATE TABLE entries (
