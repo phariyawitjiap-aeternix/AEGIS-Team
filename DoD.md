@@ -85,6 +85,8 @@ Last reviewed: 2026-05-06
 
 **Why.** Sprint v9-06 surfaced a recurring "policy-without-test" bug class — rules claiming "MUST/enforces/auto-REJECTs" without matching hook/test/assertion code. This bar makes that class structurally impossible to ship.
 
+**See also:** [`SPRINT_RULES.md`](SPRINT_RULES.md) Rule 3 — "Deep test, not surface assertion." DoD §5 is the floor; SPRINT_RULES Rule 3 raises the bar to integration + adversarial + determinism + real-tree smoke for the close gate.
+
 ---
 
 ## 6. Roadmap update

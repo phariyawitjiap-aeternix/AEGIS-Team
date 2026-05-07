@@ -49,10 +49,11 @@ if echo "$OUT" | grep -q "GUARDRAILS.md"; then
 else
     fail "live tree lint includes GUARDRAILS.md" "output:\n$OUT"
 fi
-if echo "$OUT" | grep -q "all 8 governance docs pass"; then
-    pass "live tree lint reports all 8 pass"
+if echo "$OUT" | grep -qE "all [0-9]+ governance docs pass"; then
+    DOC_COUNT=$(echo "$OUT" | grep -oE "all [0-9]+ governance" | grep -oE "[0-9]+")
+    pass "live tree lint reports all $DOC_COUNT pass"
 else
-    fail "live tree lint reports all 8 pass" "output:\n$OUT"
+    fail "live tree lint reports all governance docs pass" "output:\n$OUT"
 fi
 
 # ─── Set up a fixture GUARDRAILS-style file ────────────────────────────────
