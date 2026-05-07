@@ -1648,6 +1648,14 @@
     "description": "AEGIS Security-Sensitive Path Registry (Sprint v9-02 S2-04)"
   },
   {
+    "id": "FUNC-D756D8",
+    "name": "aegis-shell-footgun-scan",
+    "source_file": "tools/aegis-shell-footgun-scan.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-shell-footgun-scan.sh — Detect bash footguns that have bitten this codebase."
+  },
+  {
     "id": "FUNC-8F0B7F",
     "name": "aegis-shell-lint",
     "source_file": "tools/aegis-shell-lint.sh",
@@ -1766,6 +1774,30 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-trace-audit"
+  },
+  {
+    "id": "FUNC-759DBE",
+    "name": "check_find_perm_plu",
+    "source_file": "tools/aegis-shell-footgun-scan.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-shell-footgun-scan"
+  },
+  {
+    "id": "FUNC-F12501",
+    "name": "check_sed_i_empty",
+    "source_file": "tools/aegis-shell-footgun-scan.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-shell-footgun-scan"
+  },
+  {
+    "id": "FUNC-6B4CF9",
+    "name": "check_set_e_short_circuit",
+    "source_file": "tools/aegis-shell-footgun-scan.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-shell-footgun-scan"
   },
   {
     "id": "FUNC-BC6B48",

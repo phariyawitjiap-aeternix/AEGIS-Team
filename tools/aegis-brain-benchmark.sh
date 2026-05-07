@@ -53,14 +53,18 @@ TEST_BRAIN_WRITE="${TEST_DIR}/brain-write-bench.sh"
     echo 'AEGIS_TEST_STUB_SYNC=1'
     cat "$BRAIN_WRITE"
 } > "$TEST_BRAIN_WRITE"
-sed -i '' "s|^REPO_ROOT=.*|REPO_ROOT=\"\${AEGIS_TEST_REPO_ROOT:-\$REPO_ROOT}\"|" "$TEST_BRAIN_WRITE"
-sed -i '' 's|if \[\[ -x "\$SYNC_SCRIPT" \]\]; then|if [[ -x "$SYNC_SCRIPT" \&\& -z "${AEGIS_TEST_STUB_SYNC:-}" ]]; then|g' "$TEST_BRAIN_WRITE"
+# Portable in-place sed: BSD needs `-i ''` but GNU treats `''` as the script.
+# Use `-i.bak` + remove the backup — works on both. (sprint-v13-02 AI-2)
+sed -i.bak "s|^REPO_ROOT=.*|REPO_ROOT=\"\${AEGIS_TEST_REPO_ROOT:-\$REPO_ROOT}\"|" "$TEST_BRAIN_WRITE"
+sed -i.bak 's|if \[\[ -x "\$SYNC_SCRIPT" \]\]; then|if [[ -x "$SYNC_SCRIPT" \&\& -z "${AEGIS_TEST_STUB_SYNC:-}" ]]; then|g' "$TEST_BRAIN_WRITE"
+rm -f "${TEST_BRAIN_WRITE}.bak"
 chmod +x "$TEST_BRAIN_WRITE"
 
 # Create test-local brain-sync
 TEST_BRAIN_SYNC="${TEST_DIR}/brain-sync-bench.sh"
 cp "$BRAIN_SYNC" "$TEST_BRAIN_SYNC"
-sed -i '' "s|^REPO_ROOT=.*|REPO_ROOT=\"${TEST_DIR}\"|" "$TEST_BRAIN_SYNC"
+sed -i.bak "s|^REPO_ROOT=.*|REPO_ROOT=\"${TEST_DIR}\"|" "$TEST_BRAIN_SYNC"
+rm -f "${TEST_BRAIN_SYNC}.bak"
 chmod +x "$TEST_BRAIN_SYNC"
 
 cleanup() {
