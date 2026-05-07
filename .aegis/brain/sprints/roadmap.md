@@ -16,7 +16,7 @@ external dependencies (new SDK features, infra, migration calendar).
 
 ## Tally (update on every sprint close)
 
-_Last updated: 2026-05-07 · by: Captain America (v13-01 Phase B chunk-2 CLOSED 2pt · graduated aegis-instinct-promote-test (silent-exit bug) + aegis-trace-audit-test (real ghost-ref drift) · trace-audit now `_archived/`+`tests/`-aware · SI.02 paths corrected · 41→43 pass · 3→1 known-failures · v13-01 cumulative 12/24pt = 50%)_
+_Last updated: 2026-05-07 · by: Captain America (v13-01 Phase B chunk-2 CLOSED 2pt · graduated aegis-instinct-promote-test (silent-exit bug, cross-platform) + audit-script archive-aware + SI.02 paths corrected + run-all.sh GNU-find compat · trace-audit-test still macOS-only — Ubuntu graduation deferred to chunk-3 · v13-01 cumulative 12/24pt = 50%)_
 
 | Sprint | Points Selected | Points Done | Stretch Done | Status |
 |--------|-----------------|-------------|--------------|--------|

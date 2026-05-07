@@ -37,13 +37,15 @@ aegis-install-v11-delivery-test
 # (No longer in this list — entry kept here as graduation provenance.)
 # aegis-instinct-promote-test
 
-# GRADUATED 2026-05-07 in sprint-v13-01-phase-b-chunk2 — see commit history.
-# Audit was wrong: not "surface-only with 6 assertions". Test had 4 cases that
-# were all valid; failing because trace-audit found 15 real ghost references in
-# SI.02 (path drift from sprints that moved tools/→tests/ + 2 from Phase A
-# archive + 3 truly-stale). Two-pronged fix: (a) trace-audit teaches itself to
-# recognize `_archived/` and `tests/` fallback locations, (b) SI.02 paths
-# updated to match disk truth. Audit now 5/5 pass + 2 archived warnings; test
-# now 4/4 pass.
-# (No longer in this list — entry kept here as graduation provenance.)
-# aegis-trace-audit-test
+# PARTIAL FIX 2026-05-07 in sprint-v13-01-phase-b-chunk2.
+# What landed in chunk-2: (a) trace-audit teaches itself `_archived/`+`tests/`
+# fallback recognition, (b) SI.02 path drift cleaned (tinman-heartbeat removed,
+# 7 rows updated to disk truth). Test passes on macOS local + macOS-latest CI.
+# Still failing on ubuntu-latest CI (T1+T2 — audit exits non-zero on clean
+# state). Suspected cause: Check 4 FUNC-catalog drift detection sees Linux vs
+# macOS sort/find ordering differences, OR Check 5 doc-registry hits a
+# python3-version-specific quirk on the Ubuntu runner. Reproduces only in
+# CI — needs Docker repro to root-cause.
+# Phase B chunk-3 target: add `LC_ALL=C` to func-catalog sort/find OR teach
+# audit to be platform-agnostic. Then graduate.
+aegis-trace-audit-test

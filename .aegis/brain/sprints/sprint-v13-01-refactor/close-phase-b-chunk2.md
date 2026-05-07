@@ -1,6 +1,6 @@
-# Sprint v13-01 Phase B Chunk 2 Close: Two more graduations + drift-aware audit
+# Sprint v13-01 Phase B Chunk 2 Close: 1 portable graduation + audit fixes + Linux find compat
 
-**Status**: CLOSED · 2pt of 5pt remaining (40% of remaining Phase B done)
+**Status**: CLOSED · 2pt of 5pt remaining (40% of remaining Phase B done — 1pt graduation + 1pt audit/script fixes)
 **Date**: 2026-05-07
 **Branch**: `sprint-v13-01-phase-b-chunk2`
 **Phase B of 5** — see [plan.md](plan.md). A + D already CLOSED in PRs #139 + #140. B chunk-1 in PR #141.
@@ -9,10 +9,17 @@
 
 | ID | Story | Pt | Status |
 |----|-------|----|--------|
-| **B-grad-2** | Graduate `aegis-instinct-promote-test` (silent-exit bug, not "fixture isolation") | 1 | DONE |
-| **B-grad-3** | Graduate `aegis-trace-audit-test` (real ghost-ref drift, not "surface assertions") + teach audit `_archived/`+`tests/` fallbacks | 1 | DONE |
+| **B-grad-2** | Graduate `aegis-instinct-promote-test` (silent-exit bug, not "fixture isolation") — passes both platforms | 1 | DONE |
+| **B-fix-1** | `tools/aegis-trace-audit.sh` teaches itself `_archived/`+`tests/` fallbacks; SI.02 ghost paths corrected (7 rows + tinman-heartbeat dropped) | 0.5 | DONE |
+| **B-fix-2** | `tests/run-all.sh` drops GNU-incompatible `find -perm +111` (caused silent "no tests found" on Ubuntu CI since Phase D) | 0.5 | DONE |
 
 Total: **2pt** out of Phase B's 5pt remaining. 3pt left.
+
+**Partial story** — `aegis-trace-audit-test` graduation **deferred** to chunk-3:
+- Test passes on macOS dev + macOS-latest CI (verified: 4/4)
+- Fails on ubuntu-latest CI on T1+T2 ("audit exits non-zero on clean state")
+- Suspected cross-platform drift in Check 4 FUNC-catalog regen or Check 5 doc-registry — needs Linux repro to root-cause
+- Audit-script and SI.02 improvements still ship (real value preserved)
 
 ## What actually broke (and what the audit got wrong — again)
 
@@ -124,14 +131,16 @@ Result: audit **5/5 pass + 2 archived warns + 0 ghosts** (exit 0). Test **4/4 pa
 
 ## Acceptance evidence
 
-- [x] `aegis-instinct-promote-test`: **10/10 pass** (was silent-exit after 3)
-- [x] `aegis-trace-audit-test`: **4/4 pass** (was failing on 15 ghosts)
-- [x] `tools/aegis-trace-audit.sh`: 5/5 pass + 2 archived warnings + 0 ghosts (exit 0)
+- [x] `aegis-instinct-promote-test`: **10/10 pass** on macOS local + cross-platform portable (was silent-exit after 3)
+- [x] `aegis-trace-audit-test`: **4/4 pass** on macOS local + macOS-latest CI (Ubuntu CI deferred to chunk-3)
+- [x] `tools/aegis-trace-audit.sh` standalone: 5/5 pass + 2 archived warnings + 0 ghosts (exit 0)
 - [x] `_aegis-output/iso-docs/SI-02-traceability-matrix/current.md`: 0 path drifts, deprecated tinman-heartbeat row removed
-- [x] Full suite: **41 → 43 pass · 3 → 1 known-failure · 0 fail · exit 0 · 77s**
-- [x] `tests/_known-failures.txt`: 2 entries removed, both kept as graduation provenance per file policy
+- [x] `tests/run-all.sh`: now finds 44 tests on Linux (was 0 due to GNU-incompatible `-perm +111`)
+- [x] Full suite local: **42 pass · 2 known-failure · 0 fail · exit 0 · 92s**
+- [x] `tests/_known-failures.txt`: instinct-promote graduated; trace-audit re-pinned with Linux-only annotation
 - [x] No other tests regress
 - [x] All 9 governance docs lint clean
+- [x] CI matrix: macOS-latest 3 fails (brain-search/maintainer/pattern-mine — pre-existing env issues, same as PR #141), Ubuntu 4 fails (above 3 + brain-adversarial — also pre-existing). Net improvement: chunk-2 strictly reduces CI failures vs PR #141 (4→3 on macOS) while shipping 1 portable graduation.
 
 ## v13-01 sprint progress after Phase B chunk-2
 
@@ -151,8 +160,10 @@ Phase B remaining: 3pt
 ## Next chunk per plan §"Sequencing"
 
 **Phase B chunk 3** (~3pt, next PR):
-1. Graduate `aegis-install-v11-delivery-test` by rewriting it to enumerate from a manifest (B2 story per plan)
-2. Add tests for 2-3 high-leverage untested tools — likely `aegis-log-decision`, `aegis-progress`, `aegis-queue-{human,resolve}` (each has clear contract + low setup cost)
+1. Root-cause + graduate `aegis-trace-audit-test` on Ubuntu CI (likely `LC_ALL=C` for sort/find ordering OR python3 quirk on Ubuntu runner — needs Docker/Codespace repro)
+2. Fix install.sh "wired but not shipped" bug for `tools/aegis-brain-graph/{hook.sh,staleness.mjs}` (settings.json wires them but installer doesn't deliver — exact bug class this test was created to catch)
+3. Graduate `aegis-install-v11-delivery-test` once #2 is fixed (B2 story per plan)
+4. **Stretch**: add tests for 2-3 high-leverage untested tools — likely `aegis-log-decision`, `aegis-progress`, `aegis-queue-{human,resolve}` (each has clear contract + low setup cost)
 
 After B chunk-3 closes Phase B, move to **Phase C** (agent visibility · 3pt) → **Phase E** (refactor hot files · 5pt) → final v13-01 close.
 
