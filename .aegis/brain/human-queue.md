@@ -39,7 +39,15 @@ Agent ตัวไหนอ่านไฟล์นี้ตรงก็ได�
 ## 🔔 Pending / รอดำเนินการ
 
 <!-- PENDING_START -->
-_No pending items. / ไม่มีคิวรอ._
+### [2026-05-07] EXTERNAL — Add shell-footgun-scan to required-status-checks on main / เพิ่ม shell-footgun-scan เข้า required checks ของ main
+
+- **EN**: PR #151 wires aegis-shell-footgun-scan.sh into the lint workflow. Check is registering as 'shell footgun scan (cross-platform bash patterns)' and passing on first run. To make it a hard merge gate (not just advisory), need to PATCH branch protection with the new context name. Run: gh api -X PATCH repos/phariyawitjiap-aeternix/AEGIS-Team/branches/main/protection/required_status_checks --input <full JSON in close-followup commit msg>. This is a separate External Access action from the initial Tier-1 enable already approved.
+- **TH**: PR #151 ผูก aegis-shell-footgun-scan เข้า lint workflow แล้ว — check ผ่าน first run แล้ว แต่ตอนนี้เป็น advisory ถ้าจะให้บล็อก merge ต้อง PATCH branch protection เพิ่มชื่อ check เข้า required list (External Access เพิ่มเติม นอกเหนือจาก Tier-1 ครั้งแรก)
+- **Category**: External access
+- **Raised by**: thor
+- **Blocks**: shell-footgun-scan job is currently advisory; will catch new bugs but won't block merge until added to required contexts
+- **Raised**: 2026-05-07T16:10:35Z
+- **Resolved**: _(pending)_
 <!-- PENDING_END -->
 
 ---
