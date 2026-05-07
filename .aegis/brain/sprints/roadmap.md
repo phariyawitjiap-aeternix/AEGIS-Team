@@ -16,7 +16,7 @@ external dependencies (new SDK features, infra, migration calendar).
 
 ## Tally (update on every sprint close)
 
-_Last updated: 2026-05-07 · by: Captain America (sprint-v13-02-cleanup CLOSED 6/6 — closed all 6 v13-01 retro action items: Rule 6 in SPRINT_RULES, shell-footgun-scan tool ships + caught a real brain-benchmark bug, branch-protection audit (queued in human-queue), CI-graceful pattern reference, DoD §5.1+5.2 runtime budget + CI-graceful bar, empty-cache validation checklist. Suite 45/45 GREEN. v13-01 + v13-02 both CLOSED._
+_Last updated: 2026-05-07 · by: Captain America (sprint-v13-02-cleanup CLOSED 6/6 + AI-3 follow-through executed — user approved branch protection enable; ran `gh api PUT` for Tier-1 config (6 required status checks, no force-push, no main-deletion, admin override allowed). Branch protection now LIVE on `phariyawitjiap-aeternix/AEGIS-Team` main. Future PRs will be blocked from merging on red CI matrix. Decision D-101 logged. Suite 45/45 GREEN._
 
 | Sprint | Points Selected | Points Done | Stretch Done | Status |
 |--------|-----------------|-------------|--------------|--------|
