@@ -91,6 +91,8 @@ if [ -f "$SI02" ]; then
 
   # Extract file paths from SI.02 (backtick-enclosed paths containing /)
   # Only check paths that contain a slash (actual file paths, not bare filenames)
+  ARCHIVED_COUNT=0
+  MOVED_COUNT=0
   while IFS= read -r ref_path; do
     [ -z "$ref_path" ] && continue
     # Skip patterns with wildcards
@@ -103,16 +105,46 @@ if [ -f "$SI02" ]; then
     FILE_COUNT=$((FILE_COUNT + 1))
     # Check if the path exists (could be file or directory)
     full_path="${PROJECT_ROOT}/${ref_path}"
-    if [ ! -e "$full_path" ]; then
-      GHOST_COUNT=$((GHOST_COUNT + 1))
-      warn "Ghost reference: $ref_path"
+    if [ -e "$full_path" ]; then
+      continue
     fi
+
+    # Fallback locations (introduced sprint-v13-01-phase-b-chunk2):
+    # 1. Archived path  — tools/aegis-X.sh → tools/_archived/aegis-X.sh
+    #                     scripts/aegis-Y.sh → scripts/_archived/aegis-Y.sh
+    # 2. Test relocated — tools/aegis-X-test.sh → tests/aegis-X-test.sh
+    #                     (older sprints had tests under tools/)
+    # These count as ARCHIVED / MOVED rather than GHOST, advisory-only.
+    base="$(basename "$ref_path")"
+    dir="$(dirname "$ref_path")"
+
+    archived_path="${PROJECT_ROOT}/${dir}/_archived/${base}"
+    if [ -e "$archived_path" ]; then
+      ARCHIVED_COUNT=$((ARCHIVED_COUNT + 1))
+      warn "Archived reference (in _archived/): $ref_path"
+      continue
+    fi
+
+    if echo "$base" | grep -qE '\-test\.sh$'; then
+      moved_path="${PROJECT_ROOT}/tests/${base}"
+      if [ -e "$moved_path" ]; then
+        MOVED_COUNT=$((MOVED_COUNT + 1))
+        warn "Moved reference (now in tests/): $ref_path → tests/${base}"
+        continue
+      fi
+    fi
+
+    GHOST_COUNT=$((GHOST_COUNT + 1))
+    warn "Ghost reference: $ref_path"
   done < <(grep -oE '`[^`]+\.(md|json|sh|yaml|log)`' "$SI02" 2>/dev/null | tr -d '`' | sort -u)
 
   if [ "$GHOST_COUNT" -eq 0 ]; then
-    check "All $FILE_COUNT file references in SI.02 exist" true
+    msg="All $FILE_COUNT file references resolved"
+    [ "$ARCHIVED_COUNT" -gt 0 ] && msg="$msg (incl. $ARCHIVED_COUNT archived)"
+    [ "$MOVED_COUNT" -gt 0 ] && msg="$msg (incl. $MOVED_COUNT moved-to-tests)"
+    check "$msg" true
   else
-    check "All file references exist ($GHOST_COUNT/$FILE_COUNT ghosts)" false
+    check "All file references exist ($GHOST_COUNT/$FILE_COUNT true ghosts; $ARCHIVED_COUNT archived; $MOVED_COUNT moved)" false
     EXIT_CODE=2
   fi
 else

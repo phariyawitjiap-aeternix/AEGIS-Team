@@ -16,7 +16,7 @@ external dependencies (new SDK features, infra, migration calendar).
 
 ## Tally (update on every sprint close)
 
-_Last updated: 2026-05-07 · by: Captain America (v13-01 Phase A CLOSED 3/3pt · 5 dead tools archived to tools/_archived/ + 1 transitive archive to scripts/_archived/ · README/install-remote/func-catalog cleaned · A3 false-positive audit correction documented per Rule 3 · 9 lint + 39 schema + 24+18 tests all green)_
+_Last updated: 2026-05-07 · by: Captain America (v13-01 Phase B chunk-2 CLOSED 2pt · graduated aegis-instinct-promote-test (silent-exit bug, cross-platform) + audit-script archive-aware + SI.02 paths corrected + run-all.sh GNU-find compat · trace-audit-test still macOS-only — Ubuntu graduation deferred to chunk-3 · v13-01 cumulative 12/24pt = 50%)_
 
 | Sprint | Points Selected | Points Done | Stretch Done | Status |
 |--------|-----------------|-------------|--------------|--------|
@@ -57,7 +57,7 @@ _Last updated: 2026-05-07 · by: Captain America (v13-01 Phase A CLOSED 3/3pt ·
 | sprint-v12-05 (aegis-brain-graph query · 5 subcommands) | 8 | 8 | 0 | **CLOSED (100%)** |
 | sprint-v12-06 (auto-wiki + staleness signal) | 5 | 5 | 0 | **CLOSED (100%)** |
 | **v12 TOTAL (Phase A doc canon + Phase B graph)** | **39** | **39** | **0** | **CLOSED (100%)** |
-| sprint-v13-01-refactor (codebase re-organize + re-factor · 5 phases) | 24 | 10 | 0 | **OPEN — Phase A + D + B/chunk-1 CLOSED 10/24pt** · 14pt remaining (Phase B 5pt · C 3pt · E 5pt) |
+| sprint-v13-01-refactor (codebase re-organize + re-factor · 5 phases) | 24 | 12 | 0 | **OPEN — Phase A + D + B/chunk-1 + B/chunk-2 CLOSED 12/24pt** · 12pt remaining (Phase B 3pt · C 3pt · E 5pt) |
 
 ## v12 Plan Reference
 

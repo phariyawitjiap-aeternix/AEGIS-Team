@@ -46,11 +46,13 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Collect test files. Use a portable read-loop (mapfile is bash 4+; macOS
-# default bash is 3.2). `-perm +111` works on both BSD and GNU find.
+# default bash is 3.2). Drop -perm: BSD find accepts `-perm +111` but GNU
+# find removed `+` in 2005 (PR #142 caught the Linux CI break). Filter by
+# name+type+shell test instead — sufficient since CI chmod's tests upfront.
 TESTS=()
 while IFS= read -r line; do
-    [[ -n "$line" ]] && TESTS+=("$line")
-done < <(find tests -maxdepth 1 -name 'aegis-*-test.sh' -type f -perm +111 2>/dev/null | sort)
+    [[ -n "$line" && -x "$line" ]] && TESTS+=("$line")
+done < <(find tests -maxdepth 1 -name 'aegis-*-test.sh' -type f 2>/dev/null | sort)
 
 if [[ -n "$FILTER" ]]; then
     FILTERED=()

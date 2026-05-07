@@ -28,12 +28,24 @@
 # Phase B story B2: rewrite to enumerate from a manifest, not hardcode.
 aegis-install-v11-delivery-test
 
-# Brain-state-dependent test; passes in clean fixture, fails when meta repo's
-# real instinct dir has accumulated state. Needs proper fixture isolation.
-# Phase B story B1: rewrite with mktemp + isolated CLAUDE_PROJECT_DIR.
-aegis-instinct-promote-test
+# GRADUATED 2026-05-07 in sprint-v13-01-phase-b-chunk2 — see commit history.
+# Audit was wrong: not "brain-state-dependent". Real bug was a silent-exit in
+# run_test() — `[[ $VERBOSE -eq 1 ]] && echo ...` returned non-zero when
+# VERBOSE=0, and `set -e` (enabled mid-test on lines 114/130/165/204) killed
+# the script after run_test 3. Fixed with explicit `return 0` in run_test.
+# Test now 10/10 pass with no fixture changes needed.
+# (No longer in this list — entry kept here as graduation provenance.)
+# aegis-instinct-promote-test
 
-# Surface-only test (6 assertions) flagged in v13-01 plan.md audit §6.
-# Tests trace-export but doesn't cover redaction edge cases.
-# Phase B story B2: strengthen to ≥15 assertions including PII patterns.
+# PARTIAL FIX 2026-05-07 in sprint-v13-01-phase-b-chunk2.
+# What landed in chunk-2: (a) trace-audit teaches itself `_archived/`+`tests/`
+# fallback recognition, (b) SI.02 path drift cleaned (tinman-heartbeat removed,
+# 7 rows updated to disk truth). Test passes on macOS local + macOS-latest CI.
+# Still failing on ubuntu-latest CI (T1+T2 — audit exits non-zero on clean
+# state). Suspected cause: Check 4 FUNC-catalog drift detection sees Linux vs
+# macOS sort/find ordering differences, OR Check 5 doc-registry hits a
+# python3-version-specific quirk on the Ubuntu runner. Reproduces only in
+# CI — needs Docker repro to root-cause.
+# Phase B chunk-3 target: add `LC_ALL=C` to func-catalog sort/find OR teach
+# audit to be platform-agnostic. Then graduate.
 aegis-trace-audit-test
