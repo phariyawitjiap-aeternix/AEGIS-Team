@@ -158,10 +158,18 @@ fi
 
 # Check if claude CLI is available
 if ! command -v claude &>/dev/null; then
-    error "Claude Code CLI is REQUIRED but not found."
-    echo "  Install with: npm install -g @anthropic-ai/claude-code"
-    echo "  Requires Node.js 18+: brew install node"
-    exit 1
+    # CI test fixtures pass AEGIS_INSTALL_SKIP_CLAUDE_CHECK=1 since GitHub
+    # Actions runners don't have claude CLI by default. The fixture is testing
+    # delivery (file copy + settings.json wiring), not runtime usage. Real
+    # users still hit this hard error.
+    if [[ "${AEGIS_INSTALL_SKIP_CLAUDE_CHECK:-}" = "1" ]]; then
+        warn "claude CLI check skipped (AEGIS_INSTALL_SKIP_CLAUDE_CHECK=1, CI/test mode)"
+    else
+        error "Claude Code CLI is REQUIRED but not found."
+        echo "  Install with: npm install -g @anthropic-ai/claude-code"
+        echo "  Requires Node.js 18+: brew install node"
+        exit 1
+    fi
 else
     success "claude CLI found: $(claude --version 2>&1 | head -1)"
 fi

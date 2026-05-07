@@ -48,8 +48,11 @@ echo "AEGIS install — v11 artifact delivery"
 echo "============================================"
 
 # Run a fresh install with profile=standard.
+# Skip claude CLI check: GitHub Actions runners don't have it; we're testing
+# delivery (file copy + settings.json wiring), not runtime usage.
 INSTALL_OUT="$TEST_DIR/install.out"
-if bash "$INSTALL_SH" --target-dir "$PILOT" --project-name "fixture" --profile standard \
+if AEGIS_INSTALL_SKIP_CLAUDE_CHECK=1 \
+   bash "$INSTALL_SH" --target-dir "$PILOT" --project-name "fixture" --profile standard \
      >"$INSTALL_OUT" 2>&1; then
     pass "1.a install.sh fresh standard install exits 0"
 else
