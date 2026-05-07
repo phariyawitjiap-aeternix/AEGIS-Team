@@ -90,6 +90,14 @@ declare -a expected_files=(
     "aegis-resume/resume.mjs"
     "aegis-resume/session-start.mjs"
     "aegis-resume/lib.mjs"
+    # v12 brain-graph (sprint-v13-01-phase-b-chunk3 — settings.json wires
+    # hook.sh + staleness.mjs; lib + build + query + wiki are dependencies).
+    "aegis-brain-graph/build.mjs"
+    "aegis-brain-graph/hook.sh"
+    "aegis-brain-graph/lib.mjs"
+    "aegis-brain-graph/query.mjs"
+    "aegis-brain-graph/staleness.mjs"
+    "aegis-brain-graph/wiki.mjs"
 )
 for f in "${expected_files[@]}"; do
     if [[ -f "$PILOT/tools/$f" ]]; then

@@ -678,7 +678,10 @@ for tool in "${upgrade_toolkit[@]}" "${runtime_helpers[@]}"; do
 done
 
 # Multi-file tool packages (each lives in its own subdirectory).
-# v11 Phase-1 (AEGIS-Plus) ships 4 such packages; v11-pilot ships 1.
+# v11 Phase-1 (AEGIS-Plus) ships 10 packages; v11-pilot ships 1; v12 ships 1
+# (aegis-brain-graph — added in sprint-v13-01-phase-b-chunk3 after the
+# install-v11-delivery-test caught it as wired-but-not-shipped: settings.json
+# references hook.sh + staleness.mjs but installer never delivered them).
 tool_packages=(
     "aegis-live-tail"          # v11-01 — always-on terminal stream
     "aegis-activity-logger"    # v11-02 — JSONL append-only audit
@@ -691,6 +694,7 @@ tool_packages=(
     "aegis-trace-export"       # v11-08 — PII-redacted activity export
     "aegis-multi-tenant"       # v11-09 — cross-project registry + aggregator
     "aegis-resume"             # v11-10 — checkpoint + SessionStart resume
+    "aegis-brain-graph"        # v12-04/05/06 — NDJSON graph + wiki + staleness hook
 )
 delivered_pkgs=0
 for pkg in "${tool_packages[@]}"; do

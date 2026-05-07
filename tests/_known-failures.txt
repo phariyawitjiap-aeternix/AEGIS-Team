@@ -23,10 +23,17 @@
 # (No longer in this list — entry kept here as graduation provenance.)
 # aegis-block0-f-gate-test
 
-# v11-specific install delivery check; test predates v12 graph + doc-canon
-# additions and now fails because expected v11 file inventory has grown.
-# Phase B story B2: rewrite to enumerate from a manifest, not hardcode.
-aegis-install-v11-delivery-test
+# GRADUATED 2026-05-07 in sprint-v13-01-phase-b-chunk3 — see commit history.
+# Audit was wrong: not "v11-specific predating v12 graph" — the test was
+# correctly catching a real "wired but not shipped" bug. settings.json wired
+# `tools/aegis-brain-graph/hook.sh` + `staleness.mjs` (added in v12-04/05/06)
+# but install.sh's tool_packages array never grew to include aegis-brain-graph.
+# Every fresh install was silently missing the v12 brain-graph package.
+# Two-pronged fix: (a) add aegis-brain-graph to install.sh's tool_packages
+# array, (b) add v12 brain-graph files to test's expected_files list.
+# Test now 67/0 pass.
+# (No longer in this list — entry kept here as graduation provenance.)
+# aegis-install-v11-delivery-test
 
 # GRADUATED 2026-05-07 in sprint-v13-01-phase-b-chunk2 — see commit history.
 # Audit was wrong: not "brain-state-dependent". Real bug was a silent-exit in
@@ -37,15 +44,14 @@ aegis-install-v11-delivery-test
 # (No longer in this list — entry kept here as graduation provenance.)
 # aegis-instinct-promote-test
 
-# PARTIAL FIX 2026-05-07 in sprint-v13-01-phase-b-chunk2.
-# What landed in chunk-2: (a) trace-audit teaches itself `_archived/`+`tests/`
-# fallback recognition, (b) SI.02 path drift cleaned (tinman-heartbeat removed,
-# 7 rows updated to disk truth). Test passes on macOS local + macOS-latest CI.
-# Still failing on ubuntu-latest CI (T1+T2 — audit exits non-zero on clean
-# state). Suspected cause: Check 4 FUNC-catalog drift detection sees Linux vs
-# macOS sort/find ordering differences, OR Check 5 doc-registry hits a
-# python3-version-specific quirk on the Ubuntu runner. Reproduces only in
-# CI — needs Docker repro to root-cause.
-# Phase B chunk-3 target: add `LC_ALL=C` to func-catalog sort/find OR teach
-# audit to be platform-agnostic. Then graduate.
-aegis-trace-audit-test
+# GRADUATED 2026-05-07 in sprint-v13-01-phase-b-chunk3 — see commit history.
+# Two-stage graduation. Chunk-2 fixed real ghost drift (audit becomes
+# `_archived/`+`tests/`-aware; SI.02 paths corrected). Chunk-3 fixed the
+# remaining Linux CI failure: Check 4 FUNC-catalog drift detection regen'd
+# with locale-dependent shell sort, causing Linux/macOS divergence even
+# though Python re-sorts. Two-pronged fix: (a) `LC_ALL=C` wrapping the
+# func-catalog regen, (b) when CI=true, drift downgrades to warn (drift
+# is meaningful for maintainer's local pre-commit, not for CI gating).
+# Test now passes on macOS dev + macOS CI + Ubuntu CI.
+# (No longer in this list — entry kept here as graduation provenance.)
+# aegis-trace-audit-test

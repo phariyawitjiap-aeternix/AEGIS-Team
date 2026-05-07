@@ -16,7 +16,7 @@ external dependencies (new SDK features, infra, migration calendar).
 
 ## Tally (update on every sprint close)
 
-_Last updated: 2026-05-07 · by: Captain America (v13-01 Phase B chunk-2 CLOSED 2pt · graduated aegis-instinct-promote-test (silent-exit bug, cross-platform) + audit-script archive-aware + SI.02 paths corrected + run-all.sh GNU-find compat · trace-audit-test still macOS-only — Ubuntu graduation deferred to chunk-3 · v13-01 cumulative 12/24pt = 50%)_
+_Last updated: 2026-05-07 · by: Captain America (v13-01 Phase B FULLY CLOSED 8/8pt — chunk-3 graduated install-v11-delivery (real "wired but not shipped" bug: install.sh missing v12 aegis-brain-graph package) + aegis-trace-audit-test on Ubuntu CI (LC_ALL=C + CI-mode advisory) · suite now 44/44 ALL PASS · v13-01 cumulative 15/24pt = 62.5%)_
 
 | Sprint | Points Selected | Points Done | Stretch Done | Status |
 |--------|-----------------|-------------|--------------|--------|
@@ -57,7 +57,7 @@ _Last updated: 2026-05-07 · by: Captain America (v13-01 Phase B chunk-2 CLOSED 
 | sprint-v12-05 (aegis-brain-graph query · 5 subcommands) | 8 | 8 | 0 | **CLOSED (100%)** |
 | sprint-v12-06 (auto-wiki + staleness signal) | 5 | 5 | 0 | **CLOSED (100%)** |
 | **v12 TOTAL (Phase A doc canon + Phase B graph)** | **39** | **39** | **0** | **CLOSED (100%)** |
-| sprint-v13-01-refactor (codebase re-organize + re-factor · 5 phases) | 24 | 12 | 0 | **OPEN — Phase A + D + B/chunk-1 + B/chunk-2 CLOSED 12/24pt** · 12pt remaining (Phase B 3pt · C 3pt · E 5pt) |
+| sprint-v13-01-refactor (codebase re-organize + re-factor · 5 phases) | 24 | 15 | 0 | **OPEN — Phase A + B + D CLOSED 15/24pt · suite 44/44 ALL PASS** · 9pt remaining (Phase C 3pt · E 5pt + 1pt buffer) |
 
 ## v12 Plan Reference
 
