@@ -57,6 +57,7 @@ _Last updated: 2026-05-06 · by: Captain America (sprint-v10-07 Hermes L2 CLOSED
 | sprint-v12-05 (aegis-brain-graph query · 5 subcommands) | 8 | 8 | 0 | **CLOSED (100%)** |
 | sprint-v12-06 (auto-wiki + staleness signal) | 5 | 5 | 0 | **CLOSED (100%)** |
 | **v12 TOTAL (Phase A doc canon + Phase B graph)** | **39** | **39** | **0** | **CLOSED (100%)** |
+| sprint-v13-01-refactor (codebase re-organize + re-factor · 5 phases) | 24 | 0 | 0 | **SCOPED** (plan.md authored 2026-05-07 from full codebase audit; awaiting "open v13-01" go) |
 
 ## v12 Plan Reference
 
