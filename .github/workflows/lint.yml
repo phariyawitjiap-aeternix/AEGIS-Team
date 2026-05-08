@@ -87,3 +87,23 @@ jobs:
         # Repo is currently CLEAN (97 files scanned, 0 footguns). Job blocks
         # any new instance from landing in main.
         run: bash tools/aegis-shell-footgun-scan.sh
+
+  mbp-regex-regression:
+    name: MBP regex regression (Master Brain Protocol option-menu detection)
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: mbp-scan unit test (Thai + EN + Round 3 screenshot fixtures)
+        # Pins every option-menu / soft-ask phrasing the agent has historically
+        # regressed to. Fixtures are verbatim from real session transcripts —
+        # if a phrasing slips past in production, the rule is: pin it here, then
+        # extend the regex (sprint-v10-04 / 2026-05-07 / Round 3 2026-05-08).
+        # Per memory feedback_mbp_regression_class.md: "Don't write another
+        # memory; add a regex + test fixture." This is that gate.
+        run: bash tests/aegis-mbp-scan-thai-test.sh
+      - name: on-stop hook end-to-end (decision:block JSON wiring)
+        # Verifies the full Stop-hook pipeline emits decision:block JSON for
+        # MBP violations and respects AEGIS_MBP_BLOCK_DISABLE + stop_hook_active
+        # escape hatches.
+        run: bash tests/test-on-stop-mbp-block.sh

@@ -59,6 +59,12 @@ cat > "$TMP/soft-ask-after-decide-transcript.jsonl" <<'JSONL'
 {"message":{"role":"assistant","content":[{"type":"text","text":"Tree clean. PR #87 merged. After you decide on the deployment window, I will trigger the rollout."}]}}
 JSONL
 
+# Round 3 — 2026-05-08 RizzLab brain-commit handoff (verbatim screenshot text)
+cat > "$TMP/round3-next-or-run-transcript.jsonl" <<'JSONL'
+{"message":{"role":"user","content":[{"type":"text","text":"done?"}]}}
+{"message":{"role":"assistant","content":[{"type":"text","text":"Brain edits are uncommitted (12 files). Next: commit the brain delta, or run /aegis-handoff to pause without ending. The session can also end here."}]}}
+JSONL
+
 # ── TC-01: violation → must output decision:block ─────────────────────────
 echo ""
 echo "TC-01: option menu detected → must HARD-BLOCK"
@@ -116,6 +122,14 @@ INPUT="{\"session_id\":\"test\",\"stop_hook_active\":false,\"transcript_path\":\
 OUT=$(echo "$INPUT" | bash "$HOOK" 2>/dev/null || true)
 echo "$OUT" | grep -q '"decision": "block"' && got="block" || got="no-block"
 assert "'after you decide on' soft-ask triggers block" "block" "$got"
+
+# TC-08 (Round 3): "Next: X, or run /aegis-handoff" — RizzLab screenshot
+echo ""
+echo "TC-08: 'Next: commit, or run /aegis-handoff' → must HARD-BLOCK"
+INPUT="{\"session_id\":\"test\",\"stop_hook_active\":false,\"transcript_path\":\"$TMP/round3-next-or-run-transcript.jsonl\"}"
+OUT=$(echo "$INPUT" | bash "$HOOK" 2>/dev/null || true)
+echo "$OUT" | grep -q '"decision": "block"' && got="block" || got="no-block"
+assert "Round3 'Next: X, or run /Y' triggers block end-to-end" "block" "$got"
 
 # ── Summary ─────────────────────────────────────────────────────────────────
 echo ""
