@@ -107,3 +107,21 @@ jobs:
         # MBP violations and respects AEGIS_MBP_BLOCK_DISABLE + stop_hook_active
         # escape hatches.
         run: bash tests/test-on-stop-mbp-block.sh
+
+  human-action-callout-format:
+    name: human-action callout format (counterpart to MBP option-menu)
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: human-action callout format test
+        # Pins the format for human-action callouts per GUARDRAILS Sign
+        # "Human-action callout missing" (added 2026-05-08). When a response
+        # genuinely requires the human to act on something the agent cannot
+        # execute (click URL to open/merge a PR, approve External-Access gate,
+        # switch a token, paste a config), the action MUST be a heading-level
+        # callout (## 👉 / 🚨 / ⚠️) with step-by-step instructions placed as
+        # the LAST block. This is the human-side counterpart to the MBP
+        # option-menu rule — option-menu prevents soft-handoff WHEN agent
+        # should decide; this prevents under-instruction WHEN human must act.
+        run: bash tests/aegis-human-action-callout-test.sh
