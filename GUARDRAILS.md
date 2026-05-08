@@ -1,7 +1,7 @@
-<!-- version: 1.0.1 -->
-<!-- Last updated: 2026-05-07 -->
+<!-- version: 1.0.2 -->
+<!-- Last updated: 2026-05-08 -->
 
-Last reviewed: 2026-05-07
+Last reviewed: 2026-05-08
 
 # AEGIS Guardrails
 
@@ -17,6 +17,7 @@ Last reviewed: 2026-05-07
 |------|---------|--------|
 | 2026-05-06 | 1.0.0 | Initial GUARDRAILS authored as part of sprint-v12-02 (Knowledge-Layer Mega Plan Phase A). Migrated 12 Signs from CLAUDE_lessons / auto-memory / recent v11 PR fix-classes. |
 | 2026-05-07 | 1.0.1 | Strengthened "AskUserQuestion option-menu" Sign with Thai phrasings + Human=Board / Nick=CEO mental model. Cross-references the on-stop hook fix (mbp-scan Thai patterns + closing-text trigger) that finally pins the regression. |
+| 2026-05-08 | 1.0.2 | Added "Human-action callout missing" Sign — when a response genuinely requires the human to take an action the agent cannot execute (click URL, approve external gate, switch token, paste config), format the action as a heading-level callout (`## 👉` / `## 🚨` / `## ⚠️`) with bilingual explanation, numbered exact-click steps, and expected result, placed as the LAST block. The human-side counterpart to the option-menu Sign. Triggered by user feedback 2026-05-08; pinned in `tests/aegis-human-action-callout-test.sh`. |
 
 ---
 
@@ -109,6 +110,12 @@ If a Sign below appears to override a non-negotiable, the non-negotiable wins.
 - **Trigger:** Adding a new structural lint rule that checks for the *presence* of a section (e.g. `## Changelog`).
 - **Do:** Cover the empty-table case explicitly. A markdown table with `| Date | Version | Change |` and a `|---|---|---|` separator but **no data rows** passes a naive `grep "## Changelog"` check while being functionally empty.
 - **Why:** Surfaced in sprint-v12-01. The first draft of `aegis-doc-canon/lint.mjs` only checked the heading; the bug was caught in code review (self-) before it shipped, and the test suite picked it up at T6. Make this explicit so the next structural lint doesn't repeat the omission.
+
+### Human-action callout missing
+
+- **Trigger:** You're about to end a response that needs the human to take an action you cannot execute autonomously (click a URL to open/merge a PR, approve an External-Access gate by name, switch a token/account, paste a config, run a command in another terminal). The action is buried inline mid-paragraph, OR provided as a bare URL with no step-by-step, OR placed before subsequent prose so it scrolls off the bottom of the response.
+- **Do:** Place the action as the **LAST block** of the response, formatted as a heading-level callout: `## 👉 สิ่งที่ต้องทำต่อ (Human action required)` (or `## 🚨` / `## ⚠️` for higher urgency). Inside the callout: (1) one-line **why this needs the human, not the agent** (token quirk / External Access / branch protection / etc.); (2) numbered **steps** that spell out exact clicks, button labels, field names, and values to paste — assume the human does NOT have the agent's domain knowledge; (3) **expected result** the human should observe when done. If multi-stage (e.g. open PR → wait for CI → merge), number each stage clearly. Place NO content after the callout.
+- **Why:** User explicitly requested 2026-05-08 — "เค้าอาจจะไม่รู้เท่าคุณ" (they may not know as much as you). Burying URLs inline OR providing them without exact step-by-step causes the action to be missed or attempted incorrectly. This Sign is the **human-side counterpart** to the option-menu Sign: the option-menu Sign prevents soft-handoff WHEN a decision belongs to the agent; this Sign prevents under-instruction WHEN action genuinely belongs to the human (Identity / Irreversible / External Access / Explicit approval gate). Auto-memory feedback: `feedback_human_action_callout.md`. Format pinned in `tests/aegis-human-action-callout-test.sh`.
 
 ### Ask-after-explicit-go
 
