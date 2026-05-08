@@ -117,6 +117,12 @@ try:
         r'ถ้า.{0,30}เจอ.{0,40}(บอก|พิมพ์|ส่ง)',
         r'→\s*ผม.{0,30}จะ',
         r'ถ้า.{0,40}(อยากให้|ต้องการให้)\s*ผม',
+        # Round 3 — 2026-05-08 dual-window screenshots
+        r'\bSay\s+the\s+word\b',
+        r'\b[Nn]ext:\s+\w[^.\n]{1,80},\s+or\s+(run|use|do|invoke)\b',
+        r',\s+or\s+run\s+[/\\][a-z][a-z0-9-]*',
+        r'\b(can|could|may)\s+also\s+(end|stop|pause|run|do)\b',
+        r'queued\s+for\s+you\s*\([^)]{0,60}decisions?\b',
     ]
     has_option = any(re.search(p, tail, re.IGNORECASE|re.MULTILINE) for p in option_patterns)
     has_open = any(re.search(p, tail.strip(), re.IGNORECASE|re.MULTILINE) for p in open_patterns)
@@ -226,6 +232,40 @@ assert_violation \
 assert_violation \
     "EN V6 — classic A/B menu + ?" \
     $'Two paths:\n\nA) ship now\nB) defer\n\nWhich do you want?'
+
+# ─── Round 3 — verbatim from 2026-05-08 dual-window screenshots ────────────
+# User caught me regressing AGAIN despite Round 1+2 fixtures. The new
+# phrasings that slipped through the existing regex:
+#   1. "Next: X, or run /Y" — RizzLab brain-commit handoff
+#   2. "Say the word"        — kam-tong-ham PR-merge handoff (English idiom)
+#   3. "(can|could) also (end|pause) here" — passive option closing
+#   4. "Still queued for you (separate decisions)" — soft TODO menu
+# Each is a distinct shape; the regex update must cover all 4.
+echo
+echo "Violations expected — Round 3 (2026-05-08 dual-window screenshots):"
+assert_violation \
+    "Round3 V1 — RizzLab 'Next: X, or run /aegis-handoff'" \
+    "Brain edits are uncommitted (12 files). Next: commit the brain delta, or run /aegis-handoff to pause without ending. The session can also end here."
+assert_violation \
+    "Round3 V2 — kam-tong-ham 'Say the word' PR merge handoff" \
+    "PR #29 verified locally. Same approval pattern as PR #28. Say the word."
+assert_violation \
+    "Round3 V3 — 'can also end here' passive option" \
+    "All sections green. The session can also end here — handoff already exists."
+assert_violation \
+    "Round3 V4 — 'Still queued for you (separate decisions)' soft TODO menu" \
+    "Sprint closed. Still queued for you (separate decisions): HQ-006 and HQ-004."
+
+# Round 3 CLEAN — the CORRECT declarative-pending phrasing for External
+# Access gates must NOT trigger. This is the rewrite the agent should use:
+echo
+echo "Clean expected — Round 3 declarative-pending (must NOT trigger):"
+assert_clean \
+    "Round3 CLEAN 1 — declarative-pending External Access" \
+    "Will run \`gh pr merge 29 --rebase --delete-branch\` on your by-name go (External Access gate per playbook). Continuing other work meanwhile."
+assert_clean \
+    "Round3 CLEAN 2 — declarative brain-commit autonomous" \
+    "Brain delta committed (12 files). Handoff written. Session ending."
 
 echo
 echo "Clean expected — must NOT trigger (false-positive guard):"
