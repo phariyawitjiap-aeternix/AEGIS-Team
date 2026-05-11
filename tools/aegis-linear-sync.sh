@@ -57,19 +57,64 @@ gql() {
     --data "$payload"
 }
 
-# Parse kanban.md → JSONL with {section, story_id, points, agent, title, pr}
-parse_kanban() {
+# Parse kanban.md + plan.md → rich JSON with sprint goal + per-story descriptions + subtype
+# Returns: { goal, source, stories: [{section, story_id, title, agent, subtype, points, pr, description}] }
+parse_sprint() {
   local sprint_id="$1"
-  local kanban="${REPO_ROOT}/.aegis/brain/sprints/${sprint_id}/kanban.md"
+  local sprint_dir="${REPO_ROOT}/.aegis/brain/sprints/${sprint_id}"
+  local kanban="${sprint_dir}/kanban.md"
   [[ -f "$kanban" ]] || fail "kanban not found: $kanban"
 
-  python3 - "$kanban" <<'PY'
-import re, sys, json
-path = sys.argv[1]
-section = None
+  python3 - "$sprint_id" "$sprint_dir" <<'PY'
+import re, sys, json, pathlib
+sprint_id = sys.argv[1]
+sprint_dir = pathlib.Path(sys.argv[2])
+kanban_path = sprint_dir / 'kanban.md'
+plan_path   = sprint_dir / 'plan.md'
+close_path  = sprint_dir / 'close.md'
+
+# AEGIS agent → work subtype (for stakeholder filtering in Linear)
+AGENT_SUBTYPE = {
+    'iron-man':        'design',
+    'spider-man':      'build',
+    'war-machine':     'test',
+    'vision':          'test',
+    'coulson':         'docs',
+    'thor':            'devops',
+    'captain-america': 'orchestrate',
+    'captain':         'orchestrate',
+    'nick-fury':       'orchestrate',
+    'wasp':            'ui',
+    'songbird':        'content',
+    'black-panther':   'review',
+    'loki':            'research',
+    'beast':           'data',
+    'hulk':            'refactor',
+    'hawkeye':         'scout',
+}
+
+# ── Pull Sprint Goal + Source from plan.md (fallback: kanban frontmatter) ──
+sprint_goal = ''
+sprint_source = ''
+sprint_status = ''
+
+def read_field(text, field):
+    m = re.search(rf'^\*\*{re.escape(field)}\*\*:\s*(.+?)$', text, re.MULTILINE)
+    return m.group(1).strip() if m else ''
+
+if plan_path.exists():
+    plan_text = plan_path.read_text(errors='ignore')
+    sprint_goal   = read_field(plan_text, 'Goal')
+    sprint_source = read_field(plan_text, 'Source')
+    sprint_status = read_field(plan_text, 'Status')
+
+kanban_text = kanban_path.read_text(errors='ignore')
+if not sprint_goal:
+    sprint_goal = read_field(kanban_text, 'Goal')
+
+# ── Parse stories with multi-line descriptions ──
 SECTIONS = {'BACKLOG','TODO','IN_PROGRESS','IN_REVIEW','QA','DONE'}
-# Story line: - [ ] [S3-01] Title (@agent) — 3pt [PR #47]
-#         or: - [x] [S3-01] Title (@agent) — 3pt [PR #47]
+section_re = re.compile(r'^##\s+([A-Z_]+)\s*$')
 story_re = re.compile(
     r'^\s*-\s*\[(?P<chk>[ x])\]\s*'
     r'\[(?P<sid>[A-Z]+\d+-\d+)\]\s*'
@@ -79,47 +124,172 @@ story_re = re.compile(
     r'(?:\s*\[PR\s*#(?P<pr>\d+)\])?'
     r'\s*$'
 )
-section_re = re.compile(r'^##\s+([A-Z_]+)\s*$')
-out = []
-with open(path) as f:
-    for line in f:
-        m = section_re.match(line)
-        if m and m.group(1) in SECTIONS:
-            section = m.group(1)
-            continue
-        if not section: continue
-        m = story_re.match(line)
-        if not m: continue
-        out.append({
+
+stories = []
+section = None
+cur = None
+
+def push_current():
+    if cur is not None:
+        cur['description'] = '\n'.join(cur['_desc_lines']).strip()
+        del cur['_desc_lines']
+        stories.append(cur)
+
+for line in kanban_text.splitlines():
+    sm = section_re.match(line)
+    if sm and sm.group(1) in SECTIONS:
+        push_current()
+        cur = None
+        section = sm.group(1)
+        continue
+    if not section: continue
+    sm_story = story_re.match(line)
+    if sm_story:
+        push_current()
+        agent = sm_story.group('agent') or ''
+        cur = {
             'section': section,
-            'checked': m.group('chk') == 'x',
-            'story_id': m.group('sid'),
-            'title': m.group('title').strip(),
-            'agent': m.group('agent') or '',
-            'points': int(m.group('pts')) if m.group('pts') else 0,
-            'pr': m.group('pr') or '',
-        })
-print(json.dumps(out, indent=2))
+            'checked': sm_story.group('chk') == 'x',
+            'story_id': sm_story.group('sid'),
+            'title': sm_story.group('title').strip(),
+            'agent': agent,
+            'subtype': AGENT_SUBTYPE.get(agent, 'general' if agent else ''),
+            'points': int(sm_story.group('pts')) if sm_story.group('pts') else 0,
+            'pr': sm_story.group('pr') or '',
+            '_desc_lines': [],
+        }
+        continue
+    # Indented continuation = part of current story's description
+    if cur is not None and line.strip() and (line.startswith('      ') or line.startswith('\t')):
+        cur['_desc_lines'].append(line.strip())
+
+push_current()
+
+out = {
+    'sprint_id': sprint_id,
+    'goal': sprint_goal,
+    'source': sprint_source,
+    'status': sprint_status,
+    'plan_exists': plan_path.exists(),
+    'close_exists': close_path.exists(),
+    'stories': stories,
+}
+print(json.dumps(out, indent=2, ensure_ascii=False))
 PY
 }
 
-# Find existing issue by story_id (via aegis-sync marker in description)
+# Build rich Linear issue description from sprint+story JSON
+# Embeds a content hash in the marker so we can detect real changes despite
+# Linear's markdown normalization (blank lines, table-syntax tweaks).
+build_issue_description() {
+  local sprint_id="$1" goal="$2" story_json="$3"
+  python3 - "$sprint_id" "$goal" "$story_json" <<'PY'
+import sys, json, hashlib
+sprint_id, goal, story_json = sys.argv[1], sys.argv[2], sys.argv[3]
+s = json.loads(story_json)
+
+# Content hash — only changes when SOURCE content changes, not when Linear
+# re-renders markdown. Use this for idempotency-safe diff detection.
+canonical = json.dumps({
+    'goal':        goal or '',
+    'description': s.get('description', ''),
+    'agent':       s.get('agent', ''),
+    'subtype':     s.get('subtype', ''),
+    'points':      s.get('points', 0),
+    'pr':          s.get('pr', ''),
+    'title':       s.get('title', ''),
+    'sprint':      sprint_id,
+    'story':      s.get('story_id', ''),
+}, sort_keys=True, ensure_ascii=False)
+chash = hashlib.sha1(canonical.encode('utf-8')).hexdigest()[:10]
+
+agent_line   = f"@{s['agent']}" if s['agent'] else "_(unassigned)_"
+points_line  = f"{s['points']}pt" if s['points'] else "_(not estimated)_"
+pr_line      = f"#{s['pr']}" if s['pr'] else "_(none yet)_"
+subtype_line = f"`{s['subtype']}`" if s['subtype'] else "_(not classified)_"
+desc_section = s['description'] or '_(no description in kanban — story line only)_'
+goal_section = goal or '_(not declared in plan.md)_'
+
+md = f"""## 🎯 Sprint Goal
+{goal_section}
+
+## 📋 Task
+{desc_section}
+
+## 📦 Metadata
+
+| | |
+|---|---|
+| **Story ID** | `{s['story_id']}` |
+| **Sprint** | `{sprint_id}` |
+| **Owner** | {agent_line} |
+| **Subtype** | {subtype_line} |
+| **Points** | {points_line} |
+| **PR** | {pr_line} |
+
+---
+🤖 Synced from AEGIS · sprint `{sprint_id}` · story `{s['story_id']}` · do not edit manually
+<!-- aegis-sync:{s['story_id']} v={chash} -->"""
+print(md)
+PY
+}
+
+# Extract content hash from an existing Linear description (returns "" if not present)
+extract_content_hash() {
+  local desc="$1"
+  printf '%s' "$desc" | grep -oE 'aegis-sync:[A-Z0-9-]+ v=[a-f0-9]+' | head -n1 | sed 's/.*v=//'
+}
+
+# Compute the hash that a fresh description WOULD have, given the source data
+compute_content_hash() {
+  local sprint_id="$1" goal="$2" story_json="$3"
+  python3 - "$sprint_id" "$goal" "$story_json" <<'PY'
+import sys, json, hashlib
+sprint_id, goal, story_json = sys.argv[1], sys.argv[2], sys.argv[3]
+s = json.loads(story_json)
+canonical = json.dumps({
+    'goal':        goal or '',
+    'description': s.get('description', ''),
+    'agent':       s.get('agent', ''),
+    'subtype':     s.get('subtype', ''),
+    'points':      s.get('points', 0),
+    'pr':          s.get('pr', ''),
+    'title':       s.get('title', ''),
+    'sprint':      sprint_id,
+    'story':      s.get('story_id', ''),
+}, sort_keys=True, ensure_ascii=False)
+print(hashlib.sha1(canonical.encode('utf-8')).hexdigest()[:10])
+PY
+}
+
+# Find existing issue by story_id (via aegis-sync marker in description).
+# Marker format evolved: original was `<!-- aegis-sync:Sx-yy -->`, current is
+# `<!-- aegis-sync:Sx-yy v=hash -->`. We match the stable PREFIX so both
+# old and new markers are recognized, preventing duplicate creation.
 find_issue_by_story() {
   local project_id="$1" story_id="$2"
-  local marker="<!-- aegis-sync:${story_id} -->"
+  local marker_prefix="aegis-sync:${story_id}"
   local q='query F($pid: String!) { project(id: $pid) { issues { nodes { id identifier title description state { id name } } } } }'
   local v
   v="$(jq -nc --arg p "$project_id" '{pid: $p}')"
   local resp
   resp="$(gql "$q" "$v")"
-  echo "$resp" | jq --arg m "$marker" -c '.data.project.issues.nodes[]? | select(.description != null and (.description | contains($m)))' | head -n1
+  # Match on prefix so the story id is exact but the version (or trailing `-->`)
+  # may follow. Sort by identifier number ascending so the OLDEST matching issue
+  # wins — this converges duplicates back to the original on next sync.
+  echo "$resp" | jq --arg s "$story_id" -c '
+    [.data.project.issues.nodes[]?
+      | select(.description != null and (.description | test("aegis-sync:" + $s + "[ -]")))]
+    | sort_by(.identifier | capture("(?<n>[0-9]+)$") | .n | tonumber)
+    | .[0] // empty
+  '
 }
 
 cmd_open() {
   local sprint_id="${1:-}"
   [[ -n "$sprint_id" ]] || fail "open requires <sprint_id>"
 
-  log "Step 1/3: ensure project + milestone"
+  log "Step 1/4: ensure project + milestone"
   if (( DRY )); then
     log "DRY: skip ensure-project + ensure-milestone (would create real Linear resources)"
     local milestone_id="DRY-FAKE-MILESTONE-ID"
@@ -135,67 +305,79 @@ cmd_open() {
   local team_id
   team_id="$(jq -r '.team.id' "$CONFIG_PATH")"
 
-  log "Step 2/3: parse kanban"
-  local stories
-  stories="$(parse_kanban "$sprint_id")"
+  log "Step 2/4: parse sprint (plan.md + kanban.md)"
+  local sprint_data
+  sprint_data="$(parse_sprint "$sprint_id")"
+  local goal
+  goal="$(echo "$sprint_data" | jq -r '.goal')"
   local count
-  count="$(echo "$stories" | jq 'length')"
-  ok "Parsed $count stories from kanban"
+  count="$(echo "$sprint_data" | jq '.stories | length')"
+  local plan_found
+  plan_found="$(echo "$sprint_data" | jq -r '.plan_exists')"
+  ok "Parsed $count stories · goal=$([ -n "$goal" ] && printf '✓' || printf '✗') · plan.md=$plan_found"
 
-  log "Step 3/3: create missing issues + sync state"
-  local created=0 skipped=0 updated=0
+  log "Step 3/4: build rich descriptions + sync state + content"
+  local created=0 skipped=0 updated_state=0 updated_desc=0
   local i len
-  len="$(echo "$stories" | jq 'length')"
+  len="$(echo "$sprint_data" | jq '.stories | length')"
   for ((i=0; i<len; i++)); do
-    local row state_col story_id title agent points pr
-    row="$(echo "$stories" | jq -c ".[$i]")"
+    local row state_col story_id title
+    row="$(echo "$sprint_data" | jq -c ".stories[$i]")"
     state_col="$(echo "$row" | jq -r '.section')"
     story_id="$(echo "$row" | jq -r '.story_id')"
     title="$(echo "$row" | jq -r '.title')"
-    agent="$(echo "$row" | jq -r '.agent')"
-    points="$(echo "$row" | jq -r '.points')"
-    pr="$(echo "$row" | jq -r '.pr')"
 
     local state_id
     state_id="$(jq -r ".state_map.${state_col}.id" "$CONFIG_PATH")"
     [[ "$state_id" != "null" && -n "$state_id" ]] || { warn "no state_map for $state_col — skip $story_id"; continue; }
 
-    # Build title + description
+    # Build title
     local issue_title
     issue_title="$(jq -r '.sync_policy.issue_title_format' "$CONFIG_PATH" \
                    | sed "s|{story_id}|$story_id|g" \
                    | sed "s|{title}|$title|g")"
 
-    local pr_block=""
-    [[ -n "$pr" ]] && pr_block="\nPR: #${pr}"
-    local agent_block=""
-    [[ -n "$agent" ]] && agent_block="\nAgent: @${agent}"
-
-    local footer
-    footer="$(jq -r '.sync_policy.description_footer' "$CONFIG_PATH" \
-              | sed "s|{sprint_id}|$sprint_id|g" \
-              | sed "s|{story_id}|$story_id|g")"
-
+    # Build rich description (with sprint goal + multi-line task + metadata table)
     local desc
-    desc="Points: ${points}pt${agent_block}${pr_block}${footer}\n<!-- aegis-sync:${story_id} -->"
+    desc="$(build_issue_description "$sprint_id" "$goal" "$row")"
 
     # Check if exists
     local existing
     existing="$(find_issue_by_story "$project_id" "$story_id")"
 
     if [[ -n "$existing" ]]; then
-      # Update state if changed
-      local cur_state
+      local iid cur_state cur_desc cur_hash new_hash
+      iid="$(echo "$existing" | jq -r '.id')"
       cur_state="$(echo "$existing" | jq -r '.state.id')"
-      if [[ "$cur_state" != "$state_id" ]]; then
-        local iid
-        iid="$(echo "$existing" | jq -r '.id')"
+      cur_desc="$(echo "$existing" | jq -r '.description // ""')"
+      cur_hash="$(extract_content_hash "$cur_desc")"
+      new_hash="$(compute_content_hash "$sprint_id" "$goal" "$row")"
+
+      local need_state=false need_desc=false
+      [[ "$cur_state" != "$state_id" ]] && need_state=true
+      [[ "$cur_hash" != "$new_hash" ]] && need_desc=true
+
+      if $need_state || $need_desc; then
+        local fields="{}"
+        if $need_state && $need_desc; then
+          fields="$(jq -nc --arg sid "$state_id" --arg d "$desc" --arg t "$issue_title" \
+                    '{stateId:$sid, description:$d, title:$t}')"
+        elif $need_state; then
+          fields="$(jq -nc --arg sid "$state_id" '{stateId:$sid}')"
+        else
+          fields="$(jq -nc --arg d "$desc" --arg t "$issue_title" '{description:$d, title:$t}')"
+        fi
         local mut='mutation U($id: String!, $input: IssueUpdateInput!) { issueUpdate(id: $id, input: $input) { success } }'
         local vars
-        vars="$(jq -nc --arg id "$iid" --arg sid "$state_id" '{id: $id, input: {stateId: $sid}}')"
-        gql "$mut" "$vars" > /dev/null
-        updated=$((updated+1))
-        log "  ↻ $story_id state → $state_col"
+        vars="$(jq -nc --arg id "$iid" --argjson f "$fields" '{id:$id, input:$f}')"
+        local resp
+        resp="$(gql "$mut" "$vars")"
+        if echo "$resp" | jq -e '.errors' >/dev/null 2>&1; then
+          warn "update failed for $story_id: $(echo "$resp" | jq -c '.errors')"
+          continue
+        fi
+        $need_state && { updated_state=$((updated_state+1)); log "  ↻ $story_id state → $state_col"; }
+        $need_desc  && { updated_desc=$((updated_desc+1));   log "  ✎ $story_id description refreshed"; }
       else
         skipped=$((skipped+1))
       fi
@@ -232,10 +414,12 @@ cmd_open() {
     log "  + $story_id → $ident"
   done
 
-  ok "open complete: created=$created updated=$updated skipped=$skipped"
+  log "Step 4/4: summary"
+  ok "open complete: created=$created · state-updated=$updated_state · desc-updated=$updated_desc · skipped=$skipped"
   if (( JSON )); then
-    jq -nc --arg s "$sprint_id" --arg m "$milestone_id" --argjson c "$created" --argjson u "$updated" --argjson k "$skipped" \
-      '{sprint:$s, milestone:$m, created:$c, updated:$u, skipped:$k}'
+    jq -nc --arg s "$sprint_id" --arg m "$milestone_id" \
+      --argjson c "$created" --argjson us "$updated_state" --argjson ud "$updated_desc" --argjson k "$skipped" \
+      '{sprint:$s, milestone:$m, created:$c, updated_state:$us, updated_desc:$ud, skipped:$k}'
   fi
 }
 
@@ -266,15 +450,15 @@ cmd_drift() {
   project_id="$(jq -r '.project.id // empty' "$CONFIG_PATH")"
   [[ -n "$project_id" ]] || { warn "no project linked yet — no drift to detect"; return 0; }
 
-  local stories
-  stories="$(parse_kanban "$sprint_id")"
+  local sprint_data
+  sprint_data="$(parse_sprint "$sprint_id")"
   local drifts=0
 
   local i len
-  len="$(echo "$stories" | jq 'length')"
+  len="$(echo "$sprint_data" | jq '.stories | length')"
   for ((i=0; i<len; i++)); do
     local row story_id state_col expected_state_id
-    row="$(echo "$stories" | jq -c ".[$i]")"
+    row="$(echo "$sprint_data" | jq -c ".stories[$i]")"
     story_id="$(echo "$row" | jq -r '.story_id')"
     state_col="$(echo "$row" | jq -r '.section')"
     expected_state_id="$(jq -r ".state_map.${state_col}.id" "$CONFIG_PATH")"
