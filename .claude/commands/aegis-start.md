@@ -381,6 +381,36 @@ After loading the brain (Step 2), explicitly check for and load the latest hando
 - Still load it but tell Nick Fury to do a full scan anyway
 - Do not auto-delete old handoffs (git preserves history)
 
+### Step 2.6: Linear Health Check (NEW — Linear integration)
+
+If `.aegis/config/linear.json` exists, run the Linear health check.
+
+1. **Skip silently if config missing** — Linear is optional. Repos without `.aegis/config/linear.json` proceed normally.
+
+2. **Run health check:**
+   ```bash
+   bash tools/aegis-linear-setup.sh health
+   ```
+
+3. **Interpret exit code:**
+   - `0` GREEN — display nothing (silent success)
+   - `2` YELLOW — display a one-line banner, continue:
+     ```
+     ⚠️  Linear: degraded (e.g. project not yet auto-created) — will fix on /aegis-sprint plan
+     ```
+   - `1`/`3` RED — display banner + add to Nick Fury context:
+     ```
+     ❌ Linear: unhealthy — run /aegis-linear health for details
+     ```
+     Nick Fury still proceeds (Linear is non-blocking for AEGIS), but should NOT call /aegis-linear sync until fixed.
+
+4. **Log:**
+   ```
+   [YYYY-MM-DD HH:MM] LINEAR_HEALTH | status=GREEN|YELLOW|RED | project_id=<id-or-missing>
+   ```
+
+**Rationale**: Linear is a one-way mirror, not a dependency. A red Linear must never block AEGIS work — it just suppresses sync writes until repaired. See [`.claude/commands/aegis-linear.md`](aegis-linear.md) for full architecture.
+
 ---
 
 ## Continuation Protocol (MBP / Golden Rule #7)

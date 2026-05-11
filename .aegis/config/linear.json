@@ -1,0 +1,151 @@
+{
+  "$schema": "https://aegis-team.dev/schemas/linear-config-v1.json",
+  "version": "1.1.0",
+  "generated_at": "2026-05-11",
+  "generated_by": "aegis-linear-setup (milestone architecture)",
+  "_decision": "1 repo = 1 Linear project (auto-create); 1 sprint = 1 Project Milestone (avoids team-level cycle cross-project leak); auto-create on first sync.",
+  "auth": {
+    "method": "api_key",
+    "source_preferred": "keychain",
+    "keychain": {
+      "service": "aegis-linear-token",
+      "account": "phariyawit"
+    },
+    "dotfile_fallback": "~/.aegis/secrets/linear.env",
+    "env_var": "LINEAR_API_TOKEN"
+  },
+  "workspace": {
+    "id": "d8514367-cdf8-4854-aba0-86d290c822d9",
+    "url_key": "phariyawit",
+    "name": "phariyawit",
+    "url": "https://linear.app/phariyawit"
+  },
+  "viewer": {
+    "id": "403ca896-ba25-47db-a8b8-e5e358d96b86",
+    "email": "mr.phariyawit@gmail.com",
+    "display_name": "mr.phariyawit",
+    "admin": true
+  },
+  "team": {
+    "id": "ca61fa5d-0a57-4dd7-98ee-561c77051f6d",
+    "key": "PHA",
+    "name": "Phariyawit",
+    "timezone": "Asia/Bangkok"
+  },
+  "project": {
+    "id": "2a751598-088d-42ad-919c-33954d12b019",
+    "name": "AEGIS-Team",
+    "name_from": "git_remote_slug",
+    "auto_create_on_first_sync": true,
+    "description_template": "Auto-synced from AEGIS framework kanban.md\n\nRepo: {git_remote_url}\nDo not edit manually — AEGIS is single writer.",
+    "throwaway": false,
+    "shared_with": null,
+    "_note": "On first sync, sets id+name from git remote slug. If shared_with is set, uses that project instead (for PoC repos). If throwaway=true, skips Linear sync entirely."
+  },
+  "sprint_mapping": {
+    "strategy": "project_milestone",
+    "_why_not_cycles": "Linear Cycles are team-level. With 1 team + N repos, cycles leak issues across projects. Milestones are project-scoped — clean isolation.",
+    "milestone_name_format": "{sprint_id}",
+    "milestone_description_template": "AEGIS Sprint {sprint_id}\nGoal: {goal}\nCapacity: {capacity}pt\nKanban: {kanban_url}"
+  },
+  "state_map": {
+    "_comment": "AEGIS kanban column → Linear workflow state UUID",
+    "BACKLOG": {
+      "id": "b8ff736b-ad3e-4b2b-81bc-b688f28cdb2b",
+      "name": "Backlog",
+      "type": "backlog"
+    },
+    "TODO": {
+      "id": "b78c0852-89d6-4340-ad78-6c33d2f493a0",
+      "name": "Todo",
+      "type": "unstarted"
+    },
+    "IN_PROGRESS": {
+      "id": "3720df13-4d13-453f-9f71-50f21ae8952d",
+      "name": "In Progress",
+      "type": "started"
+    },
+    "IN_REVIEW": {
+      "id": "27225a67-e14d-44d7-92aa-81c73e711e04",
+      "name": "In Review",
+      "type": "started"
+    },
+    "QA": {
+      "id": "27225a67-e14d-44d7-92aa-81c73e711e04",
+      "name": "In Review",
+      "type": "started",
+      "_alias_note": "no dedicated QA state in Linear; aliased to In Review + qa label"
+    },
+    "DONE": {
+      "id": "ccf75bac-4466-4e08-9879-722e9c5f785b",
+      "name": "Done",
+      "type": "completed"
+    }
+  },
+  "labels": {
+    "existing": {
+      "Bug": "9a705511-62d0-4329-aef4-f8222f66a68e",
+      "Improvement": "468bcdd3-3932-4125-bf4d-15a90287a086",
+      "Feature": "3eb9dd09-c2e2-43c6-9d37-4b434ec1f61f"
+    },
+    "to_create": [
+      {
+        "name": "aegis",
+        "color": "#5e6ad2",
+        "purpose": "marks all AEGIS-synced issues"
+      },
+      {
+        "name": "qa",
+        "color": "#f2c94c",
+        "purpose": "QA-pending; pairs with In Review state"
+      }
+    ],
+    "aegis_label_id": null,
+    "qa_label_id": null
+  },
+  "sync_policy": {
+    "direction": "aegis_to_linear_one_way",
+    "source_of_truth": "kanban.md",
+    "conflict_strategy": "aegis_wins",
+    "circular_sync_guard": "<!-- aegis-sync:{story_id} -->",
+    "issue_title_format": "[{story_id}] {title}",
+    "description_footer": "\n\n---\n🤖 Synced from AEGIS · sprint `{sprint_id}` · story `{story_id}` · do not edit manually",
+    "drift_detection": {
+      "enabled": true,
+      "surfaces_in": "/aegis-status",
+      "auto_merge": false
+    }
+  },
+  "rate_limit": {
+    "max_requests_per_minute": 20,
+    "backoff_strategy": "exponential"
+  },
+  "health_check": {
+    "run_on": [
+      "aegis-start",
+      "manual"
+    ],
+    "checks": [
+      {
+        "id": "token_valid",
+        "description": "Token can call /viewer"
+      },
+      {
+        "id": "team_reachable",
+        "description": "Configured team_id resolves"
+      },
+      {
+        "id": "project_exists_or_creatable",
+        "description": "Project exists OR auto-create permission"
+      },
+      {
+        "id": "labels_present",
+        "description": "aegis + qa labels exist (auto-creates)"
+      },
+      {
+        "id": "rate_limit_headroom",
+        "description": "Recent rate-limit consumption < 80%"
+      }
+    ]
+  }
+}
