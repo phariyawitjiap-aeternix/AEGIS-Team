@@ -59,6 +59,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/tools/aegis-brain-graph/hook.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/linear-sync-on-kanban.sh\""
           }
         ]
       },

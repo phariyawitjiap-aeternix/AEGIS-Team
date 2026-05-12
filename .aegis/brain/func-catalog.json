@@ -1256,6 +1256,14 @@
     "description": "Command: /aegis-handoff"
   },
   {
+    "id": "FUNC-C740A1",
+    "name": "/aegis-linear",
+    "source_file": ".claude/commands/aegis-linear.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-linear"
+  },
+  {
     "id": "FUNC-32522B",
     "name": "/aegis-memory",
     "source_file": ".claude/commands/aegis-memory.md",
@@ -1376,6 +1384,14 @@
     "description": "AEGIS Hook — guard-write.sh"
   },
   {
+    "id": "FUNC-9E6CE8",
+    "name": "linear-sync-on-kanban",
+    "source_file": ".claude/hooks/linear-sync-on-kanban.sh",
+    "type": "hook",
+    "module": "MOD-HOOKS",
+    "description": "AEGIS Hook — linear-sync-on-kanban.sh"
+  },
+  {
     "id": "FUNC-22C712",
     "name": "on-stop",
     "source_file": ".claude/hooks/on-stop.sh",
@@ -1414,6 +1430,14 @@
     "type": "hook",
     "module": "MOD-HOOKS",
     "description": "AEGIS Session Start Hook -- Runs on every Claude Code session start"
+  },
+  {
+    "id": "FUNC-4E719D",
+    "name": "_subtype_color",
+    "source_file": "tools/aegis-linear-sync.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-sync"
   },
   {
     "id": "FUNC-13AEBB",
@@ -1558,6 +1582,30 @@
     "type": "bash",
     "module": "MOD-TOOLS",
     "description": "AEGIS Tool — aegis-instinct-promote.sh (S2-05)"
+  },
+  {
+    "id": "FUNC-BA4767",
+    "name": "aegis-linear-bootstrap",
+    "source_file": "tools/aegis-linear-bootstrap.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-linear-bootstrap.sh — Initialize Linear integration in a FRESH repo."
+  },
+  {
+    "id": "FUNC-EB0969",
+    "name": "aegis-linear-setup",
+    "source_file": "tools/aegis-linear-setup.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-linear-setup.sh — Bootstrap and verify the AEGIS ↔ Linear connection."
+  },
+  {
+    "id": "FUNC-DE7001",
+    "name": "aegis-linear-sync",
+    "source_file": "tools/aegis-linear-sync.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-linear-sync.sh — One-way sync from kanban.md → Linear (issues + state)."
   },
   {
     "id": "FUNC-F64F2B",
@@ -1760,6 +1808,14 @@
     "description": "Internal function in aegis-brain-write"
   },
   {
+    "id": "FUNC-8378B4",
+    "name": "build_issue_description",
+    "source_file": "tools/aegis-linear-sync.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-sync"
+  },
+  {
     "id": "FUNC-DD16C6",
     "name": "categorize_tool",
     "source_file": "tools/aegis-token-profile.sh",
@@ -1824,12 +1880,60 @@
     "description": "Internal function in aegis-instinct-promote"
   },
   {
+    "id": "FUNC-7DBA22",
+    "name": "cmd_close",
+    "source_file": "tools/aegis-linear-sync.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-sync"
+  },
+  {
     "id": "FUNC-FCAA21",
     "name": "cmd_create",
     "source_file": "tools/aegis-instinct-promote.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-instinct-promote"
+  },
+  {
+    "id": "FUNC-A9750C",
+    "name": "cmd_drift",
+    "source_file": "tools/aegis-linear-sync.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-sync"
+  },
+  {
+    "id": "FUNC-95B0DA",
+    "name": "cmd_ensure_milestone",
+    "source_file": "tools/aegis-linear-setup.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-setup"
+  },
+  {
+    "id": "FUNC-AB98F1",
+    "name": "cmd_ensure_project",
+    "source_file": "tools/aegis-linear-setup.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-setup"
+  },
+  {
+    "id": "FUNC-6C7C0B",
+    "name": "cmd_health",
+    "source_file": "tools/aegis-linear-setup.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-setup"
+  },
+  {
+    "id": "FUNC-2D8C38",
+    "name": "cmd_init",
+    "source_file": "tools/aegis-linear-setup.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-setup"
   },
   {
     "id": "FUNC-EDEC83",
@@ -1840,12 +1944,28 @@
     "description": "Internal function in aegis-instinct-promote"
   },
   {
+    "id": "FUNC-9673DD",
+    "name": "cmd_open",
+    "source_file": "tools/aegis-linear-sync.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-sync"
+  },
+  {
     "id": "FUNC-89546D",
     "name": "cmd_promote",
     "source_file": "tools/aegis-instinct-promote.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-instinct-promote"
+  },
+  {
+    "id": "FUNC-21B462",
+    "name": "cmd_push",
+    "source_file": "tools/aegis-linear-sync.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-sync"
   },
   {
     "id": "FUNC-894C08",
@@ -1862,6 +1982,30 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-instinct-promote"
+  },
+  {
+    "id": "FUNC-544320",
+    "name": "cmd_test",
+    "source_file": "tools/aegis-linear-setup.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-setup"
+  },
+  {
+    "id": "FUNC-C986FC",
+    "name": "compute_content_hash",
+    "source_file": "tools/aegis-linear-sync.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-sync"
+  },
+  {
+    "id": "FUNC-BF6396",
+    "name": "config_update",
+    "source_file": "tools/aegis-linear-setup.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-setup"
   },
   {
     "id": "FUNC-A1BC6D",
@@ -1912,6 +2056,14 @@
     "description": "Internal function in aegis-instinct-promote"
   },
   {
+    "id": "FUNC-B0D107",
+    "name": "ensure_label",
+    "source_file": "tools/aegis-linear-sync.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-sync"
+  },
+  {
     "id": "FUNC-A44896",
     "name": "error",
     "source_file": "tools/aegis-upgrade.sh",
@@ -1944,12 +2096,44 @@
     "description": "Internal function in aegis-shell-lint"
   },
   {
+    "id": "FUNC-77B699",
+    "name": "extract_content_hash",
+    "source_file": "tools/aegis-linear-sync.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-sync"
+  },
+  {
     "id": "FUNC-211CF8",
     "name": "extract_t",
     "source_file": "tools/aegis-brain-index.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-brain-index"
+  },
+  {
+    "id": "FUNC-8CF232",
+    "name": "fail",
+    "source_file": "tools/aegis-linear-bootstrap.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-bootstrap"
+  },
+  {
+    "id": "FUNC-0FF46A",
+    "name": "fail",
+    "source_file": "tools/aegis-linear-setup.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-setup"
+  },
+  {
+    "id": "FUNC-67E2EE",
+    "name": "fail",
+    "source_file": "tools/aegis-linear-sync.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-sync"
   },
   {
     "id": "FUNC-801166",
@@ -1968,6 +2152,22 @@
     "description": "Internal function in aegis-instinct-promote"
   },
   {
+    "id": "FUNC-B74446",
+    "name": "find_issue_by_story",
+    "source_file": "tools/aegis-linear-sync.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-sync"
+  },
+  {
+    "id": "FUNC-6F5B6A",
+    "name": "find_issue_by_story_with_label",
+    "source_file": "tools/aegis-linear-sync.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-sync"
+  },
+  {
     "id": "FUNC-E7C672",
     "name": "find_security_match",
     "source_file": "tools/aegis-s204-override.sh",
@@ -1982,6 +2182,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-func-catalog"
+  },
+  {
+    "id": "FUNC-23CACC",
+    "name": "get_issue_label_id",
+    "source_file": "tools/aegis-linear-sync.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-sync"
   },
   {
     "id": "FUNC-790B9C",
@@ -2014,6 +2222,38 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-instinct-promote"
+  },
+  {
+    "id": "FUNC-C20AEB",
+    "name": "git_remote_slug",
+    "source_file": "tools/aegis-linear-setup.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-setup"
+  },
+  {
+    "id": "FUNC-00D5BF",
+    "name": "gql",
+    "source_file": "tools/aegis-linear-bootstrap.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-bootstrap"
+  },
+  {
+    "id": "FUNC-E639C7",
+    "name": "gql",
+    "source_file": "tools/aegis-linear-sync.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-sync"
+  },
+  {
+    "id": "FUNC-193333",
+    "name": "graphql_call",
+    "source_file": "tools/aegis-linear-setup.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-setup"
   },
   {
     "id": "FUNC-0C2A54",
@@ -2112,6 +2352,22 @@
     "description": "Internal function in aegis-func-catalog"
   },
   {
+    "id": "FUNC-32AC82",
+    "name": "load_token",
+    "source_file": "tools/aegis-linear-setup.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-setup"
+  },
+  {
+    "id": "FUNC-4032DC",
+    "name": "load_token",
+    "source_file": "tools/aegis-linear-sync.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-sync"
+  },
+  {
     "id": "FUNC-007124",
     "name": "local_slug_for",
     "source_file": "tools/aegis-design-fetch.sh",
@@ -2142,6 +2398,30 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-fix-task-list-id"
+  },
+  {
+    "id": "FUNC-C45227",
+    "name": "log",
+    "source_file": "tools/aegis-linear-bootstrap.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-bootstrap"
+  },
+  {
+    "id": "FUNC-F61336",
+    "name": "log",
+    "source_file": "tools/aegis-linear-setup.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-setup"
+  },
+  {
+    "id": "FUNC-0579AC",
+    "name": "log",
+    "source_file": "tools/aegis-linear-sync.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-sync"
   },
   {
     "id": "FUNC-DA4D89",
@@ -2200,6 +2480,22 @@
     "description": "Internal function in aegis-merge-worktree"
   },
   {
+    "id": "FUNC-9CEFF7",
+    "name": "main",
+    "source_file": "tools/aegis-linear-setup.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-setup"
+  },
+  {
+    "id": "FUNC-181ABD",
+    "name": "main",
+    "source_file": "tools/aegis-linear-sync.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-sync"
+  },
+  {
     "id": "FUNC-630774",
     "name": "main",
     "source_file": "tools/aegis-s204-override.sh",
@@ -2222,6 +2518,38 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-instinct-promote"
+  },
+  {
+    "id": "FUNC-D5CD1C",
+    "name": "ok",
+    "source_file": "tools/aegis-linear-bootstrap.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-bootstrap"
+  },
+  {
+    "id": "FUNC-6489A9",
+    "name": "ok",
+    "source_file": "tools/aegis-linear-setup.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-setup"
+  },
+  {
+    "id": "FUNC-8F71BC",
+    "name": "ok",
+    "source_file": "tools/aegis-linear-sync.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-sync"
+  },
+  {
+    "id": "FUNC-F3ED19",
+    "name": "parse_sprint",
+    "source_file": "tools/aegis-linear-sync.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-sync"
   },
   {
     "id": "FUNC-DC48E0",
@@ -2254,6 +2582,38 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-log-decision"
+  },
+  {
+    "id": "FUNC-C18683",
+    "name": "push_current",
+    "source_file": "tools/aegis-linear-sync.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-sync"
+  },
+  {
+    "id": "FUNC-DC6331",
+    "name": "require_curl",
+    "source_file": "tools/aegis-linear-setup.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-setup"
+  },
+  {
+    "id": "FUNC-574E43",
+    "name": "require_jq",
+    "source_file": "tools/aegis-linear-setup.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-setup"
+  },
+  {
+    "id": "FUNC-AE490C",
+    "name": "require_python",
+    "source_file": "tools/aegis-linear-setup.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-setup"
   },
   {
     "id": "FUNC-83F09D",
@@ -2310,6 +2670,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-token-profile"
+  },
+  {
+    "id": "FUNC-6C2DFA",
+    "name": "state_id",
+    "source_file": "tools/aegis-linear-bootstrap.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-bootstrap"
   },
   {
     "id": "FUNC-593895",
@@ -2398,6 +2766,30 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-upgrade"
+  },
+  {
+    "id": "FUNC-294D72",
+    "name": "warn",
+    "source_file": "tools/aegis-linear-bootstrap.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-bootstrap"
+  },
+  {
+    "id": "FUNC-20579F",
+    "name": "warn",
+    "source_file": "tools/aegis-linear-setup.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-setup"
+  },
+  {
+    "id": "FUNC-0158CC",
+    "name": "warn",
+    "source_file": "tools/aegis-linear-sync.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-sync"
   },
   {
     "id": "FUNC-2AFAB7",
