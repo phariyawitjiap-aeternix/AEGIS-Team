@@ -991,6 +991,28 @@ echo "      ├── commands/          # 16 canonical commands (legacy shims r
 echo "      ├── hooks/             # 11 hooks (guard-*, session-start, on-stop, etc.)"
 echo "      └── references/        # Protocol + architecture specs"
 echo ""
+
+# ── Post-copy verification: run aegis-doctor.sh on the target install ──────
+# Catches the "wired-but-missing" bug class where a hook orchestrator was
+# copied but its lib/ or tool dependencies were skipped (Auto-Affi bug,
+# 2026-05-13). The doctor is a runtime scanner of every `source` / `node` /
+# `bash` reference inside .claude/hooks/ + .claude/settings.json.
+DOCTOR_SH="${TARGET_DIR}/tools/aegis-doctor.sh"
+if [[ -x "$DOCTOR_SH" ]]; then
+    echo -e "${BLUE}[INFO]${NC} Running post-install doctor check..."
+    if bash "$DOCTOR_SH" "$TARGET_DIR" >/dev/null 2>/tmp/aegis-doctor.out; then
+        echo -e "${GREEN}[OK]${NC} Doctor: all hook + settings references resolve."
+    else
+        echo -e "${YELLOW}[WARN]${NC} Doctor found orphan references — install is incomplete:"
+        sed 's/^/  /' /tmp/aegis-doctor.out
+        echo ""
+        echo -e "${YELLOW}To auto-repair:${NC}"
+        echo "  bash tools/aegis-doctor.sh --fix"
+        echo "  # (uses sibling AEGIS-Team checkout; set AEGIS_SOURCE=/path if non-default)"
+        echo ""
+    fi
+fi
+
 echo -e "${BOLD}Next Steps:${NC}"
 echo "  1. Open the project in Claude Code"
 echo "  2. Run: /aegis-start"
