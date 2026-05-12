@@ -1600,6 +1600,14 @@
     "description": "AEGIS Distill Counter Reset (Sprint v9-06 S6-01 Pattern A)"
   },
   {
+    "id": "FUNC-CFEB90",
+    "name": "aegis-doctor",
+    "source_file": "tools/aegis-doctor.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-doctor.sh — Detect orphan references in AEGIS-installed projects."
+  },
+  {
     "id": "FUNC-B10746",
     "name": "aegis-dump",
     "source_file": "tools/aegis-dump.sh",
@@ -2128,6 +2136,14 @@
     "description": "Internal function in aegis-upgrade"
   },
   {
+    "id": "FUNC-3E3B7E",
+    "name": "detect_source",
+    "source_file": "tools/aegis-doctor.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-doctor"
+  },
+  {
     "id": "FUNC-4E7AC5",
     "name": "do_counter_update",
     "source_file": "tools/aegis-s204-override.sh",
@@ -2230,6 +2246,22 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-linear-sync"
+  },
+  {
+    "id": "FUNC-A1C268",
+    "name": "extract_refs_setting",
+    "source_file": "tools/aegis-doctor.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-doctor"
+  },
+  {
+    "id": "FUNC-EC204B",
+    "name": "extract_refs_sh",
+    "source_file": "tools/aegis-doctor.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-doctor"
   },
   {
     "id": "FUNC-211CF8",
@@ -2648,6 +2680,14 @@
     "description": "Internal function in aegis-s204-override"
   },
   {
+    "id": "FUNC-A3B308",
+    "name": "mark_seen",
+    "source_file": "tools/aegis-doctor.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-doctor"
+  },
+  {
     "id": "FUNC-BB0FEE",
     "name": "ms_now",
     "source_file": "tools/aegis-brain-benchmark.sh",
@@ -2782,6 +2822,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-s204-override"
+  },
+  {
+    "id": "FUNC-9542A5",
+    "name": "scan_script",
+    "source_file": "tools/aegis-doctor.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-doctor"
   },
   {
     "id": "FUNC-DC2033",
@@ -2982,6 +3030,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-upgrade"
+  },
+  {
+    "id": "FUNC-FCD418",
+    "name": "was_seen",
+    "source_file": "tools/aegis-doctor.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-doctor"
   },
   {
     "id": "FUNC-A3A1DC",
