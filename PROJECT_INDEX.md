@@ -1,6 +1,6 @@
 <!-- Auto-generated from .aegis/brain/graph/ — edit topic pages under _aegis-output/wiki/ -->
-<!-- built_at: 2026-05-07T14:43:42.102Z -->
-<!-- node_count: 315 edge_count: 452 -->
+<!-- built_at: 2026-05-12T08:51:21.964Z -->
+<!-- node_count: 327 edge_count: 456 -->
 
 # AEGIS Project Index
 
@@ -91,7 +91,7 @@
 - [v9-05](_aegis-output/wiki/sprint-v9-05.md) — CLOSED · 46pt
 - [v9-06](_aegis-output/wiki/sprint-v9-06.md) — CLOSED
 
-## Tools (16 packages, 85 files)
+## Tools (16 packages, 88 files)
 
 - **_archived** (5 files)
 - **aegis-activity-logger** (3 files)
@@ -108,16 +108,17 @@
 - **aegis-router** (1 files)
 - **aegis-run-logger** (3 files)
 - **aegis-trace-export** (3 files)
-- **misc** (38 files)
+- **misc** (41 files)
 
-## Hooks (15)
+## Hooks (16)
 
-- **PostToolUse** (6)
+- **PostToolUse** (7)
   - `.*` → `node "$CLAUDE_PROJECT_DIR/tools/aegis-activity-logger/log.mjs"`
   - `.*` → `node "$CLAUDE_PROJECT_DIR/tools/aegis-live-tail/emit.mjs"`
   - `.*` → `bash "$CLAUDE_PROJECT_DIR/tools/aegis-token-profile.sh"`
   - `Bash` → `bash "$CLAUDE_PROJECT_DIR/.claude/hooks/run-with-flags.sh" post-tool-use "$CLAUDE_PROJECT_DIR/.claude/hooks/post-tool-use.sh"`
   - `Edit|Write|MultiEdit` → `bash "$CLAUDE_PROJECT_DIR/.claude/hooks/run-with-flags.sh" post-edit-accumulate "$CLAUDE_PROJECT_DIR/.claude/hooks/post-edit-accumulate.sh"`
+  - `Edit|Write|MultiEdit` → `bash "$CLAUDE_PROJECT_DIR/.claude/hooks/linear-sync-on-kanban.sh"`
   - `Edit|Write|MultiEdit` → `bash "$CLAUDE_PROJECT_DIR/tools/aegis-brain-graph/hook.sh"`
 - **PreToolUse** (4)
   - `AskUserQuestion` → `bash "$CLAUDE_PROJECT_DIR/.claude/hooks/run-with-flags.sh" guard-ask-user "$CLAUDE_PROJECT_DIR/.claude/hooks/guard-ask-user.sh"`
