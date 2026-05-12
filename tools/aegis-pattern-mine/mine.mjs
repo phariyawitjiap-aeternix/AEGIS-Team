@@ -61,6 +61,8 @@ function parseArgs(argv) {
     quiet: false,
     json: false,
     excludeTestFixtures: true,
+    auto: false,           // S14-03-02 — scheduled-style gate
+    intervalHours: 168,    // 7 days, mirroring Hermes Curator default
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -73,11 +75,19 @@ function parseArgs(argv) {
       case '--include-test-fixtures': args.excludeTestFixtures = false; break;
       case '--quiet':                 args.quiet = true; break;
       case '--json':                  args.json = true; break;
+      case '--auto':                  args.auto = true; break;
+      case '--interval-hours':        args.intervalHours = Number(argv[++i]); break;
       case '-h':
       case '--help':
         console.log('Usage: mine.mjs [--root <path>] [--min-occurrences N] [--min-sprints N]\n' +
                     '                [--source <tag>] [--out <path>] [--include-test-fixtures]\n' +
-                    '                [--quiet] [--json]');
+                    '                [--auto] [--interval-hours N]\n' +
+                    '                [--quiet] [--json]\n' +
+                    '\n' +
+                    '  --auto             Skip if state file says we ran within interval-hours.\n' +
+                    '                     First observation seeds state + defers one full interval\n' +
+                    '                     (Hermes-pattern first-run defer).\n' +
+                    '  --interval-hours   Min hours between auto-runs (default 168 = 7 days)');
         process.exit(0);
         break;
       default:
@@ -86,6 +96,52 @@ function parseArgs(argv) {
     }
   }
   return args;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// S14-03-02: First-run defer + interval gate (Hermes agent/curator.py pattern)
+//
+// State file: .aegis/brain/state/pattern-miner-state.json
+//   { version: 1, last_run_at: ISO|null, deferred_first_run: bool, run_count: N }
+//
+// --auto behavior:
+//   - State missing → SEED (last_run_at=now, deferred=true), exit 0.
+//   - last_run_at within intervalHours → exit 0 silently.
+//   - last_run_at older than intervalHours → proceed + update state on success.
+// Manual (no --auto) → always runs, never reads/writes state.
+// ─────────────────────────────────────────────────────────────────────────────
+
+function patternMinerStatePath(root) {
+  return path.join(root, '.aegis', 'brain', 'state', 'pattern-miner-state.json');
+}
+
+function loadMinerState(root) {
+  const p = patternMinerStatePath(root);
+  if (!fs.existsSync(p)) return null;
+  try {
+    const parsed = JSON.parse(fs.readFileSync(p, 'utf-8'));
+    return (parsed && typeof parsed === 'object') ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveMinerState(root, state) {
+  const p = patternMinerStatePath(root);
+  fs.mkdirSync(path.dirname(p), { recursive: true });
+  writeAtomic(p, JSON.stringify(state, null, 2) + '\n');
+}
+
+function shouldRunNow(root, intervalHours, nowEpochMs) {
+  const state = loadMinerState(root);
+  if (!state) return { decision: 'seed', state: null };
+  const lastIso = state.last_run_at;
+  if (typeof lastIso !== 'string') return { decision: 'run', state };
+  const lastMs = Date.parse(lastIso);
+  if (Number.isNaN(lastMs)) return { decision: 'run', state };
+  const intervalMs = intervalHours * 3600 * 1000;
+  if ((nowEpochMs - lastMs) >= intervalMs) return { decision: 'run', state };
+  return { decision: 'skip', state, nextRunMs: lastMs + intervalMs };
 }
 
 function isTestFixture(question) {
@@ -171,6 +227,43 @@ function main() {
   const args = parseArgs(process.argv.slice(2));
   const reportPath = args.out || path.join(args.root, '.aegis', 'brain', 'state', 'pattern-mine-report.json');
 
+  // S14-03-02: First-run defer + interval gate (only with --auto)
+  if (args.auto) {
+    const nowMs = Date.now();
+    const gate = shouldRunNow(args.root, args.intervalHours, nowMs);
+    if (gate.decision === 'seed') {
+      const nowIso = new Date(nowMs).toISOString();
+      saveMinerState(args.root, {
+        version: 1,
+        last_run_at: nowIso,
+        deferred_first_run: true,
+        run_count: 0,
+      });
+      if (args.json) {
+        process.stdout.write(JSON.stringify({
+          ok: true, action: 'deferred_first_run',
+          message: `seeded state at ${nowIso}; will run after ${args.intervalHours}h`,
+        }) + '\n');
+      } else if (!args.quiet) {
+        console.log(`mine --auto: deferred first run — seeded state, next run after ${args.intervalHours}h`);
+      }
+      process.exit(0);
+    }
+    if (gate.decision === 'skip') {
+      const nextIso = new Date(gate.nextRunMs).toISOString();
+      if (args.json) {
+        process.stdout.write(JSON.stringify({
+          ok: true, action: 'skip_within_interval',
+          next_run_at: nextIso,
+        }) + '\n');
+      } else if (!args.quiet) {
+        console.log(`mine --auto: skip (next run at ${nextIso})`);
+      }
+      process.exit(0);
+    }
+    // decision === 'run' — fall through to mining + update state on success.
+  }
+
   let clusters;
   try {
     clusters = mine(args);
@@ -205,6 +298,17 @@ function main() {
   // clusters already sorted deterministically).
   const jsonOut = JSON.stringify(report, null, 2) + '\n';
   writeAtomic(reportPath, jsonOut);
+
+  // S14-03-02: Update miner state on successful --auto run
+  if (args.auto) {
+    const prev = loadMinerState(args.root);
+    saveMinerState(args.root, {
+      version: 1,
+      last_run_at: new Date().toISOString(),
+      deferred_first_run: false,
+      run_count: ((prev && prev.run_count) || 0) + 1,
+    });
+  }
 
   if (args.json) {
     process.stdout.write(JSON.stringify({
