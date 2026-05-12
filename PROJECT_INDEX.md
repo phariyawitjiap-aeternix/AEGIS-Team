@@ -1,6 +1,6 @@
 <!-- Auto-generated from .aegis/brain/graph/ — edit topic pages under _aegis-output/wiki/ -->
-<!-- built_at: 2026-05-12T17:25:17.250Z -->
-<!-- node_count: 352 edge_count: 499 -->
+<!-- built_at: 2026-05-12T18:32:01.552Z -->
+<!-- node_count: 353 edge_count: 500 -->
 
 # AEGIS Project Index
 
