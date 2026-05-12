@@ -1,0 +1,99 @@
+name: Supply Chain Audit
+
+# ────────────────────────────────────────────────────────────────────────────
+# Narrow supply-chain scanner. Adapted from Hermes-Agent commit dd0923b
+# (.github/workflows/supply-chain-audit.yml).
+#
+# Sprint: v14-01 (S14-01-03)
+#
+# Discipline (NO-NOISE):
+#   "Low-signal heuristics (plain base64, plain exec/eval, dependency edits,
+#   Actions version unpinning, outbound POST/PUT) were intentionally removed —
+#   they fired on nearly every PR and trained reviewers to ignore the scanner.
+#   Keep this file's checks ruthlessly narrow: if you find yourself adding
+#   WARNING-tier patterns here again, make a separate advisory-only workflow
+#   instead." (Hermes commit dd0923b rationale, adopted verbatim)
+#
+# Scan logic lives in tools/aegis-supply-chain-scan.sh so the same checks
+# run locally via tests/aegis-supply-chain-ci-test.sh.
+# ────────────────────────────────────────────────────────────────────────────
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '**/*.mjs'
+      - '**/*.js'
+      - '**/*.sh'
+      - '**/*.pth'
+      - '**/package.json'
+      - '**/.npmrc'
+      - 'node_modules/**'
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  scan:
+    name: Scan PR for critical supply chain risks
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4 pinned SHA
+        with:
+          fetch-depth: 0
+
+      - name: Run narrow scan
+        id: scan
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -uo pipefail
+
+          BASE="${{ github.event.pull_request.base.sha }}"
+          HEAD="${{ github.event.pull_request.head.sha }}"
+
+          # Run the scan; capture stdout (markdown report) + exit code.
+          REPORT=$(bash tools/aegis-supply-chain-scan.sh "$BASE" "$HEAD") && SCAN_EXIT=0 || SCAN_EXIT=$?
+
+          if [ "$SCAN_EXIT" = "0" ]; then
+            echo "✅ No supply-chain findings"
+            echo "has_findings=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          elif [ "$SCAN_EXIT" = "1" ]; then
+            # Save report for next step to post as PR comment
+            {
+              echo 'report<<__EOF__'
+              echo "$REPORT"
+              echo '__EOF__'
+            } >> "$GITHUB_OUTPUT"
+            echo "has_findings=true" >> "$GITHUB_OUTPUT"
+            # Always exit non-zero on findings — blocks merge.
+            exit 1
+          else
+            echo "❌ Scan failed with exit $SCAN_EXIT (usage error or scanner bug)"
+            exit "$SCAN_EXIT"
+          fi
+
+      - name: Post PR comment with findings
+        if: failure() && steps.scan.outputs.has_findings == 'true'
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea  # v7 pinned SHA
+        env:
+          # Pass the report via env var — github-script's `script:` is a JS
+          # template literal, so embedding the report inline via ${{ }} breaks
+          # whenever the report contains backticks (markdown code fences) or
+          # other JS-significant characters. Env var sidesteps the whole class.
+          SCAN_REPORT: ${{ steps.scan.outputs.report }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const report = process.env.SCAN_REPORT || '';
+            const footer = '\n\n---\n_Posted by .github/workflows/supply-chain-audit.yml. Adapted from Hermes-Agent dd0923b — narrow no-noise discipline._';
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: report + footer
+            });

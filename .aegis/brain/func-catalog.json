@@ -1240,12 +1240,28 @@
     "description": "Command: /aegis-breakdown"
   },
   {
+    "id": "FUNC-00F9B0",
+    "name": "/aegis-decisions",
+    "source_file": ".claude/commands/aegis-decisions.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-decisions"
+  },
+  {
     "id": "FUNC-8362A9",
     "name": "/aegis-deploy",
     "source_file": ".claude/commands/aegis-deploy.md",
     "type": "command",
     "module": "MOD-COMMANDS",
     "description": "Command: /aegis-deploy"
+  },
+  {
+    "id": "FUNC-74AAF6",
+    "name": "/aegis-goal",
+    "source_file": ".claude/commands/aegis-goal.md",
+    "type": "command",
+    "module": "MOD-COMMANDS",
+    "description": "Command: /aegis-goal"
   },
   {
     "id": "FUNC-164964",
@@ -1432,6 +1448,38 @@
     "description": "AEGIS Session Start Hook -- Runs on every Claude Code session start"
   },
   {
+    "id": "FUNC-4237D1",
+    "name": "ADD_FINDING",
+    "source_file": "tools/aegis-supply-chain-scan.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-supply-chain-scan"
+  },
+  {
+    "id": "FUNC-9AA458",
+    "name": "_aegis_is_scan_exempt",
+    "source_file": "tools/aegis-brain-write.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-brain-write"
+  },
+  {
+    "id": "FUNC-F523DC",
+    "name": "_aegis_scan_enabled",
+    "source_file": "tools/aegis-brain-write.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-brain-write"
+  },
+  {
+    "id": "FUNC-55694D",
+    "name": "_aegis_threat_scan",
+    "source_file": "tools/aegis-brain-write.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-brain-write"
+  },
+  {
     "id": "FUNC-4E719D",
     "name": "_subtype_color",
     "source_file": "tools/aegis-linear-sync.sh",
@@ -1512,6 +1560,14 @@
     "description": "AEGIS Contrast Check (S3-06 -- D-037 Fix 3)"
   },
   {
+    "id": "FUNC-CFA3E1",
+    "name": "aegis-decision-search",
+    "source_file": "tools/aegis-decision-search.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "tools/aegis-decision-search.sh"
+  },
+  {
     "id": "FUNC-F876E8",
     "name": "aegis-design-fetch",
     "source_file": "tools/aegis-design-fetch.sh",
@@ -1542,6 +1598,14 @@
     "type": "bash",
     "module": "MOD-TOOLS",
     "description": "AEGIS Distill Counter Reset (Sprint v9-06 S6-01 Pattern A)"
+  },
+  {
+    "id": "FUNC-B10746",
+    "name": "aegis-dump",
+    "source_file": "tools/aegis-dump.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "tools/aegis-dump.sh"
   },
   {
     "id": "FUNC-8B2BEC",
@@ -1640,6 +1704,14 @@
     "description": "AEGIS Pending Items Scanner (dogfood-observation #3 -- spec freshness audit)"
   },
   {
+    "id": "FUNC-99A175",
+    "name": "aegis-pin",
+    "source_file": "tools/aegis-pin.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "tools/aegis-pin.sh"
+  },
+  {
     "id": "FUNC-90A601",
     "name": "aegis-policy-audit",
     "source_file": "tools/aegis-policy-audit.sh",
@@ -1718,6 +1790,14 @@
     "type": "bash",
     "module": "MOD-TOOLS",
     "description": "AEGIS Status Brief"
+  },
+  {
+    "id": "FUNC-45A505",
+    "name": "aegis-supply-chain-scan",
+    "source_file": "tools/aegis-supply-chain-scan.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-supply-chain-scan.sh"
   },
   {
     "id": "FUNC-4A9763",
@@ -1880,6 +1960,14 @@
     "description": "Internal function in aegis-instinct-promote"
   },
   {
+    "id": "FUNC-72EEC5",
+    "name": "cmd_check",
+    "source_file": "tools/aegis-pin.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-pin"
+  },
+  {
     "id": "FUNC-7DBA22",
     "name": "cmd_close",
     "source_file": "tools/aegis-linear-sync.sh",
@@ -1944,12 +2032,28 @@
     "description": "Internal function in aegis-instinct-promote"
   },
   {
+    "id": "FUNC-7FC09E",
+    "name": "cmd_list",
+    "source_file": "tools/aegis-pin.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-pin"
+  },
+  {
     "id": "FUNC-9673DD",
     "name": "cmd_open",
     "source_file": "tools/aegis-linear-sync.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-linear-sync"
+  },
+  {
+    "id": "FUNC-C3EA4A",
+    "name": "cmd_pin",
+    "source_file": "tools/aegis-pin.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-pin"
   },
   {
     "id": "FUNC-89546D",
@@ -1992,6 +2096,14 @@
     "description": "Internal function in aegis-linear-setup"
   },
   {
+    "id": "FUNC-BA011E",
+    "name": "cmd_unpin",
+    "source_file": "tools/aegis-pin.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-pin"
+  },
+  {
     "id": "FUNC-C986FC",
     "name": "compute_content_hash",
     "source_file": "tools/aegis-linear-sync.sh",
@@ -2032,6 +2144,14 @@
     "description": "Internal function in aegis-design-init"
   },
   {
+    "id": "FUNC-2174BB",
+    "name": "emit_filtered",
+    "source_file": "tools/aegis-decision-search.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-decision-search"
+  },
+  {
     "id": "FUNC-462660",
     "name": "emit_tsv",
     "source_file": "tools/aegis-func-catalog.sh",
@@ -2062,6 +2182,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-linear-sync"
+  },
+  {
+    "id": "FUNC-B91CB3",
+    "name": "ensure_pins_file",
+    "source_file": "tools/aegis-pin.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-pin"
   },
   {
     "id": "FUNC-A44896",
@@ -2352,6 +2480,14 @@
     "description": "Internal function in aegis-func-catalog"
   },
   {
+    "id": "FUNC-AB6C45",
+    "name": "key_statu",
+    "source_file": "tools/aegis-dump.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-dump"
+  },
+  {
     "id": "FUNC-32AC82",
     "name": "load_token",
     "source_file": "tools/aegis-linear-setup.sh",
@@ -2422,6 +2558,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-linear-sync"
+  },
+  {
+    "id": "FUNC-605DCC",
+    "name": "log",
+    "source_file": "tools/aegis-pin.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-pin"
   },
   {
     "id": "FUNC-DA4D89",
@@ -2568,6 +2712,14 @@
     "description": "Internal function in aegis-s204-override"
   },
   {
+    "id": "FUNC-791FDA",
+    "name": "pins_json",
+    "source_file": "tools/aegis-pin.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-pin"
+  },
+  {
     "id": "FUNC-0F91BB",
     "name": "preprocess_fts_query",
     "source_file": "tools/aegis-brain-search.sh",
@@ -2704,6 +2856,14 @@
     "description": "Internal function in aegis-brain-search"
   },
   {
+    "id": "FUNC-9124E0",
+    "name": "usage",
+    "source_file": "tools/aegis-decision-search.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-decision-search"
+  },
+  {
     "id": "FUNC-76270C",
     "name": "usage",
     "source_file": "tools/aegis-design-fetch.sh",
@@ -2728,6 +2888,14 @@
     "description": "Internal function in aegis-maintainer-grant"
   },
   {
+    "id": "FUNC-EB0595",
+    "name": "usage",
+    "source_file": "tools/aegis-pin.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-pin"
+  },
+  {
     "id": "FUNC-628BD1",
     "name": "usage",
     "source_file": "tools/aegis-s204-override.sh",
@@ -2736,12 +2904,28 @@
     "description": "Internal function in aegis-s204-override"
   },
   {
+    "id": "FUNC-EA965F",
+    "name": "usage",
+    "source_file": "tools/aegis-supply-chain-scan.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-supply-chain-scan"
+  },
+  {
     "id": "FUNC-DDDCD1",
     "name": "v9-session-start-hook",
     "source_file": "tools/v9-session-start-hook.sh",
     "type": "bash",
     "module": "MOD-TOOLS",
     "description": "AEGIS Session Start Hook -- Runs on every Claude Code session start"
+  },
+  {
+    "id": "FUNC-2E46C8",
+    "name": "valid_axi",
+    "source_file": "tools/aegis-pin.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-pin"
   },
   {
     "id": "FUNC-244D8B",
@@ -2798,5 +2982,13 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-upgrade"
+  },
+  {
+    "id": "FUNC-A3A1DC",
+    "name": "write_pin",
+    "source_file": "tools/aegis-pin.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-pin"
   }
 ]
