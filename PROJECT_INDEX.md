@@ -1,6 +1,6 @@
 <!-- Auto-generated from .aegis/brain/graph/ — edit topic pages under _aegis-output/wiki/ -->
-<!-- built_at: 2026-05-07T14:43:42.102Z -->
-<!-- node_count: 315 edge_count: 452 -->
+<!-- built_at: 2026-05-12T17:25:17.250Z -->
+<!-- node_count: 352 edge_count: 499 -->
 
 # AEGIS Project Index
 
@@ -58,7 +58,7 @@
 - [test-architect](_aegis-output/wiki/skill-test-architect.md) — _standard_
 - [work-breakdown](_aegis-output/wiki/skill-work-breakdown.md) — _standard_
 
-## Sprints (30)
+## Sprints (34)
 
 - [v10-01](_aegis-output/wiki/sprint-v10-01.md) — CLOSED
 - [v10-02](_aegis-output/wiki/sprint-v10-02.md) — CLOSED
@@ -85,19 +85,26 @@
 - [v12-06](_aegis-output/wiki/sprint-v12-06.md) — CLOSED · 5pt
 - [v13-01-refactor](_aegis-output/wiki/sprint-v13-01-refactor.md) — CLOSED · 24pt
 - [v13-02-cleanup](_aegis-output/wiki/sprint-v13-02-cleanup.md) — CLOSED
+- [v14-01-command-discipline](_aegis-output/wiki/sprint-v14-01-command-discipline.md) — CLOSED
+- [v14-02-brain-safety-nets](_aegis-output/wiki/sprint-v14-02-brain-safety-nets.md) — CLOSED
+- [v14-03-operations-hardening](_aegis-output/wiki/sprint-v14-03-operations-hardening.md) — CLOSED
+- [v14-04-persistent-goals-poc](_aegis-output/wiki/sprint-v14-04-persistent-goals-poc.md) — CLOSED
 - [v9-02](_aegis-output/wiki/sprint-v9-02.md) — CLOSED
 - [v9-03](_aegis-output/wiki/sprint-v9-03.md) — CLOSED
 - [v9-04](_aegis-output/wiki/sprint-v9-04.md) — CLOSED · 14pt
 - [v9-05](_aegis-output/wiki/sprint-v9-05.md) — CLOSED · 46pt
 - [v9-06](_aegis-output/wiki/sprint-v9-06.md) — CLOSED
 
-## Tools (16 packages, 85 files)
+## Tools (19 packages, 99 files)
 
 - **_archived** (5 files)
 - **aegis-activity-logger** (3 files)
 - **aegis-approval-gate** (5 files)
+- **aegis-brain-checkpoint** (3 files)
 - **aegis-brain-graph** (6 files)
+- **aegis-commands** (2 files)
 - **aegis-doc-canon** (3 files)
+- **aegis-goal** (2 files)
 - **aegis-issue-thread** (1 files)
 - **aegis-live-tail** (4 files)
 - **aegis-multi-tenant** (1 files)
@@ -108,16 +115,17 @@
 - **aegis-router** (1 files)
 - **aegis-run-logger** (3 files)
 - **aegis-trace-export** (3 files)
-- **misc** (38 files)
+- **misc** (45 files)
 
-## Hooks (15)
+## Hooks (16)
 
-- **PostToolUse** (6)
+- **PostToolUse** (7)
   - `.*` → `node "$CLAUDE_PROJECT_DIR/tools/aegis-activity-logger/log.mjs"`
   - `.*` → `node "$CLAUDE_PROJECT_DIR/tools/aegis-live-tail/emit.mjs"`
   - `.*` → `bash "$CLAUDE_PROJECT_DIR/tools/aegis-token-profile.sh"`
   - `Bash` → `bash "$CLAUDE_PROJECT_DIR/.claude/hooks/run-with-flags.sh" post-tool-use "$CLAUDE_PROJECT_DIR/.claude/hooks/post-tool-use.sh"`
   - `Edit|Write|MultiEdit` → `bash "$CLAUDE_PROJECT_DIR/.claude/hooks/run-with-flags.sh" post-edit-accumulate "$CLAUDE_PROJECT_DIR/.claude/hooks/post-edit-accumulate.sh"`
+  - `Edit|Write|MultiEdit` → `bash "$CLAUDE_PROJECT_DIR/.claude/hooks/linear-sync-on-kanban.sh"`
   - `Edit|Write|MultiEdit` → `bash "$CLAUDE_PROJECT_DIR/tools/aegis-brain-graph/hook.sh"`
 - **PreToolUse** (4)
   - `AskUserQuestion` → `bash "$CLAUDE_PROJECT_DIR/.claude/hooks/run-with-flags.sh" guard-ask-user "$CLAUDE_PROJECT_DIR/.claude/hooks/guard-ask-user.sh"`

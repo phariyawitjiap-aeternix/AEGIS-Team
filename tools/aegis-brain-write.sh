@@ -33,6 +33,105 @@ BRAIN_DIR="${REPO_ROOT}/.aegis/brain"
 SYNC_SCRIPT="${SCRIPT_DIR}/aegis-brain-sync.sh"
 LOG_FILE="${BRAIN_DIR}/logs/activity.log"
 
+# --- Threat scan (S14-01-02 — Hermes parity) ---
+# Adapted from Hermes tools/memory_tool.py:_MEMORY_THREAT_PATTERNS.
+# Scans content before write to block prompt injection / exfiltration / persistence
+# patterns from being baked into the brain (which gets injected into system prompts).
+#
+# Returns 0 if content is clean, 1 if blocked (with error to stderr).
+# Honors `# scan-exempt: <reason>` first-line opt-out.
+
+# 12 threat patterns (mirrors patterns: section of aegis-brain-threat-patterns.yaml)
+# Format: "id|pattern" — checked case-insensitively against content.
+_aegis_threat_patterns=(
+    "prompt_injection|ignore[[:space:]]+(previous|all|above|prior)[[:space:]]+instructions"
+    "role_hijack|you[[:space:]]+are[[:space:]]+now[[:space:]]+"
+    "deception_hide|do[[:space:]]+not[[:space:]]+tell[[:space:]]+the[[:space:]]+user"
+    "sys_prompt_override|system[[:space:]]+prompt[[:space:]]+override"
+    "disregard_rules|disregard[[:space:]]+(your|all|any)[[:space:]]+(instructions|rules|guidelines)"
+    "bypass_restrictions|act[[:space:]]+as[[:space:]]+(if|though)[[:space:]]+you[[:space:]]+(have[[:space:]]+no|don.{1,2}t[[:space:]]+have)[[:space:]]+(restrictions|limits|rules)"
+    "exfil_curl|curl[[:space:]]+[^[:space:]]*\\\$\\{?[a-zA-Z_]*(KEY|TOKEN|SECRET|PASSWORD|CREDENTIAL|API)"
+    "exfil_wget|wget[[:space:]]+[^[:space:]]*\\\$\\{?[a-zA-Z_]*(KEY|TOKEN|SECRET|PASSWORD|CREDENTIAL|API)"
+    "read_secrets|cat[[:space:]]+[^[:space:]]*(\\.env|credentials|\\.netrc|\\.pgpass|\\.npmrc|\\.pypirc)"
+    "ssh_backdoor|authorized_keys"
+    "ssh_access|\\\$HOME/\\.ssh/|~/\\.ssh/"
+    "aegis_env|(\\\$HOME|~)/\\.aegis/[^[:space:]]*\\.env"
+)
+
+# 10 invisible Unicode codepoints (mirrors invisible_chars: section).
+# We check via `grep -P` PCRE if available, else fall back to printf+sed.
+_aegis_invisible_chars=(
+    $'\xe2\x80\x8b'  # U+200B  zero-width space
+    $'\xe2\x80\x8c'  # U+200C  zero-width non-joiner
+    $'\xe2\x80\x8d'  # U+200D  zero-width joiner
+    $'\xe2\x81\xa0'  # U+2060  word joiner
+    $'\xef\xbb\xbf'  # U+FEFF  BOM / zero-width no-break space
+    $'\xe2\x80\xaa'  # U+202A  LRE
+    $'\xe2\x80\xab'  # U+202B  RLE
+    $'\xe2\x80\xac'  # U+202C  PDF
+    $'\xe2\x80\xad'  # U+202D  LRO
+    $'\xe2\x80\xae'  # U+202E  RLO
+)
+
+# Globally allow disabling the scan via env var (rare — for CI fixtures).
+# Default: enabled.
+_aegis_scan_enabled() {
+    [[ "${AEGIS_BRAIN_SCAN_DISABLED:-}" != "1" ]]
+}
+
+# Check if content is exempt (first line matches `# scan-exempt: <reason>`).
+_aegis_is_scan_exempt() {
+    local content="$1"
+    local first_line
+    first_line="$(printf '%s' "$content" | head -n1)"
+    [[ "$first_line" =~ ^[[:space:]]*#[[:space:]]*scan-exempt:[[:space:]]+.+ ]]
+}
+
+# Run the scan. Echoes block reason to stderr + returns 1 if blocked, 0 if clean.
+_aegis_threat_scan() {
+    local content="$1"
+    local rel_path="${2:-(unknown)}"
+
+    _aegis_scan_enabled || return 0
+
+    if _aegis_is_scan_exempt "$content"; then
+        # Honored opt-out — log to activity but allow.
+        if [[ -d "$(dirname "${LOG_FILE}")" ]]; then
+            local ts
+            ts=$(date -u +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || echo "unknown")
+            echo "[${ts}] [TOOL:brain-write] scan-exempt honored for ${rel_path}" >> "${LOG_FILE}" 2>/dev/null || true
+        fi
+        return 0
+    fi
+
+    # Pattern check (case-insensitive ERE).
+    for spec in "${_aegis_threat_patterns[@]}"; do
+        local pid="${spec%%|*}"
+        local pattern="${spec#*|}"
+        if printf '%s' "$content" | grep -E -i -q "$pattern"; then
+            echo "BLOCKED: brain content matches threat pattern '${pid}'" >&2
+            echo "        Path:    .aegis/brain/${rel_path}" >&2
+            echo "        Pattern: ${pattern}" >&2
+            echo "        Brain content is injected into the system prompt; injection/exfil/persistence patterns are not allowed." >&2
+            echo "        If this is a legitimate write (e.g., learnings/ documenting a past attack), prepend:" >&2
+            echo "            # scan-exempt: <one-line reason>" >&2
+            return 1
+        fi
+    done
+
+    # Invisible-char check.
+    for ch in "${_aegis_invisible_chars[@]}"; do
+        if printf '%s' "$content" | grep -F -q "$ch"; then
+            echo "BLOCKED: brain content contains invisible Unicode character" >&2
+            echo "        Path: .aegis/brain/${rel_path}" >&2
+            echo "        Invisible characters can hide injection payloads from human review." >&2
+            return 1
+        fi
+    done
+
+    return 0
+}
+
 # --- Library functions (available when sourced) ---
 
 # Write a file to the brain, regenerate MEMORY.md, log the write
@@ -49,6 +148,11 @@ brain_write() {
     # Ensure parent directory exists
     if [[ ! -d "$dir" ]]; then
         mkdir -p "$dir"
+    fi
+
+    # Step 0 (S14-01-02): threat scan before any disk write.
+    if ! _aegis_threat_scan "$content" "$rel_path"; then
+        return 1
     fi
 
     # Step 1: Write to file (authoritative, per ADR-002)
@@ -95,6 +199,14 @@ brain_append() {
     # Ensure parent directory exists
     if [[ ! -d "$dir" ]]; then
         mkdir -p "$dir"
+    fi
+
+    # Step 0 (S14-01-02): threat scan on appended content too.
+    # Logs (logs/* paths) skip scan — they are append-heavy and don't go into prompts.
+    if [[ "$rel_path" != logs/* ]]; then
+        if ! _aegis_threat_scan "$content" "$rel_path"; then
+            return 1
+        fi
     fi
 
     # Step 1: Append to file (printf for echo-flag safety; append need not be atomic)

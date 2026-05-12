@@ -1,7 +1,7 @@
-<!-- version: 1.0.1 -->
-<!-- Last updated: 2026-05-06 -->
+<!-- version: 1.1.0 -->
+<!-- Last updated: 2026-05-12 -->
 
-Last reviewed: 2026-05-06
+Last reviewed: 2026-05-12
 
 # AEGIS Architecture
 
@@ -15,6 +15,7 @@ Last reviewed: 2026-05-06
 |------|---------|--------|
 | 2026-05-06 | 1.0.0 | Initial ARCHITECTURE authored as part of sprint-v12-01. Captures repo layout, concern→path map, hook DAG, brain ingestion DAG. Pre-graph (graph DAG arrives in v12-04). |
 | 2026-05-06 | 1.0.1 | Added §6.1 (Skill Frontmatter Schema) pointer for sprint-v12-03; backfill tool + manifest documented at `tools/aegis-doc-canon/skill-schema.md`. |
+| 2026-05-12 | 1.1.0 | v14 Hermes parity series CLOSED. Concern→File map updated with 8 new concerns: command registry SSOT, brain threat scan, brain checkpoint, decision search, aegis-dump, pattern-miner scheduling, pin 2-axis, persistent goals POC, supply-chain CI. Slash command count 14→16 (+aegis-decisions, +aegis-goal). |
 
 ---
 
@@ -81,13 +82,21 @@ If you're changing **<concern>**, edit **<file/dir>**.
 
 | Concern | Path |
 |---------|------|
-| **Adding a slash command** | `.claude/commands/<name>.md` (12-canonical-only, no shims) |
+| **Adding a slash command** | `tools/aegis-commands/registry.mjs` (SSOT, 16 entries as of v14-04) + `.claude/commands/<name>.md` |
 | **Adding a skill** | `skills/<name>.md` + register in `CLAUDE_skills.md` |
 | **Adding an agent persona** | `.claude/agents/<name>.md` + roster in `CLAUDE_agents.md` |
 | **Wiring a new hook** | `.claude/settings.json` `hooks` section + script in `.claude/hooks/` or `tools/<pkg>/` |
 | **Approval gate rules** | `.aegis/brain/gate-rules.yaml` (consumed by `tools/aegis-approval-gate/check.mjs`) |
 | **Model routing policy** | `.aegis/brain/routing/policy.yaml` (consumed by `tools/aegis-router/`) |
 | **PII redaction patterns** | `.aegis/brain/redaction/patterns.yaml` (consumed by `tools/aegis-trace-export`) |
+| **Brain content threat scan** (v14-01) | `tools/aegis-brain-threat-patterns.yaml` (consumed by `tools/aegis-brain-write.sh:_aegis_threat_scan`) |
+| **Brain mutation rollback** (v14-02) | `tools/aegis-brain-checkpoint/{store,snapshot,rollback}.sh` → `.aegis/.brain-checkpoints/store/` (real git repo) |
+| **Decision audit search** (v14-02) | `tools/aegis-decision-search.sh` (wraps `aegis-brain-search.sh --type decisions`) |
+| **Setup summary for support** (v14-03) | `tools/aegis-dump.sh` (paste-safe, `--show-keys`, `--json`) |
+| **Pattern-miner scheduling** (v14-03) | `tools/aegis-pattern-mine/mine.mjs --auto --interval-hours N` → `.aegis/brain/state/pattern-miner-state.json` |
+| **Pinning instincts/skills** (v14-03) | `tools/aegis-pin.sh {pin,unpin,list,check} <type> <id> [--axis delete\|change\|both]` → `.aegis/brain/pins.json` |
+| **Persistent goals POC** (v14-04) | `tools/aegis-goal/{judge,state}.sh` + `/aegis-goal` command (heuristic mode; LLM mode gated on measurement campaign) |
+| **Supply-chain CI** (v14-01) | `.github/workflows/supply-chain-audit.yml` + `tools/aegis-supply-chain-scan.sh` (narrow, no-noise) |
 | **Sprint open** | `.aegis/brain/sprints/sprint-<id>/plan.md` + new row in `roadmap.md` |
 | **Sprint close** | `.aegis/brain/sprints/sprint-<id>/close.md` + status flip in `roadmap.md` |
 | **Per-agent permissions** | Agent's frontmatter `permissions:` block in `.claude/agents/<name>.md` (sprint v10-09 pattern) |

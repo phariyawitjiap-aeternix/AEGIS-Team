@@ -1,0 +1,65 @@
+# aegis-brain-threat-patterns.yaml
+# ────────────────────────────────────────────────────────────────────────────
+# Threat patterns scanned before any write to .aegis/brain/*.
+# Adapted verbatim from Hermes-Agent tools/memory_tool.py:_MEMORY_THREAT_PATTERNS
+# (commit dd0923b, 2026-05-12) plus 10 invisible-character codepoints.
+#
+# Sprint:    v14-01 (S14-01-02)
+# Source:    https://github.com/NousResearch/hermes-agent/blob/main/tools/memory_tool.py
+#
+# Why scan brain writes:
+#   Brain content gets injected into the system prompt (via MEMORY.md) on every
+#   session-start. A poisoned brain can prompt-inject the next session's agent.
+#   This is the same threat model Hermes solved for MEMORY.md/USER.md.
+#
+# Opt-out: any file starting with `# scan-exempt: <reason>` skips scanning.
+#          Use sparingly — typical legitimate use is `learnings/` documenting
+#          past prompt-injection incidents (where the pattern itself is the lesson).
+#
+# Pattern format: ERE (POSIX extended regex), case-insensitive.
+# Keys are stable identifiers used in error messages — do not rename without
+# updating tests/aegis-brain-threat-scan-test.sh.
+
+patterns:
+  # ── Prompt injection ──────────────────────────────────────────────────────
+  prompt_injection:    'ignore[[:space:]]+(previous|all|above|prior)[[:space:]]+instructions'
+  role_hijack:         'you[[:space:]]+are[[:space:]]+now[[:space:]]+'
+  deception_hide:      'do[[:space:]]+not[[:space:]]+tell[[:space:]]+the[[:space:]]+user'
+  sys_prompt_override: 'system[[:space:]]+prompt[[:space:]]+override'
+  disregard_rules:     'disregard[[:space:]]+(your|all|any)[[:space:]]+(instructions|rules|guidelines)'
+  bypass_restrictions: 'act[[:space:]]+as[[:space:]]+(if|though)[[:space:]]+you[[:space:]]+(have[[:space:]]+no|don.{1,2}t[[:space:]]+have)[[:space:]]+(restrictions|limits|rules)'
+
+  # ── Exfiltration via shell ────────────────────────────────────────────────
+  exfil_curl:    'curl[[:space:]]+[^[:space:]]*\$\{?[a-zA-Z_]*(KEY|TOKEN|SECRET|PASSWORD|CREDENTIAL|API)'
+  exfil_wget:    'wget[[:space:]]+[^[:space:]]*\$\{?[a-zA-Z_]*(KEY|TOKEN|SECRET|PASSWORD|CREDENTIAL|API)'
+  read_secrets:  'cat[[:space:]]+[^[:space:]]*(\.env|credentials|\.netrc|\.pgpass|\.npmrc|\.pypirc)'
+
+  # ── Persistence ───────────────────────────────────────────────────────────
+  ssh_backdoor:  'authorized_keys'
+  ssh_access:    '\$HOME/\.ssh/|~/\.ssh/'
+  # Note: aegis_env adapted from Hermes hermes_env (which targets .hermes/.env specifically).
+  # Original was too broad and tripped on benign documentation refs like
+  # ~/.aegis-plus/projects.yaml or ~/.aegis/state/foo.json.
+  # Narrowed to require '.env' anywhere in path after .aegis/ — matches exfil
+  # intent without false-positives on path documentation.
+  aegis_env:     '(\$HOME|~)/\.aegis/[^[:space:]]*\.env'
+
+# ── Invisible unicode characters (zero-width / RTL override / BOM) ──────────
+# Each blocked individually — presence ANYWHERE in content is rejected.
+# Hex codepoints, used by aegis-brain-write.sh's invisible-char scan.
+invisible_chars:
+  - U+200B   # zero-width space
+  - U+200C   # zero-width non-joiner
+  - U+200D   # zero-width joiner
+  - U+2060   # word joiner
+  - U+FEFF   # zero-width no-break space (BOM)
+  - U+202A   # LRE — left-to-right embedding
+  - U+202B   # RLE — right-to-left embedding
+  - U+202C   # PDF — pop directional formatting
+  - U+202D   # LRO — left-to-right override
+  - U+202E   # RLO — right-to-left override
+
+# ── Opt-out marker ───────────────────────────────────────────────────────────
+# Files whose FIRST LINE is exactly this format skip the scan.
+# Reason text is captured in the activity log when scan-exempt is honored.
+exempt_marker: '^#[[:space:]]*scan-exempt:[[:space:]]+.+'
