@@ -2584,14 +2584,6 @@
     "description": "Internal function in aegis-log-decision"
   },
   {
-    "id": "FUNC-C18683",
-    "name": "push_current",
-    "source_file": "tools/aegis-linear-sync.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-linear-sync"
-  },
-  {
     "id": "FUNC-DC6331",
     "name": "require_curl",
     "source_file": "tools/aegis-linear-setup.sh",
