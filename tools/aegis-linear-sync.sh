@@ -57,6 +57,86 @@ gql() {
     --data "$payload"
 }
 
+# ─── Label management (idempotent) ─────────────────────────────────────────
+# Linear team labels are global per team. We cache id→name in a tmp file
+# per script run to avoid 1 query per issue.
+_LABEL_CACHE="/tmp/aegis-linear-labels.$$.json"
+
+# Subtype color hex map for auto-created labels
+_subtype_color() {
+  case "$1" in
+    build)        printf '#10b981' ;;   # emerald
+    design|ui)    printf '#bb87fc' ;;   # purple
+    test)         printf '#f59e0b' ;;   # amber
+    docs)         printf '#0ea5e9' ;;   # sky
+    devops)       printf '#06b6d4' ;;   # cyan
+    review)       printf '#ec4899' ;;   # pink
+    research)     printf '#a855f7' ;;   # violet
+    orchestrate)  printf '#5e6ad2' ;;   # linear-purple
+    data)         printf '#84cc16' ;;   # lime
+    content)      printf '#f472b6' ;;   # rose
+    refactor)     printf '#fb923c' ;;   # orange
+    scout)        printf '#94a3b8' ;;   # slate
+    *)            printf '#94a3b8' ;;
+  esac
+}
+
+# Ensure a label exists in the team; return its id
+ensure_label() {
+  local name="$1" color="$2"
+  local team_id
+  team_id="$(jq -r '.team.id' "$CONFIG_PATH")"
+
+  # Refresh cache once per run
+  if [[ ! -f "$_LABEL_CACHE" ]]; then
+    local resp
+    resp="$(gql "{ team(id: \"$team_id\") { labels { nodes { id name } } } }")"
+    echo "$resp" | jq -c '[.data.team.labels.nodes[]? | {(.name): .id}] | add // {}' > "$_LABEL_CACHE"
+  fi
+
+  local cached
+  cached="$(jq -r --arg n "$name" '.[$n] // empty' "$_LABEL_CACHE")"
+  if [[ -n "$cached" ]]; then
+    printf '%s' "$cached"
+    return 0
+  fi
+
+  # Create
+  local mut='mutation L($input: IssueLabelCreateInput!) { issueLabelCreate(input: $input) { success issueLabel { id name } } }'
+  local vars
+  vars="$(jq -nc --arg n "$name" --arg t "$team_id" --arg c "$color" '{input: {name:$n, teamId:$t, color:$c}}')"
+  local resp
+  resp="$(gql "$mut" "$vars")"
+  if echo "$resp" | jq -e '.errors' >/dev/null 2>&1; then
+    warn "label create failed for '$name': $(echo "$resp" | jq -c '.errors')"
+    printf ''
+    return 1
+  fi
+  local lid
+  lid="$(echo "$resp" | jq -r '.data.issueLabelCreate.issueLabel.id')"
+  # Update cache
+  local tmp
+  tmp="$(mktemp)"
+  jq --arg n "$name" --arg id "$lid" '. + {($n): $id}' "$_LABEL_CACHE" > "$tmp" && mv "$tmp" "$_LABEL_CACHE"
+  log "  + label created: $name"
+  printf '%s' "$lid"
+}
+
+# Get label IDs for an issue (aegis + subtype label)
+get_issue_label_ids() {
+  local subtype="$1"
+  local aegis_id subtype_id
+  aegis_id="$(ensure_label "aegis" "#5e6ad2")"
+  local ids=()
+  [[ -n "$aegis_id" ]] && ids+=("$aegis_id")
+  if [[ -n "$subtype" && "$subtype" != "general" ]]; then
+    subtype_id="$(ensure_label "subtype:$subtype" "$(_subtype_color "$subtype")")"
+    [[ -n "$subtype_id" ]] && ids+=("$subtype_id")
+  fi
+  # Output as JSON array
+  printf '%s\n' "${ids[@]:-}" | jq -R . | jq -sc '[ .[] | select(. != "") ]'
+}
+
 # Parse kanban.md + plan.md → rich JSON with sprint goal + per-story descriptions + subtype
 # Returns: { goal, source, stories: [{section, story_id, title, agent, subtype, points, pr, description}] }
 parse_sprint() {
@@ -285,6 +365,22 @@ find_issue_by_story() {
   '
 }
 
+# Same as find_issue_by_story but includes labels in the result
+find_issue_by_story_with_labels() {
+  local project_id="$1" story_id="$2"
+  local q='query F($pid: String!) { project(id: $pid) { issues { nodes { id identifier title description state { id name } labels { nodes { id name } } } } } }'
+  local v
+  v="$(jq -nc --arg p "$project_id" '{pid: $p}')"
+  local resp
+  resp="$(gql "$q" "$v")"
+  echo "$resp" | jq --arg s "$story_id" -c '
+    [.data.project.issues.nodes[]?
+      | select(.description != null and (.description | test("aegis-sync:" + $s + "[ -]")))]
+    | sort_by(.identifier | capture("(?<n>[0-9]+)$") | .n | tonumber)
+    | .[0] // empty
+  '
+}
+
 cmd_open() {
   local sprint_id="${1:-}"
   [[ -n "$sprint_id" ]] || fail "open requires <sprint_id>"
@@ -341,31 +437,44 @@ cmd_open() {
     local desc
     desc="$(build_issue_description "$sprint_id" "$goal" "$row")"
 
-    # Check if exists
+    # Build label IDs (aegis + subtype:<value>)
+    local subtype
+    subtype="$(echo "$row" | jq -r '.subtype // ""')"
+    local label_ids
+    label_ids="$(get_issue_label_ids "$subtype")"
+
+    # Check if exists (with labels for diff detection)
     local existing
-    existing="$(find_issue_by_story "$project_id" "$story_id")"
+    existing="$(find_issue_by_story_with_labels "$project_id" "$story_id")"
 
     if [[ -n "$existing" ]]; then
-      local iid cur_state cur_desc cur_hash new_hash
+      local iid cur_state cur_desc cur_hash new_hash cur_label_ids
       iid="$(echo "$existing" | jq -r '.id')"
       cur_state="$(echo "$existing" | jq -r '.state.id')"
       cur_desc="$(echo "$existing" | jq -r '.description // ""')"
       cur_hash="$(extract_content_hash "$cur_desc")"
       new_hash="$(compute_content_hash "$sprint_id" "$goal" "$row")"
+      cur_label_ids="$(echo "$existing" | jq -c '[.labels.nodes[].id] | sort')"
+      # UNION: preserve user-added labels; ensure aegis + subtype are present
+      local expected_label_ids
+      expected_label_ids="$(jq -nc --argjson cur "$cur_label_ids" --argjson new "$label_ids" '($cur + $new) | unique | sort')"
 
-      local need_state=false need_desc=false
+      local need_state=false need_desc=false need_labels=false
       [[ "$cur_state" != "$state_id" ]] && need_state=true
       [[ "$cur_hash" != "$new_hash" ]] && need_desc=true
+      [[ "$cur_label_ids" != "$expected_label_ids" ]] && need_labels=true
 
-      if $need_state || $need_desc; then
+      if $need_state || $need_desc || $need_labels; then
+        # Build update fields — include only what needs changing (Linear labelIds is a SET op)
         local fields="{}"
-        if $need_state && $need_desc; then
-          fields="$(jq -nc --arg sid "$state_id" --arg d "$desc" --arg t "$issue_title" \
-                    '{stateId:$sid, description:$d, title:$t}')"
-        elif $need_state; then
-          fields="$(jq -nc --arg sid "$state_id" '{stateId:$sid}')"
-        else
-          fields="$(jq -nc --arg d "$desc" --arg t "$issue_title" '{description:$d, title:$t}')"
+        if $need_state; then
+          fields="$(echo "$fields" | jq --arg s "$state_id" '. + {stateId:$s}')"
+        fi
+        if $need_desc; then
+          fields="$(echo "$fields" | jq --arg d "$desc" --arg t "$issue_title" '. + {description:$d, title:$t}')"
+        fi
+        if $need_labels; then
+          fields="$(echo "$fields" | jq --argjson lids "$expected_label_ids" '. + {labelIds:$lids}')"
         fi
         local mut='mutation U($id: String!, $input: IssueUpdateInput!) { issueUpdate(id: $id, input: $input) { success } }'
         local vars
@@ -378,13 +487,14 @@ cmd_open() {
         fi
         $need_state && { updated_state=$((updated_state+1)); log "  ↻ $story_id state → $state_col"; }
         $need_desc  && { updated_desc=$((updated_desc+1));   log "  ✎ $story_id description refreshed"; }
+        $need_labels && { log "  🏷️  $story_id labels updated"; }
       else
         skipped=$((skipped+1))
       fi
       continue
     fi
 
-    # Create new issue
+    # Create new issue (with labels)
     local mut='mutation C($input: IssueCreateInput!) { issueCreate(input: $input) { success issue { id identifier url } } }'
     local vars
     vars="$(jq -nc \
@@ -394,13 +504,15 @@ cmd_open() {
       --arg proj "$project_id" \
       --arg ms "$milestone_id" \
       --arg state "$state_id" \
+      --argjson lids "$label_ids" \
       '{input: {
         title: $title,
         description: $desc,
         teamId: $team,
         projectId: $proj,
         projectMilestoneId: $ms,
-        stateId: $state
+        stateId: $state,
+        labelIds: $lids
       }}')"
     local resp
     resp="$(gql "$mut" "$vars")"

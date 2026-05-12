@@ -276,59 +276,145 @@ cmd_ensure_milestone() {
   project_id="$(jq -r '.project.id' "$CONFIG_PATH")"
   [[ "$project_id" != "null" && -n "$project_id" ]] || fail "project.id missing after ensure-project"
 
+  local sprint_dir="${REPO_ROOT}/.aegis/brain/sprints/${sprint_id}"
+
+  # Build rich milestone description from plan.md + close.md + kanban.md
+  local rich_data
+  rich_data="$(python3 - "$sprint_id" "$sprint_dir" <<'PY'
+import sys, re, json, hashlib, pathlib
+sprint_id = sys.argv[1]
+sd = pathlib.Path(sys.argv[2])
+plan = (sd / 'plan.md').read_text(errors='ignore') if (sd / 'plan.md').exists() else ''
+kban = (sd / 'kanban.md').read_text(errors='ignore') if (sd / 'kanban.md').exists() else ''
+close = (sd / 'close.md').read_text(errors='ignore') if (sd / 'close.md').exists() else ''
+
+def field(text, name):
+    m = re.search(rf'^\*\*{re.escape(name)}\*\*:\s*(.+?)$', text, re.MULTILINE)
+    return m.group(1).strip() if m else ''
+
+def section(text, header):
+    # Capture content under "## Header" until next "## " or EOF
+    m = re.search(rf'^## {re.escape(header)}\s*$\n(.*?)(?=\n## |\Z)', text, re.MULTILINE | re.DOTALL)
+    return m.group(1).strip() if m else ''
+
+# Pull data
+goal_section_text = section(plan, 'Goal') or field(kban, 'Goal') or '_(no Goal section in plan.md)_'
+status         = field(plan, 'Status') or field(close, 'Status') or '_(unknown)_'
+date_opened    = field(plan, 'Date opened') or ''
+date_closed    = field(close, 'Date closed') or ''
+total_points   = field(plan, 'Total points') or ''
+source         = field(plan, 'Source') or ''
+predecessor    = field(plan, 'Predecessor') or ''
+
+stories_table = section(plan, 'Stories') or section(plan, 'Stories (one PR each — small, sequential)') or ''
+acceptance    = section(plan, 'Acceptance Criteria') or ''
+deferred      = section(plan, 'Deferred to backlog') or section(plan, 'Stretch deferred') or ''
+
+# Close summary if present
+sprint_goal_achieved = section(close, 'Sprint goal achieved') or ''
+prs_landed           = field(close, 'PRs landed') or ''
+
+# Target date priority: close.md Date closed → plan.md Date target → opened + 7d
+target_date = date_closed or field(plan, 'Date target') or ''
+if not target_date and date_opened:
+    try:
+        from datetime import datetime, timedelta
+        d = datetime.strptime(date_opened, '%Y-%m-%d')
+        target_date = (d + timedelta(days=7)).strftime('%Y-%m-%d')
+    except Exception:
+        pass
+
+# Content hash for idempotency
+canonical = json.dumps({
+    'goal': goal_section_text, 'status': status,
+    'date_opened': date_opened, 'date_closed': date_closed,
+    'total_points': total_points, 'source': source, 'predecessor': predecessor,
+    'stories_table': stories_table, 'acceptance': acceptance, 'deferred': deferred,
+    'sprint_goal_achieved': sprint_goal_achieved, 'prs_landed': prs_landed,
+}, sort_keys=True, ensure_ascii=False)
+chash = hashlib.sha1(canonical.encode()).hexdigest()[:10]
+
+# Build description sections
+parts = []
+parts.append('## 🎯 Goal\n' + goal_section_text)
+
+status_lines = []
+status_lines.append(f"- **Sprint Status**: {status}")
+if date_opened: status_lines.append(f"- **Date Opened**: {date_opened}")
+if date_closed: status_lines.append(f"- **Date Closed**: {date_closed}")
+if total_points: status_lines.append(f"- **Total Points**: {total_points}")
+if predecessor: status_lines.append(f"- **Predecessor**: {predecessor}")
+if source: status_lines.append(f"- **Source**: {source}")
+parts.append('## 📌 Status\n' + '\n'.join(status_lines))
+
+if stories_table:
+    parts.append('## 📋 Stories\n' + stories_table)
+
+if acceptance:
+    parts.append('## ✅ Acceptance Criteria\n' + acceptance)
+
+if sprint_goal_achieved or prs_landed:
+    out_lines = []
+    if sprint_goal_achieved: out_lines.append('### Goal achieved\n' + sprint_goal_achieved)
+    if prs_landed: out_lines.append(f"### PRs landed\n{prs_landed}")
+    parts.append('## 🚢 Outcomes\n' + '\n\n'.join(out_lines))
+
+if deferred:
+    parts.append('## 📦 Deferred / Stretch\n' + deferred)
+
+parts.append(f"## 📂 Source\n- Plan: `.aegis/brain/sprints/{sprint_id}/plan.md`\n- Kanban: `.aegis/brain/sprints/{sprint_id}/kanban.md`" + (f"\n- Close: `.aegis/brain/sprints/{sprint_id}/close.md`" if close else ''))
+
+parts.append(f"---\n🤖 Synced from AEGIS · do not edit manually\n<!-- aegis-milestone-sync:{sprint_id} v={chash} -->")
+
+desc = '\n\n'.join(parts)
+
+print(json.dumps({
+    'description': desc,
+    'target_date': target_date,
+    'hash': chash,
+}, ensure_ascii=False))
+PY
+)"
+
+  local desc target_date new_hash
+  desc="$(echo "$rich_data" | jq -r '.description')"
+  target_date="$(echo "$rich_data" | jq -r '.target_date')"
+  new_hash="$(echo "$rich_data" | jq -r '.hash')"
+
   # Check existing milestones
   local resp
-  resp="$(graphql_call "{ project(id: \"$project_id\") { projectMilestones { nodes { id name targetDate } } } }")"
-  local existing
-  existing="$(echo "$resp" | jq -r --arg n "$sprint_id" '.data.project.projectMilestones.nodes[] | select(.name == $n) | .id' | head -n1)"
+  resp="$(graphql_call "{ project(id: \"$project_id\") { projectMilestones { nodes { id name targetDate description } } } }")"
+  local existing existing_id existing_desc cur_hash
+  existing="$(echo "$resp" | jq -c --arg n "$sprint_id" '.data.project.projectMilestones.nodes[] | select(.name == $n)' | head -n1)"
   if [[ -n "$existing" ]]; then
-    log "Milestone '$sprint_id' already exists (id=$existing) — skip"
-    printf '%s' "$existing"
+    existing_id="$(echo "$existing" | jq -r '.id')"
+    existing_desc="$(echo "$existing" | jq -r '.description // ""')"
+    cur_hash="$(printf '%s' "$existing_desc" | grep -oE 'aegis-milestone-sync:[^ ]+ v=[a-f0-9]+' | head -n1 | sed 's/.*v=//')"
+    if [[ "$cur_hash" == "$new_hash" ]]; then
+      log "Milestone '$sprint_id' up-to-date (hash=$new_hash) — skip"
+      printf '%s' "$existing_id"
+      return 0
+    fi
+    # Update description
+    log "Updating milestone '$sprint_id' description (hash $cur_hash → $new_hash)"
+    local mut='mutation U($id: String!, $input: ProjectMilestoneUpdateInput!) { projectMilestoneUpdate(id: $id, input: $input) { success } }'
+    local vars
+    if [[ -n "$target_date" ]]; then
+      vars="$(jq -nc --arg id "$existing_id" --arg d "$desc" --arg t "$target_date" \
+                '{id: $id, input: {description: $d, targetDate: $t}}')"
+    else
+      vars="$(jq -nc --arg id "$existing_id" --arg d "$desc" \
+                '{id: $id, input: {description: $d}}')"
+    fi
+    resp="$(graphql_call "$mut" "$vars")"
+    if echo "$resp" | jq -e '.errors' >/dev/null 2>&1; then
+      warn "milestone update failed: $(echo "$resp" | jq -c '.errors')"
+    else
+      ok "Refreshed milestone: $sprint_id"
+    fi
+    printf '%s' "$existing_id"
     return 0
   fi
-
-  # Read sprint plan/close for goal/capacity/dates
-  local sprint_dir="${REPO_ROOT}/.aegis/brain/sprints/${sprint_id}"
-  local plan="${sprint_dir}/plan.md"
-  local close="${sprint_dir}/close.md"
-  local goal="(plan.md missing or no Goal section)"
-  local capacity=""
-  local target_date=""
-
-  if [[ -f "$plan" ]]; then
-    # Goal: first non-blank line under "## Goal" header
-    goal="$(awk '/^## Goal/{flag=1; next} flag && NF>0 && !/^##/{print; exit}' "$plan" 2>/dev/null || true)"
-    [[ -z "$goal" ]] && goal="(no Goal section in plan.md)"
-    # Capacity from "**Total points**: Npt"
-    capacity="$(grep -iE '^\*\*Total points\*\*:' "$plan" 2>/dev/null | head -n1 | sed -E 's/.*: *([0-9]+)pt.*/\1/' || true)"
-  fi
-
-  # Target date priority: close.md Date closed → plan.md Date target → plan.md Date opened + 7d
-  if [[ -f "$close" ]]; then
-    target_date="$(grep -iE '^\*\*Date closed\*\*:' "$close" 2>/dev/null | head -n1 | sed -E 's/.*: *([0-9]{4}-[0-9]{2}-[0-9]{2}).*/\1/' || true)"
-  fi
-  if [[ -z "$target_date" && -f "$plan" ]]; then
-    target_date="$(grep -iE '^\*\*Date target\*\*:' "$plan" 2>/dev/null | head -n1 | sed -E 's/.*: *([0-9]{4}-[0-9]{2}-[0-9]{2}).*/\1/' || true)"
-    if [[ -z "$target_date" ]]; then
-      local opened
-      opened="$(grep -iE '^\*\*Date opened\*\*:' "$plan" 2>/dev/null | head -n1 | sed -E 's/.*: *([0-9]{4}-[0-9]{2}-[0-9]{2}).*/\1/' || true)"
-      if [[ -n "$opened" ]]; then
-        target_date="$(date -j -v+7d -f '%Y-%m-%d' "$opened" '+%Y-%m-%d' 2>/dev/null || echo "$opened")"
-      fi
-    fi
-  fi
-
-  local cap_line
-  if [[ -n "$capacity" ]]; then cap_line="Capacity: ${capacity}pt"; else cap_line="Capacity: (not declared)"; fi
-  local date_line
-  if [[ -n "$target_date" ]]; then date_line="Target date: ${target_date}"; else date_line="Target date: (none)"; fi
-
-  local desc
-  desc="AEGIS Sprint ${sprint_id}
-Goal: ${goal}
-${cap_line}
-${date_line}
-Kanban: .aegis/brain/sprints/${sprint_id}/kanban.md"
 
   log "Creating milestone '$sprint_id' in project $project_id (targetDate=${target_date:-none})"
   local mutation='mutation Create($input: ProjectMilestoneCreateInput!) { projectMilestoneCreate(input: $input) { success projectMilestone { id name } } }'
