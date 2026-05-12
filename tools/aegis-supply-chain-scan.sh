@@ -73,17 +73,27 @@ case "$1" in
         MODE="git"
         BASE="$1"
         HEAD="$2"
-        # Exclude tests/ + close.md sprint docs from the scan — those legitimately
-        # contain bad patterns as STRING fixtures + retrospective discussion (e.g.
-        # "TC15 false-positive on eval()"). Scanning them would create perpetual
-        # false-positives + the exact "reviewers ignore the scanner" failure mode
-        # Hermes commit dd0923b warned against.
-        DIFF_BODY="$(git diff "$BASE..$HEAD" -- . ':!*.lock' ':!package-lock.json' ':!yarn.lock' ':!tests/*' ':!.aegis/brain/sprints/*' ':!.aegis/brain/learnings/*' 2>/dev/null || true)"
+        # Exclude tests/ + sprint/learnings docs + the scanner itself from the
+        # scan — those legitimately contain bad patterns as STRING fixtures,
+        # retrospective discussion (e.g. "TC15 false-positive on eval()"), or
+        # the scanner's own ADD_FINDING messages describing what it looks for.
+        # Scanning them creates perpetual self-detection + the exact "reviewers
+        # ignore the scanner" failure mode Hermes commit dd0923b warned against.
+        DIFF_BODY="$(git diff "$BASE..$HEAD" -- . \
+            ':!*.lock' ':!package-lock.json' ':!yarn.lock' \
+            ':!tests/*' \
+            ':!.aegis/brain/sprints/*' \
+            ':!.aegis/brain/learnings/*' \
+            ':!.aegis/brain/retrospectives/*' \
+            ':!.aegis/brain/handoffs/*' \
+            ':!tools/aegis-supply-chain-scan.sh' \
+            ':!.github/workflows/supply-chain-audit.yml' \
+            2>/dev/null || true)"
         NAMES=()
         while IFS= read -r line; do
             [ -n "$line" ] && NAMES+=("$line")
         done < <(git diff --name-only "$BASE..$HEAD" 2>/dev/null \
-                 | grep -vE '^tests/|^\.aegis/brain/sprints/|^\.aegis/brain/learnings/' \
+                 | grep -vE '^tests/|^\.aegis/brain/(sprints|learnings|retrospectives|handoffs)/|^tools/aegis-supply-chain-scan\.sh$|^\.github/workflows/supply-chain-audit\.yml$' \
                  || true)
         ;;
 esac
