@@ -48,6 +48,16 @@ Agent ตัวไหนอ่านไฟล์นี้ตรงก็ได�
 - **Blocks**: shell-footgun-scan job is currently advisory; will catch new bugs but won't block merge until added to required contexts
 - **Raised**: 2026-05-07T16:10:35Z
 - **Resolved**: _(pending)_
+
+### [2026-05-12] EXTERNAL — Decide Linear free-plan cleanup vs upgrade (16 sprints blocked) / ตัดสินใจ Linear free-plan — ล้าง demo projects หรือ upgrade (16 sprints ค้าง)
+
+- **EN**: Linear free plan cap 250 issues/workspace hit during AEGIS-Team back-fill. 50/120 stories synced (19/35 milestones). Blocked sprints: v9-01..06, v10-01/02/08, v12-02..06, v13-01-refactor, v13-02-cleanup. Options: (a) delete 8 unused demo projects in Linear UI to free ~24 slots, (b) delete new-project-99 demo, (c) request free trial from sales@linear.app, (d) accept partial coverage. AEGIS sync code is correct (v3 marker verified 0 collisions) — this is a Linear quota issue, not a code bug.
+- **TH**: Linear free plan ชน cap 250 issues ระหว่าง back-fill. ทำได้ 50/120 stories (19/35 milestones). Sprint ที่ยังว่าง: v9-01..06, v10-01/02/08, v12-02..06, v13-01-refactor, v13-02-cleanup. ทางเลือก: (a) ลบ 8 demo projects ใน Linear UI ปลดล็อก ~24 slots, (b) ลบ new-project-99 demo, (c) ติดต่อ sales@linear.app ขอ free trial, (d) รับสภาพปัจจุบัน. โค้ด sync ถูกแล้ว (v3 marker ตรวจสอบแล้ว 0 collisions) — เป็นปัญหา quota ของ Linear ไม่ใช่ bug.
+- **Category**: External access
+- **Raised by**: claude
+- **Blocks**: back-fill 16 remaining sprint milestones in AEGIS-Team Linear project
+- **Raised**: 2026-05-12T09:05:37Z
+- **Resolved**: _(pending)_
 <!-- PENDING_END -->
 
 ---
