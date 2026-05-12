@@ -80,14 +80,20 @@ jobs:
       - name: Post PR comment with findings
         if: failure() && steps.scan.outputs.has_findings == 'true'
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea  # v7 pinned SHA
+        env:
+          # Pass the report via env var — github-script's `script:` is a JS
+          # template literal, so embedding the report inline via ${{ }} breaks
+          # whenever the report contains backticks (markdown code fences) or
+          # other JS-significant characters. Env var sidesteps the whole class.
+          SCAN_REPORT: ${{ steps.scan.outputs.report }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const report = `${{ steps.scan.outputs.report }}`;
-            const body = `${report}\n\n---\n_Posted by [supply-chain-audit.yml](.github/workflows/supply-chain-audit.yml). Adapted from [Hermes-Agent dd0923b](https://github.com/NousResearch/hermes-agent/blob/main/.github/workflows/supply-chain-audit.yml) — narrow no-noise discipline._`;
+            const report = process.env.SCAN_REPORT || '';
+            const footer = '\n\n---\n_Posted by .github/workflows/supply-chain-audit.yml. Adapted from Hermes-Agent dd0923b — narrow no-noise discipline._';
             await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body
+              body: report + footer
             });

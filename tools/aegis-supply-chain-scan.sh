@@ -73,11 +73,18 @@ case "$1" in
         MODE="git"
         BASE="$1"
         HEAD="$2"
-        DIFF_BODY="$(git diff "$BASE..$HEAD" -- . ':!*.lock' ':!package-lock.json' ':!yarn.lock' 2>/dev/null || true)"
+        # Exclude tests/ + close.md sprint docs from the scan — those legitimately
+        # contain bad patterns as STRING fixtures + retrospective discussion (e.g.
+        # "TC15 false-positive on eval()"). Scanning them would create perpetual
+        # false-positives + the exact "reviewers ignore the scanner" failure mode
+        # Hermes commit dd0923b warned against.
+        DIFF_BODY="$(git diff "$BASE..$HEAD" -- . ':!*.lock' ':!package-lock.json' ':!yarn.lock' ':!tests/*' ':!.aegis/brain/sprints/*' ':!.aegis/brain/learnings/*' 2>/dev/null || true)"
         NAMES=()
         while IFS= read -r line; do
             [ -n "$line" ] && NAMES+=("$line")
-        done < <(git diff --name-only "$BASE..$HEAD" 2>/dev/null || true)
+        done < <(git diff --name-only "$BASE..$HEAD" 2>/dev/null \
+                 | grep -vE '^tests/|^\.aegis/brain/sprints/|^\.aegis/brain/learnings/' \
+                 || true)
         ;;
 esac
 

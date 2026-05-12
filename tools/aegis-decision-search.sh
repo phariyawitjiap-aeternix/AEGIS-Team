@@ -115,11 +115,18 @@ SEARCH_ARGS=(--type decisions --limit "$LIMIT")
 # Always pull JSON from brain-search so we can post-filter by source.
 SEARCH_ARGS+=(--json)
 
-# Call brain-search and post-filter
-RAW=$(bash "$BRAIN_SEARCH" "${SEARCH_ARGS[@]}" "$QUERY" 2>/dev/null) || {
-  echo "Error: brain-search failed (is the index built? run: bash tools/aegis-brain-index.sh --incremental)" >&2
-  exit 1
-}
+# Call brain-search and post-filter. If brain-search fails (e.g., index
+# not yet built), treat as "no results" rather than propagating the error —
+# this keeps the wrapper friendly to fresh checkouts + CI.
+RAW=$(bash "$BRAIN_SEARCH" "${SEARCH_ARGS[@]}" "$QUERY" 2>/dev/null)
+search_rc=$?
+if [[ "$search_rc" -ne 0 ]]; then
+  if [[ "$FORMAT" != "json" ]]; then
+    echo "No matching decisions${SOURCE_FILTER:+ (source=$SOURCE_FILTER)} for query: $QUERY"
+    echo "(brain index may not be built — run: bash tools/aegis-brain-index.sh --incremental)" >&2
+  fi
+  exit 0
+fi
 
 # Each line is a JSON object with at minimum: rank, source_type, source_path, line_number, snippet, ts
 # We need to extract the source field from the original log entry. We do that by re-reading

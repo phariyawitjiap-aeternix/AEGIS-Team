@@ -43,7 +43,8 @@ for section in "version:" "git:" "counts:" "brain:" "keys:" "recent_activity:"; 
 done
 
 # TC3: --json emits valid JSON with required shape
-json_out=$(bash "$DUMP" --json 2>&1)
+# Route stderr to /dev/null so stray warnings don't pollute the JSON stream
+json_out=$(bash "$DUMP" --json 2>/dev/null)
 if echo "$json_out" | node -e "
 const d = JSON.parse(require('fs').readFileSync(0, 'utf-8'));
 if (!d.version || !d.counts || !d.brain || !d.keys) {

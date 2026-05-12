@@ -81,7 +81,11 @@ TOOL_COUNT=$(find tools -maxdepth 1 -type f -name "*.sh" 2>/dev/null | wc -l | t
 
 # Brain stats
 BRAIN_SPRINT_COUNT=$(ls -d .aegis/brain/sprints/sprint-* 2>/dev/null | wc -l | tr -d ' ')
-DECISION_COUNT=$(wc -l < .aegis/brain/logs/decision-audit.log 2>/dev/null | tr -d ' ' || echo 0)
+DECISION_COUNT=0
+if [[ -f .aegis/brain/logs/decision-audit.log ]]; then
+    DECISION_COUNT=$(wc -l < .aegis/brain/logs/decision-audit.log 2>/dev/null | tr -d ' ')
+    DECISION_COUNT="${DECISION_COUNT:-0}"
+fi
 LEARNING_COUNT=$(find .aegis/brain/learnings -type f -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
 HANDOFF_COUNT=$(find .aegis/brain/handoffs -type f -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
 
