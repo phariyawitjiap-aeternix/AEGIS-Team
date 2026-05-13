@@ -56,22 +56,37 @@ After /aegis-start, Nick Fury takes full control:
 Default autonomy: L3 (Autonomous) with Nick Fury active
 
 ## Quick Commands
+
+> **User vs team split** — see [`.claude/references/command-audience.md`](.claude/references/command-audience.md).
+> Humans only need `/aegis-start` + a few others; the team uses the rest internally. The full surface below is the *team's* tool catalog, not a user manual.
+
+### User-facing (5 — the entire human-facing surface)
+
 | Command | Purpose |
 |---------|---------|
-| /aegis-start | Begin session -- Nick Fury activates |
-| /aegis-status | Check all agent progress (+ grand total %, team chat tail) |
-| /aegis-retro | End session -- retrospective + lessons |
-| /aegis-handoff | Save handoff for next session |
+| /aegis-start | Begin session — the team takes over |
+| /aegis-status | Quick health snapshot mid-session |
+| /aegis-mode | Switch autonomy level or profile |
+| /aegis-handoff | Save state before quitting |
+| /aegis-upgrade | Framework maintenance (rare) |
+
+### Team-facing (11 — invoked autonomously by Nick Fury / Captain America / personas)
+
+| Command | Purpose |
+|---------|---------|
 | /aegis-sprint | Sprint lifecycle (plan/standup/review/retro/status/close) |
+| /aegis-breakdown | Decompose stories into tasks |
 | /aegis-pipeline | Full analysis pipeline (--qa, --flow modes) |
 | /aegis-team | Spawn a team (build / review / debate) |
-| /aegis-breakdown | Decompose stories into tasks |
 | /aegis-verify | Run verification pipeline (--doctor mode) |
-| /aegis-deploy | Deploy pipeline (--launch mode) |
+| /aegis-deploy | Deploy pipeline (--launch mode, gated on human approval) |
+| /aegis-retro | Session/sprint retrospective + lessons |
 | /aegis-memory | Memory management (--adr, --instinct, --distill, --evolve, --ingest, --lint, --iso modes) |
-| /aegis-mode | Switch autonomy level or profile |
+| /aegis-linear | Kanban → Linear one-way mirror (auto-fired after kanban writes) |
+| /aegis-goal | Set explicit completion condition (CC 2.1.139+ wrapping; transparent inside /aegis-start) |
+| /aegis-decisions | FTS query over decision-audit log |
 
-> Legacy shims removed in v10-05. 12 canonical commands above are the full set.
+> 16 canonical commands total. Legacy shims removed in v10-05.
 
 ## Applying AEGIS to Other Projects
 See [`docs/AEGIS_APPLICATION_PLAYBOOK.md`](docs/AEGIS_APPLICATION_PLAYBOOK.md) for a step-by-step guide covering brain seeding, persona assembly, CLAUDE.md tailoring, BLOCK 0 bootstrap, and a greenfield React app walkthrough.
