@@ -100,4 +100,43 @@ if [[ "$NEW_COUNT" -ge "$DISTILL_THRESHOLD" ]] 2>/dev/null; then
     fi
 fi
 
+# ── v15-07: First-session / no-sprint detection (Sprint Plan Gate Reminder) ──
+# Catches the empirical gap where /aegis-start should chain into /aegis-sprint
+# plan but the executor sometimes shortcuts (creates kanban directly without
+# the ISO 29110 ceremony). Banner explicitly tells Nick Fury "Read + execute
+# aegis-sprint.md plan subcommand verbatim, do not shortcut".
+SPRINT_DIR="${BRAIN_DIR}/sprints"
+SPRINT_GATE_NEEDED=false
+if [[ -d "$SPRINT_DIR" ]]; then
+    SPRINT_COUNT=$(find "$SPRINT_DIR" -mindepth 1 -maxdepth 1 -type d -name 'sprint-*' 2>/dev/null | wc -l | tr -d ' ')
+    if [[ "${SPRINT_COUNT:-0}" -eq 0 ]]; then
+        SPRINT_GATE_NEEDED=true
+    fi
+fi
+if [[ "$SPRINT_GATE_NEEDED" == "true" ]]; then
+    cat >&2 <<'BANNER'
+
+╭──────────────────────────────────────────────────────────────────────────╮
+│ ⚠️  AEGIS sprint-plan gate                                                │
+│                                                                          │
+│  No sprint directory exists yet under .aegis/brain/sprints/sprint-*      │
+│  AEGIS pipeline requires Sprint Planning BEFORE any task enters          │
+│  IN_PROGRESS (BLOCK 0D).                                                 │
+│                                                                          │
+│  Nick Fury MUST:                                                         │
+│    1. Read .claude/commands/aegis-sprint.md                              │
+│    2. Locate ### Subcommand: Sprint Planning                             │
+│    3. Execute Steps 1–9 verbatim (do NOT shortcut — anti-pattern)        │
+│    4. Coulson generates ISO 29110 work products in parallel              │
+│    5. Return to /aegis-start flow after Display Summary step             │
+│                                                                          │
+│  Anti-pattern banned: "I'll just create kanban.md inline" — that         │
+│  skips 8+ audit artifacts. Always run the full ceremony.                 │
+╰──────────────────────────────────────────────────────────────────────────╯
+BANNER
+    if [[ -d "$(dirname "${LOG_FILE}")" ]]; then
+        echo "[${TIMESTAMP}] [HOOK:session-start] sprint-plan-gate-needed dir=${SPRINT_DIR}" >> "${LOG_FILE}" 2>/dev/null || true
+    fi
+fi
+
 exit 0
