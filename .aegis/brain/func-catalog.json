@@ -1480,6 +1480,14 @@
     "description": "Internal function in aegis-brain-write"
   },
   {
+    "id": "FUNC-063743",
+    "name": "_fetch_all_project_issue",
+    "source_file": "tools/aegis-linear-sync.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-linear-sync"
+  },
+  {
     "id": "FUNC-4E719D",
     "name": "_subtype_color",
     "source_file": "tools/aegis-linear-sync.sh",
