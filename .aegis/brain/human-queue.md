@@ -38,16 +38,6 @@ Agent ตัวไหนอ่านไฟล์นี้ตรงก็ได�
 
 ## 🔔 Pending / รอดำเนินการ
 
-<!-- PENDING_START -->
-### [2026-05-07] EXTERNAL — Add shell-footgun-scan to required-status-checks on main / เพิ่ม shell-footgun-scan เข้า required checks ของ main
-
-- **EN**: PR #151 wires aegis-shell-footgun-scan.sh into the lint workflow. Check is registering as 'shell footgun scan (cross-platform bash patterns)' and passing on first run. To make it a hard merge gate (not just advisory), need to PATCH branch protection with the new context name. Run: gh api -X PATCH repos/phariyawitjiap-aeternix/AEGIS-Team/branches/main/protection/required_status_checks --input <full JSON in close-followup commit msg>. This is a separate External Access action from the initial Tier-1 enable already approved.
-- **TH**: PR #151 ผูก aegis-shell-footgun-scan เข้า lint workflow แล้ว — check ผ่าน first run แล้ว แต่ตอนนี้เป็น advisory ถ้าจะให้บล็อก merge ต้อง PATCH branch protection เพิ่มชื่อ check เข้า required list (External Access เพิ่มเติม นอกเหนือจาก Tier-1 ครั้งแรก)
-- **Category**: External access
-- **Raised by**: thor
-- **Blocks**: shell-footgun-scan job is currently advisory; will catch new bugs but won't block merge until added to required contexts
-- **Raised**: 2026-05-07T16:10:35Z
-- **Resolved**: _(pending)_
 <!-- PENDING_END -->
 
 ---
@@ -65,6 +55,16 @@ Agent ตัวไหนอ่านไฟล์นี้ตรงก็ได�
 - **Blocks**: back-fill 16 remaining sprint milestones in AEGIS-Team Linear project
 - **Raised**: 2026-05-12T09:05:37Z
 - **Resolved**: 2026-05-13T08:51:15Z — Cleanup done 2026-05-13: deleted 11 demo projects + new-project-99 (12 total, freed 25 active issue slots). User authorized via 'ทั้งหมด' message. Back-fill attempt revealed sync code has a marker-matching bug (creates duplicates from prior-version markers) — separate issue, captured in new learning. Linear quota decision (upgrade or not) is moot for now: AEGIS-Team has 19 milestones synced, which the user accepts.
+
+### [2026-05-07] EXTERNAL — Add shell-footgun-scan to required-status-checks on main / เพิ่ม shell-footgun-scan เข้า required checks ของ main
+
+- **EN**: PR #151 wires aegis-shell-footgun-scan.sh into the lint workflow. Check is registering as 'shell footgun scan (cross-platform bash patterns)' and passing on first run. To make it a hard merge gate (not just advisory), need to PATCH branch protection with the new context name. Run: gh api -X PATCH repos/phariyawitjiap-aeternix/AEGIS-Team/branches/main/protection/required_status_checks --input <full JSON in close-followup commit msg>. This is a separate External Access action from the initial Tier-1 enable already approved.
+- **TH**: PR #151 ผูก aegis-shell-footgun-scan เข้า lint workflow แล้ว — check ผ่าน first run แล้ว แต่ตอนนี้เป็น advisory ถ้าจะให้บล็อก merge ต้อง PATCH branch protection เพิ่มชื่อ check เข้า required list (External Access เพิ่มเติม นอกเหนือจาก Tier-1 ครั้งแรก)
+- **Category**: External access
+- **Raised by**: thor
+- **Blocks**: shell-footgun-scan job is currently advisory; will catch new bugs but won't block merge until added to required contexts
+- **Raised**: 2026-05-07T16:10:35Z
+- **Resolved**: 2026-05-12T19:36:09Z — PATCHed via gh api on 2026-05-13 — added 'shell footgun scan (cross-platform bash patterns)' to required contexts (now 7 required, strict=true). Verified by independent read of /branches/main/protection.
 ### [2026-05-07] EXTERNAL — Enable Tier-1 branch protection on main / เปิด branch protection (Tier-1) บน main
 
 - **EN**: Per sprint-v13-02 AI-3: main has no protection rules — explains the v13-01 'merge through red CI' pattern that hid the install-v11 brain-graph delivery bug for ~1 month. Run the gh API call in .aegis/brain/sprints/sprint-v13-02-cleanup/ai-3-branch-protection-audit.md to enable Tier-1 (status checks required, no force-push, no main-deletion, admins still allowed override).
