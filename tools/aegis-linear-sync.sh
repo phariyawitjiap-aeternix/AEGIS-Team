@@ -443,6 +443,65 @@ print(hashlib.sha1(canonical.encode('utf-8')).hexdigest()[:10])
 PY
 }
 
+# ─── Paginated issue fetcher ──────────────────────────────────────────────
+# Linear paginates project issues at 50 by default (max 250 per page).
+# Without explicit pagination, find_issue_by_story only searches the first
+# page and misses matches beyond cursor 50 — causing duplicate creates.
+# (Root cause of the dedup bug captured in learnings/2026-05-13.)
+#
+# _fetch_all_project_issues fetches ALL issues via cursor pagination and
+# caches per (project_id, run) to avoid redundant API calls within one sync.
+_ISSUE_CACHE_DIR="/tmp/aegis-linear-issues.$$"
+
+_fetch_all_project_issues() {
+  local project_id="$1" fields="$2"
+  local cache_file="${_ISSUE_CACHE_DIR}/${project_id}-${fields//[^a-zA-Z0-9]/_}.json"
+
+  # Return cached result if available (same script run = same PID)
+  if [[ -f "$cache_file" ]]; then
+    cat "$cache_file"
+    return
+  fi
+
+  mkdir -p "$_ISSUE_CACHE_DIR"
+
+  local all_nodes="[]"
+  local cursor=""
+  local has_next=true
+  local page=0
+
+  while [[ "$has_next" == "true" ]]; do
+    page=$((page + 1))
+    local after_clause=""
+    [[ -n "$cursor" ]] && after_clause=", after: \"$cursor\""
+
+    local q="query F(\$pid: String!) { project(id: \$pid) { issues(first: 250${after_clause}) { pageInfo { hasNextPage endCursor } nodes { ${fields} } } } }"
+    local v
+    v="$(jq -nc --arg p "$project_id" '{pid: $p}')"
+    local resp
+    resp="$(gql "$q" "$v")"
+
+    # Append nodes to accumulator
+    local page_nodes
+    page_nodes="$(echo "$resp" | jq -c '[.data.project.issues.nodes[]?]')"
+    all_nodes="$(jq -nc --argjson a "$all_nodes" --argjson b "$page_nodes" '$a + $b')"
+
+    # Check pagination
+    has_next="$(echo "$resp" | jq -r '.data.project.issues.pageInfo.hasNextPage // false')"
+    cursor="$(echo "$resp" | jq -r '.data.project.issues.pageInfo.endCursor // empty')"
+
+    # Safety: cap at 10 pages (2500 issues) to avoid infinite loops
+    if (( page >= 10 )); then
+      warn "pagination safety cap reached (${page} pages, $(echo "$all_nodes" | jq 'length') issues)"
+      break
+    fi
+  done
+
+  # Cache and return
+  echo "$all_nodes" > "$cache_file"
+  cat "$cache_file"
+}
+
 # Find existing issue by (sprint_id, story_id) — looking up the unique aegis-sync
 # marker in the description. The marker carries sprint+story to avoid cross-sprint
 # collision when short IDs (A, B, AI-1, AI-2, etc.) repeat across sprints.
@@ -453,18 +512,20 @@ PY
 #   v3: <!-- aegis-sync:SPRINT_ID/STORY_ID v=HASH --> (CURRENT — sprint-scoped)
 find_issue_by_story() {
   local project_id="$1" story_id="$2" sprint_id="${3:-}"
-  local q='query F($pid: String!) { project(id: $pid) { issues { nodes { id identifier title description state { id name } projectMilestone { id name } } } } }'
-  local v
-  v="$(jq -nc --arg p "$project_id" '{pid: $p}')"
-  local resp
-  resp="$(gql "$q" "$v")"
+  local fields='id identifier title description state { id name } projectMilestone { id name }'
+  local all_nodes
+  all_nodes="$(_fetch_all_project_issues "$project_id" "$fields")"
+
   # Build a regex anchor that requires BOTH sprint and story in the marker
-  # (v3 format). Fall back to story-only for v1/v2 backward compat (rare path).
+  # (v3 format). Fall back to story-only for v1/v2 backward compat.
   local marker="aegis-sync:${sprint_id}/${story_id}[ -]"
   local fallback="aegis-sync:${story_id}[ -]"
-  echo "$resp" | jq --arg new "$marker" --arg old "$fallback" -c '
-    [.data.project.issues.nodes[]?
-      | select(.description != null and (.description | test($new)))]
+  echo "$all_nodes" | jq --arg new "$marker" --arg old "$fallback" -c '
+    . as $all
+    | [.[]? | select(.description != null and (.description | test($new)))]
+    | if length == 0 then
+        [$all[]? | select(.description != null and (.description | test($old)))]
+      else . end
     | sort_by(.identifier | capture("(?<n>[0-9]+)$") | .n | tonumber)
     | .[0] // empty
   '
@@ -473,15 +534,18 @@ find_issue_by_story() {
 # Same as find_issue_by_story but includes labels in the result.
 find_issue_by_story_with_labels() {
   local project_id="$1" story_id="$2" sprint_id="${3:-}"
-  local q='query F($pid: String!) { project(id: $pid) { issues { nodes { id identifier title description state { id name } projectMilestone { id name } labels { nodes { id name } } } } } }'
-  local v
-  v="$(jq -nc --arg p "$project_id" '{pid: $p}')"
-  local resp
-  resp="$(gql "$q" "$v")"
+  local fields='id identifier title description state { id name } projectMilestone { id name } labels { nodes { id name } }'
+  local all_nodes
+  all_nodes="$(_fetch_all_project_issues "$project_id" "$fields")"
+
   local marker="aegis-sync:${sprint_id}/${story_id}[ -]"
-  echo "$resp" | jq --arg new "$marker" -c '
-    [.data.project.issues.nodes[]?
-      | select(.description != null and (.description | test($new)))]
+  local fallback="aegis-sync:${story_id}[ -]"
+  echo "$all_nodes" | jq --arg new "$marker" --arg old "$fallback" -c '
+    . as $all
+    | [.[]? | select(.description != null and (.description | test($new)))]
+    | if length == 0 then
+        [$all[]? | select(.description != null and (.description | test($old)))]
+      else . end
     | sort_by(.identifier | capture("(?<n>[0-9]+)$") | .n | tonumber)
     | .[0] // empty
   '
@@ -709,6 +773,9 @@ cmd_drift() {
 }
 
 main() {
+  # Clean up per-run issue cache on exit
+  trap 'rm -rf "${_ISSUE_CACHE_DIR:-/tmp/aegis-linear-issues.$$}" "${_LABEL_CACHE:-}" 2>/dev/null' EXIT
+
   command -v jq      >/dev/null || fail "jq required (brew install jq)"
   command -v curl    >/dev/null || fail "curl required"
   command -v python3 >/dev/null || fail "python3 required"
