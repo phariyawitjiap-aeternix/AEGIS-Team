@@ -141,9 +141,57 @@ fi
 ### Step 4: Activate Nick Fury (DO NOT ASK HUMAN)
 
 **This is the critical step.** Do NOT display "What would you like to do?" or
-present options. Instead, immediately execute the Nick Fury scan loop:
+present options. Instead, immediately execute the Nick Fury scan loop.
 
-**Spawn Nick Fury:**
+#### Step 4a. Loop substrate selection (v15-02)
+
+Per sprint v15-01 decision (HYBRID — `.aegis/brain/sprints/sprint-v15-01-cc21-goal-spike/decision.md`),
+the loop substrate selection is:
+
+```
+IF Claude Code version >= 2.1.139 AND `/goal` command is available:
+    USE `/goal` as the loop primitive
+    Nick Fury's policy brain runs INSIDE each /goal turn
+ELSE:
+    USE the legacy subagent + SendMessage heartbeat loop (see Step 4b)
+```
+
+Detection: `/goal` is a slash command. If invoking it errors with "unknown command",
+fall through to legacy path. Otherwise, prefer `/goal` because it provides:
+- Native cross-turn continuation with overlay panel (elapsed/turns/tokens live)
+- `agent_id` / `parent_agent_id` OTEL propagation
+- Cost-runaway protection built-in
+- Cancellable from CC UI without Ctrl+C
+
+#### Step 4a-NEW. `/goal`-based path (CC 2.1.139+)
+
+Open `/goal` with a goal-text that encodes Nick Fury's outer condition:
+
+```
+/goal Continue executing AEGIS Decision Matrix per .claude/agents/nick-fury.md
+      until ONE of:
+        (a) all kanban TODO/IN_PROGRESS for the current sprint reach DONE,
+        (b) BLOCK 0 documents are missing and Coulson needs to run first,
+        (c) MBP escalation category 1-4 triggers (Identity / Irreversible
+            scope / External access / Explicit approval gate),
+        (d) tests/lint go red and require a hotfix before further work,
+        (e) context budget exceeds 80%.
+      On each turn:
+        1. SCAN (git, tests, sprint, kanban, specs, deps, debt)
+        2. Apply Decision Matrix P0-P10 from nick-fury.md
+        3. Announce decision with rationale BEFORE acting
+        4. Dispatch sub-agents (Agent tool, run_in_background=true)
+        5. Log decision to .aegis/brain/logs/activity.log + decision-audit.log
+        6. Verify-before-claim — no "done" without a passing test
+      Persona overlay: read .claude/agents/nick-fury.md for full protocol.
+```
+
+This replaces the manual SendMessage polling + idle/timeout-respawn loop. CC handles
+the heartbeat; Nick Fury handles the policy at each turn.
+
+#### Step 4b. Legacy path (fallback if `/goal` unavailable)
+
+**Spawn Nick Fury as a subagent:**
 ```
 Agent tool call:
   subagent_type: "nick-fury"
