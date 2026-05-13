@@ -1,7 +1,7 @@
 # Project Identity
 
 ## Name
-AEGIS v12.0 — AI Agent Team Framework for Claude Code
+AEGIS v15.0 — AI Agent Team Framework for Claude Code
 
 ## Stack
 - Language: Markdown (skill/command definitions), Bash (installer)
@@ -23,7 +23,7 @@ L3 (Autonomous) — Mother Brain active with heartbeat + Spec Proxy
 - All agent outputs ≤2000 tokens
 
 ## Team
-AEGIS v12.0 — 10 AI Agent Personas
+AEGIS v15.0 — 10 AI Agent Personas
 - 🧭 Captain America (opus) — Lead
 - 📐 Iron Man (opus) — Architect
 - ⚡ Spider-Man (sonnet) — Implementer

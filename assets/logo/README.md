@@ -1,6 +1,6 @@
 # AEGIS Logo Asset Pack
 
-Brand assets for AEGIS v12.0 — the AI Agent Team Framework for Claude Code.
+Brand assets for AEGIS v15.0 — the AI Agent Team Framework for Claude Code.
 
 ## Files
 

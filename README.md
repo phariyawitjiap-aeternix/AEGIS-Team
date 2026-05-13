@@ -3,19 +3,19 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-12.0-blue?style=for-the-badge" alt="Version 12.0"/>
+  <img src="https://img.shields.io/badge/version-15.0-blue?style=for-the-badge" alt="Version 15.0"/>
   <img src="https://img.shields.io/badge/agents-10-green?style=for-the-badge" alt="10 Agents"/>
   <img src="https://img.shields.io/badge/commands-14%20canonical-yellow?style=for-the-badge" alt="14 canonical commands"/>
   <img src="https://img.shields.io/badge/gates-6-red?style=for-the-badge" alt="6 Gates"/>
-  <img src="https://img.shields.io/badge/hooks-13-teal?style=for-the-badge" alt="13 Hooks (v11 + v12)"/>
+  <img src="https://img.shields.io/badge/hooks-14-teal?style=for-the-badge" alt="14 Hooks (v11 + v12 + v14)"/>
   <img src="https://img.shields.io/badge/tools-60%2B-slategray?style=for-the-badge" alt="60+ Helper Tools"/>
-  <img src="https://img.shields.io/badge/tests-149%2B%20v12-brightgreen?style=for-the-badge" alt="149+ v12 assertions"/>
+  <img src="https://img.shields.io/badge/tests-280%2B%20v15-brightgreen?style=for-the-badge" alt="280+ test assertions through v15"/>
   <img src="https://img.shields.io/badge/ISO--29110-compliant-brightgreen?style=for-the-badge" alt="ISO 29110"/>
   <img src="https://img.shields.io/badge/Claude_4.x-1M_context-blueviolet?style=for-the-badge" alt="Claude 4.x"/>
   <img src="https://img.shields.io/badge/license-MIT-purple?style=for-the-badge" alt="MIT License"/>
 </p>
 
-# :shield: AEGIS v12.0 — AI Agent Team Framework for Claude Code
+# :shield: AEGIS v15.0 — AI Agent Team Framework for Claude Code
 
 > **"Context is King, Memory is Soul"**
 >
@@ -538,16 +538,38 @@ your-project/
 
 ## :sparkles: Version History
 
-### v12.x continuation (current) — post-v12-06 follow-ups
+### v15.0 (current) — CC 2.1.139 adoption + transparent skill model (17pt across 6 sprints)
 
-**v13 sprints** (refactor + cleanup, 30pt across 2 sprints, CLOSED):
+| Sprint | Pt | Headline |
+|---|---:|---|
+| v15-01 | 2 | `/goal` capability matrix + HYBRID decision (loop substrate = `/goal`, policy brain = Nick Fury) |
+| v15-02 | 3 | Wire `/goal` into `/aegis-start` Step 4 with legacy subagent fallback for older CC |
+| v15-03 | 5 | `continueOnBlock` investigation — NON-APPLICABLE (PostToolUse-only; approval-gate is PreToolUse) |
+| v15-04 | 2 | `Skill(aegis-*)` wildcard cleanup — NO-OP (settings.json already wildcard-clean) |
+| v15-05 | 3 | Hooks no-terminal compat audit — VERIFIED CLEAN (no tty grabs anywhere) |
+| v15-06 | 2 | Transparent skill model: user surface (5) vs team surface (11) split per `.claude/references/command-audience.md` |
+| **Total** | **17** | **AEGIS adopts CC 2.1.139 + codifies "human is principal, team is operator" principle** |
+
+### v14.0 — Hermes Parity Series (47pt across 4 sprints)
+
+| Sprint | Pt | Headline |
+|---|---:|---|
+| v14-01 | 13 | CommandDef registry (14 commands), brain threat scanner (12 patterns + 10 invisible chars), supply-chain-audit CI workflow |
+| v14-02 | 13 | Shadow-git brain checkpoints, `/aegis-rollback` semantics, decision FTS search |
+| v14-03 | 11 | `aegis-dump` (134ms), pattern-miner defer retrofit, `aegis-pin` (2-axis pin) |
+| v14-04 | 10 | Persistent-goals POC (`aegis-goal/{judge,state}.sh`), measurement methodology |
+| **Total** | **47** | **AEGIS reaches Hermes-parity** — 132/132 tests GREEN |
+
+### v13.0 — Refactor + Cleanup (30pt across 2 sprints)
 
 | Sprint | Pt | Headline |
 |---|---:|---|
 | v13-01-refactor | 24 | Codebase re-organize + re-factor across 5 phases; suite 44/44 GREEN on macOS + Ubuntu CI; knowledge graph 310 nodes / 446 edges |
 | v13-02-cleanup | 6  | v13-01 retro action items: Rule 6 "graduate-by-running", shell-footgun scanner (caught a real brain-benchmark bug), branch-protection audit, CI-graceful pattern, DoD §5.1+5.2, empty-cache CI checklist; suite 45/45 GREEN |
 
-**Linear hub integration** (May 2026, shipped as feature PRs outside numbered sprints — see "New in v12.x" section above):
+### v12.x — Linear hub integration (May 2026, post-v12 patch series)
+
+Shipped as feature PRs outside numbered sprints:
 
 - [#154](https://github.com/phariyawitjiap-aeternix/AEGIS-Team/pull/154) — kanban → Linear sync + auto-fire hook
 - [#155](https://github.com/phariyawitjiap-aeternix/AEGIS-Team/pull/155) — v3 marker (sprint-scoped) + 3-tier parser + UPDATE-path milestone repair

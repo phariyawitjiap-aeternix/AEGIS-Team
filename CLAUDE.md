@@ -1,9 +1,9 @@
-<!-- version: 1.0.0 -->
-<!-- Last updated: 2026-05-06 -->
+<!-- version: 1.1.0 -->
+<!-- Last updated: 2026-05-13 -->
 
-Last reviewed: 2026-05-06
+Last reviewed: 2026-05-13
 
-# AEGIS v12.0 -- Agent Team Framework
+# AEGIS v15.0 -- Agent Team Framework
 
 > "Context is King, Memory is Soul"
 
@@ -12,6 +12,7 @@ Last reviewed: 2026-05-06
 | Date | Version | Change |
 |------|---------|--------|
 | 2026-05-06 | 1.0.0 | Version header pattern introduced (sprint-v12-01). Doc-version starts at 1.0.0 independent of AEGIS framework version (v11.0 in title above refers to the framework). |
+| 2026-05-13 | 1.1.0 | Framework version bump v12.0 → v15.0 to catch up with shipped work: v13 (refactor+cleanup, 30pt) + v14 (Hermes parity, 47pt) + v15 (CC 2.1.139 adoption + transparent skill model, 17pt) had all shipped without VERSION bump. Quick Commands restructured into user-surface (5) vs team-surface (11) per `.claude/references/command-audience.md`. |
 
 ## Navigation
 | File | When to Read | Priority |
