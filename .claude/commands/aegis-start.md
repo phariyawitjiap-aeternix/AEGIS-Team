@@ -200,6 +200,18 @@ If ANY BLOCK 0 check fails, Nick Fury MUST apply these hard stops in order:
 None of these are skippable. These are pipeline gates, not suggestions.
 Response if user pushes: "AEGIS pipeline requires BLOCK 0 docs first. Takes ~2 min. Starting now..."
 
+##### How to actually "Run /aegis-X NOW" — slash-command chaining protocol
+
+Slash commands are user-typed by definition; Claude cannot literally invoke `/aegis-sprint plan` mid-flow. When the matrix says "Run /aegis-X NOW", the executor MUST:
+
+1. **Read** the command's markdown definition file at `.claude/commands/aegis-<command>.md`
+2. **Locate** the relevant subcommand section (e.g. `### Subcommand: Sprint Planning`)
+3. **Execute the steps verbatim** — do NOT shortcut, do NOT reinvent
+4. **Persist all artifacts** the steps require (plan.md, kanban.md, metrics.json, activity log entries, ISO docs via Coulson)
+5. **Return to /aegis-start flow** only after the sub-command's "Display Summary" step has been reached
+
+**Anti-pattern to refuse** (found in v15-07 audit, 2026-05-14): "I'll create a kanban.md inline since the gate needs one" — that's a shortcut. The plan ceremony has 8+ ISO 29110 work products (Coulson generates them); skipping the ceremony leaves audit-trail holes. ALWAYS Read + execute the full subcommand.
+
 #### 4c. Analyze & Decide
 Apply the Decision Matrix (P0-P10):
 
