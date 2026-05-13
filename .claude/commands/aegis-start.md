@@ -140,98 +140,21 @@ fi
 
 ### Step 4: Activate Nick Fury (DO NOT ASK HUMAN)
 
-**This is the critical step.** Do NOT display "What would you like to do?" or
-present options. Instead, immediately execute the Nick Fury scan loop.
+**This is the critical step.** Do NOT display "What would you like to do?" or present options. Activate the autonomous loop now — Nick Fury runs, the human watches.
 
-#### Step 4a. Loop substrate selection (v15-02)
-
-Per sprint v15-01 decision (HYBRID — `.aegis/brain/sprints/sprint-v15-01-cc21-goal-spike/decision.md`),
-the loop substrate selection is:
+The loop substrate is **transparent**: the user never sees `/goal` text or subagent spawn syntax. Pick the available primitive automatically and announce only the Nick Fury banner:
 
 ```
-IF Claude Code version >= 2.1.139 AND `/goal` command is available:
-    USE `/goal` as the loop primitive
-    Nick Fury's policy brain runs INSIDE each /goal turn
-ELSE:
-    USE the legacy subagent + SendMessage heartbeat loop (see Step 4b)
+🧬 Nick Fury: ONLINE — scanning project now...
 ```
 
-Detection: `/goal` is a slash command. If invoking it errors with "unknown command",
-fall through to legacy path. Otherwise, prefer `/goal` because it provides:
-- Native cross-turn continuation with overlay panel (elapsed/turns/tokens live)
-- `agent_id` / `parent_agent_id` OTEL propagation
-- Cost-runaway protection built-in
-- Cancellable from CC UI without Ctrl+C
+Then begin the autonomous cycle.
 
-#### Step 4a-NEW. `/goal`-based path (CC 2.1.139+)
+**Implementation details — internal to the framework, NOT shown to the user:**
 
-Open `/goal` with a goal-text that encodes Nick Fury's outer condition:
+See [`.claude/references/command-audience.md`](../references/command-audience.md) for the user-vs-team command split principle and [`.claude/references/aegis-start-loop-substrate.md`](../references/aegis-start-loop-substrate.md) for substrate-selection logic + the exact `/goal` text used in CC 2.1.139+ and the subagent-spawn fallback for older CC versions.
 
-```
-/goal Continue executing AEGIS Decision Matrix per .claude/agents/nick-fury.md
-      until ONE of:
-        (a) all kanban TODO/IN_PROGRESS for the current sprint reach DONE,
-        (b) BLOCK 0 documents are missing and Coulson needs to run first,
-        (c) MBP escalation category 1-4 triggers (Identity / Irreversible
-            scope / External access / Explicit approval gate),
-        (d) tests/lint go red and require a hotfix before further work,
-        (e) context budget exceeds 80%.
-      On each turn:
-        1. SCAN (git, tests, sprint, kanban, specs, deps, debt)
-        2. Apply Decision Matrix P0-P10 from nick-fury.md
-        3. Announce decision with rationale BEFORE acting
-        4. Dispatch sub-agents (Agent tool, run_in_background=true)
-        5. Log decision to .aegis/brain/logs/activity.log + decision-audit.log
-        6. Verify-before-claim — no "done" without a passing test
-      Persona overlay: read .claude/agents/nick-fury.md for full protocol.
-```
-
-This replaces the manual SendMessage polling + idle/timeout-respawn loop. CC handles
-the heartbeat; Nick Fury handles the policy at each turn.
-
-#### Step 4b. Legacy path (fallback if `/goal` unavailable)
-
-**Spawn Nick Fury as a subagent:**
-```
-Agent tool call:
-  subagent_type: "nick-fury"
-  name: "nick-fury"
-  mode: "bypassPermissions"
-  run_in_background: true
-  prompt: |
-    You are 🧬 Nick Fury — the autonomous controller of AEGIS.
-    Read .claude/agents/nick-fury.md for your full protocol.
-
-    SESSION CONTEXT:
-    - Date: [current date]
-    - Autonomy: L3 (Autonomous)
-    - Profile: [tier]
-    - Context budget: [X]%
-    - Handoff data: [summary from Step 2, or "none"]
-    - Brain resonance: [key points from Step 2]
-
-    IMMEDIATE ACTIONS:
-    1. Run your first SCAN (git, tests, sprint, kanban, specs, deps, debt)
-    2. Apply Decision Matrix — pick highest-priority action
-    3. Announce your decision
-    4. DISPATCH sub-agents to execute (use Agent tool, run_in_background=true)
-    5. Enter HEARTBEAT LOOP:
-       - Monitor spawned agents via SendMessage
-       - Nudge agents idle > 120s
-       - Re-spawn agents that timeout > 300s
-       - After each task completes: verify gates, log results, pick next task
-       - Check context budget each cycle
-       - Continue until context >= 80% or all tasks done
-    6. When wrapping up: log final state to activity.log, report summary
-
-    RULES:
-    - NEVER ask "what would you like to do?" — analyze, decide, execute
-    - ALWAYS announce decisions with rationale before acting
-    - ALWAYS spawn sub-agents with run_in_background=true
-    - ALWAYS include SUCCESS CRITERIA in sub-agent prompts
-    - ALWAYS instruct sub-agents to SendMessage back when done
-    - Log every decision to .aegis/brain/logs/activity.log
-```
+In short: the team uses whichever loop primitive is available (CC 2.1.139 `/goal` if present, else legacy subagent + SendMessage heartbeat). Both run Nick Fury's persona-defined Decision Cycle inside each turn. The user-facing experience is identical: type `/aegis-start`, watch Nick Fury work.
 
 #### 4b. Check Planning Artifacts — BLOCK 0 (MANDATORY)
 
