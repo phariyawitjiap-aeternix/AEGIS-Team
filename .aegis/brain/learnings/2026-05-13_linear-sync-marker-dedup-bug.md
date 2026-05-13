@@ -48,9 +48,37 @@ keeps quota under control because the bug is rate-limited by the user's
 manual sync invocations. The hook-driven sync on kanban writes would have
 caused a runaway.
 
+## Resolution (2026-05-13)
+
+**Root cause: Hypothesis C confirmed (pagination).**
+
+The GraphQL query in `find_issue_by_story` / `find_issue_by_story_with_labels`
+did not specify a `first:` argument, so Linear defaulted to 50 nodes. With 94
+issues in the project, 44 were invisible to the marker search, causing false
+negatives and duplicate creates on every re-sync after the 50-issue threshold.
+
+**Secondary bug found:** The v2-fallback regex (`$old`) was passed into jq but
+never referenced in the filter expression -- dead code since the v3 migration.
+
+**Fix (PR #xxx):**
+1. Extracted `_fetch_all_project_issues()` with cursor-based pagination
+   (`first:250`, loop on `hasNextPage`), 10-page safety cap (2500 issues max).
+2. Both `find_issue_by_story` and `find_issue_by_story_with_labels` now delegate
+   to the paginated fetcher instead of doing direct `gql()` calls.
+3. Fixed the v2-fallback dead code: jq filter now uses `. as $all` binding so
+   the fallback branch re-scans the original array, not the empty v3 result.
+4. Added per-run cache (`/tmp/aegis-linear-issues.$$`) so multiple
+   `find_issue_by_story` calls within one sync don't re-fetch all issues.
+5. 12 regression tests in `tests/aegis-linear-sync-dedup-test.sh`.
+
+**Hypotheses A and B were NOT contributing factors:**
+- A (v2 markers): All 94 issues have valid v3 markers. No v2 survivors.
+- B (regex compile): jq `test()` handles sprint IDs with hyphens correctly.
+
 ## Provenance
 
 - Found during 2026-05-13 cleanup session, after user authorized demo deletion
 - Cleanup itself succeeded (12 projects deleted, quota partially recovered)
 - Back-fill attempt surfaced the bug; not fixed in this session to avoid
   consuming more quota fighting the bug
+- Fixed in follow-up session same day (fix/linear-sync-dedup-pagination branch)
