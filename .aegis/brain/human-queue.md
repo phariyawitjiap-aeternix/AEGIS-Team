@@ -48,6 +48,13 @@ Agent ตัวไหนอ่านไฟล์นี้ตรงก็ได�
 - **Blocks**: shell-footgun-scan job is currently advisory; will catch new bugs but won't block merge until added to required contexts
 - **Raised**: 2026-05-07T16:10:35Z
 - **Resolved**: _(pending)_
+<!-- PENDING_END -->
+
+---
+
+## ✅ Resolved / แก้ไขแล้ว
+
+<!-- RESOLVED_START -->
 
 ### [2026-05-12] EXTERNAL — Decide Linear free-plan cleanup vs upgrade (16 sprints blocked) / ตัดสินใจ Linear free-plan — ล้าง demo projects หรือ upgrade (16 sprints ค้าง)
 
@@ -57,15 +64,7 @@ Agent ตัวไหนอ่านไฟล์นี้ตรงก็ได�
 - **Raised by**: claude
 - **Blocks**: back-fill 16 remaining sprint milestones in AEGIS-Team Linear project
 - **Raised**: 2026-05-12T09:05:37Z
-- **Resolved**: _(pending)_
-<!-- PENDING_END -->
-
----
-
-## ✅ Resolved / แก้ไขแล้ว
-
-<!-- RESOLVED_START -->
-
+- **Resolved**: 2026-05-13T08:51:15Z — Cleanup done 2026-05-13: deleted 11 demo projects + new-project-99 (12 total, freed 25 active issue slots). User authorized via 'ทั้งหมด' message. Back-fill attempt revealed sync code has a marker-matching bug (creates duplicates from prior-version markers) — separate issue, captured in new learning. Linear quota decision (upgrade or not) is moot for now: AEGIS-Team has 19 milestones synced, which the user accepts.
 ### [2026-05-07] EXTERNAL — Enable Tier-1 branch protection on main / เปิด branch protection (Tier-1) บน main
 
 - **EN**: Per sprint-v13-02 AI-3: main has no protection rules — explains the v13-01 'merge through red CI' pattern that hid the install-v11 brain-graph delivery bug for ~1 month. Run the gh API call in .aegis/brain/sprints/sprint-v13-02-cleanup/ai-3-branch-protection-audit.md to enable Tier-1 (status checks required, no force-push, no main-deletion, admins still allowed override).
