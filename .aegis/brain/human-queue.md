@@ -38,7 +38,13 @@ Agent ตัวไหนอ่านไฟล์นี้ตรงก็ได�
 
 ## 🔔 Pending / รอดำเนินการ
 
-<!-- PENDING_START -->
+<!-- PENDING_END -->
+
+---
+
+## ✅ Resolved / แก้ไขแล้ว
+
+<!-- RESOLVED_START -->
 
 ### [2026-05-12] EXTERNAL — Decide Linear free-plan cleanup vs upgrade (16 sprints blocked) / ตัดสินใจ Linear free-plan — ล้าง demo projects หรือ upgrade (16 sprints ค้าง)
 
@@ -48,14 +54,7 @@ Agent ตัวไหนอ่านไฟล์นี้ตรงก็ได�
 - **Raised by**: claude
 - **Blocks**: back-fill 16 remaining sprint milestones in AEGIS-Team Linear project
 - **Raised**: 2026-05-12T09:05:37Z
-- **Resolved**: _(pending)_
-<!-- PENDING_END -->
-
----
-
-## ✅ Resolved / แก้ไขแล้ว
-
-<!-- RESOLVED_START -->
+- **Resolved**: 2026-05-13T08:51:15Z — Cleanup done 2026-05-13: deleted 11 demo projects + new-project-99 (12 total, freed 25 active issue slots). User authorized via 'ทั้งหมด' message. Back-fill attempt revealed sync code has a marker-matching bug (creates duplicates from prior-version markers) — separate issue, captured in new learning. Linear quota decision (upgrade or not) is moot for now: AEGIS-Team has 19 milestones synced, which the user accepts.
 
 ### [2026-05-07] EXTERNAL — Add shell-footgun-scan to required-status-checks on main / เพิ่ม shell-footgun-scan เข้า required checks ของ main
 
