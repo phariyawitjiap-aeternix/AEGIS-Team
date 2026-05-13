@@ -236,6 +236,34 @@ if [[ "$MODE" == "fix" ]]; then
             cp -R "$src" "$missing"
             printf '  ✓ copied %s ← %s\n' "$rel" "$src" >&2
             FIX_FIXED=$((FIX_FIXED+1))
+
+            # Bug class fixed 2026-05-14: copying ONLY the orphan path is not
+            # enough when the orphan is a JS/MJS module that `import`s sibling
+            # files (e.g. check.mjs → lib.mjs). Without the siblings, the
+            # entry-point loads but throws ERR_MODULE_NOT_FOUND on first run.
+            #
+            # Heuristic: if the copied file is inside a tool subdirectory
+            # (tools/aegis-*/), bring along all OTHER files in that subdir.
+            # We don't recurse beyond one level; deeper trees are rare and
+            # the safe stance is "if dir exists with more files, mirror them".
+            parent_rel="$(dirname "$rel")"
+            src_parent="$SOURCE/$parent_rel"
+            dst_parent="$TARGET/$parent_rel"
+            case "$parent_rel" in
+                tools/aegis-*|.claude/hooks/lib)
+                    if [[ -d "$src_parent" && -d "$dst_parent" ]]; then
+                        for sibling in "$src_parent"/*; do
+                            [[ -e "$sibling" ]] || continue
+                            base="$(basename "$sibling")"
+                            if [[ ! -e "$dst_parent/$base" ]]; then
+                                cp -R "$sibling" "$dst_parent/$base"
+                                printf '    + sibling: %s/%s\n' "$parent_rel" "$base" >&2
+                                FIX_FIXED=$((FIX_FIXED+1))
+                            fi
+                        done
+                    fi
+                    ;;
+            esac
         else
             printf '  ✗ source missing too: %s\n' "$src" >&2
             FIX_MISSING=$((FIX_MISSING+1))
