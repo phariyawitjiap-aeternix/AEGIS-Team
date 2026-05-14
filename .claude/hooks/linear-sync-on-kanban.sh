@@ -67,6 +67,15 @@ mkdir -p "$LOG_DIR" 2>/dev/null || true
 TS="$(date +'%Y-%m-%d %H:%M:%S')"
 echo "[$TS] HOOK_FIRE sprint=$SPRINT_ID file=$FILE" >> "$LOG" 2>/dev/null
 
+# v15-08: CC 2.1.141 desktop attention ping when async sync starts.
+# The sync itself runs background (fire-and-forget); the notification fires
+# synchronously here so the human sees feedback even though stdout is silent.
+NOTIFY_LIB="${REPO_ROOT}/tools/aegis-notify.sh"
+if [[ -f "$NOTIFY_LIB" ]]; then
+    # shellcheck disable=SC1090
+    source "$NOTIFY_LIB" 2>/dev/null && aegis_notify "linear_sync_start" "Linear sync started: $SPRINT_ID" || true
+fi
+
 # Async fire-and-forget. Output goes to log, not stdout (no agent noise).
 ( bash "$SYNC" push "$SPRINT_ID" >> "$LOG" 2>&1 ; echo "[$TS] HOOK_DONE sprint=$SPRINT_ID exit=$?" >> "$LOG" ) &
 disown 2>/dev/null || true

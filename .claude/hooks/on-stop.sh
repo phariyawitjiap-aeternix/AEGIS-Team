@@ -95,4 +95,14 @@ show_progress
 show_team_chat
 show_retro_reminder
 
+# v15-08: CC 2.1.141 desktop attention ping at session end.
+# Opt-in via AEGIS_HOOK_NOTIFY=1 — when off, only BEL fires to stderr.
+# Sourced + invoked here so notification appears AFTER all banners.
+REPO_ROOT="$(cd "${HOOK_DIR}/../.." && pwd)"
+NOTIFY_LIB="${REPO_ROOT}/tools/aegis-notify.sh"
+if [[ -f "$NOTIFY_LIB" ]]; then
+    # shellcheck disable=SC1090
+    source "$NOTIFY_LIB" 2>/dev/null && aegis_notify "session_end" "AEGIS session ended" || true
+fi
+
 exit 0
