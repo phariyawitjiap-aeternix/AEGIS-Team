@@ -1,6 +1,6 @@
 <!-- Auto-generated from .aegis/brain/graph/ — edit topic pages under _aegis-output/wiki/ -->
-<!-- built_at: 2026-05-14T10:04:41.694Z -->
-<!-- node_count: 371 edge_count: 517 -->
+<!-- built_at: 2026-05-14T10:07:33.955Z -->
+<!-- node_count: 372 edge_count: 518 -->
 
 # AEGIS Project Index
 
@@ -58,7 +58,7 @@
 - [test-architect](_aegis-output/wiki/skill-test-architect.md) — _standard_
 - [work-breakdown](_aegis-output/wiki/skill-work-breakdown.md) — _standard_
 
-## Sprints (43)
+## Sprints (44)
 
 - [v10-01](_aegis-output/wiki/sprint-v10-01.md) — CLOSED
 - [v10-02](_aegis-output/wiki/sprint-v10-02.md) — CLOSED
@@ -97,6 +97,7 @@
 - [v15-06-transparent-skill-model](_aegis-output/wiki/sprint-v15-06-transparent-skill-model.md) — CLOSED · 2pt
 - [v15-07-aegis-start-sprint-plan-chain](_aegis-output/wiki/sprint-v15-07-aegis-start-sprint-plan-chain.md) — CLOSED · 3pt
 - [v15-08-terminal-sequence-notifications](_aegis-output/wiki/sprint-v15-08-terminal-sequence-notifications.md) — CLOSED
+- [v15-09-approval-gate-cc2141-schema](_aegis-output/wiki/sprint-v15-09-approval-gate-cc2141-schema.md) — CLOSED
 - [v15-10-multi-tenant-cwd](_aegis-output/wiki/sprint-v15-10-multi-tenant-cwd.md) — CLOSED
 - [v9-02](_aegis-output/wiki/sprint-v9-02.md) — CLOSED
 - [v9-03](_aegis-output/wiki/sprint-v9-03.md) — CLOSED
