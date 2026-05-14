@@ -137,6 +137,15 @@ BANNER
     if [[ -d "$(dirname "${LOG_FILE}")" ]]; then
         echo "[${TIMESTAMP}] [HOOK:session-start] sprint-plan-gate-needed dir=${SPRINT_DIR}" >> "${LOG_FILE}" 2>/dev/null || true
     fi
+
+    # v15-08: CC 2.1.141 desktop attention ping when sprint gate triggers.
+    # Catches the case where Nick Fury Tab-switches away during /aegis-start
+    # — the OSC-9 banner pulls focus back so the gate isn't silently missed.
+    NOTIFY_LIB="${REPO_ROOT}/tools/aegis-notify.sh"
+    if [[ -f "$NOTIFY_LIB" ]]; then
+        # shellcheck disable=SC1090
+        source "$NOTIFY_LIB" 2>/dev/null && aegis_notify "sprint_plan_gate" "Sprint plan gate — run /aegis-sprint plan" || true
+    fi
 fi
 
 exit 0

@@ -1464,6 +1464,30 @@
     "description": "Internal function in aegis-brain-write"
   },
   {
+    "id": "FUNC-436A29",
+    "name": "_aegis_notify_json",
+    "source_file": "tools/aegis-notify.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-notify"
+  },
+  {
+    "id": "FUNC-65A02E",
+    "name": "_aegis_notify_log",
+    "source_file": "tools/aegis-notify.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-notify"
+  },
+  {
+    "id": "FUNC-501E41",
+    "name": "_aegis_notify_osc9",
+    "source_file": "tools/aegis-notify.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-notify"
+  },
+  {
     "id": "FUNC-F523DC",
     "name": "_aegis_scan_enabled",
     "source_file": "tools/aegis-brain-write.sh",
@@ -1712,6 +1736,14 @@
     "description": "AEGIS Worktree Merge Script (Sprint v9-05, S5-04)"
   },
   {
+    "id": "FUNC-3E4101",
+    "name": "aegis-notify",
+    "source_file": "tools/aegis-notify.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-notify.sh — Lightweight desktop-attention notifier for AEGIS hooks."
+  },
+  {
     "id": "FUNC-4A061A",
     "name": "aegis-pending-items",
     "source_file": "tools/aegis-pending-items.sh",
@@ -1870,6 +1902,14 @@
     "type": "bash",
     "module": "MOD-TOOLS",
     "description": "============================================================================="
+  },
+  {
+    "id": "FUNC-DB1D2D",
+    "name": "aegis_notify",
+    "source_file": "tools/aegis-notify.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-notify"
   },
   {
     "id": "FUNC-AE956C",
