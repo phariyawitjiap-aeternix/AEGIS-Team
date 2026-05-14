@@ -1,6 +1,6 @@
 <!-- Auto-generated from .aegis/brain/graph/ — edit topic pages under _aegis-output/wiki/ -->
-<!-- built_at: 2026-05-14T09:42:44.392Z -->
-<!-- node_count: 369 edge_count: 515 -->
+<!-- built_at: 2026-05-14T10:01:05.782Z -->
+<!-- node_count: 371 edge_count: 517 -->
 
 # AEGIS Project Index
 
@@ -58,7 +58,7 @@
 - [test-architect](_aegis-output/wiki/skill-test-architect.md) — _standard_
 - [work-breakdown](_aegis-output/wiki/skill-work-breakdown.md) — _standard_
 
-## Sprints (41)
+## Sprints (43)
 
 - [v10-01](_aegis-output/wiki/sprint-v10-01.md) — CLOSED
 - [v10-02](_aegis-output/wiki/sprint-v10-02.md) — CLOSED
@@ -96,6 +96,8 @@
 - [v15-05-hook-no-terminal-compat](_aegis-output/wiki/sprint-v15-05-hook-no-terminal-compat.md) — CLOSED · 3pt
 - [v15-06-transparent-skill-model](_aegis-output/wiki/sprint-v15-06-transparent-skill-model.md) — CLOSED · 2pt
 - [v15-07-aegis-start-sprint-plan-chain](_aegis-output/wiki/sprint-v15-07-aegis-start-sprint-plan-chain.md) — CLOSED · 3pt
+- [v15-08-terminal-sequence-notifications](_aegis-output/wiki/sprint-v15-08-terminal-sequence-notifications.md) — CLOSED
+- [v15-09-approval-gate-cc2141-schema](_aegis-output/wiki/sprint-v15-09-approval-gate-cc2141-schema.md) — CLOSED
 - [v9-02](_aegis-output/wiki/sprint-v9-02.md) — CLOSED
 - [v9-03](_aegis-output/wiki/sprint-v9-03.md) — CLOSED
 - [v9-04](_aegis-output/wiki/sprint-v9-04.md) — CLOSED · 14pt
