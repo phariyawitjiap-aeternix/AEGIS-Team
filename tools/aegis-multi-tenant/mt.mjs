@@ -1,20 +1,35 @@
 #!/usr/bin/env node
-// mt.mjs — single-binary CLI for aegis-multi-tenant (sprint v11-09)
+// mt.mjs — single-binary CLI for aegis-multi-tenant (sprint v11-09, v15-10)
 //
 // Subcommands:
 //   register --path <p> [--name <n>] [--role <r>]
 //   list   [--json]
 //   where  <name>
+//   cwd    <name>                   (v15-10) — semantic alias for --cwd integration
+//   run    <name> [--dry-run] [-- ...claude-args]   (v15-10) — wrap `claude --cwd`
 //   activity --all-projects [--since <Nd|YYYY-MM-DD>] [--limit N] [--json]
 //   issues   --all-projects [--status <s>] [--json]
 //   help
 //
 // Storage: ~/.aegis-plus/projects.yaml
+//
+// CC 2.1.141 integration (v15-10):
+// Claude Code 2.1.141 added `claude agents --cwd <path>` so a session can
+// run in a specific working directory without `cd`. `mt cwd <name>` outputs
+// the registered project path; `mt run <name>` wraps the `claude` invocation
+// with the right `--cwd`, dropping any args after `--` straight through.
+//
+// Examples:
+//   $ claude --cwd "$(node tools/aegis-multi-tenant/mt.mjs cwd alpha)"
+//   $ node tools/aegis-multi-tenant/mt.mjs run alpha -- agents list
+//   $ node tools/aegis-multi-tenant/mt.mjs run alpha --dry-run -- agents list
+//     claude --cwd /Users/.../alpha agents list
 
 import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
 import readline from "node:readline";
+import { spawnSync } from "node:child_process";
 
 const HOME       = os.homedir();
 const REGISTRY_DIR  = path.join(HOME, ".aegis-plus");
@@ -86,11 +101,17 @@ function saveRegistry(reg) {
 }
 
 // ── arg parsing ───────────────────────────────────────────────────────
+// Stops parsing flags at a literal `--` and dumps everything after it into
+// out.__ so callers can forward args verbatim (v15-10 `mt run`).
 function parseFlags(argv) {
-  const BOOL = new Set(["all-projects", "json"]);
-  const out = { _: [] };
+  const BOOL = new Set(["all-projects", "json", "dry-run"]);
+  const out = { _: [], __: [] };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
+    if (a === "--") {
+      out.__ = argv.slice(i + 1);
+      break;
+    }
     if (a.startsWith("--")) {
       const k = a.slice(2);
       if (BOOL.has(k)) { out[k] = true; continue; }
@@ -168,6 +189,53 @@ function cmdWhere(flags) {
   console.log(p.path);
 }
 
+// v15-10: semantic alias for CC 2.1.141 `claude --cwd <path>` integration.
+// Same output as `where` — separate command name documents intent + lets
+// future schema evolve independently (e.g. emit JSON for new CC features).
+function cmdCwd(flags) {
+  const name = flags._[1];
+  if (!name) die("cwd requires <name>");
+  const reg = loadRegistry();
+  const p = reg.projects.find(x => x.name === name);
+  if (!p) die(`no such project: ${name}`);
+  if (!fs.existsSync(p.path)) die(`project path no longer exists: ${p.path}`);
+  console.log(p.path);
+}
+
+// v15-10: wraps `claude --cwd <project-path> <forwarded-args>`.
+//   mt run alpha -- agents list           → execs claude with --cwd alpha-path
+//   mt run alpha --dry-run -- agents list → prints the command, doesn't exec
+//
+// We DON'T attempt to validate that `claude` is on PATH at dry-run time —
+// the user may be priming a command for a different shell. At exec time,
+// a missing binary surfaces via the child-process error and we exit 127.
+function cmdRun(flags) {
+  const name = flags._[1];
+  if (!name) die("run requires <name>");
+  const reg = loadRegistry();
+  const p = reg.projects.find(x => x.name === name);
+  if (!p) die(`no such project: ${name}`);
+  if (!fs.existsSync(p.path)) die(`project path no longer exists: ${p.path}`);
+
+  const claudeArgs = ["--cwd", p.path, ...(flags.__ || [])];
+
+  if (flags["dry-run"]) {
+    // Shell-safe rendering — quote any arg containing whitespace or shell metas.
+    const renderArg = (a) => /[\s"'$`\\!*?]/.test(a) ? `"${a.replace(/(["\\$`])/g, '\\$1')}"` : a;
+    console.log(["claude", ...claudeArgs.map(renderArg)].join(" "));
+    return;
+  }
+
+  // Exec mode — spawn `claude` with stdio inherited so interactive use works.
+  // We use spawnSync so the parent exit code reflects the child's status.
+  const result = spawnSync("claude", claudeArgs, { stdio: "inherit" });
+  if (result.error && result.error.code === "ENOENT") {
+    process.stderr.write("error: `claude` not on PATH — install Claude Code first or use --dry-run\n");
+    process.exit(127);
+  }
+  process.exit(result.status ?? 0);
+}
+
 async function cmdActivity(flags) {
   if (!flags["all-projects"]) die("activity requires --all-projects");
   const reg = projectsExist(loadRegistry());
@@ -242,9 +310,15 @@ Subcommands:
   register --path <p> [--name <n>] [--role <r>]
   list     [--json]
   where    <name>
+  cwd      <name>                                            (v15-10)
+  run      <name> [--dry-run] [-- ...claude-args]            (v15-10)
   activity --all-projects [--since <Nd|YYYY-MM-DD>] [--limit N] [--json]
   issues   --all-projects [--status <s>] [--json]
   help
+
+CC 2.1.141 integration:
+  cwd <name>     → prints the project path (for \`claude --cwd "$(mt cwd alpha)"\`)
+  run <name> ... → wraps \`claude --cwd <project> ...args\`; use --dry-run to preview
 
 Registry: ${REGISTRY_FILE}
 `);
@@ -267,6 +341,8 @@ switch (sub) {
   case "register": cmdRegister(flags); break;
   case "list":     cmdList(flags); break;
   case "where":    cmdWhere(flags); break;
+  case "cwd":      cmdCwd(flags); break;          // v15-10
+  case "run":      cmdRun(flags); break;          // v15-10
   case "activity": await cmdActivity(flags); break;
   case "issues":   await cmdIssues(flags); break;
   case "help": case undefined: case "-h": case "--help": help(); break;
