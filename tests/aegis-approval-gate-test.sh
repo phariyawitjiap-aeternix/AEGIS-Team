@@ -272,6 +272,82 @@ else
   fail "6.d unknown revoke" "rc=$RC"
 fi
 
+# ── Group 7: v15-09 CC 2.1.141 permission-dialog schema ─────────────────
+echo ""
+echo "--- Group 7: CC 2.1.141 permission-dialog JSON ---"
+
+# Earlier groups left active approvals in TEST_DIR (KAM-9 covers rule:rm-rf).
+# Wipe them so the v15-09 JSON-emission assertions see a clean block path.
+# Approvals are YAML files per .aegis/brain/approvals/<TASK>-<ACTION>.yaml.
+find "$TEST_DIR/.aegis/brain/approvals" -maxdepth 1 -type f -name '*.yaml' -delete 2>/dev/null
+
+# Helper: capture stdout (not stderr) from check.mjs for a blocked command.
+capture_check_stdout() {
+  local cmd="$1"
+  local payload
+  payload="$(node -e "process.stdout.write(JSON.stringify({tool_name:'Bash',tool_input:{command:process.argv[1]}}))" "$cmd")"
+  printf '%s' "$payload" | node "$CHECK" 2>/dev/null
+}
+
+# 7.a — block emits hookSpecificOutput JSON to stdout (default mode)
+JSON_OUT=$(capture_check_stdout 'rm -rf /tmp/cc141-test')
+if echo "$JSON_OUT" | node -e '
+  const d = JSON.parse(require("fs").readFileSync(0,"utf8"));
+  if (!d.hookSpecificOutput) process.exit(1);
+  if (d.hookSpecificOutput.hookEventName !== "PreToolUse") process.exit(1);
+  if (d.hookSpecificOutput.permissionDecision !== "deny") process.exit(1);
+  if (typeof d.hookSpecificOutput.permissionDecisionReason !== "string") process.exit(1);
+  if (!/aegis-approval-gate/.test(d.hookSpecificOutput.permissionDecisionReason)) process.exit(1);
+' 2>/dev/null; then
+  pass "7.a block → CC 2.1.141 hookSpecificOutput JSON on stdout"
+else
+  fail "7.a schema JSON" "got: ${JSON_OUT:0:200}"
+fi
+
+# 7.b — schema=legacy env opts back to stderr-only (no stdout JSON)
+JSON_OUT=$(
+  payload="$(node -e "process.stdout.write(JSON.stringify({tool_name:'Bash',tool_input:{command:'rm -rf /tmp/legacy'}}))")"
+  printf '%s' "$payload" | AEGIS_APPROVAL_GATE_SCHEMA=legacy node "$CHECK" 2>/dev/null
+)
+if [[ -z "$JSON_OUT" ]]; then
+  pass "7.b AEGIS_APPROVAL_GATE_SCHEMA=legacy suppresses stdout JSON"
+else
+  fail "7.b legacy mode" "expected empty stdout, got: ${JSON_OUT:0:200}"
+fi
+
+# 7.c — allow path emits no JSON on stdout (only blocks do)
+JSON_OUT=$(capture_check_stdout 'ls -la')
+if [[ -z "$JSON_OUT" ]]; then
+  pass "7.c allow path → no stdout JSON"
+else
+  fail "7.c allow JSON leak" "got: ${JSON_OUT:0:200}"
+fi
+
+# 7.d — JSON includes matched rule attribution in reason
+JSON_OUT=$(capture_check_stdout 'git push --force origin main')
+if echo "$JSON_OUT" | node -e '
+  const d = JSON.parse(require("fs").readFileSync(0,"utf8"));
+  const r = d.hookSpecificOutput.permissionDecisionReason;
+  if (!/rule\(s\):/.test(r)) process.exit(1);
+  if (!/force-push|git-force-push|push/.test(r)) process.exit(1);
+' 2>/dev/null; then
+  pass "7.d JSON reason includes matched rule attribution"
+else
+  fail "7.d rule attribution" "got: ${JSON_OUT:0:200}"
+fi
+
+# 7.e — exit code stays 2 in BOTH legacy + new mode (backward compat)
+RC=0
+payload='{"tool_name":"Bash","tool_input":{"command":"rm -rf /tmp/rc"}}'
+printf '%s' "$payload" | node "$CHECK" >/dev/null 2>&1 || RC=$?
+RC_LEGACY=0
+printf '%s' "$payload" | AEGIS_APPROVAL_GATE_SCHEMA=legacy node "$CHECK" >/dev/null 2>&1 || RC_LEGACY=$?
+if [[ "$RC" == "2" && "$RC_LEGACY" == "2" ]]; then
+  pass "7.e exit code 2 preserved in both schema modes"
+else
+  fail "7.e exit code regression" "new=$RC legacy=$RC_LEGACY"
+fi
+
 echo ""
 echo "============================================"
 echo "RESULTS: ${PASS} passed, ${FAIL} failed"
