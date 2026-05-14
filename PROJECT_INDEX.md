@@ -1,6 +1,6 @@
 <!-- Auto-generated from .aegis/brain/graph/ — edit topic pages under _aegis-output/wiki/ -->
-<!-- built_at: 2026-05-12T18:32:01.552Z -->
-<!-- node_count: 353 edge_count: 500 -->
+<!-- built_at: 2026-05-14T09:42:44.392Z -->
+<!-- node_count: 369 edge_count: 515 -->
 
 # AEGIS Project Index
 
@@ -58,7 +58,7 @@
 - [test-architect](_aegis-output/wiki/skill-test-architect.md) — _standard_
 - [work-breakdown](_aegis-output/wiki/skill-work-breakdown.md) — _standard_
 
-## Sprints (34)
+## Sprints (41)
 
 - [v10-01](_aegis-output/wiki/sprint-v10-01.md) — CLOSED
 - [v10-02](_aegis-output/wiki/sprint-v10-02.md) — CLOSED
@@ -89,13 +89,20 @@
 - [v14-02-brain-safety-nets](_aegis-output/wiki/sprint-v14-02-brain-safety-nets.md) — CLOSED
 - [v14-03-operations-hardening](_aegis-output/wiki/sprint-v14-03-operations-hardening.md) — CLOSED
 - [v14-04-persistent-goals-poc](_aegis-output/wiki/sprint-v14-04-persistent-goals-poc.md) — CLOSED
+- [v15-01-cc21-goal-spike](_aegis-output/wiki/sprint-v15-01-cc21-goal-spike.md) — CLOSED · 2pt
+- [v15-02-goal-loop-substrate](_aegis-output/wiki/sprint-v15-02-goal-loop-substrate.md) — CLOSED · 3pt
+- [v15-03-continueonblock-investigation](_aegis-output/wiki/sprint-v15-03-continueonblock-investigation.md) — CLOSED · 5pt
+- [v15-04-skill-wildcard-permissions](_aegis-output/wiki/sprint-v15-04-skill-wildcard-permissions.md) — CLOSED · 2pt
+- [v15-05-hook-no-terminal-compat](_aegis-output/wiki/sprint-v15-05-hook-no-terminal-compat.md) — CLOSED · 3pt
+- [v15-06-transparent-skill-model](_aegis-output/wiki/sprint-v15-06-transparent-skill-model.md) — CLOSED · 2pt
+- [v15-07-aegis-start-sprint-plan-chain](_aegis-output/wiki/sprint-v15-07-aegis-start-sprint-plan-chain.md) — CLOSED · 3pt
 - [v9-02](_aegis-output/wiki/sprint-v9-02.md) — CLOSED
 - [v9-03](_aegis-output/wiki/sprint-v9-03.md) — CLOSED
 - [v9-04](_aegis-output/wiki/sprint-v9-04.md) — CLOSED · 14pt
 - [v9-05](_aegis-output/wiki/sprint-v9-05.md) — CLOSED · 46pt
 - [v9-06](_aegis-output/wiki/sprint-v9-06.md) — CLOSED
 
-## Tools (19 packages, 99 files)
+## Tools (19 packages, 101 files)
 
 - **_archived** (5 files)
 - **aegis-activity-logger** (3 files)
@@ -115,7 +122,7 @@
 - **aegis-router** (1 files)
 - **aegis-run-logger** (3 files)
 - **aegis-trace-export** (3 files)
-- **misc** (45 files)
+- **misc** (47 files)
 
 ## Hooks (16)
 
