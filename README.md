@@ -538,7 +538,7 @@ your-project/
 
 ## :sparkles: Version History
 
-### v15.0 (current) — CC 2.1.139 adoption + transparent skill model (17pt across 6 sprints)
+### v15.0 (current) — CC 2.1.139 + 2.1.141 adoption + transparent skill model + chain integrity (30pt across 10 sprints)
 
 | Sprint | Pt | Headline |
 |---|---:|---|
@@ -548,7 +548,13 @@ your-project/
 | v15-04 | 2 | `Skill(aegis-*)` wildcard cleanup — NO-OP (settings.json already wildcard-clean) |
 | v15-05 | 3 | Hooks no-terminal compat audit — VERIFIED CLEAN (no tty grabs anywhere) |
 | v15-06 | 2 | Transparent skill model: user surface (5) vs team surface (11) split per `.claude/references/command-audience.md` |
-| **Total** | **17** | **AEGIS adopts CC 2.1.139 + codifies "human is principal, team is operator" principle** |
+| v15-07 | 3 | Tighten `/aegis-start` → `/aegis-sprint plan` chain — anti-pattern banned, session-start banner when no sprint dir |
+| v15-08 | 3 | CC 2.1.141 `terminalSequence` adoption — `tools/aegis-notify.sh` (OSC-9 + BEL, opt-in `AEGIS_HOOK_NOTIFY=1`) wired into 3 hooks |
+| v15-09 | 5 | CC 2.1.141 approval-gate JSON schema — attributed permission dialog via `hookSpecificOutput.{hookEventName,permissionDecision,permissionDecisionReason}` |
+| v15-10 | 2 | CC 2.1.141 `claude --cwd` integration — `mt cwd <name>` + `mt run <name> [-- args]` launcher in multi-tenant |
+| **Total** | **30** | **AEGIS adopts CC 2.1.139 + 2.1.141; codifies "human is principal, team is operator"; sprint-plan chain hardened** |
+
+**New doc (in PR):** [docs/AEGIS_SKILL_HIERARCHY.md](docs/AEGIS_SKILL_HIERARCHY.md) — 6 mermaid diagrams covering top-level surface, command delegation graph, persona dispatch, skills inventory, AEGIS↔external boundary (selective integration model), and sprint lifecycle. Includes v15-11 series plan (18pt) for operationalizing curated external-skill allowlist.
 
 ### v14.0 — Hermes Parity Series (47pt across 4 sprints)
 
