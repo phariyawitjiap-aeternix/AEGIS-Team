@@ -2,13 +2,22 @@
 # ============================================================================
 # AEGIS v15.0 — Remote Installer (one-liner, no clone needed)
 #
-# New install:
-#   cd ~/Documents/my-project && git init && git commit --allow-empty -m "init"
-#   bash <(curl -sL https://raw.githubusercontent.com/phariyawitjiap-aeternix/AEGIS-Team/main/install-remote.sh) --profile full --project-name "My Project"
+# One-command new project (recommended):
+#   cd ~/Documents
+#   bash <(curl -sL https://raw.githubusercontent.com/phariyawitjiap-aeternix/AEGIS-Team/main/install-remote.sh) \
+#       --new influencer-creator
+#
+#   ↑ creates ./influencer-creator/, git init, installs framework, bootstraps
+#     Linear (if token available), registers multi-tenant, runs doctor — all
+#     in one shot. No local AEGIS-Team checkout needed.
+#
+# Manual new install (existing dir):
+#   cd ~/Documents/my-project && git init
+#   bash <(curl -sL .../install-remote.sh) --profile full --project-name "My App"
 #
 # Upgrade:
 #   cd ~/Documents/my-project
-#   bash <(curl -sL https://raw.githubusercontent.com/phariyawitjiap-aeternix/AEGIS-Team/main/install-remote.sh) --upgrade
+#   bash <(curl -sL .../install-remote.sh) --upgrade
 # ============================================================================
 
 set -euo pipefail
@@ -23,6 +32,12 @@ PROFILE="standard"
 PROJECT_NAME=""
 UPGRADE=false
 PROFILE_EXPLICIT=false
+
+# v15.1 — one-command setup additions
+NEW_PROJECT_SLUG=""    # if set, create dir, init git, full setup
+DO_LINEAR=auto         # auto | true | false  (auto = run if token available)
+DO_MT=auto             # auto | true | false  (auto = run if mt.mjs installed)
+DO_DOCTOR=true         # always run post-install verification
 
 # Colors
 RED='\033[0;31m'
@@ -42,21 +57,36 @@ error()   { echo -e "${RED}[ERROR]${NC} $*"; }
 # Parse args
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --profile)      PROFILE="$2"; PROFILE_EXPLICIT=true; shift 2 ;;
-        --project-name) PROJECT_NAME="$2"; shift 2 ;;
-        --target-dir)   TARGET_DIR="$2"; shift 2 ;;
-        --upgrade)      UPGRADE=true; shift ;;
+        --new)            NEW_PROJECT_SLUG="$2"; shift 2 ;;
+        --profile)        PROFILE="$2"; PROFILE_EXPLICIT=true; shift 2 ;;
+        --project-name)   PROJECT_NAME="$2"; shift 2 ;;
+        --target-dir)     TARGET_DIR="$2"; shift 2 ;;
+        --upgrade)        UPGRADE=true; shift ;;
+        --with-linear)    DO_LINEAR=true; shift ;;
+        --no-linear)      DO_LINEAR=false; shift ;;
+        --with-mt|--with-multi-tenant)
+                          DO_MT=true; shift ;;
+        --no-mt|--no-multi-tenant)
+                          DO_MT=false; shift ;;
+        --no-doctor)      DO_DOCTOR=false; shift ;;
         --help)
             echo -e "${BOLD}AEGIS v${VERSION} — Remote Installer${NC}"
             echo ""
-            echo "Usage:"
-            echo "  bash <(curl -sL URL) [OPTIONS]"
+            echo "One-command new project (recommended):"
+            echo "  cd ~/Documents"
+            echo "  bash <(curl -sL URL) --new <project-slug>"
             echo ""
             echo "Options:"
+            echo "  --new <slug>           Create new project: mkdir + git init + full setup"
             echo "  --profile <tier>       minimal | standard | full (default: standard)"
-            echo "  --project-name <name>  Project name for brain identity"
+            echo "  --project-name <name>  Project display name (default: title-cased slug)"
             echo "  --target-dir <path>    Target directory (default: current dir)"
             echo "  --upgrade              Update existing install (preserve brain)"
+            echo "  --with-linear          Force Linear bootstrap (default: auto if token)"
+            echo "  --no-linear            Skip Linear bootstrap"
+            echo "  --with-mt              Force multi-tenant registration"
+            echo "  --no-mt                Skip multi-tenant registration"
+            echo "  --no-doctor            Skip post-install verification"
             echo ""
             echo "Profiles:"
             echo "  minimal   7 skills  — quick tasks, small projects"
@@ -64,8 +94,11 @@ while [[ $# -gt 0 ]]; do
             echo "  full      all skills — enterprise, full SDLC"
             echo ""
             echo "Examples:"
-            echo "  New install:"
-            echo "    cd ~/Documents/my-project && git init && git commit --allow-empty -m 'init'"
+            echo "  One-command new project:"
+            echo "    bash <(curl -sL URL) --new influencer-creator"
+            echo ""
+            echo "  New install (existing empty dir):"
+            echo "    cd ~/Documents/my-project && git init"
             echo "    bash <(curl -sL URL) --profile full --project-name \"My App\""
             echo ""
             echo "  Upgrade:"
@@ -76,6 +109,27 @@ while [[ $# -gt 0 ]]; do
         *) error "Unknown option: $1"; exit 1 ;;
     esac
 done
+
+# ── --new mode: create dir, set names, prep for full setup ──────────────────
+if [[ -n "$NEW_PROJECT_SLUG" ]]; then
+    # Validate slug (URL-safe, kebab-case)
+    if [[ ! "$NEW_PROJECT_SLUG" =~ ^[a-z0-9][a-z0-9-]*[a-z0-9]$ ]] && [[ ${#NEW_PROJECT_SLUG} -gt 1 ]]; then
+        error "--new requires a kebab-case slug (a-z, 0-9, hyphens). Got: '$NEW_PROJECT_SLUG'"
+        exit 1
+    fi
+    # Resolve target dir relative to CWD (where the user ran the installer)
+    if [[ "$TARGET_DIR" == "$(pwd)" ]]; then
+        TARGET_DIR="$(pwd)/$NEW_PROJECT_SLUG"
+    fi
+    # Create + cd
+    mkdir -p "$TARGET_DIR"
+    cd "$TARGET_DIR"
+    TARGET_DIR="$(pwd)"
+    # Title-case the slug for PROJECT_NAME (foo-bar-baz → Foo Bar Baz)
+    if [[ -z "$PROJECT_NAME" ]]; then
+        PROJECT_NAME="$(printf '%s' "$NEW_PROJECT_SLUG" | tr '-_' '  ' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolower(substr($i,2)); print}')"
+    fi
+fi
 
 # On upgrade: auto-detect existing profile from project-identity.md (unless --profile given)
 if [[ "$UPGRADE" == true ]] && [[ "$PROFILE_EXPLICIT" == false ]]; then
@@ -509,6 +563,70 @@ fi
 rm -rf "$TMP_DIR"
 success "Temp files cleaned up"
 
+# ── POST-INSTALL: Linear, multi-tenant, doctor ───────────────────────────────
+# Skip for upgrades (existing project has these wired already).
+# Defaults: DO_LINEAR=auto, DO_MT=auto, DO_DOCTOR=true.
+LINEAR_STATUS=""
+MT_STATUS=""
+
+if [[ "$UPGRADE" != true ]]; then
+    # Linear bootstrap — runs if --with-linear set, or auto-detected token available
+    if [[ "$DO_LINEAR" != "false" ]] && [[ -f "${TARGET_DIR}/tools/aegis-linear-bootstrap.sh" ]]; then
+        # Auto-detect: keychain has aegis-linear-token, OR env LINEAR_API_KEY, OR dotfile exists
+        TOKEN_FOUND=false
+        if security find-generic-password -s aegis-linear-token -a phariyawit -w >/dev/null 2>&1; then
+            TOKEN_FOUND=true
+        elif [[ -n "${LINEAR_API_KEY:-}" ]]; then
+            TOKEN_FOUND=true
+        elif [[ -f "$HOME/.aegis-linear-token" ]]; then
+            TOKEN_FOUND=true
+        fi
+
+        if [[ "$DO_LINEAR" == "true" ]] || [[ "$TOKEN_FOUND" == "true" ]]; then
+            info "Bootstrapping Linear project..."
+            if bash "${TARGET_DIR}/tools/aegis-linear-bootstrap.sh" >/dev/null 2>&1; then
+                LINEAR_STATUS="✓ Linear bootstrapped"
+                success "Linear bootstrapped"
+            else
+                LINEAR_STATUS="⚠ Linear skipped (run 'bash tools/aegis-linear-bootstrap.sh' later)"
+                warn "Linear bootstrap failed — run manually later if needed"
+            fi
+        else
+            LINEAR_STATUS="⊘ Linear skipped (no token detected — set up later if desired)"
+            info "Linear skipped — no token detected. Run later: bash tools/aegis-linear-bootstrap.sh"
+        fi
+    fi
+
+    # Multi-tenant registration — runs if --with-mt or mt.mjs is present
+    if [[ "$DO_MT" != "false" ]] && [[ -f "${TARGET_DIR}/tools/aegis-multi-tenant/mt.mjs" ]]; then
+        SLUG="${NEW_PROJECT_SLUG:-$(basename "$TARGET_DIR" | tr '[:upper:]' '[:lower:]' | tr '_' '-')}"
+        # Skip if already registered
+        if node "${TARGET_DIR}/tools/aegis-multi-tenant/mt.mjs" where "$SLUG" >/dev/null 2>&1; then
+            MT_STATUS="✓ Multi-tenant already registered as '$SLUG'"
+            info "Multi-tenant already registered as '$SLUG'"
+        else
+            if node "${TARGET_DIR}/tools/aegis-multi-tenant/mt.mjs" register \
+                --path "$TARGET_DIR" --name "$SLUG" >/dev/null 2>&1; then
+                MT_STATUS="✓ Multi-tenant registered as '$SLUG'"
+                success "Registered with multi-tenant as '$SLUG' (use: mt run $SLUG)"
+            else
+                MT_STATUS="⚠ Multi-tenant registration failed (run manually later)"
+                warn "Multi-tenant registration failed — run later: node tools/aegis-multi-tenant/mt.mjs register --path . --name $SLUG"
+            fi
+        fi
+    fi
+fi
+
+# Doctor — verify all hook + settings references resolve
+if [[ "$DO_DOCTOR" == "true" ]] && [[ -f "${TARGET_DIR}/tools/aegis-doctor.sh" ]]; then
+    info "Running post-install verification..."
+    if bash "${TARGET_DIR}/tools/aegis-doctor.sh" "$TARGET_DIR" >/dev/null 2>&1; then
+        success "Doctor: all references resolve ✓"
+    else
+        warn "Doctor found orphans — run 'bash tools/aegis-doctor.sh' for details"
+    fi
+fi
+
 # ── SUMMARY ───────────────────────────────────────────────────────────────────
 echo ""
 echo -e "${BOLD}${GREEN}================================================${NC}"
@@ -574,12 +692,25 @@ if [[ "$UPGRADE" == true ]]; then
     echo ""
 fi
 
-echo -e "${BOLD}Next steps:${NC}"
-echo "  cd ${TARGET_DIR}"
-echo "  claude --dangerously-skip-permissions"
-if [[ "$UPGRADE" == true ]]; then
-    echo "  > /aegis-doctor      ← verify upgrade (expect 10 agents, not 13)"
+# Post-install status (only on new install)
+if [[ "$UPGRADE" != true ]]; then
+    [[ -n "$LINEAR_STATUS" ]] && echo -e "  ${BOLD}Linear:${NC}    ${LINEAR_STATUS}"
+    [[ -n "$MT_STATUS" ]] && echo -e "  ${BOLD}Multi-tenant:${NC} ${MT_STATUS}"
+    echo ""
 fi
-echo "  > /aegis-start"
+
+echo -e "${BOLD}Next steps:${NC}"
+if [[ -n "$NEW_PROJECT_SLUG" ]]; then
+    echo "  cd ${TARGET_DIR}"
+    echo "  claude              ← open Claude Code in this project"
+    echo "  > /aegis-start      ← Nick Fury takes over"
+elif [[ "$UPGRADE" == true ]]; then
+    echo "  > /aegis-verify --doctor   ← verify upgrade (16 commands, 11 agents)"
+    echo "  > /aegis-start"
+else
+    echo "  cd ${TARGET_DIR}"
+    echo "  claude"
+    echo "  > /aegis-start"
+fi
 echo ""
-echo -e "${CYAN}Happy building! — AEGIS v${VERSION} · 10 Marvel Agents · Claude 4.x · worktree isolation · ADR-004 override${NC}"
+echo -e "${CYAN}Happy building! — AEGIS v${VERSION} · 11 Marvel Agents · 16 commands · CC 2.1.141 ready${NC}"
