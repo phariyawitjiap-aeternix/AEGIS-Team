@@ -354,6 +354,18 @@ chmod +x "${TARGET_DIR}/.claude/hooks/"*.sh 2>/dev/null || true
 HOOK_COUNT=$(ls "${TARGET_DIR}/.claude/hooks/"*.sh 2>/dev/null | wc -l | tr -d ' ' || echo 0)
 success "${HOOK_COUNT} hooks installed (guard-bash, guard-write, session-start, aegis-version-check, post-tool-use, post-edit-accumulate, on-stop, run-with-flags, tinman-heartbeat)"
 
+# v15-14 (issue #182): hook library modules — quality-check, mbp-scan,
+# false-ready, queue-banner. on-stop.sh sources these at session end; if
+# the directory is missing the hook degrades gracefully (safe_source), but
+# the doctor flags every reference as orphan. Ship them.
+if [[ -d "${TMP_DIR}/.claude/hooks/lib" ]]; then
+    mkdir -p "${TARGET_DIR}/.claude/hooks/lib/"
+    cp "${TMP_DIR}/.claude/hooks/lib/"*.sh "${TARGET_DIR}/.claude/hooks/lib/" 2>/dev/null || true
+    chmod +x "${TARGET_DIR}/.claude/hooks/lib/"*.sh 2>/dev/null || true
+    HOOK_LIB_COUNT=$(ls "${TARGET_DIR}/.claude/hooks/lib/"*.sh 2>/dev/null | wc -l | tr -d ' ' || echo 0)
+    success "${HOOK_LIB_COUNT} hook library modules installed (lib/quality-check, mbp-scan, false-ready, queue-banner)"
+fi
+
 # Settings
 cp "${TMP_DIR}/.claude/settings.json" "${TARGET_DIR}/.claude/" 2>/dev/null || true
 success "settings.json installed"
@@ -364,9 +376,31 @@ success "settings.json installed"
 # Without them, the target project has v9 VERSION but none of the v9 behaviors.
 mkdir -p "${TARGET_DIR}/tools/"
 cp "${TMP_DIR}/tools/aegis-"*.sh "${TARGET_DIR}/tools/" 2>/dev/null || true
+cp "${TMP_DIR}/tools/"*.yaml "${TARGET_DIR}/tools/" 2>/dev/null || true   # threat-patterns, etc.
 chmod +x "${TARGET_DIR}/tools/aegis-"*.sh 2>/dev/null || true
 TOOL_COUNT=$(ls "${TARGET_DIR}/tools/aegis-"*.sh 2>/dev/null | wc -l | tr -d ' ' || echo 0)
 success "${TOOL_COUNT} helper tools installed (aegis-brain-sync, aegis-brain-write, aegis-maintainer-grant, aegis-block0-mode, aegis-merge-worktree, aegis-test-all, aegis-pending-items, aegis-agent-tools-matrix, aegis-distill-reset, ...)"
+
+# v15-14 (issue #182): multi-file tool packages — discovered by globbing
+# every directory under tools/ (except _archived). Previous version
+# hard-coded only single .sh scripts, leaving 11+ orphan references
+# (aegis-approval-gate/check.mjs, aegis-live-tail/emit.mjs, aegis-brain-graph/*,
+# aegis-activity-logger/log.mjs, aegis-run-logger/archive.mjs,
+# aegis-resume/session-start.mjs, _hook-utils/safe-run.mjs, etc.).
+# Glob-discover so future packages are auto-shipped without manifest drift.
+PKG_COUNT=0
+for pkg_dir in "${TMP_DIR}/tools/"*/; do
+    [[ -d "$pkg_dir" ]] || continue
+    pkg_name=$(basename "$pkg_dir")
+    case "$pkg_name" in
+        _archived) continue ;;          # documentation/migration history; not runtime
+    esac
+    mkdir -p "${TARGET_DIR}/tools/${pkg_name}"
+    cp -R "${pkg_dir}." "${TARGET_DIR}/tools/${pkg_name}/" 2>/dev/null || true
+    find "${TARGET_DIR}/tools/${pkg_name}" -type f \( -name "*.sh" -o -name "*.mjs" \) -exec chmod +x {} + 2>/dev/null || true
+    PKG_COUNT=$((PKG_COUNT + 1))
+done
+success "${PKG_COUNT} multi-file tool packages installed (aegis-approval-gate, aegis-brain-graph, aegis-live-tail, aegis-activity-logger, aegis-run-logger, aegis-resume, aegis-multi-tenant, _hook-utils, ...)"
 
 # ── SKILLS — profile-based selection ─────────────────────────────────────────
 mkdir -p "${TARGET_DIR}/skills/"
@@ -619,12 +653,27 @@ if [[ "$UPGRADE" != true ]]; then
 fi
 
 # Doctor — verify all hook + settings references resolve
+# v15-14 (issue #182): fail-loud. If doctor finds orphans, the install is
+# broken (manifest drift between installer and what settings.json wires).
+# Exit non-zero so CI / scripted callers can detect + diagnose. Users with
+# legacy callers that ignore exit code can pass `--no-doctor` to opt out.
 if [[ "$DO_DOCTOR" == "true" ]] && [[ -f "${TARGET_DIR}/tools/aegis-doctor.sh" ]]; then
     info "Running post-install verification..."
-    if bash "${TARGET_DIR}/tools/aegis-doctor.sh" "$TARGET_DIR" >/dev/null 2>&1; then
+    DOCTOR_LOG=$(mktemp)
+    if bash "${TARGET_DIR}/tools/aegis-doctor.sh" "$TARGET_DIR" >"$DOCTOR_LOG" 2>&1; then
         success "Doctor: all references resolve ✓"
+        rm -f "$DOCTOR_LOG"
     else
-        warn "Doctor found orphans — run 'bash tools/aegis-doctor.sh' for details"
+        error "Doctor found orphan references — install is INCOMPLETE."
+        echo "" >&2
+        # Show the orphan list inline (doctor's normal stderr output).
+        sed 's/^/  /' "$DOCTOR_LOG" >&2
+        echo "" >&2
+        error "Recovery:"
+        error "  bash ${TARGET_DIR}/tools/aegis-doctor.sh ${TARGET_DIR} --fix"
+        error "  (requires a sibling AEGIS-Team checkout under \$HOME)"
+        rm -f "$DOCTOR_LOG"
+        exit 1
     fi
 fi
 
