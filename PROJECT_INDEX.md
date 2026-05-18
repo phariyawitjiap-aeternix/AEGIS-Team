@@ -1,6 +1,6 @@
 <!-- Auto-generated from .aegis/brain/graph/ — edit topic pages under _aegis-output/wiki/ -->
-<!-- built_at: 2026-05-14T10:07:33.955Z -->
-<!-- node_count: 372 edge_count: 518 -->
+<!-- built_at: 2026-05-18T04:28:46.146Z -->
+<!-- node_count: 364 edge_count: 504 -->
 
 # AEGIS Project Index
 
@@ -16,20 +16,17 @@
 - [GUARDRAILS.md](GUARDRAILS.md) — recurring failure-mode catalog
 - [CLAUDE_safety.md](CLAUDE_safety.md), [CLAUDE_agents.md](CLAUDE_agents.md), [CLAUDE_skills.md](CLAUDE_skills.md), [CLAUDE_lessons.md](CLAUDE_lessons.md)
 
-## Skills (39)
+## Skills (36)
 
 - [adversarial-review](_aegis-output/wiki/skill-adversarial-review.md) — _full_
 - [aegis-activity-logger](_aegis-output/wiki/skill-aegis-activity-logger.md) — _standard_
 - [aegis-approval-gate](_aegis-output/wiki/skill-aegis-approval-gate.md) — _standard_
 - [aegis-builder](_aegis-output/wiki/skill-aegis-builder.md) — _full_
 - [aegis-distill](_aegis-output/wiki/skill-aegis-distill.md) — _full_
-- [aegis-doctor](_aegis-output/wiki/skill-aegis-doctor.md) — _full_
 - [aegis-issue-thread](_aegis-output/wiki/skill-aegis-issue-thread.md) — _standard_
 - [aegis-live-tail](_aegis-output/wiki/skill-aegis-live-tail.md) — _standard_
 - [aegis-multi-tenant](_aegis-output/wiki/skill-aegis-multi-tenant.md) — _standard_
-- [aegis-observe](_aegis-output/wiki/skill-aegis-observe.md) — _full_
 - [aegis-parallel-dispatch](_aegis-output/wiki/skill-aegis-parallel-dispatch.md) — _standard_
-- [aegis-plus-pilot](_aegis-output/wiki/skill-aegis-plus-pilot.md) — _standard_
 - [aegis-reengineer](_aegis-output/wiki/skill-aegis-reengineer.md) — _full_
 - [aegis-resume](_aegis-output/wiki/skill-aegis-resume.md) — _standard_
 - [aegis-router](_aegis-output/wiki/skill-aegis-router.md) — _standard_
@@ -105,7 +102,7 @@
 - [v9-05](_aegis-output/wiki/sprint-v9-05.md) — CLOSED · 46pt
 - [v9-06](_aegis-output/wiki/sprint-v9-06.md) — CLOSED
 
-## Tools (19 packages, 101 files)
+## Tools (18 packages, 97 files)
 
 - **_archived** (5 files)
 - **aegis-activity-logger** (3 files)
@@ -120,7 +117,6 @@
 - **aegis-multi-tenant** (1 files)
 - **aegis-parallel-dispatch** (1 files)
 - **aegis-pattern-mine** (3 files)
-- **aegis-plus-pilot** (4 files)
 - **aegis-resume** (4 files)
 - **aegis-router** (1 files)
 - **aegis-run-logger** (3 files)
