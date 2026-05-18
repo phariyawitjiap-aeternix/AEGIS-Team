@@ -148,4 +148,19 @@ BANNER
     fi
 fi
 
+# v15-16: cleanup orphan aegis-live-tail/watch.mjs processes from crashed
+# prior sessions (ppid=1, etime>1h). Targets the leak that accumulated 170
+# zombies before this sprint. Best-effort, silent unless something killed.
+LIVE_TAIL_START="${REPO_ROOT}/tools/aegis-live-tail/start.sh"
+if [[ -x "$LIVE_TAIL_START" ]]; then
+    bash "$LIVE_TAIL_START" cleanup-orphans 2>/dev/null || true
+fi
+
+# v15-16: rotate run-archive (gzip >7d, delete >30d). Idempotent; < 100ms
+# when nothing to do. Bounds .aegis/brain/runs/ growth (was 98 MB pre-fix).
+RUN_ROTATE="${REPO_ROOT}/tools/aegis-run-rotate.sh"
+if [[ -x "$RUN_ROTATE" ]]; then
+    bash "$RUN_ROTATE" 2>/dev/null || true
+fi
+
 exit 0
