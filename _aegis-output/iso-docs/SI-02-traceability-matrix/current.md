@@ -41,7 +41,7 @@ is unimplemented or untested.
 | FR-08 | Autonomy levels (L1/L2/L3) | Nick Fury, /aegis-mode | CLAUDE.md, `.claude/agents/nick-fury.md`, `.claude/commands/aegis-mode.md` | TC-08 | Current |
 | FR-09 | Nick Fury orchestration | Decision Matrix (SI.03 S4) | `.claude/agents/nick-fury.md` | TC-09 | Current |
 | FR-10 | In-process agent execution | Layer 0: Framework Core | CLAUDE.md | TC-10 | Current (tmux mode deprecated v9-01; in-process only) |
-| FR-11 | Post-install verification (/aegis-doctor) | Health check layer | `skills/aegis-doctor.md` | TC-001..TC-008 | Current |
+| FR-11 | Post-install verification (/aegis-verify --doctor) | Health check layer | `tools/aegis-doctor.sh` | TC-001..TC-008 | Current (skill replaced by `tools/aegis-doctor.sh` in PR #161; cleanup 2026-05-18 removed obsolete skill stub) |
 
 ### 2.2 New Requirements (v9.0 series, FR-12 through FR-21)
 

@@ -695,7 +695,6 @@ tool_packages=(
     "aegis-activity-logger"    # v11-02 — JSONL append-only audit
     "aegis-issue-thread"       # v11-03 — YAML ticket layer
     "aegis-parallel-dispatch"  # v11-04 — Agent fan-out skill
-    "aegis-plus-pilot"         # v11-pilot — bootstrap/daily-eod/gate-check
     "aegis-approval-gate"      # v11-05 — PreToolUse destructive-op blocker
     "aegis-router"             # v11-06 — model-tier picker (quality fit)
     "aegis-run-logger"         # v11-07 — Stop hook session archiver
@@ -727,8 +726,8 @@ info "Installing skills for profile: ${PROFILE}..."
 
 # Skill lists per profile
 minimal_skills=("ai-personas" "orchestrator" "code-review" "code-standards" "git-workflow" "bug-lifecycle" "project-navigator")
-standard_skills=("super-spec" "test-architect" "security-audit" "tech-debt-tracker" "sprint-tracker" "api-docs" "sprint-manager" "kanban-board" "work-breakdown" "aegis-live-tail" "aegis-activity-logger" "aegis-issue-thread" "aegis-parallel-dispatch" "aegis-plus-pilot" "aegis-approval-gate" "aegis-router" "aegis-run-logger" "aegis-trace-export" "aegis-multi-tenant" "aegis-resume")
-full_skills=("aegis-distill" "aegis-observe" "adversarial-review" "code-coverage" "retrospective" "course-correction" "skill-marketplace" "aegis-builder" "qa-pipeline" "iso-29110-docs")
+standard_skills=("super-spec" "test-architect" "security-audit" "tech-debt-tracker" "sprint-tracker" "api-docs" "sprint-manager" "kanban-board" "work-breakdown" "aegis-live-tail" "aegis-activity-logger" "aegis-issue-thread" "aegis-parallel-dispatch" "aegis-approval-gate" "aegis-router" "aegis-run-logger" "aegis-trace-export" "aegis-multi-tenant" "aegis-resume")
+full_skills=("aegis-distill" "adversarial-review" "code-coverage" "retrospective" "course-correction" "skill-marketplace" "aegis-builder" "qa-pipeline" "iso-29110-docs")
 
 copy_skill() {
     local name="$1"

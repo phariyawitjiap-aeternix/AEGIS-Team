@@ -72,7 +72,7 @@ fi
 # ── Group 1: v11 skills ─────────────────────────────────────────────────
 echo ""
 echo "--- Group 1: v11 skills landed ---"
-for s in aegis-live-tail aegis-activity-logger aegis-issue-thread aegis-parallel-dispatch aegis-plus-pilot aegis-approval-gate aegis-router aegis-run-logger aegis-trace-export aegis-multi-tenant aegis-resume; do
+for s in aegis-live-tail aegis-activity-logger aegis-issue-thread aegis-parallel-dispatch aegis-approval-gate aegis-router aegis-run-logger aegis-trace-export aegis-multi-tenant aegis-resume; do
     if [[ -f "$PILOT/skills/${s}.md" ]]; then
         pass "skill: ${s}.md present"
     else
@@ -94,9 +94,6 @@ declare -a expected_files=(
     "aegis-issue-thread/issue.mjs"
     "aegis-parallel-dispatch/dispatch.mjs"
     "aegis-parallel-dispatch/examples/parallel-review.md"
-    "aegis-plus-pilot/bootstrap.sh"
-    "aegis-plus-pilot/daily-eod.sh"
-    "aegis-plus-pilot/gate-check.sh"
     "aegis-approval-gate/check.mjs"
     "aegis-approval-gate/grant.mjs"
     "aegis-approval-gate/list.mjs"
@@ -134,7 +131,7 @@ done
 # ── Group 3: executable bits set ────────────────────────────────────────
 echo ""
 echo "--- Group 3: executable bits ---"
-for f in aegis-live-tail/emit.mjs aegis-issue-thread/issue.mjs aegis-plus-pilot/bootstrap.sh; do
+for f in aegis-live-tail/emit.mjs aegis-issue-thread/issue.mjs aegis-multi-tenant/mt.mjs; do
     if [[ -x "$PILOT/tools/$f" ]]; then
         pass "executable: $f"
     else

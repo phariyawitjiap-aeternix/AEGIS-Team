@@ -399,8 +399,6 @@ full_skills=(
     skill-marketplace
     aegis-builder
     aegis-distill
-    aegis-observe
-    aegis-doctor
     aegis-reengineer
     design-system-md
     qa-pipeline
