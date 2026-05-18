@@ -321,8 +321,11 @@ if [[ -d "${TMP_DIR}/.claude/agents/_archived" ]]; then
     mkdir -p "${TARGET_DIR}/.claude/agents/_archived"
     cp "${TMP_DIR}/.claude/agents/_archived/"*.md "${TARGET_DIR}/.claude/agents/_archived/" 2>/dev/null || true
 fi
-AGENT_COUNT=$(ls "${TARGET_DIR}/.claude/agents/"*.md 2>/dev/null | wc -l | tr -d ' ')
-ARCHIVED_COUNT=$(ls "${TARGET_DIR}/.claude/agents/_archived/"*.md 2>/dev/null | wc -l | tr -d ' ')
+# v15-13 fix: `ls glob 2>/dev/null` exits non-zero when the glob doesn't
+# expand (no matching files); under `set -e` + `pipefail` this aborts the
+# script silently. `|| echo 0` makes the pipeline always succeed.
+AGENT_COUNT=$(ls "${TARGET_DIR}/.claude/agents/"*.md 2>/dev/null | wc -l | tr -d ' ' || echo 0)
+ARCHIVED_COUNT=$(ls "${TARGET_DIR}/.claude/agents/_archived/"*.md 2>/dev/null | wc -l | tr -d ' ' || echo 0)
 success "${AGENT_COUNT} active agents installed (Nick Fury, Iron Man, Spider-Man, Black Panther, Loki, Beast, War Machine, Thor, Coulson, Captain America) + ${ARCHIVED_COUNT} archived in _archived/"
 
 # Commands
@@ -348,7 +351,7 @@ mkdir -p "${TARGET_DIR}/.claude/hooks/"
 cp "${TMP_DIR}/.claude/hooks/"*.sh "${TARGET_DIR}/.claude/hooks/" 2>/dev/null || true
 cp "${TMP_DIR}/.claude/hooks/profiles.json" "${TARGET_DIR}/.claude/hooks/" 2>/dev/null || true
 chmod +x "${TARGET_DIR}/.claude/hooks/"*.sh 2>/dev/null || true
-HOOK_COUNT=$(ls "${TARGET_DIR}/.claude/hooks/"*.sh 2>/dev/null | wc -l | tr -d ' ')
+HOOK_COUNT=$(ls "${TARGET_DIR}/.claude/hooks/"*.sh 2>/dev/null | wc -l | tr -d ' ' || echo 0)
 success "${HOOK_COUNT} hooks installed (guard-bash, guard-write, session-start, aegis-version-check, post-tool-use, post-edit-accumulate, on-stop, run-with-flags, tinman-heartbeat)"
 
 # Settings
@@ -362,7 +365,7 @@ success "settings.json installed"
 mkdir -p "${TARGET_DIR}/tools/"
 cp "${TMP_DIR}/tools/aegis-"*.sh "${TARGET_DIR}/tools/" 2>/dev/null || true
 chmod +x "${TARGET_DIR}/tools/aegis-"*.sh 2>/dev/null || true
-TOOL_COUNT=$(ls "${TARGET_DIR}/tools/aegis-"*.sh 2>/dev/null | wc -l | tr -d ' ')
+TOOL_COUNT=$(ls "${TARGET_DIR}/tools/aegis-"*.sh 2>/dev/null | wc -l | tr -d ' ' || echo 0)
 success "${TOOL_COUNT} helper tools installed (aegis-brain-sync, aegis-brain-write, aegis-maintainer-grant, aegis-block0-mode, aegis-merge-worktree, aegis-test-all, aegis-pending-items, aegis-agent-tools-matrix, aegis-distill-reset, ...)"
 
 # ── SKILLS — profile-based selection ─────────────────────────────────────────
@@ -419,7 +422,7 @@ copy_skills "${minimal_skills[@]}"
 [[ "$PROFILE" == "standard" || "$PROFILE" == "full" ]] && copy_skills "${standard_skills[@]}"
 [[ "$PROFILE" == "full" ]] && copy_skills "${full_skills[@]}"
 
-SKILL_COUNT=$(ls "${TARGET_DIR}/skills/"*.md 2>/dev/null | wc -l | tr -d ' ')
+SKILL_COUNT=$(ls "${TARGET_DIR}/skills/"*.md 2>/dev/null | wc -l | tr -d ' ' || echo 0)
 success "${SKILL_COUNT} skills installed (profile: ${PROFILE})"
 
 # ── DIRECTORY STRUCTURE ───────────────────────────────────────────────────────

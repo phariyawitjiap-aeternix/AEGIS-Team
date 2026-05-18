@@ -766,7 +766,7 @@ if [[ "$PROFILE" == "full" ]]; then
 fi
 
 # Count skills installed
-skill_count=$(ls -1 "${TARGET_DIR}/skills/"*.md 2>/dev/null | wc -l | tr -d ' ')
+skill_count=$(ls -1 "${TARGET_DIR}/skills/"*.md 2>/dev/null | wc -l | tr -d ' ' || echo 0)
 success "${skill_count} skills installed (full definitions, not stubs)"
 
 # --------------------------------------------------------------------------
