@@ -65,18 +65,18 @@ echo "============================="
 
 # ── Config protection (existing functionality) ────────────────────────────
 run_test 1 \
-    "Block .eslintrc edit -> exit 2 + AEGIS Config Protection" \
-    "2" "AEGIS Config Protection" \
+    "Block .eslintrc edit -> JSON deny + AEGIS Config Protection" \
+    "0" "AEGIS Config Protection" \
     '{"tool_name":"Edit","tool_input":{"file_path":".eslintrc"}}'
 
 run_test 2 \
-    "Block tsconfig.json edit -> exit 2" \
-    "2" "AEGIS Config Protection" \
+    "Block tsconfig.json edit -> JSON deny" \
+    "0" "AEGIS Config Protection" \
     '{"tool_name":"Edit","tool_input":{"file_path":"tsconfig.json"}}'
 
 run_test 3 \
-    "Block jest.config.js edit -> exit 2" \
-    "2" "AEGIS Config Protection" \
+    "Block jest.config.js edit -> JSON deny" \
+    "0" "AEGIS Config Protection" \
     '{"tool_name":"Edit","tool_input":{"file_path":"jest.config.js"}}'
 
 run_test 4 \
@@ -96,14 +96,14 @@ run_test 6 \
 
 # ── AEGIS self-protection ─────────────────────────────────────────────────
 run_test 7 \
-    "Block .claude/settings.json edit -> exit 2 + AEGIS Self-Protection" \
-    "2" "AEGIS Self-Protection" \
+    "Block .claude/settings.json edit -> JSON deny + AEGIS Self-Protection" \
+    "0" "AEGIS Self-Protection" \
     '{"tool_name":"Edit","tool_input":{"file_path":".claude/settings.json"}}'
 
 # ── S3-03: design-library immutability (N+1, N+2 per spec §8) ────────────
 run_test "N+1" \
-    "Block .aegis/brain/design-library/stripe/DESIGN.md edit -> exit 2 + AEGIS Self-Protection" \
-    "2" "AEGIS Self-Protection" \
+    "Block .aegis/brain/design-library/stripe/DESIGN.md edit -> JSON deny + AEGIS Self-Protection" \
+    "0" "AEGIS Self-Protection" \
     '{"tool_name":"Edit","tool_input":{"file_path":".aegis/brain/design-library/stripe/DESIGN.md"}}'
 
 # N+2: maintainer-mode override allows the edit

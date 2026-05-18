@@ -51,33 +51,53 @@ log_pass() { echo -e "  ${GREEN}PASS${NC} $1"; PASS=$((PASS+1)); }
 log_fail() { echo -e "  ${RED}FAIL${NC} $1"; FAIL=$((FAIL+1)); }
 log_info() { echo -e "${YELLOW}==>${NC} $1"; }
 
-# Invoke guard-write with given env + tool_input. Returns: 0 if allowed, 2 if blocked.
+# v15-15: guards now emit modern CC 2.1.141 schema (exit 0 + JSON deny)
+# by default. These helpers preserve the "0=allowed, 2=blocked" contract
+# the existing tests use by detecting `permissionDecision: "deny"` in
+# stdout JSON.
+_guard_verdict_from_stdout() {
+    local stdout="$1"
+    if echo "$stdout" | grep -q '"permissionDecision":"deny"\|"decision":"block"'; then
+        echo 2
+    else
+        echo 0
+    fi
+}
+
 invoke_guard_write() {
     local env_value="$1"
     local file_path="$2"
     local tool="${3:-Edit}"
-    local input
+    local input stdout rc=0
     input=$(python3 -c "
 import json
 print(json.dumps({'tool_name': '${tool}', 'tool_input': {'file_path': '${file_path}'}}))
 ")
     if [[ -n "$env_value" ]]; then
-        echo "$input" | AEGIS_MAINTAINER_MODE="$env_value" bash "$GUARD_WRITE" >/dev/null 2>&1
+        stdout=$(echo "$input" | AEGIS_MAINTAINER_MODE="$env_value" bash "$GUARD_WRITE" 2>/dev/null) || rc=$?
     else
-        # Explicitly unset so test env doesn't leak
-        echo "$input" | env -u AEGIS_MAINTAINER_MODE bash "$GUARD_WRITE" >/dev/null 2>&1
+        stdout=$(echo "$input" | env -u AEGIS_MAINTAINER_MODE bash "$GUARD_WRITE" 2>/dev/null) || rc=$?
     fi
+    # If shell already returned non-zero (legacy path), preserve it.
+    if [[ "$rc" -ne 0 ]]; then
+        return "$rc"
+    fi
+    # Modern path: derive block from stdout JSON.
+    return "$(_guard_verdict_from_stdout "$stdout")"
 }
 
-# Invoke guard-bash with a bash command; returns 0 if allowed, 2 if blocked.
 invoke_guard_bash() {
     local cmd="$1"
-    local input
+    local input stdout rc=0
     input=$(python3 -c "
 import json
 print(json.dumps({'tool_name': 'Bash', 'tool_input': {'command': '''${cmd}'''}}))
 ")
-    echo "$input" | bash "$GUARD_BASH" >/dev/null 2>&1
+    stdout=$(echo "$input" | bash "$GUARD_BASH" 2>/dev/null) || rc=$?
+    if [[ "$rc" -ne 0 ]]; then
+        return "$rc"
+    fi
+    return "$(_guard_verdict_from_stdout "$stdout")"
 }
 
 # Generate a grant inline (nonce + path + expiry)
