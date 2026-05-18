@@ -67,44 +67,48 @@ async function main() {
   }
 
   if (verdict.decision === "block") {
-    // Human-readable detail — always written to stderr.
-    // Legacy CC versions surface this verbatim. CC 2.1.141+ also gets the
-    // structured JSON below, which feeds the permission-dialog attribution.
-    process.stderr.write(
-      `\n⛔ aegis-approval-gate: BLOCKED\n` +
-      `   command:  ${command.slice(0, 120)}${command.length > 120 ? "…" : ""}\n` +
-      `   rule(s):  ${(verdict.matched_rules || []).join(", ")}\n` +
-      `   reason:   ${verdict.reason}\n\n` +
-      `${verdict.hint || ""}\n`
-    );
-
-    // v15-09: CC 2.1.141 permission-dialog schema (PreToolUse).
-    // Strictly additive — older CC versions ignore the JSON and fall back
-    // to the exit-code-2 + stderr legacy path. Newer CC versions read the
-    // `hookSpecificOutput` block and render an attributed dialog.
+    // v15-15: default behavior is now MODERN-ONLY (CC 2.1.141+ schema:
+    // exit 0 + `hookSpecificOutput.permissionDecision: "deny"` on stdout).
+    // CC reads the JSON and renders a proper permission-denied dialog. NO
+    // stderr — emitting stderr while exiting 2 used to make CC label the
+    // event "Bash hook error" / "Write hook error" in red, framing
+    // legitimate blocks as if they were bugs.
     //
-    // Env var `AEGIS_APPROVAL_GATE_SCHEMA=legacy` opts back to stderr-only
-    // (escape hatch if a CC version introduces a regression).
-    if (process.env.AEGIS_APPROVAL_GATE_SCHEMA !== "legacy") {
-      const matched = (verdict.matched_rules || []).join(", ") || "no-match";
-      const dialogReason =
-        `aegis-approval-gate blocked: ${verdict.reason} ` +
-        `[rule(s): ${matched}]`;
-      const payload = {
-        hookSpecificOutput: {
-          hookEventName: "PreToolUse",
-          permissionDecision: "deny",
-          permissionDecisionReason: dialogReason,
-        },
-      };
-      try {
-        process.stdout.write(JSON.stringify(payload) + "\n");
-      } catch {
-        // best-effort; legacy path already covers the block
-      }
+    // Set `AEGIS_APPROVAL_GATE_LEGACY=1` to opt back into the v15-09
+    // dual-path behavior (modern JSON + stderr + exit 2) for older CC
+    // versions that don't honour `hookSpecificOutput`. The legacy path
+    // also keeps the historical stderr text for shell users grepping it.
+    const matched = (verdict.matched_rules || []).join(", ") || "no-match";
+    const cmdShort = command.slice(0, 120) + (command.length > 120 ? "…" : "");
+    const hint = verdict.hint ? `\n\n${verdict.hint}` : "";
+    const dialogReason =
+      `⛔ aegis-approval-gate: BLOCKED\n` +
+      `   command:  ${cmdShort}\n` +
+      `   rule(s):  ${matched}\n` +
+      `   reason:   ${verdict.reason}${hint}`;
+
+    const payload = {
+      hookSpecificOutput: {
+        hookEventName: "PreToolUse",
+        permissionDecision: "deny",
+        permissionDecisionReason: dialogReason,
+      },
+    };
+    try {
+      process.stdout.write(JSON.stringify(payload) + "\n");
+    } catch {
+      // best-effort; if stdout is closed, fall through to legacy below.
     }
 
-    return 2; // PreToolUse blocking exit — legacy hammer, always wins
+    if (process.env.AEGIS_APPROVAL_GATE_LEGACY === "1") {
+      // Legacy path: also emit stderr + exit 2 for older CC versions.
+      // Modern CC will already have used the JSON; the stderr is
+      // duplicate context for users grepping shell output.
+      process.stderr.write("\n" + dialogReason + "\n");
+      return 2;
+    }
+    // Default modern path: exit 0, let CC use the JSON decision.
+    return 0;
   }
 
   return 0;

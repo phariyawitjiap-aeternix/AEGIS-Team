@@ -31,16 +31,49 @@ echo "============================================"
 echo "AEGIS approval-gate — sprint v11-05 acceptance"
 echo "============================================"
 
-# Helper: feed a Bash hook payload to check.mjs and capture rc + stderr.
+# Helper: feed a Bash hook payload to check.mjs and capture an
+# *implementation-agnostic* "blocked" verdict + a context string.
+#
+# v15-15 background: default mode is now JSON-only (exit 0 +
+# `hookSpecificOutput.permissionDecision: "deny"` on stdout). Tests can no
+# longer rely solely on `rc == 2` to detect a block — they must inspect
+# the JSON. This helper returns:
+#
+#   line 1: "2" if blocked (legacy semantic preserved for existing tests)
+#           "0" if allowed
+#   line 2: combined stderr + JSON-reason text, so existing grep checks
+#           against "BLOCKED" / rule names still pass against the
+#           permissionDecisionReason payload.
 run_check() {
   local cmd="$1"
   local payload
   payload="$(node -e "process.stdout.write(JSON.stringify({tool_name:'Bash',tool_input:{command:process.argv[1]}}))" "$cmd")"
   local rc=0
-  local err
-  err=$(printf '%s' "$payload" | node "$CHECK" 2>&1 >/dev/null) || rc=$?
-  echo "$rc"
-  echo "$err"
+  local stdout stderr
+  stdout=$(printf '%s' "$payload" | node "$CHECK" 2>/tmp/aegis-rc-err) || rc=$?
+  stderr=$(cat /tmp/aegis-rc-err 2>/dev/null || true)
+  rm -f /tmp/aegis-rc-err
+
+  # Implementation-agnostic block detection:
+  #   - legacy mode: rc != 0 OR stderr contains "BLOCKED"
+  #   - modern mode: stdout JSON has `permissionDecision: "deny"`
+  local blocked=0
+  if [[ "$rc" -ne 0 ]]; then
+    blocked=1
+  elif echo "$stdout" | grep -q '"permissionDecision":"deny"'; then
+    blocked=1
+  fi
+
+  # Emit legacy-shape return so existing tests still work:
+  #   rc=2 = blocked, rc=0 = allowed (matches old contract)
+  if [[ "$blocked" == "1" ]]; then
+    echo "2"
+  else
+    echo "0"
+  fi
+  # Pass BOTH stderr and the JSON reason through, joined, so existing
+  # `grep "BLOCKED"` / `grep "<rule>"` assertions still match.
+  printf '%s\n%s\n' "$stderr" "$stdout"
 }
 
 # ── Group 1: blocking happy path ────────────────────────────────────────
@@ -304,15 +337,19 @@ else
   fail "7.a schema JSON" "got: ${JSON_OUT:0:200}"
 fi
 
-# 7.b — schema=legacy env opts back to stderr-only (no stdout JSON)
-JSON_OUT=$(
+# 7.b — v15-15: AEGIS_APPROVAL_GATE_LEGACY=1 ALSO writes stderr + exits 2
+# (dual-path for older CC); stdout JSON is still emitted alongside.
+LEGACY_STDOUT=$(
   payload="$(node -e "process.stdout.write(JSON.stringify({tool_name:'Bash',tool_input:{command:'rm -rf /tmp/legacy'}}))")"
-  printf '%s' "$payload" | AEGIS_APPROVAL_GATE_SCHEMA=legacy node "$CHECK" 2>/dev/null
+  printf '%s' "$payload" | AEGIS_APPROVAL_GATE_LEGACY=1 node "$CHECK" 2>/dev/null
 )
-if [[ -z "$JSON_OUT" ]]; then
-  pass "7.b AEGIS_APPROVAL_GATE_SCHEMA=legacy suppresses stdout JSON"
+LEGACY_RC=0
+payload="$(node -e "process.stdout.write(JSON.stringify({tool_name:'Bash',tool_input:{command:'rm -rf /tmp/legacy'}}))")"
+printf '%s' "$payload" | AEGIS_APPROVAL_GATE_LEGACY=1 node "$CHECK" >/dev/null 2>&1 || LEGACY_RC=$?
+if echo "$LEGACY_STDOUT" | grep -q '"permissionDecision":"deny"' && [[ "$LEGACY_RC" == "2" ]]; then
+  pass "7.b AEGIS_APPROVAL_GATE_LEGACY=1 → JSON on stdout + exit 2 (dual path)"
 else
-  fail "7.b legacy mode" "expected empty stdout, got: ${JSON_OUT:0:200}"
+  fail "7.b legacy mode" "stdout_has_json=$(echo "$LEGACY_STDOUT" | grep -c deny) rc=$LEGACY_RC"
 fi
 
 # 7.c — allow path emits no JSON on stdout (only blocks do)
@@ -336,16 +373,30 @@ else
   fail "7.d rule attribution" "got: ${JSON_OUT:0:200}"
 fi
 
-# 7.e — exit code stays 2 in BOTH legacy + new mode (backward compat)
+# 7.e — v15-15: default modern mode now exits 0 + emits JSON deny
+# (no more stderr+exit-2 dual signal that CC interpreted as "Bash hook
+# error"). Legacy mode still exits 2 for older CC compatibility.
 RC=0
 payload='{"tool_name":"Bash","tool_input":{"command":"rm -rf /tmp/rc"}}'
 printf '%s' "$payload" | node "$CHECK" >/dev/null 2>&1 || RC=$?
 RC_LEGACY=0
-printf '%s' "$payload" | AEGIS_APPROVAL_GATE_SCHEMA=legacy node "$CHECK" >/dev/null 2>&1 || RC_LEGACY=$?
-if [[ "$RC" == "2" && "$RC_LEGACY" == "2" ]]; then
-  pass "7.e exit code 2 preserved in both schema modes"
+printf '%s' "$payload" | AEGIS_APPROVAL_GATE_LEGACY=1 node "$CHECK" >/dev/null 2>&1 || RC_LEGACY=$?
+if [[ "$RC" == "0" && "$RC_LEGACY" == "2" ]]; then
+  pass "7.e modern=exit 0, legacy=exit 2 (no more 'hook error' label on modern CC)"
 else
-  fail "7.e exit code regression" "new=$RC legacy=$RC_LEGACY"
+  fail "7.e exit code matrix" "modern=$RC (expected 0) legacy=$RC_LEGACY (expected 2)"
+fi
+
+# 7.f — v15-15: default modern block emits NO stderr (the key fix —
+# stderr+exit-2 was what made CC label the block as "Bash hook error").
+STDERR_OUT=$(
+  payload="$(node -e "process.stdout.write(JSON.stringify({tool_name:'Bash',tool_input:{command:'rm -rf /tmp/no-stderr'}}))")"
+  printf '%s' "$payload" | node "$CHECK" 2>&1 >/dev/null
+)
+if [[ -z "$STDERR_OUT" ]]; then
+  pass "7.f modern block emits NO stderr — no more 'hook error' label"
+else
+  fail "7.f stderr leak" "expected empty, got: ${STDERR_OUT:0:120}"
 fi
 
 echo ""
