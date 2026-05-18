@@ -1800,6 +1800,14 @@
     "description": "aegis-queue-resolve.sh — mark a pending human-queue entry as resolved."
   },
   {
+    "id": "FUNC-46A0C5",
+    "name": "aegis-run-rotate",
+    "source_file": "tools/aegis-run-rotate.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-run-rotate.sh — Compact .aegis/brain/runs/ transcript archive."
+  },
+  {
     "id": "FUNC-386CF1",
     "name": "aegis-s204-override",
     "source_file": "tools/aegis-s204-override.sh",
@@ -2646,6 +2654,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-pin"
+  },
+  {
+    "id": "FUNC-754991",
+    "name": "log",
+    "source_file": "tools/aegis-run-rotate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-run-rotate"
   },
   {
     "id": "FUNC-DA4D89",

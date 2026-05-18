@@ -1,6 +1,6 @@
 <!-- Auto-generated from .aegis/brain/graph/ — edit topic pages under _aegis-output/wiki/ -->
-<!-- built_at: 2026-05-18T12:27:40.194Z -->
-<!-- node_count: 370 edge_count: 519 -->
+<!-- built_at: 2026-05-18T13:01:13.309Z -->
+<!-- node_count: 374 edge_count: 529 -->
 
 # AEGIS Project Index
 
@@ -55,7 +55,7 @@
 - [test-architect](_aegis-output/wiki/skill-test-architect.md) — _standard_
 - [work-breakdown](_aegis-output/wiki/skill-work-breakdown.md) — _standard_
 
-## Sprints (47)
+## Sprints (49)
 
 - [v10-01](_aegis-output/wiki/sprint-v10-01.md) — CLOSED
 - [v10-02](_aegis-output/wiki/sprint-v10-02.md) — CLOSED
@@ -99,13 +99,15 @@
 - [v15-12-hook-error-friendly-fail](_aegis-output/wiki/sprint-v15-12-hook-error-friendly-fail.md) — CLOSED
 - [v15-13-install-glob-fix](_aegis-output/wiki/sprint-v15-13-install-glob-fix.md) — CLOSED
 - [v15-14-install-manifest-fix](_aegis-output/wiki/sprint-v15-14-install-manifest-fix.md) — CLOSED
+- [v15-15-pretooluse-modern-schema](_aegis-output/wiki/sprint-v15-15-pretooluse-modern-schema.md) — CLOSED
+- [v15-16-performance-leak-fix](_aegis-output/wiki/sprint-v15-16-performance-leak-fix.md) — CLOSED
 - [v9-02](_aegis-output/wiki/sprint-v9-02.md) — CLOSED
 - [v9-03](_aegis-output/wiki/sprint-v9-03.md) — CLOSED
 - [v9-04](_aegis-output/wiki/sprint-v9-04.md) — CLOSED · 14pt
 - [v9-05](_aegis-output/wiki/sprint-v9-05.md) — CLOSED · 46pt
 - [v9-06](_aegis-output/wiki/sprint-v9-06.md) — CLOSED
 
-## Tools (19 packages, 98 files)
+## Tools (19 packages, 99 files)
 
 - **_archived** (5 files)
 - **_hook-utils** (1 files)
@@ -125,7 +127,7 @@
 - **aegis-router** (1 files)
 - **aegis-run-logger** (3 files)
 - **aegis-trace-export** (3 files)
-- **misc** (47 files)
+- **misc** (48 files)
 
 ## Hooks (16)
 
