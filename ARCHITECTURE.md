@@ -282,7 +282,7 @@ Profile is set via `/aegis-mode` and persisted in session state.
 
 ## 7. Persona Routing
 
-10 active agents (per v9 consolidation, sprint-v9-06):
+11 active agents (Wasp restored in S3-06 design-approval-gate work after v9 consolidation):
 
 | Persona | Model tier | Role |
 |---------|:----------:|------|

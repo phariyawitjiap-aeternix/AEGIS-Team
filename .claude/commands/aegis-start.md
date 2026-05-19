@@ -286,12 +286,12 @@ After that single answer, she takes over completely.
 ### Human Interaction Model
 ```
 ┌──────────────────────────────────────────────────┐
-│  BEFORE (v6.0):                                  │
+│  BEFORE (pre-v9):                                │
 │  /aegis-start → Dashboard → "What to do?" → Wait │
 │                                                  │
-│  AFTER (v6.0 + Nick Fury):                    │
-│  /aegis-start → Dashboard → Scan → Decide → GO! │
-│  Human watches tmux, interrupts only if needed   │
+│  NOW (v9+ Nick Fury MBP):                        │
+│  /aegis-start → Scan → Decide → GO!              │
+│  Human watches, interrupts only if needed        │
 └──────────────────────────────────────────────────┘
 ```
 
