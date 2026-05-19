@@ -152,6 +152,14 @@
     "description": "Agent captain-america capability: Constraints"
   },
   {
+    "id": "FUNC-26BA84",
+    "name": "captain-america::Diagram-First Reflex (v15-17)",
+    "source_file": ".claude/agents/captain-america.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent captain-america capability: Diagram-First Reflex (v15-17)"
+  },
+  {
     "id": "FUNC-48C648",
     "name": "captain-america::Identity",
     "source_file": ".claude/agents/captain-america.md",
@@ -278,6 +286,14 @@
     "type": "agent-capability",
     "module": "MOD-AGENTS",
     "description": "Agent coulson capability: Deliverables"
+  },
+  {
+    "id": "FUNC-B1B8DF",
+    "name": "coulson::Diagram-First Reflex (v15-17)",
+    "source_file": ".claude/agents/coulson.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent coulson capability: Diagram-First Reflex (v15-17)"
   },
   {
     "id": "FUNC-28515C",
@@ -448,6 +464,14 @@
     "description": "Agent iron-man capability: Constraints"
   },
   {
+    "id": "FUNC-EC4ABE",
+    "name": "iron-man::Diagram-First Reflex (v15-17)",
+    "source_file": ".claude/agents/iron-man.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent iron-man capability: Diagram-First Reflex (v15-17)"
+  },
+  {
     "id": "FUNC-2387FF",
     "name": "iron-man::Identity",
     "source_file": ".claude/agents/iron-man.md",
@@ -542,6 +566,14 @@
     "type": "agent-capability",
     "module": "MOD-AGENTS",
     "description": "Agent loki capability: Design-Approval Gate (S3-06)"
+  },
+  {
+    "id": "FUNC-4CE9EE",
+    "name": "loki::Diagram-First Reflex (v15-17)",
+    "source_file": ".claude/agents/loki.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent loki capability: Diagram-First Reflex (v15-17)"
   },
   {
     "id": "FUNC-7845E4",
@@ -694,6 +726,14 @@
     "type": "agent-capability",
     "module": "MOD-AGENTS",
     "description": "Agent nick-fury capability: Decision Matrix -- What To Do Next"
+  },
+  {
+    "id": "FUNC-EFD030",
+    "name": "nick-fury::Diagram-First Reflex (v15-17)",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: Diagram-First Reflex (v15-17)"
   },
   {
     "id": "FUNC-665155",

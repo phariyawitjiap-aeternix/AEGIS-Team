@@ -89,6 +89,12 @@ Default autonomy: L3 (Autonomous) with Nick Fury active
 
 > 16 canonical commands total. Legacy shims removed in v10-05.
 
+## Diagram-First Reflex (v15-17)
+
+When the thought is **structural** — flow > 3 steps, decision > 2 branches, multi-actor sequence, state machine, hierarchy > 5 nodes — lead with a Mermaid diagram BEFORE the prose. Each persona has a default diagram type (Nick Fury → decision tree, Captain America → sequenceDiagram, Iron Man → architecture flowchart, Loki → attack paths with `:::warning` class, Coulson → traceability flow).
+
+Anti-triggers (use PROSE instead): single facts, retros, post-mortems, apologies, code review feedback, 1-2 step instructions. See [`skills/diagram-first-reflex.md`](skills/diagram-first-reflex.md) for the full trigger / anti-trigger matrix.
+
 ## Applying AEGIS to Other Projects
 See [`docs/AEGIS_APPLICATION_PLAYBOOK.md`](docs/AEGIS_APPLICATION_PLAYBOOK.md) for a step-by-step guide covering brain seeding, persona assembly, CLAUDE.md tailoring, BLOCK 0 bootstrap, and a greenfield React app walkthrough.
 

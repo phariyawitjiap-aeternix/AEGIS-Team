@@ -1,6 +1,6 @@
 <!-- Auto-generated from .aegis/brain/graph/ — edit topic pages under _aegis-output/wiki/ -->
-<!-- built_at: 2026-05-18T13:01:13.309Z -->
-<!-- node_count: 374 edge_count: 529 -->
+<!-- built_at: 2026-05-19T06:46:22.265Z -->
+<!-- node_count: 377 edge_count: 536 -->
 
 # AEGIS Project Index
 
@@ -16,7 +16,7 @@
 - [GUARDRAILS.md](GUARDRAILS.md) — recurring failure-mode catalog
 - [CLAUDE_safety.md](CLAUDE_safety.md), [CLAUDE_agents.md](CLAUDE_agents.md), [CLAUDE_skills.md](CLAUDE_skills.md), [CLAUDE_lessons.md](CLAUDE_lessons.md)
 
-## Skills (36)
+## Skills (37)
 
 - [adversarial-review](_aegis-output/wiki/skill-adversarial-review.md) — _full_
 - [aegis-activity-logger](_aegis-output/wiki/skill-aegis-activity-logger.md) — _standard_
@@ -40,6 +40,7 @@
 - [code-standards](_aegis-output/wiki/skill-code-standards.md) — _minimal_
 - [course-correction](_aegis-output/wiki/skill-course-correction.md) — _full_
 - [design-system-md](_aegis-output/wiki/skill-design-system-md.md) — _full_
+- [diagram-first-reflex](_aegis-output/wiki/skill-diagram-first-reflex.md) — _full_
 - [git-workflow](_aegis-output/wiki/skill-git-workflow.md) — _minimal_
 - [iso-29110-docs](_aegis-output/wiki/skill-iso-29110-docs.md) — _full_
 - [kanban-board](_aegis-output/wiki/skill-kanban-board.md) — _standard_
@@ -55,7 +56,7 @@
 - [test-architect](_aegis-output/wiki/skill-test-architect.md) — _standard_
 - [work-breakdown](_aegis-output/wiki/skill-work-breakdown.md) — _standard_
 
-## Sprints (49)
+## Sprints (50)
 
 - [v10-01](_aegis-output/wiki/sprint-v10-01.md) — CLOSED
 - [v10-02](_aegis-output/wiki/sprint-v10-02.md) — CLOSED
@@ -101,6 +102,7 @@
 - [v15-14-install-manifest-fix](_aegis-output/wiki/sprint-v15-14-install-manifest-fix.md) — CLOSED
 - [v15-15-pretooluse-modern-schema](_aegis-output/wiki/sprint-v15-15-pretooluse-modern-schema.md) — CLOSED
 - [v15-16-performance-leak-fix](_aegis-output/wiki/sprint-v15-16-performance-leak-fix.md) — CLOSED
+- [v15-17-diagram-first-reflex](_aegis-output/wiki/sprint-v15-17-diagram-first-reflex.md) — CLOSED
 - [v9-02](_aegis-output/wiki/sprint-v9-02.md) — CLOSED
 - [v9-03](_aegis-output/wiki/sprint-v9-03.md) — CLOSED
 - [v9-04](_aegis-output/wiki/sprint-v9-04.md) — CLOSED · 14pt
