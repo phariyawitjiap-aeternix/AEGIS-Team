@@ -38,7 +38,7 @@ What this does in one shot:
 1. Creates `./my-project/` (auto)
 2. `git init` (auto)
 3. Title-cases slug → PROJECT_NAME for branding
-4. Downloads AEGIS framework (16 commands + 36 skills + 11 personas + 14 hooks + 60+ tools)
+4. Downloads AEGIS framework (16 commands + 37 skills + 11 personas + 14 hooks + 60+ tools)
 5. Bootstraps Linear (if token auto-detected — keychain / `LINEAR_API_KEY` / dotfile)
 6. Registers in multi-tenant registry (`mt run my-project` works from anywhere)
 7. Runs `aegis-doctor` post-install verification

@@ -22,7 +22,7 @@ To get AEGIS running in an existing project with minimal footprint:
 │       ├── logs/                 # gitignored
 │       └── MEMORY.md             # auto-generated index
 ├── .claude/
-│   ├── agents/*.md               # the 10 active agents
+│   ├── agents/*.md               # the 11 active agents
 │   ├── commands/*.md             # slash commands
 │   ├── hooks/*.sh                # guard-bash, guard-write, session-start,
 │   │                               post-tool-use, on-stop
