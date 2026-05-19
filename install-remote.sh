@@ -426,6 +426,7 @@ standard_skills=(
     kanban-board
     work-breakdown
     retrospective
+    diagram-first-reflex
 )
 
 # Full (all remaining): advanced + AEGIS-specific tools
