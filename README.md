@@ -6,7 +6,7 @@
   <img src="https://img.shields.io/badge/version-15.0-blue?style=for-the-badge" alt="Version 15.0"/>
   <img src="https://img.shields.io/badge/agents-11-green?style=for-the-badge" alt="11 Agents"/>
   <img src="https://img.shields.io/badge/commands-16%20canonical-yellow?style=for-the-badge" alt="16 canonical commands"/>
-  <img src="https://img.shields.io/badge/skills-37-orange?style=for-the-badge" alt="37 Skills"/>
+  <img src="https://img.shields.io/badge/skills-38-orange?style=for-the-badge" alt="37 Skills"/>
   <img src="https://img.shields.io/badge/hooks-14-teal?style=for-the-badge" alt="14 Hooks"/>
   <img src="https://img.shields.io/badge/tools-60%2B-slategray?style=for-the-badge" alt="60+ Helper Tools"/>
   <img src="https://img.shields.io/badge/tests-61-brightgreen?style=for-the-badge" alt="61 test files"/>
@@ -149,7 +149,7 @@ Principled override channel so the framework can evolve in-session when the huma
 
 ## What is AEGIS?
 
-AEGIS (**A**utonomous **E**nhanced **G**roup **I**ntelligence **S**ystem) — production-grade AI agent team framework for Claude Code. 11 Marvel-character agents, 16 canonical commands, 37 skills, 14 hooks, 60+ helper tools, ISO 29110 compliance, JIRA-like PM, self-enforcing instinct system, principled maintainer-override channel, real worktree isolation, CC 2.1.141 native (modern permission-decision schema, terminalSequence notifications, `claude --cwd` multi-tenant, diagram-first reflex). :dna: ยิ่งใช้ยิ่งเก่ง.
+AEGIS (**A**utonomous **E**nhanced **G**roup **I**ntelligence **S**ystem) — production-grade AI agent team framework for Claude Code. 11 Marvel-character agents, 16 canonical commands, 38 skills, 14 hooks, 60+ helper tools, ISO 29110 compliance, JIRA-like PM, self-enforcing instinct system, principled maintainer-override channel, real worktree isolation, CC 2.1.141 native (modern permission-decision schema, terminalSequence notifications, `claude --cwd` multi-tenant, diagram-first reflex). :dna: ยิ่งใช้ยิ่งเก่ง.
 
 ---
 
@@ -228,7 +228,7 @@ claude --dangerously-skip-permissions
 | 2 | :arrows_counterclockwise: **Migrate** (v8→v9 only) `_aegis-brain/` → `.aegis/brain/` if the new path doesn't exist yet |
 | 3 | :wastebasket: **Remove** old agents, commands, references, teams, skills |
 | 4 | :arrow_down: **Download** latest AEGIS from GitHub (to `/tmp/`, auto-cleaned) |
-| 5 | :package: **Install** 11 Marvel agents, 16 canonical commands, references + teams, 37 skills, 14 hooks, 60+ helper tools |
+| 5 | :package: **Install** 11 Marvel agents, 16 canonical commands, references + teams, 38 skills, 14 hooks, 60+ helper tools |
 | 6 | :mag: **Verify** all files present + auto-detect profile from project-identity.md |
 
 **What's new in v9.0 (vs v8.4):**

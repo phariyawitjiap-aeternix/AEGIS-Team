@@ -672,6 +672,8 @@ runtime_helpers=(
     "aegis-brain-index.sh"     # FTS5 brain indexer (v10-06 Hermes L1)
     "aegis-brain-search.sh"    # Search the FTS5 brain index
     "aegis-token-profile.sh"   # PostToolUse token-cost profiler (wired in settings.json)
+    "aegis-coverage-screen.sh" # v15-19 — tool-boundary screen + warning emitter at intake
+    "aegis-settings-patch.sh"  # v15-18B — safe between-session settings.json migrations
 )
 delivered_tools=0
 for tool in "${upgrade_toolkit[@]}" "${runtime_helpers[@]}"; do

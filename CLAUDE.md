@@ -95,6 +95,10 @@ When the thought is **structural** — flow > 3 steps, decision > 2 branches, mu
 
 Anti-triggers (use PROSE instead): single facts, retros, post-mortems, apologies, code review feedback, 1-2 step instructions. See [`skills/diagram-first-reflex.md`](skills/diagram-first-reflex.md) for the full trigger / anti-trigger matrix.
 
+## Coverage Contract (v15-19)
+
+**AEGIS contract = 100% autonomous execution.** Human role is ONLY (1) requirements and (2) credentials. For any project where AEGIS cannot drive end-to-end (Unity / Unreal / Xcode / closed mobile / hardware-in-the-loop), the team MUST emit a coverage warning at intake — `/super-spec` Phase 0 runs `tools/aegis-coverage-screen.sh`, lists every gap, and writes `.aegis/brain/state/coverage.json`. `/aegis-start` re-surfaces the warning each session until the user types `ack gaps`. Soft gate (warns but never blocks). See [`skills/aegis-coverage-screen.md`](skills/aegis-coverage-screen.md). Driver: Contra-Thai post-mortem 2026-05-21 — 3 "100% velocity" sprints produced zero playable artifact because Unity Editor work AEGIS cannot drive was never surfaced as a gap on day 1.
+
 ## Applying AEGIS to Other Projects
 See [`docs/AEGIS_APPLICATION_PLAYBOOK.md`](docs/AEGIS_APPLICATION_PLAYBOOK.md) for a step-by-step guide covering brain seeding, persona assembly, CLAUDE.md tailoring, BLOCK 0 bootstrap, and a greenfield React app walkthrough.
 
