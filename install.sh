@@ -724,50 +724,64 @@ fi
 # --------------------------------------------------------------------------
 info "Installing skills for profile: ${PROFILE}..."
 
-# Skill lists per profile
-minimal_skills=("ai-personas" "orchestrator" "code-review" "code-standards" "git-workflow" "bug-lifecycle" "project-navigator")
-standard_skills=("super-spec" "test-architect" "security-audit" "tech-debt-tracker" "sprint-tracker" "api-docs" "sprint-manager" "kanban-board" "work-breakdown" "aegis-live-tail" "aegis-activity-logger" "aegis-issue-thread" "aegis-parallel-dispatch" "aegis-approval-gate" "aegis-router" "aegis-run-logger" "aegis-trace-export" "aegis-multi-tenant" "aegis-resume" "diagram-first-reflex")
-full_skills=("aegis-distill" "adversarial-review" "code-coverage" "retrospective" "course-correction" "skill-marketplace" "aegis-builder" "qa-pipeline" "iso-29110-docs")
+# v15-18A: auto-discovery from skill frontmatter `profile:` field.
+# Each skill declares its minimum tier:
+#   profile: minimal              → ships at every tier
+#   profile: standard             → ships at standard + full
+#   profile: full                 → ships at full only
+#   profile: minimal|standard|full → equivalent to minimal (universal)
+#
+# Replaces the hand-coded minimal_skills/standard_skills/full_skills arrays
+# that recurred as a drift bug (v15-17 hotfix shipped diagram-first-reflex
+# but the hand-list didn't include it; downstream sync silently missed it
+# until manually added). Glob + frontmatter = no drift.
 
-copy_skill() {
-    local name="$1"
-    local src="${SCRIPT_DIR}/skills/${name}.md"
-    local dst="${TARGET_DIR}/skills/${name}.md"
+# Map profile name to a numeric rank: minimal=0, standard=1, full=2.
+# A skill ships if its declared min-rank <= wanted-rank.
+case "$PROFILE" in
+    minimal)  wanted_rank=0 ;;
+    standard) wanted_rank=1 ;;
+    full)     wanted_rank=2 ;;
+    *)        wanted_rank=1 ;;  # safety default
+esac
 
-    # sprint-tracker.md was upgraded to sprint-manager content; copy under the new name
-    if [[ "$name" == "sprint-manager" && ! -f "$src" ]]; then
-        src="${SCRIPT_DIR}/skills/sprint-tracker.md"
-    fi
+# Extract min-tier from a skill's frontmatter `profile:` field.
+# Handles `minimal`, `standard`, `full`, and pipe-separated lists (takes
+# the lowest tier present, i.e. the most inclusive).
+skill_min_rank() {
+    local skill_file="$1"
+    local profile_val
+    profile_val=$(grep -m1 "^profile:" "$skill_file" 2>/dev/null \
+        | sed 's/^profile:[[:space:]]*//; s/[[:space:]]*$//' \
+        | tr -d '"')
+    [[ -z "$profile_val" ]] && { echo 99; return; }  # no profile field = never ship
 
-    if [[ -f "$src" ]]; then
-        cp "$src" "$dst"
-    else
-        warn "Skill source not found: ${src}"
-    fi
+    local rank=99
+    local tier
+    for tier in $(echo "$profile_val" | tr '|' '\n'); do
+        case "$tier" in
+            minimal)  [[ 0 -lt "$rank" ]] && rank=0 ;;
+            standard) [[ 1 -lt "$rank" ]] && rank=1 ;;
+            full)     [[ 2 -lt "$rank" ]] && rank=2 ;;
+        esac
+    done
+    echo "$rank"
 }
 
-# Always install minimal skills
-for skill in "${minimal_skills[@]}"; do
-    copy_skill "$skill"
+# Walk every skill file and ship if its min-rank ≤ wanted-rank.
+shipped_skills=0
+for skill_file in "${SCRIPT_DIR}/skills/"*.md; do
+    [[ -f "$skill_file" ]] || continue
+    min_rank=$(skill_min_rank "$skill_file")
+    if [[ "$min_rank" -le "$wanted_rank" ]]; then
+        cp "$skill_file" "${TARGET_DIR}/skills/" 2>/dev/null && \
+            shipped_skills=$((shipped_skills + 1))
+    fi
 done
-
-# Install standard skills if profile is standard or full
-if [[ "$PROFILE" == "standard" || "$PROFILE" == "full" ]]; then
-    for skill in "${standard_skills[@]}"; do
-        copy_skill "$skill"
-    done
-fi
-
-# Install full skills if profile is full
-if [[ "$PROFILE" == "full" ]]; then
-    for skill in "${full_skills[@]}"; do
-        copy_skill "$skill"
-    done
-fi
 
 # Count skills installed
 skill_count=$(ls -1 "${TARGET_DIR}/skills/"*.md 2>/dev/null | wc -l | tr -d ' ' || echo 0)
-success "${skill_count} skills installed (full definitions, not stubs)"
+success "${skill_count} skills installed (auto-discovered via frontmatter profile: field)"
 
 # --------------------------------------------------------------------------
 # Copy ISO 29110 Document Templates

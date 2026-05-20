@@ -1,6 +1,6 @@
 <!-- Auto-generated from .aegis/brain/graph/ — edit topic pages under _aegis-output/wiki/ -->
-<!-- built_at: 2026-05-19T08:31:38.262Z -->
-<!-- node_count: 377 edge_count: 536 -->
+<!-- built_at: 2026-05-20T04:12:13.231Z -->
+<!-- node_count: 380 edge_count: 540 -->
 
 # AEGIS Project Index
 
@@ -56,7 +56,7 @@
 - [test-architect](_aegis-output/wiki/skill-test-architect.md) — _standard_
 - [work-breakdown](_aegis-output/wiki/skill-work-breakdown.md) — _standard_
 
-## Sprints (50)
+## Sprints (51)
 
 - [v10-01](_aegis-output/wiki/sprint-v10-01.md) — CLOSED
 - [v10-02](_aegis-output/wiki/sprint-v10-02.md) — CLOSED
@@ -103,6 +103,7 @@
 - [v15-15-pretooluse-modern-schema](_aegis-output/wiki/sprint-v15-15-pretooluse-modern-schema.md) — CLOSED
 - [v15-16-performance-leak-fix](_aegis-output/wiki/sprint-v15-16-performance-leak-fix.md) — CLOSED
 - [v15-17-diagram-first-reflex](_aegis-output/wiki/sprint-v15-17-diagram-first-reflex.md) — CLOSED
+- [v15-18a-skill-autodiscover](_aegis-output/wiki/sprint-v15-18a-skill-autodiscover.md) — CLOSED
 - [v9-02](_aegis-output/wiki/sprint-v9-02.md) — CLOSED
 - [v9-03](_aegis-output/wiki/sprint-v9-03.md) — CLOSED
 - [v9-04](_aegis-output/wiki/sprint-v9-04.md) — CLOSED · 14pt
