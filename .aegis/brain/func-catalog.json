@@ -1864,6 +1864,14 @@
     "description": "AEGIS Security-Sensitive Path Registry (Sprint v9-02 S2-04)"
   },
   {
+    "id": "FUNC-64300F",
+    "name": "aegis-settings-patch",
+    "source_file": "tools/aegis-settings-patch.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-settings-patch.sh — safe between-session migration tool for"
+  },
+  {
     "id": "FUNC-D756D8",
     "name": "aegis-shell-footgun-scan",
     "source_file": "tools/aegis-shell-footgun-scan.sh",
@@ -1960,6 +1968,14 @@
     "description": "Internal function in aegis-notify"
   },
   {
+    "id": "FUNC-6186BD",
+    "name": "apply_patch",
+    "source_file": "tools/aegis-settings-patch.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-settings-patch"
+  },
+  {
     "id": "FUNC-AE956C",
     "name": "backup_db",
     "source_file": "tools/aegis-brain-index.sh",
@@ -1974,6 +1990,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-brain-benchmark"
+  },
+  {
+    "id": "FUNC-3BD22D",
+    "name": "bold",
+    "source_file": "tools/aegis-settings-patch.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-settings-patch"
   },
   {
     "id": "FUNC-512A80",
@@ -2248,6 +2272,14 @@
     "description": "Internal function in aegis-s204-override"
   },
   {
+    "id": "FUNC-89AF5B",
+    "name": "dry_run_patch",
+    "source_file": "tools/aegis-settings-patch.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-settings-patch"
+  },
+  {
     "id": "FUNC-91C9BF",
     "name": "emit_blank",
     "source_file": "tools/aegis-design-init.sh",
@@ -2302,6 +2334,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-pin"
+  },
+  {
+    "id": "FUNC-53CD85",
+    "name": "err",
+    "source_file": "tools/aegis-settings-patch.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-settings-patch"
   },
   {
     "id": "FUNC-A44896",
@@ -2512,6 +2552,14 @@
     "description": "Internal function in aegis-linear-setup"
   },
   {
+    "id": "FUNC-33A47E",
+    "name": "green",
+    "source_file": "tools/aegis-settings-patch.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-settings-patch"
+  },
+  {
     "id": "FUNC-0C2A54",
     "name": "has_fallback_nearby",
     "source_file": "tools/aegis-shell-lint.sh",
@@ -2550,6 +2598,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-brain-index"
+  },
+  {
+    "id": "FUNC-285CFF",
+    "name": "info",
+    "source_file": "tools/aegis-settings-patch.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-settings-patch"
   },
   {
     "id": "FUNC-0C81DA",
@@ -2614,6 +2670,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-dump"
+  },
+  {
+    "id": "FUNC-32803E",
+    "name": "list_patche",
+    "source_file": "tools/aegis-settings-patch.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-settings-patch"
   },
   {
     "id": "FUNC-32AC82",
@@ -2880,6 +2944,14 @@
     "description": "Internal function in aegis-log-decision"
   },
   {
+    "id": "FUNC-82622C",
+    "name": "red",
+    "source_file": "tools/aegis-settings-patch.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-settings-patch"
+  },
+  {
     "id": "FUNC-DC6331",
     "name": "require_curl",
     "source_file": "tools/aegis-linear-setup.sh",
@@ -2896,12 +2968,28 @@
     "description": "Internal function in aegis-linear-setup"
   },
   {
+    "id": "FUNC-6C18AE",
+    "name": "require_jq",
+    "source_file": "tools/aegis-settings-patch.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-settings-patch"
+  },
+  {
     "id": "FUNC-AE490C",
     "name": "require_python",
     "source_file": "tools/aegis-linear-setup.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-linear-setup"
+  },
+  {
+    "id": "FUNC-293F26",
+    "name": "require_setting",
+    "source_file": "tools/aegis-settings-patch.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-settings-patch"
   },
   {
     "id": "FUNC-83F09D",
@@ -2918,6 +3006,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-design-init"
+  },
+  {
+    "id": "FUNC-F50D06",
+    "name": "revert_patch",
+    "source_file": "tools/aegis-settings-patch.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-settings-patch"
   },
   {
     "id": "FUNC-0130AA",
@@ -3120,6 +3216,14 @@
     "description": "Internal function in aegis-linear-sync"
   },
   {
+    "id": "FUNC-017037",
+    "name": "warn",
+    "source_file": "tools/aegis-settings-patch.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-settings-patch"
+  },
+  {
     "id": "FUNC-2AFAB7",
     "name": "warn",
     "source_file": "tools/aegis-trace-audit.sh",
@@ -3150,5 +3254,13 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-pin"
+  },
+  {
+    "id": "FUNC-4ECB5A",
+    "name": "yellow",
+    "source_file": "tools/aegis-settings-patch.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-settings-patch"
   }
 ]

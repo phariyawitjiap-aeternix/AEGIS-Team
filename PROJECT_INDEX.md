@@ -1,6 +1,6 @@
 <!-- Auto-generated from .aegis/brain/graph/ — edit topic pages under _aegis-output/wiki/ -->
-<!-- built_at: 2026-05-20T04:12:13.231Z -->
-<!-- node_count: 380 edge_count: 540 -->
+<!-- built_at: 2026-05-20T08:02:40.400Z -->
+<!-- node_count: 383 edge_count: 543 -->
 
 # AEGIS Project Index
 
@@ -56,7 +56,7 @@
 - [test-architect](_aegis-output/wiki/skill-test-architect.md) — _standard_
 - [work-breakdown](_aegis-output/wiki/skill-work-breakdown.md) — _standard_
 
-## Sprints (51)
+## Sprints (52)
 
 - [v10-01](_aegis-output/wiki/sprint-v10-01.md) — CLOSED
 - [v10-02](_aegis-output/wiki/sprint-v10-02.md) — CLOSED
@@ -104,13 +104,14 @@
 - [v15-16-performance-leak-fix](_aegis-output/wiki/sprint-v15-16-performance-leak-fix.md) — CLOSED
 - [v15-17-diagram-first-reflex](_aegis-output/wiki/sprint-v15-17-diagram-first-reflex.md) — CLOSED
 - [v15-18a-skill-autodiscover](_aegis-output/wiki/sprint-v15-18a-skill-autodiscover.md) — CLOSED
+- [v15-18b-settings-patch-tool](_aegis-output/wiki/sprint-v15-18b-settings-patch-tool.md) — CLOSED
 - [v9-02](_aegis-output/wiki/sprint-v9-02.md) — CLOSED
 - [v9-03](_aegis-output/wiki/sprint-v9-03.md) — CLOSED
 - [v9-04](_aegis-output/wiki/sprint-v9-04.md) — CLOSED · 14pt
 - [v9-05](_aegis-output/wiki/sprint-v9-05.md) — CLOSED · 46pt
 - [v9-06](_aegis-output/wiki/sprint-v9-06.md) — CLOSED
 
-## Tools (19 packages, 99 files)
+## Tools (19 packages, 100 files)
 
 - **_archived** (5 files)
 - **_hook-utils** (1 files)
@@ -130,15 +131,15 @@
 - **aegis-router** (1 files)
 - **aegis-run-logger** (3 files)
 - **aegis-trace-export** (3 files)
-- **misc** (48 files)
+- **misc** (49 files)
 
 ## Hooks (16)
 
 - **PostToolUse** (7)
-  - `.*` → `node "$CLAUDE_PROJECT_DIR/tools/aegis-activity-logger/log.mjs"`
-  - `.*` → `node "$CLAUDE_PROJECT_DIR/tools/aegis-live-tail/emit.mjs"`
-  - `.*` → `bash "$CLAUDE_PROJECT_DIR/tools/aegis-token-profile.sh"`
   - `Bash` → `bash "$CLAUDE_PROJECT_DIR/.claude/hooks/run-with-flags.sh" post-tool-use "$CLAUDE_PROJECT_DIR/.claude/hooks/post-tool-use.sh"`
+  - `Bash|Edit|Write|MultiEdit|Task` → `node "$CLAUDE_PROJECT_DIR/tools/aegis-activity-logger/log.mjs"`
+  - `Bash|Edit|Write|MultiEdit|Task` → `node "$CLAUDE_PROJECT_DIR/tools/aegis-live-tail/emit.mjs"`
+  - `Bash|Edit|Write|MultiEdit|Task` → `bash "$CLAUDE_PROJECT_DIR/tools/aegis-token-profile.sh"`
   - `Edit|Write|MultiEdit` → `bash "$CLAUDE_PROJECT_DIR/.claude/hooks/run-with-flags.sh" post-edit-accumulate "$CLAUDE_PROJECT_DIR/.claude/hooks/post-edit-accumulate.sh"`
   - `Edit|Write|MultiEdit` → `bash "$CLAUDE_PROJECT_DIR/.claude/hooks/linear-sync-on-kanban.sh"`
   - `Edit|Write|MultiEdit` → `bash "$CLAUDE_PROJECT_DIR/tools/aegis-brain-graph/hook.sh"`
