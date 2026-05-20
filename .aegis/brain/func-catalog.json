@@ -1560,6 +1560,14 @@
     "description": "Internal function in aegis-linear-sync"
   },
   {
+    "id": "FUNC-7CBF50",
+    "name": "ack_gap",
+    "source_file": "tools/aegis-coverage-screen.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-coverage-screen"
+  },
+  {
     "id": "FUNC-13AEBB",
     "name": "add_result",
     "source_file": "tools/aegis-brain-benchmark.sh",
@@ -1630,6 +1638,14 @@
     "type": "bash",
     "module": "MOD-TOOLS",
     "description": "AEGIS Contrast Check (S3-06 -- D-037 Fix 3)"
+  },
+  {
+    "id": "FUNC-B9B73A",
+    "name": "aegis-coverage-screen",
+    "source_file": "tools/aegis-coverage-screen.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-coverage-screen.sh — sprint v15-19."
   },
   {
     "id": "FUNC-CFA3E1",
@@ -1992,6 +2008,14 @@
     "description": "Internal function in aegis-brain-benchmark"
   },
   {
+    "id": "FUNC-614BD4",
+    "name": "bold",
+    "source_file": "tools/aegis-coverage-screen.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-coverage-screen"
+  },
+  {
     "id": "FUNC-3BD22D",
     "name": "bold",
     "source_file": "tools/aegis-settings-patch.sh",
@@ -2248,6 +2272,14 @@
     "description": "Internal function in aegis-linear-setup"
   },
   {
+    "id": "FUNC-D37712",
+    "name": "coverage_for_stack",
+    "source_file": "tools/aegis-coverage-screen.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-coverage-screen"
+  },
+  {
     "id": "FUNC-A1BC6D",
     "name": "delta_marker",
     "source_file": "tools/aegis-upgrade.sh",
@@ -2262,6 +2294,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-doctor"
+  },
+  {
+    "id": "FUNC-E4CBE6",
+    "name": "detect_stack",
+    "source_file": "tools/aegis-coverage-screen.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-coverage-screen"
   },
   {
     "id": "FUNC-4E7AC5",
@@ -2304,6 +2344,14 @@
     "description": "Internal function in aegis-func-catalog"
   },
   {
+    "id": "FUNC-73CF25",
+    "name": "emit_warning",
+    "source_file": "tools/aegis-coverage-screen.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-coverage-screen"
+  },
+  {
     "id": "FUNC-BE41D2",
     "name": "ensure_dir",
     "source_file": "tools/aegis-brain-index.sh",
@@ -2334,6 +2382,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-pin"
+  },
+  {
+    "id": "FUNC-7E4347",
+    "name": "err",
+    "source_file": "tools/aegis-coverage-screen.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-coverage-screen"
   },
   {
     "id": "FUNC-53CD85",
@@ -2552,6 +2608,14 @@
     "description": "Internal function in aegis-linear-setup"
   },
   {
+    "id": "FUNC-BFE252",
+    "name": "green",
+    "source_file": "tools/aegis-coverage-screen.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-coverage-screen"
+  },
+  {
     "id": "FUNC-33A47E",
     "name": "green",
     "source_file": "tools/aegis-settings-patch.sh",
@@ -2598,6 +2662,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-brain-index"
+  },
+  {
+    "id": "FUNC-F4A5F0",
+    "name": "info",
+    "source_file": "tools/aegis-coverage-screen.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-coverage-screen"
   },
   {
     "id": "FUNC-285CFF",
@@ -2678,6 +2750,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-settings-patch"
+  },
+  {
+    "id": "FUNC-090025",
+    "name": "list_stack",
+    "source_file": "tools/aegis-coverage-screen.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-coverage-screen"
   },
   {
     "id": "FUNC-32AC82",
@@ -2944,6 +3024,14 @@
     "description": "Internal function in aegis-log-decision"
   },
   {
+    "id": "FUNC-EEB68B",
+    "name": "red",
+    "source_file": "tools/aegis-coverage-screen.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-coverage-screen"
+  },
+  {
     "id": "FUNC-82622C",
     "name": "red",
     "source_file": "tools/aegis-settings-patch.sh",
@@ -3078,6 +3166,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-upgrade"
+  },
+  {
+    "id": "FUNC-1323D3",
+    "name": "swap_recommendation",
+    "source_file": "tools/aegis-coverage-screen.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-coverage-screen"
   },
   {
     "id": "FUNC-55140A",
@@ -3248,12 +3344,28 @@
     "description": "Internal function in aegis-doctor"
   },
   {
+    "id": "FUNC-D4CEE4",
+    "name": "write_coverage_json",
+    "source_file": "tools/aegis-coverage-screen.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-coverage-screen"
+  },
+  {
     "id": "FUNC-A3A1DC",
     "name": "write_pin",
     "source_file": "tools/aegis-pin.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-pin"
+  },
+  {
+    "id": "FUNC-475B61",
+    "name": "yellow",
+    "source_file": "tools/aegis-coverage-screen.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-coverage-screen"
   },
   {
     "id": "FUNC-4ECB5A",
