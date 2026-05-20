@@ -28,6 +28,17 @@ Last reviewed: 2026-05-06
 
 Model routing: opus=strategy, sonnet=implementation, haiku=scanning
 
+## Return Format (v15-20)
+
+Every sub-agent return MUST tag non-trivial claims (counts, status booleans,
+closures, DONE/SHIPPED) as either **`[VERIFIED: <command>]`** (backed by an
+executed command — cite it) or **`[PRODUCED: unverified]`** (artifact exists
+but was not run against ground truth). See [`skills/aegis-return-format.md`](skills/aegis-return-format.md)
+for the rule + examples. Driver: Contra-Thai post-mortem F-C — sub-agent
+returns conflated `produced` and `verified`; main agent inherited paper claims
+as ground truth. Validator: `tools/aegis-return-validator.sh check <file-or-stdin>`
+(soft gate, exits 0; high untagged ratio = re-prompt the sub-agent).
+
 ## Retired in v9 (Sprint v9-06)
 
 | # | Agent | Reason | Replacement |

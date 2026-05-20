@@ -385,6 +385,18 @@ No file is written for status — it is a read-only display. Do NOT write to met
 - Populate `carry_over` in `metrics.json`: count, total points, and list of task IDs.
 - Carry-over tasks must not be silently dropped.
 
+#### Step 3.5: Coverage Playtest Gate (NEW v15-20)
+
+- Run `bash tools/aegis-sprint-close-gate.sh check .` to surface playtest evidence
+  for GUI-runtime projects (coverage < 100%). The gate:
+  - Silent + exit 0 if coverage = 100% (text-runtime)
+  - Prints warning block listing missing playtest files for each DONE story
+  - Captures the report — embed it in close.md under "Verification Status"
+- Soft gate: sprint close proceeds regardless. The warning surfaces the
+  "produced vs verified" gap so retro can address it. Closes Contra-Thai F-B.
+- Per-story playtest format: `_aegis-output/playtests/S<NN>-<NN>.md` with
+  `verified_by:`, `date:`, `pass: true|false`, `notes:` keys.
+
 #### Step 4: Write Close Report and Finalize Metrics
 - Update `.aegis/brain/sprints/sprint-<N>/metrics.json`:
   - Set `actual_end` to today's date.

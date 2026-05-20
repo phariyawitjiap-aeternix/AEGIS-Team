@@ -1,6 +1,6 @@
 <!-- Auto-generated from .aegis/brain/graph/ — edit topic pages under _aegis-output/wiki/ -->
-<!-- built_at: 2026-05-20T20:08:44.333Z -->
-<!-- node_count: 387 edge_count: 547 -->
+<!-- built_at: 2026-05-20T20:36:21.272Z -->
+<!-- node_count: 394 edge_count: 552 -->
 
 # AEGIS Project Index
 
@@ -16,7 +16,7 @@
 - [GUARDRAILS.md](GUARDRAILS.md) — recurring failure-mode catalog
 - [CLAUDE_safety.md](CLAUDE_safety.md), [CLAUDE_agents.md](CLAUDE_agents.md), [CLAUDE_skills.md](CLAUDE_skills.md), [CLAUDE_lessons.md](CLAUDE_lessons.md)
 
-## Skills (38)
+## Skills (39)
 
 - [adversarial-review](_aegis-output/wiki/skill-adversarial-review.md) — _full_
 - [aegis-activity-logger](_aegis-output/wiki/skill-aegis-activity-logger.md) — _standard_
@@ -30,6 +30,7 @@
 - [aegis-parallel-dispatch](_aegis-output/wiki/skill-aegis-parallel-dispatch.md) — _standard_
 - [aegis-reengineer](_aegis-output/wiki/skill-aegis-reengineer.md) — _full_
 - [aegis-resume](_aegis-output/wiki/skill-aegis-resume.md) — _standard_
+- [aegis-return-format](_aegis-output/wiki/skill-aegis-return-format.md) — _minimal|standard|full_
 - [aegis-router](_aegis-output/wiki/skill-aegis-router.md) — _standard_
 - [aegis-run-logger](_aegis-output/wiki/skill-aegis-run-logger.md) — _standard_
 - [aegis-trace-export](_aegis-output/wiki/skill-aegis-trace-export.md) — _standard_
@@ -112,7 +113,7 @@
 - [v9-05](_aegis-output/wiki/sprint-v9-05.md) — CLOSED · 46pt
 - [v9-06](_aegis-output/wiki/sprint-v9-06.md) — CLOSED
 
-## Tools (19 packages, 101 files)
+## Tools (19 packages, 104 files)
 
 - **_archived** (5 files)
 - **_hook-utils** (1 files)
@@ -132,7 +133,7 @@
 - **aegis-router** (1 files)
 - **aegis-run-logger** (3 files)
 - **aegis-trace-export** (3 files)
-- **misc** (50 files)
+- **misc** (53 files)
 
 ## Hooks (16)
 

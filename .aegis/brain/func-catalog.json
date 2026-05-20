@@ -72,6 +72,14 @@
     "description": "Agent beast capability: Tools You Can Reach For"
   },
   {
+    "id": "FUNC-2C7ED6",
+    "name": "beast::URL Probe-Gate (v15-20, F-E)",
+    "source_file": ".claude/agents/beast.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent beast capability: URL Probe-Gate (v15-20, F-E)"
+  },
+  {
     "id": "FUNC-0B1FE2",
     "name": "black-panther::5-Pass Review Methodology",
     "source_file": ".claude/agents/black-panther.md",
@@ -1856,6 +1864,22 @@
     "description": "aegis-queue-resolve.sh — mark a pending human-queue entry as resolved."
   },
   {
+    "id": "FUNC-EFCA79",
+    "name": "aegis-research-probe",
+    "source_file": "tools/aegis-research-probe.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-research-probe.sh — sprint v15-20 Story C (closes F-E)."
+  },
+  {
+    "id": "FUNC-740932",
+    "name": "aegis-return-validator",
+    "source_file": "tools/aegis-return-validator.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-return-validator.sh — sprint v15-20 Story A."
+  },
+  {
     "id": "FUNC-46A0C5",
     "name": "aegis-run-rotate",
     "source_file": "tools/aegis-run-rotate.sh",
@@ -1902,6 +1926,14 @@
     "type": "bash",
     "module": "MOD-TOOLS",
     "description": "aegis-shell-lint.sh (F1-05) — Shell-command pre-flight linter for spec files."
+  },
+  {
+    "id": "FUNC-2510B4",
+    "name": "aegis-sprint-close-gate",
+    "source_file": "tools/aegis-sprint-close-gate.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-sprint-close-gate.sh — sprint v15-20 Story B (closes F-B)."
   },
   {
     "id": "FUNC-31BFAB",
@@ -2016,12 +2048,36 @@
     "description": "Internal function in aegis-coverage-screen"
   },
   {
+    "id": "FUNC-BD760F",
+    "name": "bold",
+    "source_file": "tools/aegis-research-probe.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-research-probe"
+  },
+  {
+    "id": "FUNC-32B2A0",
+    "name": "bold",
+    "source_file": "tools/aegis-return-validator.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-return-validator"
+  },
+  {
     "id": "FUNC-3BD22D",
     "name": "bold",
     "source_file": "tools/aegis-settings-patch.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-settings-patch"
+  },
+  {
+    "id": "FUNC-E80153",
+    "name": "bold",
+    "source_file": "tools/aegis-sprint-close-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-sprint-close-gate"
   },
   {
     "id": "FUNC-512A80",
@@ -2072,6 +2128,14 @@
     "description": "Internal function in aegis-shell-footgun-scan"
   },
   {
+    "id": "FUNC-B39CFD",
+    "name": "check_playtest",
+    "source_file": "tools/aegis-sprint-close-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-sprint-close-gate"
+  },
+  {
     "id": "FUNC-F12501",
     "name": "check_sed_i_empty",
     "source_file": "tools/aegis-shell-footgun-scan.sh",
@@ -2112,12 +2176,28 @@
     "description": "Internal function in aegis-instinct-promote"
   },
   {
+    "id": "FUNC-B2C912",
+    "name": "cmd_apply",
+    "source_file": "tools/aegis-research-probe.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-research-probe"
+  },
+  {
     "id": "FUNC-72EEC5",
     "name": "cmd_check",
     "source_file": "tools/aegis-pin.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-pin"
+  },
+  {
+    "id": "FUNC-D3BDC6",
+    "name": "cmd_check_tag",
+    "source_file": "tools/aegis-research-probe.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-research-probe"
   },
   {
     "id": "FUNC-7DBA22",
@@ -2238,6 +2318,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-instinct-promote"
+  },
+  {
+    "id": "FUNC-1D5B7C",
+    "name": "cmd_scan",
+    "source_file": "tools/aegis-research-probe.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-research-probe"
   },
   {
     "id": "FUNC-544320",
@@ -2440,6 +2528,14 @@
     "description": "Internal function in aegis-linear-sync"
   },
   {
+    "id": "FUNC-C17B81",
+    "name": "extract_done_storie",
+    "source_file": "tools/aegis-sprint-close-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-sprint-close-gate"
+  },
+  {
     "id": "FUNC-A1C268",
     "name": "extract_refs_setting",
     "source_file": "tools/aegis-doctor.sh",
@@ -2462,6 +2558,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-brain-index"
+  },
+  {
+    "id": "FUNC-D157B5",
+    "name": "extract_url",
+    "source_file": "tools/aegis-research-probe.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-research-probe"
   },
   {
     "id": "FUNC-8CF232",
@@ -2494,6 +2598,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-design-fetch"
+  },
+  {
+    "id": "FUNC-1F69DC",
+    "name": "find_active_kanban",
+    "source_file": "tools/aegis-sprint-close-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-sprint-close-gate"
   },
   {
     "id": "FUNC-FB3C6D",
@@ -2616,12 +2728,36 @@
     "description": "Internal function in aegis-coverage-screen"
   },
   {
+    "id": "FUNC-94D3F0",
+    "name": "green",
+    "source_file": "tools/aegis-research-probe.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-research-probe"
+  },
+  {
+    "id": "FUNC-D711BB",
+    "name": "green",
+    "source_file": "tools/aegis-return-validator.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-return-validator"
+  },
+  {
     "id": "FUNC-33A47E",
     "name": "green",
     "source_file": "tools/aegis-settings-patch.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-settings-patch"
+  },
+  {
+    "id": "FUNC-DFB717",
+    "name": "green",
+    "source_file": "tools/aegis-sprint-close-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-sprint-close-gate"
   },
   {
     "id": "FUNC-0C2A54",
@@ -2758,6 +2894,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-coverage-screen"
+  },
+  {
+    "id": "FUNC-AE1627",
+    "name": "load_coverage_pct",
+    "source_file": "tools/aegis-sprint-close-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-sprint-close-gate"
   },
   {
     "id": "FUNC-32AC82",
@@ -3024,6 +3168,22 @@
     "description": "Internal function in aegis-log-decision"
   },
   {
+    "id": "FUNC-4C0DE3",
+    "name": "probe_url",
+    "source_file": "tools/aegis-research-probe.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-research-probe"
+  },
+  {
+    "id": "FUNC-D82061",
+    "name": "read_input",
+    "source_file": "tools/aegis-return-validator.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-return-validator"
+  },
+  {
     "id": "FUNC-EEB68B",
     "name": "red",
     "source_file": "tools/aegis-coverage-screen.sh",
@@ -3032,12 +3192,36 @@
     "description": "Internal function in aegis-coverage-screen"
   },
   {
+    "id": "FUNC-136205",
+    "name": "red",
+    "source_file": "tools/aegis-research-probe.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-research-probe"
+  },
+  {
+    "id": "FUNC-153F62",
+    "name": "red",
+    "source_file": "tools/aegis-return-validator.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-return-validator"
+  },
+  {
     "id": "FUNC-82622C",
     "name": "red",
     "source_file": "tools/aegis-settings-patch.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-settings-patch"
+  },
+  {
+    "id": "FUNC-130CAB",
+    "name": "red",
+    "source_file": "tools/aegis-sprint-close-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-sprint-close-gate"
   },
   {
     "id": "FUNC-DC6331",
@@ -3112,12 +3296,36 @@
     "description": "Internal function in aegis-s204-override"
   },
   {
+    "id": "FUNC-9F6E6C",
+    "name": "run_check",
+    "source_file": "tools/aegis-sprint-close-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-sprint-close-gate"
+  },
+  {
+    "id": "FUNC-4C9C42",
+    "name": "run_report",
+    "source_file": "tools/aegis-sprint-close-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-sprint-close-gate"
+  },
+  {
     "id": "FUNC-9542A5",
     "name": "scan_script",
     "source_file": "tools/aegis-doctor.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-doctor"
+  },
+  {
+    "id": "FUNC-7AB0C5",
+    "name": "scan_text",
+    "source_file": "tools/aegis-return-validator.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-return-validator"
   },
   {
     "id": "FUNC-DC2033",
@@ -3166,6 +3374,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-upgrade"
+  },
+  {
+    "id": "FUNC-3321FC",
+    "name": "summary_text",
+    "source_file": "tools/aegis-return-validator.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-return-validator"
   },
   {
     "id": "FUNC-1323D3",
@@ -3368,11 +3584,35 @@
     "description": "Internal function in aegis-coverage-screen"
   },
   {
+    "id": "FUNC-EDF6E7",
+    "name": "yellow",
+    "source_file": "tools/aegis-research-probe.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-research-probe"
+  },
+  {
+    "id": "FUNC-CE18D2",
+    "name": "yellow",
+    "source_file": "tools/aegis-return-validator.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-return-validator"
+  },
+  {
     "id": "FUNC-4ECB5A",
     "name": "yellow",
     "source_file": "tools/aegis-settings-patch.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-settings-patch"
+  },
+  {
+    "id": "FUNC-F71ED0",
+    "name": "yellow",
+    "source_file": "tools/aegis-sprint-close-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-sprint-close-gate"
   }
 ]

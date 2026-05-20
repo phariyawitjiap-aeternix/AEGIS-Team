@@ -99,6 +99,16 @@ Anti-triggers (use PROSE instead): single facts, retros, post-mortems, apologies
 
 **AEGIS contract = 100% autonomous execution.** Human role is ONLY (1) requirements and (2) credentials. For any project where AEGIS cannot drive end-to-end (Unity / Unreal / Xcode / closed mobile / hardware-in-the-loop), the team MUST emit a coverage warning at intake — `/super-spec` Phase 0 runs `tools/aegis-coverage-screen.sh`, lists every gap, and writes `.aegis/brain/state/coverage.json`. `/aegis-start` re-surfaces the warning each session until the user types `ack gaps`. Soft gate (warns but never blocks). See [`skills/aegis-coverage-screen.md`](skills/aegis-coverage-screen.md). Driver: Contra-Thai post-mortem 2026-05-21 — 3 "100% velocity" sprints produced zero playable artifact because Unity Editor work AEGIS cannot drive was never surfaced as a gap on day 1.
 
+## Verified vs Produced (v15-20)
+
+Three habits closing the Contra-Thai "produced ≠ verified" bug class:
+
+1. **Sub-agent return tagging** — every non-trivial claim (counts, status booleans, closures, DONE/SHIPPED) must be tagged `[VERIFIED: <command>]` (backed by executed command) or `[PRODUCED: unverified]` (artifact exists but not run). Validator: `bash tools/aegis-return-validator.sh check <file>`. See [`skills/aegis-return-format.md`](skills/aegis-return-format.md). (F-C)
+2. **Sprint-close playtest gate** — for projects with coverage < 100%, `/aegis-sprint close` runs `bash tools/aegis-sprint-close-gate.sh check .` which checks for `_aegis-output/playtests/S<NN>-<NN>.md` with `verified_by:` + `pass: true`. Soft gate: warns but doesn't block. (F-B)
+3. **Research probe-gate** — Beast must run `bash tools/aegis-research-probe.sh apply <file>` on any research doc citing URLs. URLs tagged `[PROBED ✓]`, `[PROBED ✗]`, or `[UNPROBED]`; downstream agents do NOT cite payload/schema from `[UNPROBED]` URLs. (F-E)
+
+Driver: Contra-Thai research report 2026-05-20 — sub-agent returns conflated "produced" with "verified"; main agent inherited paper claims; sprint reports showed "100% velocity" while product didn't run; research-doc URLs cited without probe led to 5 fabricated API bugs.
+
 ## Applying AEGIS to Other Projects
 See [`docs/AEGIS_APPLICATION_PLAYBOOK.md`](docs/AEGIS_APPLICATION_PLAYBOOK.md) for a step-by-step guide covering brain seeding, persona assembly, CLAUDE.md tailoring, BLOCK 0 bootstrap, and a greenfield React app walkthrough.
 
