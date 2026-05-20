@@ -121,6 +121,27 @@ fi
 - Read `.aegis/brain/logs/activity.log` for pending tasks.
 - Read `.aegis/brain/handoffs/` for last session's handoff.
 
+### Step 2.3: Coverage-Screen Re-Surface (NEW v15-19)
+
+Tool-boundary warning — see [`skills/aegis-coverage-screen.md`](../../skills/aegis-coverage-screen.md) for the full rule.
+
+```bash
+# If coverage.json exists with unack'd gaps under 100% — re-print the warning
+COVERAGE_JSON=".aegis/brain/state/coverage.json"
+if [[ -f "$COVERAGE_JSON" ]]; then
+    cov=$(jq -r '.coverage' "$COVERAGE_JSON" 2>/dev/null || echo "1.0")
+    ack=$(jq -r '.ack' "$COVERAGE_JSON" 2>/dev/null || echo "true")
+    if [[ "$ack" != "true" ]] && [[ $(awk "BEGIN { print ($cov < 1.0) }") == "1" ]]; then
+        bash tools/aegis-coverage-screen.sh show .
+    fi
+elif [[ ! -f "$COVERAGE_JSON" ]]; then
+    # Project never went through Phase 0 super-spec — auto-screen now
+    bash tools/aegis-coverage-screen.sh screen . 2>/dev/null || true
+fi
+```
+
+Soft gate: this never blocks. User can type `ack gaps` at any time to silence the re-surface.
+
 ### Step 3: Display Dashboard (brief, 5 seconds max)
 
 ```
