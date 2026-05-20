@@ -402,60 +402,52 @@ for pkg_dir in "${TMP_DIR}/tools/"*/; do
 done
 success "${PKG_COUNT} multi-file tool packages installed (aegis-approval-gate, aegis-brain-graph, aegis-live-tail, aegis-activity-logger, aegis-run-logger, aegis-resume, aegis-multi-tenant, _hook-utils, ...)"
 
-# ── SKILLS — profile-based selection ─────────────────────────────────────────
+# ── SKILLS — auto-discovered from frontmatter (v15-18A) ──────────────────
+# Each skill declares its minimum tier in its YAML frontmatter:
+#   profile: minimal              → ships at every tier
+#   profile: standard             → ships at standard + full
+#   profile: full                 → ships at full only
+#   profile: minimal|standard|full → ships at every tier (equivalent to minimal)
+#
+# Replaces the hand-coded minimal_skills/standard_skills/full_skills
+# arrays that recurred as a drift bug (v15-17 hotfix: diagram-first-reflex
+# was shipped to source but the hand-list didn't include it; downstream
+# sync silently missed it). Glob source dir + parse frontmatter = no drift.
 mkdir -p "${TARGET_DIR}/skills/"
 
-# Minimal (7): core workflow tools
-minimal_skills=(
-    ai-personas
-    orchestrator
-    code-review
-    code-standards
-    git-workflow
-    bug-lifecycle
-    project-navigator
-)
+case "$PROFILE" in
+    minimal)  wanted_rank=0 ;;
+    standard) wanted_rank=1 ;;
+    full)     wanted_rank=2 ;;
+    *)        wanted_rank=1 ;;
+esac
 
-# Standard (+8 = 15): adds planning, testing, quality tools
-standard_skills=(
-    super-spec
-    test-architect
-    security-audit
-    tech-debt-tracker
-    sprint-tracker
-    kanban-board
-    work-breakdown
-    retrospective
-    diagram-first-reflex
-)
-
-# Full (all remaining): advanced + AEGIS-specific tools
-full_skills=(
-    adversarial-review
-    code-coverage
-    course-correction
-    skill-marketplace
-    aegis-builder
-    aegis-distill
-    aegis-reengineer
-    design-system-md
-    qa-pipeline
-    iso-29110-docs
-    api-docs
-)
-
-copy_skills() {
-    for skill in "$@"; do
-        src="${TMP_DIR}/skills/${skill}.md"
-        if [[ -f "$src" ]]; then
-            cp "$src" "${TARGET_DIR}/skills/"
-        fi
+# Extract min-tier rank from a skill's frontmatter `profile:` field.
+skill_min_rank() {
+    local f="$1"
+    local val
+    val=$(grep -m1 "^profile:" "$f" 2>/dev/null \
+        | sed 's/^profile:[[:space:]]*//; s/[[:space:]]*$//' \
+        | tr -d '"')
+    [[ -z "$val" ]] && { echo 99; return; }
+    local rank=99 tier
+    for tier in $(echo "$val" | tr '|' '\n'); do
+        case "$tier" in
+            minimal)  [[ 0 -lt "$rank" ]] && rank=0 ;;
+            standard) [[ 1 -lt "$rank" ]] && rank=1 ;;
+            full)     [[ 2 -lt "$rank" ]] && rank=2 ;;
+        esac
     done
+    echo "$rank"
 }
 
-copy_skills "${minimal_skills[@]}"
-[[ "$PROFILE" == "standard" || "$PROFILE" == "full" ]] && copy_skills "${standard_skills[@]}"
-[[ "$PROFILE" == "full" ]] && copy_skills "${full_skills[@]}"
+for skill_file in "${TMP_DIR}/skills/"*.md; do
+    [[ -f "$skill_file" ]] || continue
+    min_rank=$(skill_min_rank "$skill_file")
+    if [[ "$min_rank" -le "$wanted_rank" ]]; then
+        cp "$skill_file" "${TARGET_DIR}/skills/" 2>/dev/null || true
+    fi
+done
 
 SKILL_COUNT=$(ls "${TARGET_DIR}/skills/"*.md 2>/dev/null | wc -l | tr -d ' ' || echo 0)
 success "${SKILL_COUNT} skills installed (profile: ${PROFILE})"
