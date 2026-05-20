@@ -130,7 +130,12 @@ fi
 # ─── T3: wiring on real meta ───────────────────────────────────────────────
 echo
 echo "T3: wiring on real meta"
-OUT=$(node "$QUERY" wiring 'PostToolUse:.*' --root "$REPO_ROOT" 2>&1)
+# v15-18B note: was 'PostToolUse:.*' — that literal substring used to
+# appear in hook names because the matcher itself was ".*". After v15-16
+# Story B narrowed the matcher to "Bash|Edit|Write|MultiEdit|Task", the
+# substring no longer matches. The pattern "PostToolUse:" still catches
+# the same hooks (just by event-name prefix). Test intent preserved.
+OUT=$(node "$QUERY" wiring 'PostToolUse:' --root "$REPO_ROOT" 2>&1)
 RC=$?
 if [[ $RC -eq 0 ]] && echo "$OUT" | grep -q "matching hook"; then
     pass "wiring exits 0 with matches"
