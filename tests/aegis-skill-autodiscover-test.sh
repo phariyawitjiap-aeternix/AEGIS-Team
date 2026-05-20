@@ -60,7 +60,7 @@ install_at_tier() {
     local sandbox="$TEST_DIR/install-sh-$tier"
     mkdir -p "$sandbox"
     (cd "$sandbox" && git init -q && \
-     bash "$INSTALL_SH" --profile "$tier" --project-name "test" >/dev/null 2>&1)
+     AEGIS_INSTALL_SKIP_CLAUDE_CHECK=1 bash "$INSTALL_SH" --profile "$tier" --project-name "test" >/dev/null 2>&1)
     ls "$sandbox/skills/"*.md 2>/dev/null | wc -l | tr -d ' '
 }
 
@@ -140,7 +140,7 @@ EOF
 TARGET="$TEST_DIR/v15-18a-synth-target"
 mkdir -p "$TARGET"
 (cd "$TARGET" && git init -q && \
- bash "$SYNTH_REPO/install.sh" --profile standard --project-name "synth-test" >/dev/null 2>&1)
+ AEGIS_INSTALL_SKIP_CLAUDE_CHECK=1 bash "$SYNTH_REPO/install.sh" --profile standard --project-name "synth-test" >/dev/null 2>&1)
 
 if [[ -f "$TARGET/skills/v15-18a-synthetic-skill.md" ]]; then
     pass "T5: new standard-tier skill auto-shipped without code changes (drift class closed)"
