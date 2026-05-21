@@ -1,6 +1,6 @@
 <!-- Auto-generated from .aegis/brain/graph/ — edit topic pages under _aegis-output/wiki/ -->
-<!-- built_at: 2026-05-20T20:36:21.272Z -->
-<!-- node_count: 394 edge_count: 552 -->
+<!-- built_at: 2026-05-21T07:56:06.988Z -->
+<!-- node_count: 397 edge_count: 561 -->
 
 # AEGIS Project Index
 
@@ -135,15 +135,16 @@
 - **aegis-trace-export** (3 files)
 - **misc** (53 files)
 
-## Hooks (16)
+## Hooks (17)
 
-- **PostToolUse** (7)
+- **PostToolUse** (8)
   - `Bash` → `bash "$CLAUDE_PROJECT_DIR/.claude/hooks/run-with-flags.sh" post-tool-use "$CLAUDE_PROJECT_DIR/.claude/hooks/post-tool-use.sh"`
   - `Bash|Edit|Write|MultiEdit|Task` → `node "$CLAUDE_PROJECT_DIR/tools/aegis-activity-logger/log.mjs"`
   - `Bash|Edit|Write|MultiEdit|Task` → `node "$CLAUDE_PROJECT_DIR/tools/aegis-live-tail/emit.mjs"`
   - `Bash|Edit|Write|MultiEdit|Task` → `bash "$CLAUDE_PROJECT_DIR/tools/aegis-token-profile.sh"`
   - `Edit|Write|MultiEdit` → `bash "$CLAUDE_PROJECT_DIR/.claude/hooks/run-with-flags.sh" post-edit-accumulate "$CLAUDE_PROJECT_DIR/.claude/hooks/post-edit-accumulate.sh"`
   - `Edit|Write|MultiEdit` → `bash "$CLAUDE_PROJECT_DIR/.claude/hooks/linear-sync-on-kanban.sh"`
+  - `Edit|Write|MultiEdit` → `bash "$CLAUDE_PROJECT_DIR/.claude/hooks/research-probe-on-write.sh"`
   - `Edit|Write|MultiEdit` → `bash "$CLAUDE_PROJECT_DIR/tools/aegis-brain-graph/hook.sh"`
 - **PreToolUse** (4)
   - `AskUserQuestion` → `bash "$CLAUDE_PROJECT_DIR/.claude/hooks/run-with-flags.sh" guard-ask-user "$CLAUDE_PROJECT_DIR/.claude/hooks/guard-ask-user.sh"`
