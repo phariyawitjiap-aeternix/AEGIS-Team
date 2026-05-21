@@ -707,6 +707,7 @@ tool_packages=(
     "aegis-multi-tenant"       # v11-09 — cross-project registry + aggregator
     "aegis-resume"             # v11-10 — checkpoint + SessionStart resume
     "aegis-brain-graph"        # v12-04/05/06 — NDJSON graph + wiki + staleness hook
+    "aegis-settings-patches"   # v15-18B + v15-21 — .jq filters for settings-patch migration tool
 )
 delivered_pkgs=0
 for pkg in "${tool_packages[@]}"; do
