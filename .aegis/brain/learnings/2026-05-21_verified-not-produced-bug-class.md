@@ -8,9 +8,10 @@
 
 ## The single biggest lesson AEGIS learned this round
 
-**Stop measuring with the word "done". Measure with "verifiable evidence that it works."**
+> Stop measuring with the word "done". Measure with "verifiable evidence that it works."
 
 Every gate, every sub-agent return, every sprint close, every research output now must distinguish between:
+
 - **`[PRODUCED]`** — the artifact exists (code written, tests authored, doc saved)
 - **`[VERIFIED]`** — backed by an executed command whose output proves it
 
@@ -18,8 +19,8 @@ Before this round, AEGIS treated both as "done". The Contra-Thai session shipped
 
 ## Origin: 5 framework gaps from the Contra-Thai research report
 
-| ID | Description | Status after v15-19/20 |
-|----|-------------|------------------------|
+| ID  | Description | Status after v15-19/20 |
+| --- | --- | --- |
 | F-A | Project-class declaration at init (text-runtime vs GUI-runtime) | ✅ v15-19 (`aegis-coverage-screen.sh`) |
 | F-B | Playtest-result requirement at sprint close | ✅ v15-20 (`aegis-sprint-close-gate.sh`) |
 | F-C | Sub-agent return tagging (`[VERIFIED]`/`[PRODUCED]`) | ✅ v15-20 (`aegis-return-validator.sh` + `skills/aegis-return-format.md`) |
@@ -33,6 +34,7 @@ Before this round, AEGIS treated both as "done". The Contra-Thai session shipped
 ### Coverage Contract (v15-19)
 
 AEGIS now classifies every new project on day 1:
+
 - ≥95% coverage (web/CLI/infra) → silent, proceed
 - 50-94% (Unity/Xcode/mobile native/Editor-driven) → emit warning block listing every gap
 - <50% (closed mobile, hardware-in-the-loop, taste calls) → recommend skip or stack swap
@@ -43,7 +45,7 @@ Soft gate (user choice 2026-05-21). Warning re-surfaces at every `/aegis-start` 
 
 Three gates close the inheritance chain that produced Contra-Thai's failure:
 
-```
+```text
 Sub-agent return → main agent → close.md → user
 ```
 
@@ -77,7 +79,7 @@ This kills the "AEGIS for any project" oversell. AEGIS is now honest about what 
 ## Memories saved this session
 
 | Slug | Purpose |
-|---|---|
+| --- | --- |
 | [[aegis-coverage-contract]] | The 100% autonomy rule + warning-on-every-gap rule |
 | [[plain-thai-voice]] | When user writes Thai, reply in everyday Thai readable by non-tech reader |
 
@@ -95,7 +97,7 @@ The next iteration of this pattern would be: scan AEGIS for OTHER memory rules t
 ## Open follow-ups
 
 | Item | Sprint candidate |
-|---|---|
+| --- | --- |
 | Hard ack gate (block sprint until gaps acknowledged) | v15-21 if soft proves ignored |
 | Hook-level enforcement of sub-agent return tagging | v15-21 (PreToolUse on Task returns) |
 | Auto-fire probe-gate on research-doc commits | v15-21 (PostToolUse hook) |
