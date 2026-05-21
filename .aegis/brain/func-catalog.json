@@ -1480,6 +1480,14 @@
     "description": "AEGIS Hook — post-tool-use.sh"
   },
   {
+    "id": "FUNC-44966C",
+    "name": "research-probe-on-write",
+    "source_file": ".claude/hooks/research-probe-on-write.sh",
+    "type": "hook",
+    "module": "MOD-HOOKS",
+    "description": "AEGIS Hook — research-probe-on-write.sh (sprint v15-21, closes v15-20 F-E follow-up)"
+  },
+  {
     "id": "FUNC-060A6E",
     "name": "run-with-flags",
     "source_file": ".claude/hooks/run-with-flags.sh",
