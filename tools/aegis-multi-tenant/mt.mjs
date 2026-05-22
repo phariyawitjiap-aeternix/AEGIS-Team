@@ -164,6 +164,43 @@ function cmdRegister(flags) {
   console.log(`registered: ${name} → ${abs}${role ? ` [${role}]` : ""}`);
 }
 
+// v15-23: remove a project by name. Dry-run by default? No — explicit
+// destructive op; user already typed the command + name. Backup file is
+// kept by saveRegistry-on-update pattern; if you need rollback, the
+// previous YAML is one git/manual restore away.
+function cmdUnregister(flags) {
+  const name = flags._[1];
+  if (!name) die("unregister requires <name>");
+  const reg = loadRegistry();
+  const idx = reg.projects.findIndex(x => x.name === name);
+  if (idx === -1) die(`no such project: ${name}`);
+  const removed = reg.projects.splice(idx, 1)[0];
+  saveRegistry(reg);
+  console.log(`unregistered: ${name} → ${removed.path}`);
+}
+
+// v15-23: remove all rows whose path no longer exists on disk. Dry-run
+// available via --dry-run so the user can preview which rows would go.
+function cmdPrune(flags) {
+  const reg = loadRegistry();
+  const before = reg.projects.length;
+  const stale = reg.projects.filter(p => !fs.existsSync(p.path));
+  if (stale.length === 0) {
+    console.log("(no stale entries — registry clean)");
+    return;
+  }
+  if (flags["dry-run"]) {
+    console.log(`Would prune ${stale.length} stale entr${stale.length === 1 ? "y" : "ies"} (dry-run):`);
+    for (const s of stale) console.log(`  - ${s.name} → ${s.path}`);
+    console.log("Run without --dry-run to remove.");
+    return;
+  }
+  reg.projects = reg.projects.filter(p => fs.existsSync(p.path));
+  saveRegistry(reg);
+  console.log(`Pruned ${stale.length} stale entr${stale.length === 1 ? "y" : "ies"} (${before} → ${reg.projects.length}):`);
+  for (const s of stale) console.log(`  - ${s.name} → ${s.path}`);
+}
+
 function cmdList(flags) {
   const reg = loadRegistry();
   const enriched = projectsExist(reg).map(p => ({
@@ -391,14 +428,16 @@ function help() {
   process.stdout.write(`Usage: mt.mjs <subcommand> [flags]
 
 Subcommands:
-  register --path <p> [--name <n>] [--role <r>]
-  list     [--json]
-  where    <name>
-  cwd      <name>                                            (v15-10)
-  run      <name> [--dry-run] [-- ...claude-args]            (v15-10)
-  activity --all-projects [--since <Nd|YYYY-MM-DD>] [--limit N] [--json]
-  issues   --all-projects [--status <s>] [--json]
-  sessions [--json]                                          (v15-22)
+  register   --path <p> [--name <n>] [--role <r>]
+  unregister <name>                                          (v15-23)
+  prune      [--dry-run]                                     (v15-23 — remove rows where path missing)
+  list       [--json]
+  where      <name>
+  cwd        <name>                                          (v15-10)
+  run        <name> [--dry-run] [-- ...claude-args]          (v15-10)
+  activity   --all-projects [--since <Nd|YYYY-MM-DD>] [--limit N] [--json]
+  issues     --all-projects [--status <s>] [--json]
+  sessions   [--json]                                        (v15-22)
   help
 
 CC 2.1.141 integration:
@@ -423,7 +462,9 @@ function parseSinceDate(s) {
 const flags = parseFlags(process.argv.slice(2));
 const sub = flags._[0];
 switch (sub) {
-  case "register": cmdRegister(flags); break;
+  case "register":   cmdRegister(flags); break;
+  case "unregister": cmdUnregister(flags); break;   // v15-23
+  case "prune":      cmdPrune(flags); break;        // v15-23
   case "list":     cmdList(flags); break;
   case "where":    cmdWhere(flags); break;
   case "cwd":      cmdCwd(flags); break;          // v15-10

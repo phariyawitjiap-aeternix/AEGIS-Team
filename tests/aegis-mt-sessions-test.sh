@@ -28,7 +28,9 @@ echo "--- T1: human output has expected header row ---"
 # Set HOME to a temp dir + pre-register one fake project so the header is exercised.
 FIX_HOME=$(mktemp -d /tmp/mt-test-home.XXXX)
 mkdir -p "$FIX_HOME/.aegis/brain/multi-tenant"
-mkdir -p "$FIX_HOME/fake-project"
+# `mt register` requires the registered project to have a .aegis/ subdir,
+# or it dies (`not an AEGIS project`). Create it so the fixture inserts cleanly.
+mkdir -p "$FIX_HOME/fake-project/.aegis"
 echo "test" > "$FIX_HOME/fake-project/CLAUDE.md"
 HOME="$FIX_HOME" node "$MT" register --path "$FIX_HOME/fake-project" --name fake >/dev/null 2>&1 || true
 OUT=$(HOME="$FIX_HOME" node "$MT" sessions 2>&1)
