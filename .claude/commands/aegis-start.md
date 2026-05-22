@@ -142,6 +142,52 @@ fi
 
 Soft gate: this never blocks. User can type `ack gaps` at any time to silence the re-surface.
 
+### Step 2.7: Cross-Session Awareness (NEW v15-22)
+
+Bring AEGIS up to speed with Claude Code 2.1.148's `claude agents` CLI — surface
+*other* live CC sessions on the machine so the user knows they exist and can
+intentionally manage them.
+
+```bash
+WRAPPER="${CLAUDE_PROJECT_DIR:-$(pwd)}/tools/aegis-claude-agents.sh"
+if [[ -x "$WRAPPER" ]]; then
+    # Get all live sessions, exclude self, raise red flags
+    SELF="${CLAUDE_SESSION_ID:-}"
+    OTHERS=$(bash "$WRAPPER" list --json 2>/dev/null \
+        | jq --arg s "$SELF" '[.[] | select(.sessionId != $s)]' 2>/dev/null || echo '[]')
+    OTHER_COUNT=$(echo "$OTHERS" | jq 'length' 2>/dev/null || echo 0)
+
+    if [[ "$OTHER_COUNT" -gt 0 ]]; then
+        # Race risk: another session at the SAME cwd
+        MY_CWD=$(pwd)
+        SAME_CWD=$(echo "$OTHERS" | jq --arg c "$MY_CWD" '[.[] | select(.cwd == $c)] | length' 2>/dev/null || echo 0)
+
+        # Idle session > 1h at any other registered project = handoff candidate
+        NOW_MS=$(node -e 'console.log(Date.now())')
+        IDLE_OLD=$(echo "$OTHERS" | jq --argjson now "$NOW_MS" \
+            '[.[] | select(.status == "idle" and ($now - (.startedAt // $now)) > 3600000)] | length' 2>/dev/null || echo 0)
+
+        if [[ "$SAME_CWD" -gt 0 ]] || [[ "$IDLE_OLD" -gt 0 ]]; then
+            echo ""
+            echo "⚠️  Cross-session awareness:"
+            if [[ "$SAME_CWD" -gt 0 ]] && [[ "$SAME_CWD" -ne "0" ]]; then
+                echo "  • ANOTHER CC session is running at the SAME project directory."
+                echo "    Brain writes can race — consider closing one or using a worktree."
+            fi
+            if [[ "$IDLE_OLD" -gt 0 ]] && [[ "$IDLE_OLD" -ne "0" ]]; then
+                echo "  • $IDLE_OLD idle CC session(s) > 1h old on other project(s)."
+                echo "    Probably forgot to /aegis-handoff. Run from that project to clean up."
+            fi
+            echo "  Run \`node tools/aegis-multi-tenant/mt.mjs sessions\` for the full map."
+            echo ""
+        fi
+    fi
+fi
+```
+
+Soft gate: this never blocks. It surfaces a class of "session debt" that
+previously was completely invisible.
+
 ### Step 3: Display Dashboard (brief, 5 seconds max)
 
 ```

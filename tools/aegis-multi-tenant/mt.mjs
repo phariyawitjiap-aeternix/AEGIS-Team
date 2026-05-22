@@ -303,6 +303,90 @@ async function cmdIssues(flags) {
   }
 }
 
+// ── v15-22: sessions subcommand ────────────────────────────────────────
+// Merge registry with live `claude agents --json` output. Shows which
+// registered projects currently have a live CC session, their status,
+// and session age. Closes the cross-project awareness gap surfaced by
+// the 2026-05-22 user question about `claude agents` integration.
+async function cmdSessions(flags) {
+  const regRaw = loadRegistry();
+  const reg = (regRaw.projects || []).map(p => ({
+    ...p,
+    exists: fs.existsSync(path.join(p.path, "CLAUDE.md")),
+    version: readVersion(p.path),
+  }));
+
+  // Fetch live sessions via the v15-22 wrapper for consistent caching
+  // + fallback semantics. Falls back to direct `claude agents --json`
+  // if the wrapper isn't on disk yet (e.g. partial install).
+  const wrapper = path.join(path.dirname(new URL(import.meta.url).pathname), "..", "aegis-claude-agents.sh");
+  let sessions = [];
+  try {
+    let proc;
+    if (fs.existsSync(wrapper)) {
+      proc = spawnSync("bash", [wrapper, "list", "--json"], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] });
+    } else {
+      proc = spawnSync("claude", ["agents", "--json"], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] });
+    }
+    sessions = JSON.parse(proc.stdout || "[]");
+    if (!Array.isArray(sessions)) sessions = [];
+  } catch {
+    sessions = [];
+  }
+
+  const now = Date.now();
+  const ageMin = (startedAt) => {
+    if (!startedAt) return null;
+    return Math.floor((now - startedAt) / 60000);
+  };
+
+  // Build the merged view: for each registered project, find its live session
+  const rows = [];
+  for (const p of reg) {
+    const live = sessions.find(s => s.cwd === p.path);
+    rows.push({
+      name: p.name,
+      path: p.path,
+      version: p.version || "-",
+      exists: p.exists ? "yes" : "no",
+      status: live ? live.status : "none",
+      sessionId: live ? (live.sessionId || "").slice(0, 8) : "-",
+      age_min: live ? ageMin(live.startedAt) : null,
+    });
+  }
+
+  // Also surface live sessions for paths NOT in the registry (cwd-only awareness)
+  const orphan = sessions
+    .filter(s => !reg.some(r => r.path === s.cwd))
+    .map(s => ({
+      name: "(unregistered)",
+      path: s.cwd,
+      version: "-",
+      exists: "-",
+      status: s.status,
+      sessionId: (s.sessionId || "").slice(0, 8),
+      age_min: ageMin(s.startedAt),
+    }));
+  rows.push(...orphan);
+
+  if (flags.json) {
+    process.stdout.write(JSON.stringify(rows, null, 2) + "\n");
+    return;
+  }
+
+  if (rows.length === 0) {
+    console.log("(no registered projects, no live sessions)");
+    return;
+  }
+
+  const w = (s, n) => String(s ?? "").padEnd(n).slice(0, n);
+  console.log(`${w("PROJECT", 18)} ${w("VERSION", 8)} ${w("EXISTS", 7)} ${w("STATUS", 8)} ${w("SESSION", 9)} ${w("AGE", 7)} PATH`);
+  for (const r of rows) {
+    const ageStr = r.age_min === null ? "-" : (r.age_min < 60 ? `${r.age_min}m` : `${Math.floor(r.age_min/60)}h${r.age_min%60}m`);
+    console.log(`${w(r.name, 18)} ${w(r.version, 8)} ${w(r.exists, 7)} ${w(r.status, 8)} ${w(r.sessionId, 9)} ${w(ageStr, 7)} ${r.path}`);
+  }
+}
+
 function help() {
   process.stdout.write(`Usage: mt.mjs <subcommand> [flags]
 
@@ -314,6 +398,7 @@ Subcommands:
   run      <name> [--dry-run] [-- ...claude-args]            (v15-10)
   activity --all-projects [--since <Nd|YYYY-MM-DD>] [--limit N] [--json]
   issues   --all-projects [--status <s>] [--json]
+  sessions [--json]                                          (v15-22)
   help
 
 CC 2.1.141 integration:
@@ -345,6 +430,7 @@ switch (sub) {
   case "run":      cmdRun(flags); break;          // v15-10
   case "activity": await cmdActivity(flags); break;
   case "issues":   await cmdIssues(flags); break;
+  case "sessions": await cmdSessions(flags); break;   // v15-22
   case "help": case undefined: case "-h": case "--help": help(); break;
   default: process.stderr.write(`unknown subcommand: ${sub}\n`); help(); process.exit(2);
 }
