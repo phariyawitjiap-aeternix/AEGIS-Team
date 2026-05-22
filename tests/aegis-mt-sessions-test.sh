@@ -21,15 +21,23 @@ PASS=0; FAIL=0
 pass() { echo -e "${GREEN}PASS${NC}: $1"; PASS=$((PASS+1)); }
 fail() { echo -e "${RED}FAIL${NC}: $1 -- $2"; FAIL=$((FAIL+1)); }
 
-# ── T1: human header ─────────────────────────────────────────────────────
+# ── T1: human header (with a fixture project registered) ────────────────
 echo ""
 echo "--- T1: human output has expected header row ---"
-OUT=$(node "$MT" sessions 2>&1)
+# CI registry is empty → would print "(no registered projects, no live sessions)".
+# Set HOME to a temp dir + pre-register one fake project so the header is exercised.
+FIX_HOME=$(mktemp -d /tmp/mt-test-home.XXXX)
+mkdir -p "$FIX_HOME/.aegis/brain/multi-tenant"
+mkdir -p "$FIX_HOME/fake-project"
+echo "test" > "$FIX_HOME/fake-project/CLAUDE.md"
+HOME="$FIX_HOME" node "$MT" register --path "$FIX_HOME/fake-project" --name fake >/dev/null 2>&1 || true
+OUT=$(HOME="$FIX_HOME" node "$MT" sessions 2>&1)
 if echo "$OUT" | head -1 | grep -qE "PROJECT.*VERSION.*EXISTS.*STATUS.*SESSION.*AGE.*PATH"; then
     pass "T1: header row present"
 else
     fail "T1: header" "got first line: $(echo "$OUT" | head -1)"
 fi
+rm -rf "$FIX_HOME" 2>/dev/null || true
 
 # ── T2: --json is array ──────────────────────────────────────────────────
 echo ""

@@ -43,9 +43,14 @@ have_claude() {
 fetch_raw() {
     local cache_file="$CACHE_DIR/agents.json"
     if [[ -f "$cache_file" ]]; then
-        # macOS: stat -f %m; Linux: stat -c %Y
+        # Cross-platform mtime check: BSD stat -f vs GNU stat -c.
+        # Wrap each in its own subshell so any stat error message
+        # doesn't leak into outer bash's parser (set -u was tripping
+        # on "File:" tokens from GNU stat's -f filesystem-mode help).
         local mtime now
-        mtime=$(stat -f %m "$cache_file" 2>/dev/null || stat -c %Y "$cache_file" 2>/dev/null || echo 0)
+        mtime=$( { stat -f %m "$cache_file" 2>/dev/null; } || { stat -c %Y "$cache_file" 2>/dev/null; } || echo 0)
+        # Sanity: must be all digits
+        if [[ ! "$mtime" =~ ^[0-9]+$ ]]; then mtime=0; fi
         now=$(date +%s)
         if (( now - mtime < CACHE_TTL_SEC )); then
             cat "$cache_file"
