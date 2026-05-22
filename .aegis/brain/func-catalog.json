@@ -1648,6 +1648,14 @@
     "description": "AEGIS Brain Write -- Write to brain with automatic MEMORY.md regeneration"
   },
   {
+    "id": "FUNC-CE9F05",
+    "name": "aegis-claude-agents",
+    "source_file": "tools/aegis-claude-agents.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-claude-agents.sh — sprint v15-22 Story A"
+  },
+  {
     "id": "FUNC-DFD3F7",
     "name": "aegis-contrast-check",
     "source_file": "tools/aegis-contrast-check.sh",
@@ -2048,6 +2056,14 @@
     "description": "Internal function in aegis-brain-benchmark"
   },
   {
+    "id": "FUNC-5A0AFA",
+    "name": "bold",
+    "source_file": "tools/aegis-claude-agents.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-claude-agents"
+  },
+  {
     "id": "FUNC-614BD4",
     "name": "bold",
     "source_file": "tools/aegis-coverage-screen.sh",
@@ -2248,6 +2264,14 @@
     "description": "Internal function in aegis-linear-setup"
   },
   {
+    "id": "FUNC-9F11CA",
+    "name": "cmd_filter",
+    "source_file": "tools/aegis-claude-agents.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-claude-agents"
+  },
+  {
     "id": "FUNC-6C7C0B",
     "name": "cmd_health",
     "source_file": "tools/aegis-linear-setup.sh",
@@ -2262,6 +2286,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-linear-setup"
+  },
+  {
+    "id": "FUNC-80644F",
+    "name": "cmd_list",
+    "source_file": "tools/aegis-claude-agents.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-claude-agents"
   },
   {
     "id": "FUNC-EDEC83",
@@ -2336,6 +2368,14 @@
     "description": "Internal function in aegis-research-probe"
   },
   {
+    "id": "FUNC-EFC435",
+    "name": "cmd_self",
+    "source_file": "tools/aegis-claude-agents.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-claude-agents"
+  },
+  {
     "id": "FUNC-544320",
     "name": "cmd_test",
     "source_file": "tools/aegis-linear-setup.sh",
@@ -2350,6 +2390,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-pin"
+  },
+  {
+    "id": "FUNC-F72DBA",
+    "name": "cmd_where",
+    "source_file": "tools/aegis-claude-agents.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-claude-agents"
   },
   {
     "id": "FUNC-C986FC",
@@ -2600,6 +2648,14 @@
     "description": "Internal function in aegis-linear-sync"
   },
   {
+    "id": "FUNC-95CC3E",
+    "name": "fetch_raw",
+    "source_file": "tools/aegis-claude-agents.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-claude-agents"
+  },
+  {
     "id": "FUNC-801166",
     "name": "fetch_slug",
     "source_file": "tools/aegis-design-fetch.sh",
@@ -2728,6 +2784,14 @@
     "description": "Internal function in aegis-linear-setup"
   },
   {
+    "id": "FUNC-5CD5E0",
+    "name": "green",
+    "source_file": "tools/aegis-claude-agents.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-claude-agents"
+  },
+  {
     "id": "FUNC-BFE252",
     "name": "green",
     "source_file": "tools/aegis-coverage-screen.sh",
@@ -2774,6 +2838,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-shell-lint"
+  },
+  {
+    "id": "FUNC-4F16B2",
+    "name": "have_claude",
+    "source_file": "tools/aegis-claude-agents.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-claude-agents"
   },
   {
     "id": "FUNC-C40193",
@@ -3192,6 +3264,14 @@
     "description": "Internal function in aegis-return-validator"
   },
   {
+    "id": "FUNC-3ED551",
+    "name": "red",
+    "source_file": "tools/aegis-claude-agents.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-claude-agents"
+  },
+  {
     "id": "FUNC-EEB68B",
     "name": "red",
     "source_file": "tools/aegis-coverage-screen.sh",
@@ -3582,6 +3662,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-pin"
+  },
+  {
+    "id": "FUNC-89206C",
+    "name": "yellow",
+    "source_file": "tools/aegis-claude-agents.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-claude-agents"
   },
   {
     "id": "FUNC-475B61",
