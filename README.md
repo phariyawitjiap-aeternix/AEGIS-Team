@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-15.0-blue?style=for-the-badge" alt="Version 15.0"/>
+  <img src="https://img.shields.io/badge/version-15.1.0-blue?style=for-the-badge" alt="Version 15.1.0"/>
   <img src="https://img.shields.io/badge/agents-11-green?style=for-the-badge" alt="11 Agents"/>
   <img src="https://img.shields.io/badge/commands-16%20canonical-yellow?style=for-the-badge" alt="16 canonical commands"/>
   <img src="https://img.shields.io/badge/skills-39-orange?style=for-the-badge" alt="37 Skills"/>
@@ -15,7 +15,7 @@
   <img src="https://img.shields.io/badge/license-MIT-purple?style=for-the-badge" alt="MIT License"/>
 </p>
 
-# :shield: AEGIS v15.0 — AI Agent Team Framework for Claude Code
+# :shield: AEGIS v15.1 — AI Agent Team Framework for Claude Code
 
 > **"Context is King, Memory is Soul"**
 >
@@ -538,7 +538,23 @@ your-project/
 
 ## :sparkles: Version History
 
-### v15.0 (current) — CC 2.1.139 + 2.1.141 adoption + transparent skill model + chain integrity (30pt across 10 sprints)
+### v15.1.0 (current) — Honesty contracts + lean pass + upgrade-sweep (8 sprints across 2 days, 2026-05-22..23)
+
+Full release notes: [`_aegis-output/releases/v15.1.0-notes.md`](_aegis-output/releases/v15.1.0-notes.md)
+
+| Sprint | Pt | Headline |
+|---|---:|---|
+| v15-19 | 4 | Coverage screen at intake — detect 25 stacks, warn every gap, soft re-surface until `ack gaps` |
+| v15-20 | 5 | Verified vs Produced — sub-agent return tagging (F-C), sprint-close playtest gate (F-B), research probe-gate (F-E) |
+| v15-21 | 2 | Auto-fire research probe-gate on `_aegis-output/research/*.md` writes |
+| v15-22 | 5 | `claude agents` CLI integration — cross-session awareness via `mt sessions` + `/aegis-start` Step 2.7 warning |
+| v15-23 | 2 | `mt unregister` + `mt prune` — registry hygiene |
+| v15-24 | 3 | Strategic lean — `docs/AEGIS_VS_NATIVE_CC.md` + archive 4 obsolete v9-era planning docs |
+| v15-25 | 3 | Confident lean (actual delete) — `mt cwd`/`mt run` removed, v9-era worktree tools archived (614 LOC out) |
+| v15-26 | 2 | `install.sh --upgrade` sweep — kill stale-file accumulation in downstream (cleaned 122 files first run) |
+| **Total** | **26** | **Honesty contracts; 4 of 5 Contra-Thai framework gaps closed; AEGIS positioning explicit** |
+
+### v15.0 — CC 2.1.139 + 2.1.141 adoption + transparent skill model + chain integrity (30pt across 10 sprints)
 
 | Sprint | Pt | Headline |
 |---|---:|---|
