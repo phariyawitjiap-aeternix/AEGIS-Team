@@ -540,7 +540,7 @@ your-project/
 
 ### v15.1.0 (current) — Honesty contracts + lean pass + upgrade-sweep (8 sprints across 2 days, 2026-05-22..23)
 
-Full release notes: [`_aegis-output/releases/v15.1.0-notes.md`](_aegis-output/releases/v15.1.0-notes.md)
+Full release notes: [`docs/releases/v15.1.0.md`](docs/releases/v15.1.0.md)
 
 | Sprint | Pt | Headline |
 |---|---:|---|

@@ -13,7 +13,7 @@ Last reviewed: 2026-05-23
 |------|---------|--------|
 | 2026-05-06 | 1.0.0 | Version header pattern introduced (sprint-v12-01). Doc-version starts at 1.0.0 independent of AEGIS framework version (v11.0 in title above refers to the framework). |
 | 2026-05-13 | 1.1.0 | Framework version bump v12.0 → v15.0 to catch up with shipped work: v13 (refactor+cleanup, 30pt) + v14 (Hermes parity, 47pt) + v15 (CC 2.1.139 adoption + transparent skill model, 17pt) had all shipped without VERSION bump. Quick Commands restructured into user-surface (5) vs team-surface (11) per `.claude/references/command-audience.md`. |
-| 2026-05-23 | 1.2.0 | Framework version bump v15.0 → v15.1.0 (release notes: `_aegis-output/releases/v15.1.0-notes.md`). Adds honesty contracts (coverage screen, verified-vs-produced), cross-session awareness (`claude agents` CLI integration), strategic lean (`docs/AEGIS_VS_NATIVE_CC.md`), and upgrade-sweep. 4 of 5 Contra-Thai framework gaps closed. |
+| 2026-05-23 | 1.2.0 | Framework version bump v15.0 → v15.1.0 (release notes: `docs/releases/v15.1.0.md`). Adds honesty contracts (coverage screen, verified-vs-produced), cross-session awareness (`claude agents` CLI integration), strategic lean (`docs/AEGIS_VS_NATIVE_CC.md`), and upgrade-sweep. 4 of 5 Contra-Thai framework gaps closed. |
 
 ## Navigation
 | File | When to Read | Priority |
