@@ -1012,6 +1012,70 @@ echo "      ├── hooks/             # 11 hooks (guard-*, session-start, on-
 echo "      └── references/        # Protocol + architecture specs"
 echo ""
 
+# ── Upgrade-sweep: remove framework files that source no longer ships ─────
+# v15-26. Closes the "additive-only --upgrade" bug class: install.sh used to
+# copy new files but never removed framework files that source had deleted,
+# leaving stale tools/skills/refs in downstream projects after a lean pass.
+#
+# Surgical scope — sweep only paths AEGIS explicitly manages:
+#   tools/aegis-*.sh                  (top-level helper scripts)
+#   skills/*.md                       (skill definitions)
+#   .claude/agents/*.md               (persona prompts)
+#   .claude/commands/*.md             (slash commands)
+#   .claude/references/*.md           (protocol docs — top level only)
+#   .claude/hooks/*.sh + *.mjs        (hook scripts — top level only)
+#
+# Anything outside these (user content, brain/, _aegis-output/, _archived/
+# subdirs, tool packages under tools/aegis-*/, lib/ subdirs) is NOT touched.
+#
+# Swept files move to ${BACKUP_DIR}/swept/<original-path>/  for rollback.
+if [[ "$UPGRADE" == true ]]; then
+    SWEPT_DIR="${BACKUP_DIR}/swept"
+    swept_count=0
+    sweep_one() {
+        # $1 = relative path (e.g., tools/aegis-foo.sh)
+        local rel="$1"
+        local tgt="${TARGET_DIR}/${rel}"
+        local src="${SCRIPT_DIR}/${rel}"
+        if [[ -f "$tgt" ]] && [[ ! -f "$src" ]]; then
+            mkdir -p "$(dirname "${SWEPT_DIR}/${rel}")"
+            mv "$tgt" "${SWEPT_DIR}/${rel}"
+            swept_count=$((swept_count + 1))
+            echo "  swept: ${rel}"
+        fi
+    }
+    # Walk each managed surface
+    if [[ -d "${TARGET_DIR}/tools" ]]; then
+        for f in "${TARGET_DIR}/tools/"aegis-*.sh; do
+            [[ -f "$f" ]] || continue
+            sweep_one "tools/$(basename "$f")"
+        done
+    fi
+    if [[ -d "${TARGET_DIR}/skills" ]]; then
+        for f in "${TARGET_DIR}/skills/"*.md; do
+            [[ -f "$f" ]] || continue
+            sweep_one "skills/$(basename "$f")"
+        done
+    fi
+    for subdir in agents commands references; do
+        if [[ -d "${TARGET_DIR}/.claude/${subdir}" ]]; then
+            for f in "${TARGET_DIR}/.claude/${subdir}/"*.md; do
+                [[ -f "$f" ]] || continue
+                sweep_one ".claude/${subdir}/$(basename "$f")"
+            done
+        fi
+    done
+    if [[ -d "${TARGET_DIR}/.claude/hooks" ]]; then
+        for f in "${TARGET_DIR}/.claude/hooks/"*.sh "${TARGET_DIR}/.claude/hooks/"*.mjs; do
+            [[ -f "$f" ]] || continue
+            sweep_one ".claude/hooks/$(basename "$f")"
+        done
+    fi
+    if [[ "$swept_count" -gt 0 ]]; then
+        success "Swept ${swept_count} stale framework file(s) → ${SWEPT_DIR}"
+    fi
+fi
+
 # ── Post-copy verification: run aegis-doctor.sh on the target install ──────
 # Catches the "wired-but-missing" bug class where a hook orchestrator was
 # copied but its lib/ or tool dependencies were skipped (Auto-Affi bug,
