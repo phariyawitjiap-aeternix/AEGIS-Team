@@ -132,7 +132,7 @@ Learning: `.aegis/brain/learnings/2026-04-20_worktree-base-is-session-start-HEAD
 
 ### Sprint v9-06: Schedule + ToolSearch Consolidation (mostly DONE, ~5pt remaining)
 
-Spec: `.claude/references/schedule-toolsearch-consolidation.md`.
+Spec: `.claude/references/_archived/schedule-toolsearch-consolidation.md`.
 
 **Spec-vs-reality audit (2026-04-20 late PM) surfaced that most of Part 3 is
 already shipped** -- the spec was written as "to do" but the moves happened

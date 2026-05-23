@@ -56,7 +56,7 @@ and dogfooding itself. What remains is **ecosystem**, not framework.
 
 ## Stream 2 — MCP Server (Sprints v9-12/13)
 
-**Spec**: [.claude/references/mcp-server-architecture.md](.claude/references/mcp-server-architecture.md)
+**Spec**: [.claude/references/_archived/mcp-server-architecture.md](.claude/references/_archived/mcp-server-architecture.md)
 **Est.**: 66 story points · 3-5 weeks engineering · 1-2 engineers
 **Repo**: separate project (e.g., `aegis-mcp-server`)
 
@@ -103,8 +103,8 @@ and dogfooding itself. What remains is **ecosystem**, not framework.
 
 ## Stream 3 — Plugin + Migration + GA (Sprints v9-10/11/14/15)
 
-**Spec**: [.claude/references/plugin-architecture.md](.claude/references/plugin-architecture.md),
-[.claude/references/migration-ga-strategy.md](.claude/references/migration-ga-strategy.md)
+**Spec**: [.claude/references/_archived/plugin-architecture.md](.claude/references/_archived/plugin-architecture.md),
+[.claude/references/_archived/migration-ga-strategy.md](.claude/references/_archived/migration-ga-strategy.md)
 **Est.**: 156 story points · 4-6 weeks engineering + 6 months beta/GA
 **Repo**: separate project (e.g., `aegis-plugin`)
 

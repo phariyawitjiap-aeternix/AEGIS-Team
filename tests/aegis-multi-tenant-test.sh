@@ -267,7 +267,7 @@ echo ""
 echo "--- Group 6: cwd / run subcommands ---"
 
 # 6.a — `mt cwd beta` returns the registered path
-CWD_OUT=$(node "$MT" cwd beta 2>&1)
+CWD_OUT=$(AEGIS_SUPPRESS_DEPRECATIONS=1 node "$MT" cwd beta 2>&1)
 if [[ "$CWD_OUT" == "$TEST_DIR/beta" ]]; then
   pass "6.a cwd beta → returns absolute path"
 else
@@ -293,7 +293,8 @@ else
 fi
 
 # 6.d — `run --dry-run` prints the `claude --cwd ... args` command
-RUN_OUT=$(node "$MT" run beta --dry-run -- agents list 2>&1)
+# (suppress v15-24 deprecation hint so we can assert exact output)
+RUN_OUT=$(AEGIS_SUPPRESS_DEPRECATIONS=1 node "$MT" run beta --dry-run -- agents list 2>&1)
 EXPECTED="claude --cwd $TEST_DIR/beta agents list"
 if [[ "$RUN_OUT" == "$EXPECTED" ]]; then
   pass "6.d run --dry-run prints exact claude invocation"
@@ -302,7 +303,7 @@ else
 fi
 
 # 6.e — `run --dry-run` with no extra args still emits --cwd
-RUN_OUT=$(node "$MT" run beta --dry-run 2>&1)
+RUN_OUT=$(AEGIS_SUPPRESS_DEPRECATIONS=1 node "$MT" run beta --dry-run 2>&1)
 if [[ "$RUN_OUT" == "claude --cwd $TEST_DIR/beta" ]]; then
   pass "6.e run --dry-run without forwarded args still emits --cwd <path>"
 else
