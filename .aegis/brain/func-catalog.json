@@ -1808,14 +1808,6 @@
     "description": "AEGIS Maintainer Grant (ADR-004 Phase 2)"
   },
   {
-    "id": "FUNC-4FE422",
-    "name": "aegis-merge-worktree",
-    "source_file": "tools/aegis-merge-worktree.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "AEGIS Worktree Merge Script (Sprint v9-05, S5-04)"
-  },
-  {
     "id": "FUNC-3E4101",
     "name": "aegis-notify",
     "source_file": "tools/aegis-notify.sh",
@@ -2014,14 +2006,6 @@
     "type": "bash",
     "module": "MOD-TOOLS",
     "description": "aegis-upgrade.sh — upgrade an AEGIS installation to the latest framework"
-  },
-  {
-    "id": "FUNC-96671C",
-    "name": "aegis-worktree-gc",
-    "source_file": "tools/aegis-worktree-gc.sh",
-    "type": "bash",
-    "module": "MOD-TOOLS",
-    "description": "============================================================================="
   },
   {
     "id": "FUNC-DB1D2D",
@@ -3088,44 +3072,12 @@
     "description": "Internal function in aegis-instinct-promote"
   },
   {
-    "id": "FUNC-BD8AC3",
-    "name": "log_activity",
-    "source_file": "tools/aegis-merge-worktree.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-merge-worktree"
-  },
-  {
-    "id": "FUNC-AC1F3F",
-    "name": "log_error",
-    "source_file": "tools/aegis-merge-worktree.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-merge-worktree"
-  },
-  {
-    "id": "FUNC-BC2FAA",
-    "name": "log_info",
-    "source_file": "tools/aegis-merge-worktree.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-merge-worktree"
-  },
-  {
     "id": "FUNC-6F4D0A",
     "name": "log_override",
     "source_file": "tools/aegis-s204-override.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-s204-override"
-  },
-  {
-    "id": "FUNC-D93715",
-    "name": "log_warn",
-    "source_file": "tools/aegis-merge-worktree.sh",
-    "type": "bash-function",
-    "module": "MOD-TOOLS",
-    "description": "Internal function in aegis-merge-worktree"
   },
   {
     "id": "FUNC-9CEFF7",

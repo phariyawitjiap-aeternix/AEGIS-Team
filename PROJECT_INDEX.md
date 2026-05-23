@@ -1,6 +1,6 @@
 <!-- Auto-generated from .aegis/brain/graph/ — edit topic pages under _aegis-output/wiki/ -->
-<!-- built_at: 2026-05-23T07:39:25.414Z -->
-<!-- node_count: 401 edge_count: 564 -->
+<!-- built_at: 2026-05-23T08:11:54.833Z -->
+<!-- node_count: 401 edge_count: 554 -->
 
 # AEGIS Project Index
 
@@ -115,7 +115,7 @@
 
 ## Tools (19 packages, 105 files)
 
-- **_archived** (5 files)
+- **_archived** (7 files)
 - **_hook-utils** (1 files)
 - **aegis-activity-logger** (3 files)
 - **aegis-approval-gate** (5 files)
@@ -133,7 +133,7 @@
 - **aegis-router** (1 files)
 - **aegis-run-logger** (3 files)
 - **aegis-trace-export** (3 files)
-- **misc** (54 files)
+- **misc** (52 files)
 
 ## Hooks (17)
 

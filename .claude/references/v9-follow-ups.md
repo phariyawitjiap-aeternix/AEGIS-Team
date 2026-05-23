@@ -122,7 +122,7 @@ exists. `Agent({isolation: "worktree"})` spawned with `HEAD=f940591` produced a
 worktree at `HEAD=1d5da1d` (20 commits behind). The `isolation` parameter is
 `enum: ["worktree"]` -- single value, no base/ref sub-parameter -- and
 `EnterWorktree` only accepts `name` / `path`. The rebase-onto-HEAD step in
-`tools/aegis-merge-worktree.sh` is permanent until/unless Anthropic adds a
+`tools/_archived/aegis-merge-worktree.sh` is permanent until/unless Anthropic adds a
 base-ref parameter to the Agent tool. Finding recorded in
 `.claude/references/worktree-isolation.md` Known Quirks.
 

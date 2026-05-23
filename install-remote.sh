@@ -379,7 +379,7 @@ cp "${TMP_DIR}/tools/aegis-"*.sh "${TARGET_DIR}/tools/" 2>/dev/null || true
 cp "${TMP_DIR}/tools/"*.yaml "${TARGET_DIR}/tools/" 2>/dev/null || true   # threat-patterns, etc.
 chmod +x "${TARGET_DIR}/tools/aegis-"*.sh 2>/dev/null || true
 TOOL_COUNT=$(ls "${TARGET_DIR}/tools/aegis-"*.sh 2>/dev/null | wc -l | tr -d ' ' || echo 0)
-success "${TOOL_COUNT} helper tools installed (aegis-brain-sync, aegis-brain-write, aegis-maintainer-grant, aegis-block0-mode, aegis-merge-worktree, aegis-test-all, aegis-pending-items, aegis-agent-tools-matrix, aegis-distill-reset, ...)"
+success "${TOOL_COUNT} helper tools installed (aegis-brain-sync, aegis-brain-write, aegis-maintainer-grant, aegis-block0-mode, archived: aegis-merge-worktree, aegis-test-all, aegis-pending-items, aegis-agent-tools-matrix, aegis-distill-reset, ...)"
 
 # v15-14 (issue #182): multi-file tool packages — discovered by globbing
 # every directory under tools/ (except _archived). Previous version
@@ -636,7 +636,7 @@ if [[ "$UPGRADE" != true ]]; then
             if node "${TARGET_DIR}/tools/aegis-multi-tenant/mt.mjs" register \
                 --path "$TARGET_DIR" --name "$SLUG" >/dev/null 2>&1; then
                 MT_STATUS="✓ Multi-tenant registered as '$SLUG'"
-                success "Registered with multi-tenant as '$SLUG' (use: mt run $SLUG)"
+                success "Registered with multi-tenant as '$SLUG' (use: claude --cwd \"\$(mt where $SLUG)\")"
             else
                 MT_STATUS="⚠ Multi-tenant registration failed (run manually later)"
                 warn "Multi-tenant registration failed — run later: node tools/aegis-multi-tenant/mt.mjs register --path . --name $SLUG"
@@ -701,7 +701,7 @@ if [[ "$UPGRADE" == true ]]; then
     echo "  • AUTO-MIGRATION: _aegis-brain/ copied to .aegis/brain/ during upgrade"
     echo ""
     printf "%b\n" "  ${BOLD}Worktree isolation (Sprint v9-05):${NC}"
-    echo "  • tools/aegis-merge-worktree.sh with stale-ancestor rebase"
+    echo "  • tools/_archived/aegis-merge-worktree.sh with stale-ancestor rebase"
     echo "  • Spider-Man default: isolation=worktree for code edits"
     echo ""
     printf "%b\n" "  ${BOLD}ADR-004: AEGIS_MAINTAINER_MODE override channel:${NC}"
