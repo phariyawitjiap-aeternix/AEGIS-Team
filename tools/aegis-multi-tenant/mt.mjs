@@ -229,9 +229,18 @@ function cmdWhere(flags) {
 // v15-10: semantic alias for CC 2.1.141 `claude --cwd <path>` integration.
 // Same output as `where` — separate command name documents intent + lets
 // future schema evolve independently (e.g. emit JSON for new CC features).
+//
+// v15-24 DEPRECATION NOTE: this is a thin alias for `mt where`. The native
+// `claude --cwd "$(mt where <name>)"` is the canonical recipe now. We keep
+// the `cwd` subcommand for backwards compatibility with scripts but a
+// stderr deprecation hint fires unless AEGIS_SUPPRESS_DEPRECATIONS=1.
+// Slated for removal in v15-25+. See docs/AEGIS_VS_NATIVE_CC.md.
 function cmdCwd(flags) {
   const name = flags._[1];
   if (!name) die("cwd requires <name>");
+  if (!process.env.AEGIS_SUPPRESS_DEPRECATIONS) {
+    process.stderr.write("DEPRECATED (v15-24): use `mt where <name>` then `claude --cwd \"$(mt where <name>)\"`. See docs/AEGIS_VS_NATIVE_CC.md\n");
+  }
   const reg = loadRegistry();
   const p = reg.projects.find(x => x.name === name);
   if (!p) die(`no such project: ${name}`);
@@ -246,7 +255,15 @@ function cmdCwd(flags) {
 // We DON'T attempt to validate that `claude` is on PATH at dry-run time —
 // the user may be priming a command for a different shell. At exec time,
 // a missing binary surfaces via the child-process error and we exit 127.
+//
+// v15-24 DEPRECATION NOTE: this duplicates `claude --cwd <path> <args>`.
+// The wrapper added no behavior beyond path lookup, which `mt where` already
+// provides. Slated for removal in v15-25+; stderr deprecation hint fires
+// unless AEGIS_SUPPRESS_DEPRECATIONS=1.
 function cmdRun(flags) {
+  if (!process.env.AEGIS_SUPPRESS_DEPRECATIONS) {
+    process.stderr.write("DEPRECATED (v15-24): use `claude --cwd \"$(mt where <name>)\" <args>` directly. See docs/AEGIS_VS_NATIVE_CC.md\n");
+  }
   const name = flags._[1];
   if (!name) die("run requires <name>");
   const reg = loadRegistry();
