@@ -109,7 +109,7 @@ Full v11 plan: `~/Documents/AEGIS-PLUS-MEGA-PLAN.md` v1.1
 - Adversarial test suite (`aegis-brain-adversarial-test.sh`, 9/9 green)
 
 ### Worktree isolation (Sprint v9-05)
-- `tools/aegis-merge-worktree.sh` — rebase-onto-HEAD + `-f -f` cleanup escalation
+- `tools/_archived/aegis-merge-worktree.sh` — rebase-onto-HEAD + `-f -f` cleanup escalation
 - Spider-Man default: `isolation: worktree` for code edits
 - Real blast-radius via git boundaries, not just markdown rules
 
@@ -238,7 +238,7 @@ claude --dangerously-skip-permissions
 | :busts_in_silhouette: Agent consolidation | 13 → 10 agents. War Machine absorbed Vision, Coulson absorbed Songbird, Wasp retired. Archived in `.claude/agents/_archived/` |
 | :brain: Brain folder move | `_aegis-brain/` → `.aegis/brain/`. Single-folder home; installer auto-migrates on upgrade |
 | :floppy_disk: Brain sync/write | `tools/aegis-brain-sync.sh` (atomic MEMORY.md regen) + `tools/aegis-brain-write.sh` (atomic write + S4-02 `memory_20250818` proxy directive) |
-| :twisted_rightwards_arrows: Worktree isolation | `tools/aegis-merge-worktree.sh` with stale-ancestor rebase + process-lock escalation. Spider-Man default: `isolation: worktree` |
+| :twisted_rightwards_arrows: Worktree isolation | `tools/_archived/aegis-merge-worktree.sh` with stale-ancestor rebase + process-lock escalation. Spider-Man default: `isolation: worktree` |
 | :key: ADR-004 override | `AEGIS_MAINTAINER_MODE` scoped, time-bounded, one-shot grant for principled framework evolution. `tools/aegis-maintainer-grant.sh` |
 | :white_check_mark: BLOCK 0 lite mode | Per-task mode (lite/standard/full). 1pt chores skip SI.01/SI.02; security forces full. `tools/aegis-block0-mode.sh` |
 | :lock: Hardened permissions | `defaultMode: acceptEdits` (was bypassPermissions); 26 deny patterns, 20 scoped allow |

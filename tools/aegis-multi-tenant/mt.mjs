@@ -226,69 +226,11 @@ function cmdWhere(flags) {
   console.log(p.path);
 }
 
-// v15-10: semantic alias for CC 2.1.141 `claude --cwd <path>` integration.
-// Same output as `where` — separate command name documents intent + lets
-// future schema evolve independently (e.g. emit JSON for new CC features).
-//
-// v15-24 DEPRECATION NOTE: this is a thin alias for `mt where`. The native
-// `claude --cwd "$(mt where <name>)"` is the canonical recipe now. We keep
-// the `cwd` subcommand for backwards compatibility with scripts but a
-// stderr deprecation hint fires unless AEGIS_SUPPRESS_DEPRECATIONS=1.
-// Slated for removal in v15-25+. See docs/AEGIS_VS_NATIVE_CC.md.
-function cmdCwd(flags) {
-  const name = flags._[1];
-  if (!name) die("cwd requires <name>");
-  if (!process.env.AEGIS_SUPPRESS_DEPRECATIONS) {
-    process.stderr.write("DEPRECATED (v15-24): use `mt where <name>` then `claude --cwd \"$(mt where <name>)\"`. See docs/AEGIS_VS_NATIVE_CC.md\n");
-  }
-  const reg = loadRegistry();
-  const p = reg.projects.find(x => x.name === name);
-  if (!p) die(`no such project: ${name}`);
-  if (!fs.existsSync(p.path)) die(`project path no longer exists: ${p.path}`);
-  console.log(p.path);
-}
-
-// v15-10: wraps `claude --cwd <project-path> <forwarded-args>`.
-//   mt run alpha -- agents list           → execs claude with --cwd alpha-path
-//   mt run alpha --dry-run -- agents list → prints the command, doesn't exec
-//
-// We DON'T attempt to validate that `claude` is on PATH at dry-run time —
-// the user may be priming a command for a different shell. At exec time,
-// a missing binary surfaces via the child-process error and we exit 127.
-//
-// v15-24 DEPRECATION NOTE: this duplicates `claude --cwd <path> <args>`.
-// The wrapper added no behavior beyond path lookup, which `mt where` already
-// provides. Slated for removal in v15-25+; stderr deprecation hint fires
-// unless AEGIS_SUPPRESS_DEPRECATIONS=1.
-function cmdRun(flags) {
-  if (!process.env.AEGIS_SUPPRESS_DEPRECATIONS) {
-    process.stderr.write("DEPRECATED (v15-24): use `claude --cwd \"$(mt where <name>)\" <args>` directly. See docs/AEGIS_VS_NATIVE_CC.md\n");
-  }
-  const name = flags._[1];
-  if (!name) die("run requires <name>");
-  const reg = loadRegistry();
-  const p = reg.projects.find(x => x.name === name);
-  if (!p) die(`no such project: ${name}`);
-  if (!fs.existsSync(p.path)) die(`project path no longer exists: ${p.path}`);
-
-  const claudeArgs = ["--cwd", p.path, ...(flags.__ || [])];
-
-  if (flags["dry-run"]) {
-    // Shell-safe rendering — quote any arg containing whitespace or shell metas.
-    const renderArg = (a) => /[\s"'$`\\!*?]/.test(a) ? `"${a.replace(/(["\\$`])/g, '\\$1')}"` : a;
-    console.log(["claude", ...claudeArgs.map(renderArg)].join(" "));
-    return;
-  }
-
-  // Exec mode — spawn `claude` with stdio inherited so interactive use works.
-  // We use spawnSync so the parent exit code reflects the child's status.
-  const result = spawnSync("claude", claudeArgs, { stdio: "inherit" });
-  if (result.error && result.error.code === "ENOENT") {
-    process.stderr.write("error: `claude` not on PATH — install Claude Code first or use --dry-run\n");
-    process.exit(127);
-  }
-  process.exit(result.status ?? 0);
-}
+// REMOVED v15-25: cmdCwd + cmdRun duplicated native `claude --cwd <path>`.
+// They were deprecated in v15-24 and removed here. The native recipe is:
+//   claude --cwd "$(mt where <name>)" <args>
+// See docs/AEGIS_VS_NATIVE_CC.md for the full deprecation rationale.
+// `mt where <name>` (unchanged) still returns the project path on its own line.
 
 async function cmdActivity(flags) {
   if (!flags["all-projects"]) die("activity requires --all-projects");
@@ -450,16 +392,14 @@ Subcommands:
   prune      [--dry-run]                                     (v15-23 — remove rows where path missing)
   list       [--json]
   where      <name>
-  cwd        <name>                                          (v15-10)
-  run        <name> [--dry-run] [-- ...claude-args]          (v15-10)
   activity   --all-projects [--since <Nd|YYYY-MM-DD>] [--limit N] [--json]
   issues     --all-projects [--status <s>] [--json]
   sessions   [--json]                                        (v15-22)
   help
 
-CC 2.1.141 integration:
-  cwd <name>     → prints the project path (for \`claude --cwd "$(mt cwd alpha)"\`)
-  run <name> ... → wraps \`claude --cwd <project> ...args\`; use --dry-run to preview
+CC 2.1.141 cwd integration (v15-25 — use native, mt no longer wraps):
+  claude --cwd "\$(mt where <name>)" <args>
+  ↑ replaces removed \`mt cwd <name>\` and \`mt run <name> [-- ...args]\`
 
 Registry: ${REGISTRY_FILE}
 `);
@@ -484,8 +424,14 @@ switch (sub) {
   case "prune":      cmdPrune(flags); break;        // v15-23
   case "list":     cmdList(flags); break;
   case "where":    cmdWhere(flags); break;
-  case "cwd":      cmdCwd(flags); break;          // v15-10
-  case "run":      cmdRun(flags); break;          // v15-10
+  // cwd + run removed in v15-25 (deprecated v15-24). Use:
+  //   claude --cwd "$(mt where <name>)" <args>
+  case "cwd": case "run":
+    process.stderr.write(`The '${sub}' subcommand was removed in v15-25.\n`);
+    process.stderr.write(`Use: claude --cwd "$(mt where <name>)" <args>\n`);
+    process.stderr.write(`See docs/AEGIS_VS_NATIVE_CC.md for the rationale.\n`);
+    process.exit(2);
+    break;
   case "activity": await cmdActivity(flags); break;
   case "issues":   await cmdIssues(flags); break;
   case "sessions": await cmdSessions(flags); break;   // v15-22

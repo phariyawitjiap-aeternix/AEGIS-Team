@@ -262,82 +262,26 @@ else
   fail "5.b skip deleted" "$OUT"
 fi
 
-# ── Group 6: v15-10 CC 2.1.141 --cwd integration ────────────────────────
+# ── Group 6: v15-25 removal of cwd / run (use native instead) ────────────
 echo ""
-echo "--- Group 6: cwd / run subcommands ---"
+echo "--- Group 6: cwd / run removed in v15-25 → exit 2 with migration hint ---"
 
-# 6.a — `mt cwd beta` returns the registered path
-CWD_OUT=$(AEGIS_SUPPRESS_DEPRECATIONS=1 node "$MT" cwd beta 2>&1)
-if [[ "$CWD_OUT" == "$TEST_DIR/beta" ]]; then
-  pass "6.a cwd beta → returns absolute path"
-else
-  fail "6.a cwd return" "got=$CWD_OUT expected=$TEST_DIR/beta"
-fi
-
-# 6.b — cwd unknown → exit 2
+# 6.a — `mt cwd` removed → exit 2, message mentions `mt where`
 RC=0
-node "$MT" cwd DOES_NOT_EXIST >/dev/null 2>&1 || RC=$?
-if [[ "$RC" == "2" ]]; then
-  pass "6.b cwd unknown → exit 2"
+OUT=$(node "$MT" cwd beta 2>&1) || RC=$?
+if [[ "$RC" == "2" ]] && echo "$OUT" | grep -q "removed in v15-25" && echo "$OUT" | grep -q "mt where"; then
+  pass "6.a cwd removed → exit 2 with mt where migration hint"
 else
-  fail "6.b cwd unknown" "rc=$RC"
+  fail "6.a cwd removal" "rc=$RC out=$OUT"
 fi
 
-# 6.c — cwd on registered-but-deleted path → exit 2 (alpha was deleted in 5.a)
+# 6.b — `mt run` removed → exit 2, message mentions `mt where`
 RC=0
-node "$MT" cwd alpha >/dev/null 2>&1 || RC=$?
-if [[ "$RC" == "2" ]]; then
-  pass "6.c cwd on deleted-on-disk project → exit 2"
+OUT=$(node "$MT" run beta --dry-run -- agents list 2>&1) || RC=$?
+if [[ "$RC" == "2" ]] && echo "$OUT" | grep -q "removed in v15-25" && echo "$OUT" | grep -q "mt where"; then
+  pass "6.b run removed → exit 2 with mt where migration hint"
 else
-  fail "6.c cwd deleted" "rc=$RC"
-fi
-
-# 6.d — `run --dry-run` prints the `claude --cwd ... args` command
-# (suppress v15-24 deprecation hint so we can assert exact output)
-RUN_OUT=$(AEGIS_SUPPRESS_DEPRECATIONS=1 node "$MT" run beta --dry-run -- agents list 2>&1)
-EXPECTED="claude --cwd $TEST_DIR/beta agents list"
-if [[ "$RUN_OUT" == "$EXPECTED" ]]; then
-  pass "6.d run --dry-run prints exact claude invocation"
-else
-  fail "6.d dry-run" "got=[$RUN_OUT] expected=[$EXPECTED]"
-fi
-
-# 6.e — `run --dry-run` with no extra args still emits --cwd
-RUN_OUT=$(AEGIS_SUPPRESS_DEPRECATIONS=1 node "$MT" run beta --dry-run 2>&1)
-if [[ "$RUN_OUT" == "claude --cwd $TEST_DIR/beta" ]]; then
-  pass "6.e run --dry-run without forwarded args still emits --cwd <path>"
-else
-  fail "6.e dry-run minimal" "got=$RUN_OUT"
-fi
-
-# 6.f — `run` on unknown name → exit 2
-RC=0
-node "$MT" run NOPE --dry-run -- x >/dev/null 2>&1 || RC=$?
-if [[ "$RC" == "2" ]]; then
-  pass "6.f run unknown name → exit 2"
-else
-  fail "6.f run unknown" "rc=$RC"
-fi
-
-# 6.g — forwarded args containing spaces are shell-quoted in dry-run output
-RUN_OUT=$(node "$MT" run beta --dry-run -- agents "two words" 2>&1)
-if echo "$RUN_OUT" | grep -q '"two words"'; then
-  pass "6.g forwarded args with whitespace shell-quoted"
-else
-  fail "6.g quoting" "got=$RUN_OUT"
-fi
-
-# 6.h — `run` without --dry-run AND no `claude` binary on PATH → exit 127
-# Move PATH to a directory that does NOT contain `claude` to force ENOENT.
-RC=0
-PATH="/usr/bin" node "$MT" run beta -- nothing >/dev/null 2>&1 || RC=$?
-# Exit code is either 127 (our ENOENT branch) or 1 if claude exists at /usr/bin
-# unexpectedly. We accept ≥1 (non-zero) as proof the run path actually tried
-# to spawn, vs the dry-run silent success.
-if [[ "$RC" != "0" ]]; then
-  pass "6.h run without --dry-run actually attempts spawn (got rc=$RC)"
-else
-  fail "6.h spawn attempt" "expected non-zero, got rc=$RC"
+  fail "6.b run removal" "rc=$RC out=$OUT"
 fi
 
 echo ""
