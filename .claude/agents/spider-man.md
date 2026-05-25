@@ -105,6 +105,7 @@ Spider-Man works directly on the current branch.
 Spider-Man writes production code. These tools are first-class for the role:
 - `tools/aegis-fix-task-list-id.sh` — repair task IDs in `_aegis-output/specs/` after a renumber/reorg
 - `tools/aegis-fix-hook-paths.sh` — repair stale hook references after a project move/rename
+- `tools/aegis-claude-agents.sh` — query live CC sessions before brain writes (v15-22). Before writing to `.aegis/brain/`, run `bash tools/aegis-claude-agents.sh filter --cwd "$(pwd)"` — if count > 1, another session is at the same cwd → race-risk. Defer the write or coordinate. Full decision matrix in [[aegis-cross-session-awareness]].
 
 Beyond these, prefer the dedicated tools (Read/Edit/Write/Bash) — they're already in your tool list.
 

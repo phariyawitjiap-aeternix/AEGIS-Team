@@ -1,6 +1,6 @@
 <!-- Auto-generated from .aegis/brain/graph/ — edit topic pages under _aegis-output/wiki/ -->
-<!-- built_at: 2026-05-25T06:17:24.127Z -->
-<!-- node_count: 402 edge_count: 558 -->
+<!-- built_at: 2026-05-25T08:11:16.763Z -->
+<!-- node_count: 403 edge_count: 566 -->
 
 # AEGIS Project Index
 
@@ -16,13 +16,14 @@
 - [GUARDRAILS.md](GUARDRAILS.md) — recurring failure-mode catalog
 - [CLAUDE_safety.md](CLAUDE_safety.md), [CLAUDE_agents.md](CLAUDE_agents.md), [CLAUDE_skills.md](CLAUDE_skills.md), [CLAUDE_lessons.md](CLAUDE_lessons.md)
 
-## Skills (39)
+## Skills (40)
 
 - [adversarial-review](_aegis-output/wiki/skill-adversarial-review.md) — _full_
 - [aegis-activity-logger](_aegis-output/wiki/skill-aegis-activity-logger.md) — _standard_
 - [aegis-approval-gate](_aegis-output/wiki/skill-aegis-approval-gate.md) — _standard_
 - [aegis-builder](_aegis-output/wiki/skill-aegis-builder.md) — _full_
 - [aegis-coverage-screen](_aegis-output/wiki/skill-aegis-coverage-screen.md) — _minimal|standard|full_
+- [aegis-cross-session-awareness](_aegis-output/wiki/skill-aegis-cross-session-awareness.md) — _standard|full_
 - [aegis-distill](_aegis-output/wiki/skill-aegis-distill.md) — _full_
 - [aegis-issue-thread](_aegis-output/wiki/skill-aegis-issue-thread.md) — _standard_
 - [aegis-live-tail](_aegis-output/wiki/skill-aegis-live-tail.md) — _standard_

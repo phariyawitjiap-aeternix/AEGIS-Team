@@ -720,6 +720,14 @@
     "description": "Agent nick-fury capability: Context Window"
   },
   {
+    "id": "FUNC-2E8D73",
+    "name": "nick-fury::Cross-Session Awareness (v15-22 + v15-27)",
+    "source_file": ".claude/agents/nick-fury.md",
+    "type": "agent-capability",
+    "module": "MOD-AGENTS",
+    "description": "Agent nick-fury capability: Cross-Session Awareness (v15-22 + v15-27)"
+  },
+  {
     "id": "FUNC-EA9598",
     "name": "nick-fury::Decision Cycle (per session)",
     "source_file": ".claude/agents/nick-fury.md",

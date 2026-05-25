@@ -2,7 +2,7 @@
 # aegis-skill-frontmatter-test.sh — Sprint v12-03 acceptance + regression test
 #
 # Verifies tools/aegis-doc-canon/skill-frontmatter.mjs:
-#   --lint   on the live tree (39 skills, all 9 keys present)
+#   --lint   on the live tree (40 skills, all 9 keys present)
 #   --lint   on a fixture missing keys → exit 1
 #   --backfill on a fixture: idempotent (zero diff on second run)
 #   --apply-manifest writes the named values
@@ -36,7 +36,7 @@ echo "================================================="
 
 # ─── T1: live tree passes ──────────────────────────────────────────────────
 echo
-echo "T1: live tree --lint passes (39 skills, all 9 keys)"
+echo "T1: live tree --lint passes (40 skills, all 9 keys)"
 OUT=$(node "$FM_TOOL" --lint --skills-dir "$LIVE_SKILLS" 2>&1)
 RC=$?
 if [[ $RC -eq 0 ]]; then
@@ -44,10 +44,10 @@ if [[ $RC -eq 0 ]]; then
 else
     fail "live tree --lint exits 0" "exit=$RC, output:\n$OUT"
 fi
-if echo "$OUT" | grep -q "all 39 skills satisfy schema"; then
-    pass "live tree reports 39 skills satisfy"
+if echo "$OUT" | grep -q "all 40 skills satisfy schema"; then
+    pass "live tree reports 40 skills satisfy"
 else
-    fail "live tree reports 39 skills satisfy" "output:\n$OUT"
+    fail "live tree reports 40 skills satisfy" "output:\n$OUT"
 fi
 
 # ─── T2: live tree backfill is idempotent ──────────────────────────────────
