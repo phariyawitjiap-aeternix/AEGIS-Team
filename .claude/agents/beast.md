@@ -156,6 +156,7 @@ Beast scans the brain and surfaces patterns. These tools are first-class for the
 - `tools/aegis-brain-index.sh` — build/refresh the FTS5 index (`--full` / `--incremental` / `--stats`)
 - `tools/aegis-brain-benchmark.sh` — measure index size + query latency p95
 - `tools/aegis-token-profile.sh` — measure token cost of a doc/agent/skill before reporting
+- `tools/aegis-claude-agents.sh` — query live CC sessions before long research dispatches (v15-22). Avoid double-running the same research across two sessions: `bash tools/aegis-claude-agents.sh filter --cwd "$(pwd)"`. See [[aegis-cross-session-awareness]] for decision rules.
 
 Use these instead of ad-hoc `grep` over `.aegis/brain/` — the FTS5 path is faster and provides ranking.
 

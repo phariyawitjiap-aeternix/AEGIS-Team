@@ -1007,8 +1007,19 @@ Nick Fury owns the human-queue and decision audit trail. These tools are first-c
 - `tools/aegis-queue-resolve.sh` — mark a queued item resolved with the human's response captured
 - `tools/aegis-pending-items.sh` — survey what's still pending across the queue
 - `tools/aegis-policy-audit.sh` — sanity-check that every "policy" claim has a matching enforcement (test or hook); the dominant bug class
+- `tools/aegis-claude-agents.sh` — query live CC sessions before dispatching parallel work or brain writes (v15-22). Apply the [[aegis-cross-session-awareness]] decision rules: race-risk on same cwd → defer brain write; idle > 1h elsewhere → handoff candidate.
 
 When you make a non-trivial call, log via `aegis-log-decision.sh` *before* returning the verdict so the audit trail is permanent.
+
+## Cross-Session Awareness (v15-22 + v15-27)
+
+Before dispatching parallel `Task` agents on the same project or writing to `.aegis/brain/`, consult cross-session state:
+
+```bash
+bash tools/aegis-claude-agents.sh filter --cwd "$(pwd)"
+```
+
+If count > 1 (one is self) → another session at the SAME cwd → **race-risk on brain writes**. Defer the write, post to team-chat, or coordinate via the queue. See [[aegis-cross-session-awareness]] for the full decision matrix (Rules 1–4).
 
 ## Output Location
 .aegis/brain/logs/nick-fury.log
