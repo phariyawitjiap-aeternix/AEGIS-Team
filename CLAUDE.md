@@ -3,7 +3,7 @@
 
 Last reviewed: 2026-05-23
 
-# AEGIS v15.1 -- Agent Team Framework
+# AEGIS v15.1.0 -- Agent Team Framework
 
 > "Context is King, Memory is Soul"
 

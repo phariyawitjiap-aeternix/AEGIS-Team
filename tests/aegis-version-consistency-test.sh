@@ -31,22 +31,24 @@ check_banner() {
   fi
 }
 
-# Each banner should reference v<MAJOR>.* (e.g. v11.0).
-check_banner "CLAUDE.md"        "AEGIS v${MAJOR}\\.[0-9]+ -- Agent Team Framework"        "CLAUDE.md banner"
-check_banner "CLAUDE_lessons.md" "AEGIS v${MAJOR}\\.[0-9]+ -- Lessons Learned"             "CLAUDE_lessons.md banner"
-check_banner "CLAUDE_safety.md"  "AEGIS v${MAJOR}\\.[0-9]+ -- Safety Rules"                "CLAUDE_safety.md banner"
-check_banner "CLAUDE_skills.md"  "AEGIS Skills Catalog v${MAJOR}\\.[0-9]+"                 "CLAUDE_skills.md banner"
+# Each banner should reference v<MAJOR>.<MINOR>[.<PATCH>] (e.g. v15.0, v15.1, v15.1.0).
+# Updated 2026-05-23 to accept optional .PATCH suffix after v15.1.0 release shipped
+# semver-pinned headers (was v15.0/v15.1, now v15.1.0).
+check_banner "CLAUDE.md"        "AEGIS v${MAJOR}\\.[0-9]+(\\.[0-9]+)? -- Agent Team Framework" "CLAUDE.md banner"
+check_banner "CLAUDE_lessons.md" "AEGIS v${MAJOR}\\.[0-9]+(\\.[0-9]+)? -- Lessons Learned"      "CLAUDE_lessons.md banner"
+check_banner "CLAUDE_safety.md"  "AEGIS v${MAJOR}\\.[0-9]+(\\.[0-9]+)? -- Safety Rules"         "CLAUDE_safety.md banner"
+check_banner "CLAUDE_skills.md"  "AEGIS Skills Catalog v${MAJOR}\\.[0-9]+(\\.[0-9]+)?"          "CLAUDE_skills.md banner"
 # PROJECT_INDEX.md is auto-generated since sprint-v12-06 (no human-controlled
 # version banner). Skip the banner check — the file's freshness is enforced by
 # `tools/aegis-brain-graph/wiki.mjs` regen + the staleness banner hook.
 if head -1 "$REPO_ROOT/PROJECT_INDEX.md" 2>/dev/null | grep -q '^<!-- Auto-generated'; then
   pass "PROJECT_INDEX.md (auto-generated since v12-06; banner check skipped)"
 else
-  check_banner "PROJECT_INDEX.md"  "AEGIS v${MAJOR}\\.[0-9]+ AI Agent Team Framework"        "PROJECT_INDEX.md banner"
+  check_banner "PROJECT_INDEX.md"  "AEGIS v${MAJOR}\\.[0-9]+(\\.[0-9]+)? AI Agent Team Framework" "PROJECT_INDEX.md banner"
 fi
-check_banner "README.md"         "AEGIS v${MAJOR}\\.[0-9]+ — AI Agent Team Framework"      "README.md banner"
-check_banner "install-remote.sh" "AEGIS v${MAJOR}\\.[0-9]+ — Remote Installer"             "install-remote.sh banner"
-check_banner "assets/logo/README.md" "Brand assets for AEGIS v${MAJOR}\\.[0-9]+"           "assets/logo banner"
+check_banner "README.md"         "AEGIS v${MAJOR}\\.[0-9]+(\\.[0-9]+)? — AI Agent Team Framework" "README.md banner"
+check_banner "install-remote.sh" "AEGIS v${MAJOR}\\.[0-9]+(\\.[0-9]+)? — Remote Installer"        "install-remote.sh banner"
+check_banner "assets/logo/README.md" "Brand assets for AEGIS v${MAJOR}\\.[0-9]+(\\.[0-9]+)?"      "assets/logo banner"
 
 # Brain resonance files often mention the framework version too. Scan
 # .aegis/brain/resonance/*.md for any "AEGIS v<N>." mention and confirm
