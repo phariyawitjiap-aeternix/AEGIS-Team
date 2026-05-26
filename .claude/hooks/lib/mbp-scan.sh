@@ -110,6 +110,22 @@ try:
         r',\s+or\s+run\s+[/\\][a-z][a-z0-9-]*',                    # ", or run /aegis-handoff"
         r'\b(can|could|may)\s+also\s+(end|stop|pause|run|do)\b',   # "can also end here"
         r'queued\s+for\s+you\s*\([^)]{0,60}decisions?\b',          # "queued for you (separate decisions)"
+        # Round 4 — 2026-05-27 "unnecessary confirmation" pattern class.
+        # Agent already knows what to do but asks permission first. Codex/Antigravity
+        # just execute; AEGIS should too. These are the #2 observed MBP failure mode
+        # after option-menus — distinct because they have no A/B/C menu, just a
+        # single-action confirmation ask at the end.
+        # Thai: ต้องการให้ <verb> มั้ย / <verb> เลยมั้ย / จะ <verb> ให้มั้ย
+        r'ต้องการให้.{0,30}(commit|push|deploy|build|สร้าง|ทำ|รัน|run|test|review|merge|create).{0,10}(มั้ย|ไหม|ม่ะ|ม่า|มั๊ย)',
+        r'(commit|push|deploy|สร้าง|ทำ|เริ่ม|build|run|test|merge).{0,10}(เลย|ให้เลย|ให้).{0,10}(มั้ย|ไหม|ม่ะ|มั๊ย)',
+        r'จะ.{0,15}(commit|push|deploy|สร้าง|ทำ|รัน|build|create|merge).{0,10}ให้.{0,10}(มั้ย|ไหม)',
+        r'พร้อม.{0,10}(จะ)?\s*(push|deploy|commit|merge|ship)',
+        # English: "Want me to X?" / "Should I X?" / "Shall I X?" at tail
+        r'\b[Ww]ant\s+me\s+to\s+(commit|push|deploy|build|create|run|merge|proceed|continue)',
+        r'\b[Ss]hould\s+I\s+(go\s+ahead|commit|push|deploy|build|create|proceed|continue|run|merge)',
+        r'\b[Ss]hall\s+I\s+(commit|push|deploy|build|create|proceed|continue|run|merge)',
+        r'\b[Rr]eady\s+to\s+(commit|push|deploy|build|create|merge|ship|proceed)',
+        r'\b[Dd]o\s+you\s+want\s+me\s+to\s+(commit|push|deploy|build|create|run|merge|proceed)',
     ]
     has_option = any(re.search(p, tail, re.IGNORECASE|re.MULTILINE) for p in option_patterns)
     has_open = any(re.search(p, tail.strip(), re.IGNORECASE|re.MULTILINE) for p in open_patterns)
@@ -146,7 +162,7 @@ PYEOF
             cat <<'BLOCK_JSON'
 {
   "decision": "block",
-  "reason": "AEGIS MBP Golden Rule #7 violation — your last response ended with an option menu (A/B/C/numbered list) PLUS an open question to the human. This is the #1 observed MBP failure pattern. You MUST NOT ask the human to pick from a menu. Instead, do ONE of these and produce a NEW response that takes action: (1) Decide autonomously per the Decision Matrix and execute the chosen path. (2) Route the question through Nick Fury via QUESTION_TO_BRAIN — he scans state and decides. (3) If it is genuinely Identity / Irreversible-scope / External-access / Explicit-approval-gate, write to .aegis/brain/human-queue.md via tools/aegis-queue-human.sh and CONTINUE with everything else you can do. The current option-menu response was already shown to the user; produce a corrective response that picks one path and acts. To bypass this block for a legitimate menu (rare — e.g., literal slash-command output), set AEGIS_MBP_BLOCK_DISABLE=1."
+  "reason": "AEGIS MBP Golden Rule #7 violation — your last response asked the human for a decision you should make yourself. Two pattern classes: (A) Option-menu: A/B/C choices ending with 'what do you want?' (B) Unnecessary confirmation: 'Want me to commit?', 'สร้างเลยมั้ยครับ?' — you already know what to do, just do it. Codex/Antigravity execute without asking; AEGIS must too. Produce a NEW response that TAKES ACTION: (1) If the next step is obvious (commit, push, build, test, deploy) — just execute it. (2) If uncertain — decide per Decision Matrix or route through Nick Fury. (3) Only 4 categories ever reach human: Identity / Irreversible-scope / External-access / Explicit-approval-gate → write to .aegis/brain/human-queue.md and CONTINUE. To bypass: AEGIS_MBP_BLOCK_DISABLE=1."
 }
 BLOCK_JSON
             return 1

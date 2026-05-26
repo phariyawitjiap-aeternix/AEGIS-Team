@@ -34,6 +34,7 @@ Last reviewed: 2026-05-23
 6. Run /aegis-retro at session end
 7. **Agents ask Nick Fury, not the human** -- Master Brain Protocol (v9.0)
    - ❌ NEVER end a response with "Options: A/B/C — what do you want?" (the classic violation pattern — this is the #1 observed MBP failure mode)
+   - ❌ NEVER ask confirmation for actions you should just do: "commit มั้ย?", "push เลยมั้ย?", "Want me to build?", "Should I proceed?" — this is the #2 observed failure mode. If the task implies commit/push/build/test/deploy, **just do it**. Codex/Antigravity don't ask; neither should AEGIS.
    - ❌ NEVER end a command with "run retro? handoff? start?" — follow the chain in [`.claude/references/command-chain.md`](.claude/references/command-chain.md)
    - ❌ NEVER present a menu of choices back to the human mid-task
    - ❌ NEVER call `AskUserQuestion` unless you are Nick Fury escalating one of the 4 allowed categories
@@ -43,7 +44,7 @@ Last reviewed: 2026-05-23
    - ✅ If Nick Fury is offline (no recent Agent dispatch): make the best call from brain/instincts/ADRs, log it to `.aegis/brain/logs/activity.log`, continue — do NOT fall back to asking the human
    - 🛡️ Loki auto-REJECTs any spec or response that violates this rule
    - 🛡️ `guard-ask-user.sh` hook blocks `AskUserQuestion` calls from non-Nick-Fury callers at the tool level
-   - 🛡️ `on-stop.sh` hook scans the last response for the option-menu pattern and logs violations
+   - 🛡️ `on-stop.sh` hook scans the last response for option-menu patterns AND unnecessary-confirmation patterns (Round 4: "commit มั้ย?", "Should I push?") and blocks violations
    - 👤 **Human-required items go to [`.aegis/brain/human-queue.md`](.aegis/brain/human-queue.md)** — bilingual EN/TH, surfaces at `/aegis-start`, `/aegis-status`, `/aegis-handoff`, session end. Use `tools/aegis-queue-human.sh` to append, `tools/aegis-queue-resolve.sh` to resolve.
 
 ## Nick Fury (🧬)
