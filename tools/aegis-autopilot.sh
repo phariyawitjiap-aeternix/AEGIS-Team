@@ -175,20 +175,37 @@ else
     TIMEOUT_CMD="__bash_timeout"
 fi
 
-# Pure-bash timeout wrapper: runs command in background, kills after N seconds.
+# Pure-bash timeout wrapper: spawns a killer in background, runs command
+# in foreground so stdout/stderr redirections work normally.
 __bash_timeout() {
     local secs="$1"
     shift
-    "$@" &
-    local child_pid=$!
+    # Launch killer that targets our own PID's child (the command below).
+    # We write the child PID to a temp file so the killer can read it.
+    local pidfile
+    pidfile="$(mktemp)"
     (
         sleep "$secs"
-        kill "$child_pid" 2>/dev/null
+        local cpid
+        cpid="$(cat "$pidfile" 2>/dev/null)" || true
+        if [[ -n "$cpid" ]]; then
+            kill "$cpid" 2>/dev/null || true
+        fi
     ) &
     local killer_pid=$!
-    wait "$child_pid"
+    # Run command in background so we can capture its PID, then wait
+    "$@" &
+    local child_pid=$!
+    echo "$child_pid" > "$pidfile"
+    wait "$child_pid" 2>/dev/null
     local rc=$?
     kill "$killer_pid" 2>/dev/null || true
+    wait "$killer_pid" 2>/dev/null || true
+    rm -f "$pidfile"
+    # 143 = killed by SIGTERM (from our killer) → map to 124 like GNU timeout
+    if (( rc == 143 )); then
+        return 124
+    fi
     return $rc
 }
 
