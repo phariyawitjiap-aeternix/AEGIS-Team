@@ -57,8 +57,8 @@ die() {
 }
 
 # ── Defaults ─────────────────────────────────────────────────────────────────
-BUDGET="5.00"
-NO_BUDGET=false
+BUDGET=""
+NO_BUDGET=true
 MAX_ITERATIONS=10
 MAX_FAILURES=3
 COOLDOWN=10
@@ -85,8 +85,8 @@ ${BOLD}USAGE${NC}
   tools/aegis-autopilot.sh [flags]
 
 ${BOLD}FLAGS${NC}
-  --budget <float>         Max cumulative USD spend (default: 5.00, max: 1000)
-  --no-budget              Disable budget gate (for subscription plans)
+  --budget <float>         Max cumulative USD spend (max: 1000). Enables budget gate.
+  --no-budget              Disable budget gate (default — for subscription plans)
   --max-iterations <int>   Max session loops (default: 10, max: 100)
   --max-failures <int>     Consecutive failures before abort (default: 3)
   --cooldown <int>         Seconds between sessions 0-300 (default: 10)
@@ -125,8 +125,8 @@ EOF
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --budget)           BUDGET="$2";           shift 2 ;;
-        --no-budget)        NO_BUDGET=true;        shift ;;
+        --budget)           BUDGET="$2"; NO_BUDGET=false; shift 2 ;;
+        --no-budget)        NO_BUDGET=true;                shift ;;
         --max-iterations)   MAX_ITERATIONS="$2";   shift 2 ;;
         --max-failures)     MAX_FAILURES="$2";     shift 2 ;;
         --cooldown)         COOLDOWN="$2";         shift 2 ;;
@@ -194,13 +194,14 @@ __bash_timeout() {
 
 # ── Validate arguments ────────────────────────────────────────────────────────
 
-# Budget: > 0 and <= 1000
-if ! jq -e --arg v "$BUDGET" 'def num: tonumber? // null; ($v | num) != null and ($v | num) > 0 and ($v | num) <= 1000' &>/dev/null <<<"null"; then
-    # jq check failed — do inline validation
-    die "Invalid --budget: must be a number > 0 and <= 1000 (got: $BUDGET)"
+# Budget: > 0 and <= 1000 (skipped when --no-budget / no --budget given)
+if [[ "$NO_BUDGET" == "false" ]]; then
+    if ! jq -e --arg v "$BUDGET" 'def num: tonumber? // null; ($v | num) != null and ($v | num) > 0 and ($v | num) <= 1000' &>/dev/null <<<"null"; then
+        die "Invalid --budget: must be a number > 0 and <= 1000 (got: $BUDGET)"
+    fi
+    BUDGET_OK=$(jq -n --arg v "$BUDGET" '($v|tonumber) > 0 and ($v|tonumber) <= 1000')
+    [[ "$BUDGET_OK" == "true" ]] || die "--budget must be > 0 and <= 1000 (got: $BUDGET)"
 fi
-BUDGET_OK=$(jq -n --arg v "$BUDGET" '($v|tonumber) > 0 and ($v|tonumber) <= 1000')
-[[ "$BUDGET_OK" == "true" ]] || die "--budget must be > 0 and <= 1000 (got: $BUDGET)"
 
 # max-iterations: integer 1-100
 [[ "$MAX_ITERATIONS" =~ ^[0-9]+$ ]] || die "--max-iterations must be a positive integer (got: $MAX_ITERATIONS)"
@@ -648,7 +649,11 @@ while true; do
     CUMULATIVE_COST="$(float_add "$CUMULATIVE_COST" "$SESSION_COST")"
     TOTAL_TURNS=$(( TOTAL_TURNS + NUM_TURNS ))
 
-    BUDGET_PCT="$(float_percent "$CUMULATIVE_COST" "$BUDGET")"
+    if [[ "$NO_BUDGET" == "false" ]]; then
+        BUDGET_PCT="$(float_percent "$CUMULATIVE_COST" "$BUDGET")"
+    else
+        BUDGET_PCT="0"
+    fi
     SESSION_DUR_FMT="$(format_duration "$SESSION_DURATION")"
     SESSION_END_TIME="$(date '+%H:%M:%S')"
 
