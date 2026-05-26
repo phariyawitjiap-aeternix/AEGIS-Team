@@ -582,10 +582,13 @@ while true; do
         SESSION_JSON="$(cat "$TMPOUT")"
         rm -f "$TMPOUT"
     else
-        # Capture silently
-        SESSION_JSON="$($TIMEOUT_CMD "$SESSION_TIMEOUT" claude "${CLAUDE_ARGS[@]}" 2>>"$LOG_FILE")" &
+        # Capture silently via temp file (subshell + & cannot assign back)
+        TMPOUT="$(mktemp)"
+        $TIMEOUT_CMD "$SESSION_TIMEOUT" claude "${CLAUDE_ARGS[@]}" >"$TMPOUT" 2>>"$LOG_FILE" &
         CLAUDE_PID=$!
         wait $CLAUDE_PID || SESSION_EXIT=$?
+        SESSION_JSON="$(cat "$TMPOUT")"
+        rm -f "$TMPOUT"
     fi
 
     CLAUDE_PID=""

@@ -1520,6 +1520,14 @@
     "description": "Internal function in aegis-supply-chain-scan"
   },
   {
+    "id": "FUNC-2848A3",
+    "name": "__bash_timeout",
+    "source_file": "tools/aegis-autopilot.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-autopilot"
+  },
+  {
     "id": "FUNC-9AA458",
     "name": "_aegis_is_scan_exempt",
     "source_file": "tools/aegis-brain-write.sh",
@@ -1606,6 +1614,14 @@
     "type": "bash",
     "module": "MOD-TOOLS",
     "description": "AEGIS Agent Tools Matrix (dogfood-observation #2 -- subagent tool availability pre-flight)"
+  },
+  {
+    "id": "FUNC-0C440F",
+    "name": "aegis-autopilot",
+    "source_file": "tools/aegis-autopilot.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-autopilot.sh — Non-stop autonomous execution wrapper for AEGIS."
   },
   {
     "id": "FUNC-EEC722",
@@ -2120,6 +2136,14 @@
     "description": "Internal function in aegis-linear-sync"
   },
   {
+    "id": "FUNC-62A295",
+    "name": "build_prompt",
+    "source_file": "tools/aegis-autopilot.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-autopilot"
+  },
+  {
     "id": "FUNC-DD16C6",
     "name": "categorize_tool",
     "source_file": "tools/aegis-token-profile.sh",
@@ -2150,6 +2174,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-sprint-close-gate"
+  },
+  {
+    "id": "FUNC-99BDD5",
+    "name": "check_project_complete",
+    "source_file": "tools/aegis-autopilot.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-autopilot"
   },
   {
     "id": "FUNC-F12501",
@@ -2440,6 +2472,14 @@
     "description": "Internal function in aegis-coverage-screen"
   },
   {
+    "id": "FUNC-2AD360",
+    "name": "die",
+    "source_file": "tools/aegis-autopilot.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-autopilot"
+  },
+  {
     "id": "FUNC-4E7AC5",
     "name": "do_counter_update",
     "source_file": "tools/aegis-s204-override.sh",
@@ -2518,6 +2558,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-pin"
+  },
+  {
+    "id": "FUNC-6434D3",
+    "name": "err",
+    "source_file": "tools/aegis-autopilot.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-autopilot"
   },
   {
     "id": "FUNC-7E4347",
@@ -2688,6 +2736,14 @@
     "description": "Internal function in aegis-linear-sync"
   },
   {
+    "id": "FUNC-25BCE3",
+    "name": "find_latest_handoff",
+    "source_file": "tools/aegis-autopilot.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-autopilot"
+  },
+  {
     "id": "FUNC-E7C672",
     "name": "find_security_match",
     "source_file": "tools/aegis-s204-override.sh",
@@ -2696,12 +2752,60 @@
     "description": "Internal function in aegis-s204-override"
   },
   {
+    "id": "FUNC-86F2CC",
+    "name": "float_add",
+    "source_file": "tools/aegis-autopilot.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-autopilot"
+  },
+  {
+    "id": "FUNC-8C64D7",
+    "name": "float_ge",
+    "source_file": "tools/aegis-autopilot.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-autopilot"
+  },
+  {
+    "id": "FUNC-79400A",
+    "name": "float_percent",
+    "source_file": "tools/aegis-autopilot.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-autopilot"
+  },
+  {
+    "id": "FUNC-418A1A",
+    "name": "format_duration",
+    "source_file": "tools/aegis-autopilot.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-autopilot"
+  },
+  {
     "id": "FUNC-C188BC",
     "name": "generate_func_id",
     "source_file": "tools/aegis-func-catalog.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-func-catalog"
+  },
+  {
+    "id": "FUNC-8CD90B",
+    "name": "get_complete_reason",
+    "source_file": "tools/aegis-autopilot.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-autopilot"
+  },
+  {
+    "id": "FUNC-F578B3",
+    "name": "get_git_diff_stat",
+    "source_file": "tools/aegis-autopilot.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-autopilot"
   },
   {
     "id": "FUNC-23CACC",
@@ -2824,6 +2928,14 @@
     "description": "Internal function in aegis-sprint-close-gate"
   },
   {
+    "id": "FUNC-749ACF",
+    "name": "handle_sigint",
+    "source_file": "tools/aegis-autopilot.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-autopilot"
+  },
+  {
     "id": "FUNC-0C2A54",
     "name": "has_fallback_nearby",
     "source_file": "tools/aegis-shell-lint.sh",
@@ -2870,6 +2982,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-brain-index"
+  },
+  {
+    "id": "FUNC-649DCF",
+    "name": "info",
+    "source_file": "tools/aegis-autopilot.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-autopilot"
   },
   {
     "id": "FUNC-F4A5F0",
@@ -3000,6 +3120,14 @@
     "description": "Internal function in aegis-design-fetch"
   },
   {
+    "id": "FUNC-946F0D",
+    "name": "log",
+    "source_file": "tools/aegis-autopilot.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-autopilot"
+  },
+  {
     "id": "FUNC-BFF9DC",
     "name": "log",
     "source_file": "tools/aegis-brain-index.sh",
@@ -3086,6 +3214,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-s204-override"
+  },
+  {
+    "id": "FUNC-782B38",
+    "name": "log_session_jsonl",
+    "source_file": "tools/aegis-autopilot.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-autopilot"
   },
   {
     "id": "FUNC-9CEFF7",
@@ -3192,12 +3328,36 @@
     "description": "Internal function in aegis-pin"
   },
   {
+    "id": "FUNC-E07AC1",
+    "name": "poll_for_new_handoff",
+    "source_file": "tools/aegis-autopilot.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-autopilot"
+  },
+  {
     "id": "FUNC-0F91BB",
     "name": "preprocess_fts_query",
     "source_file": "tools/aegis-brain-search.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-brain-search"
+  },
+  {
+    "id": "FUNC-7C92AC",
+    "name": "print_banner",
+    "source_file": "tools/aegis-autopilot.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-autopilot"
+  },
+  {
+    "id": "FUNC-D7A1B8",
+    "name": "print_summary",
+    "source_file": "tools/aegis-autopilot.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-autopilot"
   },
   {
     "id": "FUNC-CA83E8",
@@ -3214,6 +3374,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-research-probe"
+  },
+  {
+    "id": "FUNC-163E08",
+    "name": "read_handoff",
+    "source_file": "tools/aegis-autopilot.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-autopilot"
   },
   {
     "id": "FUNC-D82061",
@@ -3376,6 +3544,14 @@
     "description": "Internal function in aegis-return-validator"
   },
   {
+    "id": "FUNC-5E296D",
+    "name": "section",
+    "source_file": "tools/aegis-autopilot.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-autopilot"
+  },
+  {
     "id": "FUNC-DC2033",
     "name": "seed_pattern",
     "source_file": "tools/aegis-brain-benchmark.sh",
@@ -3454,6 +3630,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-design-fetch"
+  },
+  {
+    "id": "FUNC-11D5F2",
+    "name": "usage",
+    "source_file": "tools/aegis-autopilot.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-autopilot"
   },
   {
     "id": "FUNC-EE8519",
@@ -3550,6 +3734,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-upgrade"
+  },
+  {
+    "id": "FUNC-1DE81D",
+    "name": "warn",
+    "source_file": "tools/aegis-autopilot.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-autopilot"
   },
   {
     "id": "FUNC-294D72",
