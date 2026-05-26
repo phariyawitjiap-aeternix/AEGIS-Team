@@ -581,23 +581,16 @@ while true; do
     SESSION_JSON=""
     SESSION_EXIT=0
 
+    TMPOUT="$(mktemp)"
     if [[ "$VERBOSE" == "true" ]]; then
-        # Stream output; still capture for JSON parse (tee to temp file)
-        TMPOUT="$(mktemp)"
-        $TIMEOUT_CMD "$SESSION_TIMEOUT" claude "${CLAUDE_ARGS[@]}" 2>>"$LOG_FILE" | tee "$TMPOUT" &
-        CLAUDE_PID=$!
-        wait $CLAUDE_PID || SESSION_EXIT=$?
-        SESSION_JSON="$(cat "$TMPOUT")"
-        rm -f "$TMPOUT"
+        $TIMEOUT_CMD "$SESSION_TIMEOUT" claude "${CLAUDE_ARGS[@]}" 2>>"$LOG_FILE" | tee "$TMPOUT"
+        SESSION_EXIT=${PIPESTATUS[0]}
     else
-        # Capture silently via temp file (subshell + & cannot assign back)
-        TMPOUT="$(mktemp)"
-        $TIMEOUT_CMD "$SESSION_TIMEOUT" claude "${CLAUDE_ARGS[@]}" >"$TMPOUT" 2>>"$LOG_FILE" &
-        CLAUDE_PID=$!
-        wait $CLAUDE_PID || SESSION_EXIT=$?
-        SESSION_JSON="$(cat "$TMPOUT")"
-        rm -f "$TMPOUT"
+        $TIMEOUT_CMD "$SESSION_TIMEOUT" claude "${CLAUDE_ARGS[@]}" >"$TMPOUT" 2>>"$LOG_FILE"
+        SESSION_EXIT=$?
     fi
+    SESSION_JSON="$(cat "$TMPOUT" 2>/dev/null || true)"
+    rm -f "$TMPOUT"
 
     CLAUDE_PID=""
     SESSION_END_EPOCH="$(date '+%s')"
