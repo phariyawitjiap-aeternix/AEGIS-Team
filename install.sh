@@ -709,6 +709,7 @@ tool_packages=(
     "aegis-resume"             # v11-10 — checkpoint + SessionStart resume
     "aegis-brain-graph"        # v12-04/05/06 — NDJSON graph + wiki + staleness hook
     "aegis-settings-patches"   # v15-18B + v15-21 — .jq filters for settings-patch migration tool
+    "_hook-utils"              # v15-28 — shared ESM utils (safe-run.mjs) imported by hook packages
 )
 delivered_pkgs=0
 for pkg in "${tool_packages[@]}"; do
