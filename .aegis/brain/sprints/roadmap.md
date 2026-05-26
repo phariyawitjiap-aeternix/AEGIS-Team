@@ -16,9 +16,9 @@ external dependencies (new SDK features, infra, migration calendar).
 
 ## Tally (update on every sprint close)
 
-_Last updated: 2026-05-12 (END OF DAY) · by: Claude (v14 Hermes parity series COMPLETE — 4/4 sprints CLOSED, 47/47pt delivered, 132/132 tests GREEN: v14-01 60/60, v14-02 21/21, v14-03 37/37, v14-04 14/14. 19 new files + 8 edits. Registry 14→16 commands (+aegis-decisions, +aegis-goal). New tools: aegis-commands/, aegis-brain-threat-patterns.yaml, aegis-brain-checkpoint/, aegis-decision-search, aegis-dump, aegis-pin, aegis-goal/. mine.mjs retrofitted with first-run defer. supply-chain-audit.yml CI workflow added. Measurement campaign for /aegis-goal POC deferred to calendar-time (External Access gate). Series plan: .aegis/brain/sprints/v14-series-plan.md._
+_Last updated: 2026-05-27 · by: Claude (v15.1.0 roadmap catchup — 10 sprints tallied: v15-19..v15-28, 30pt total, all CLOSED. v15.1.0 released 2026-05-23. Suite 72/72. Grand total v15: 94pt selected, 94pt done.)_
 
-_Mid-day: sprint-v14-01-command-discipline CLOSED 13/13 — opened v14 "Hermes parity + audit hardening" series. 60/60 tests GREEN across 3 new test suites. Adopted: CommandDef registry pattern (14 commands → single source), brain threat scanner (12 patterns + 10 invisible chars from Hermes memory_tool.py), supply-chain-audit.yml (6 narrow checks, no-noise discipline). 1 bug fixed during inventory: aegis-upgrade.md missing frontmatter._
+_Prior: 2026-05-12 — v14 Hermes parity series COMPLETE (4/4 sprints, 47pt, 132 tests)._
 
 _Prior: 2026-05-07 · by: Captain America (sprint-v13-02-cleanup CLOSED 6/6 + AI-3 follow-through executed — user approved branch protection enable; ran `gh api PUT` for Tier-1 config (6 required status checks, no force-push, no main-deletion, admin override allowed). Branch protection now LIVE on `phariyawitjiap-aeternix/AEGIS-Team` main. Future PRs will be blocked from merging on red CI matrix. Decision D-101 logged. Suite 45/45 GREEN._
 
@@ -86,7 +86,18 @@ _Prior: 2026-05-07 · by: Captain America (sprint-v13-02-cleanup CLOSED 6/6 + AI
 | sprint-v15-17-diagram-first-reflex (Mermaid-as-reflex for all 11 personas) | 3 | 3 | 0 | **CLOSED (100%)** — `skills/diagram-first-reflex.md` defines trigger matrix (6 cases: flow>3 steps / decision>2 branches / multi-actor / state / hierarchy>5 / dependencies) + anti-trigger matrix (6 cases: single fact / retro / apology / code review / 1-2 step / data table) + per-persona defaults for all 11 personas. 5 personas wired with in-line mermaid examples (Nick Fury: decision tree, Cap: sequenceDiagram, Iron Man: architecture+state, Loki: attack paths with `:::warning`, Coulson: traceability). CLAUDE.md surfaces the habit. 6/6 lint test + suite 60→61. Reflex (trigger-based) ≠ "breathing" (always) — avoids token bloat and prose-anti-pattern overfit. |
 | sprint-v15-18a-skill-autodiscover (kill skill manifest-drift class via frontmatter glob) | 5 | 5 | 0 | **CLOSED (100%)** — replaced `minimal_skills/standard_skills/full_skills` hand-coded arrays in `install.sh` + `install-remote.sh` with glob over `skills/*.md` + parse frontmatter `profile:` field. Tier semantics: minimal=0 ranks ship at every tier, standard=1 at standard+, full=2 at full only, pipe lists use min-rank. `tests/aegis-skill-autodiscover-test.sh` × 6 — incl. T5 killer test that creates a synthetic skill in a test repo + asserts it ships at standard tier WITHOUT any installer code change. Drift bug class closed by construction. Suite 61→62. |
 | sprint-v15-18b-settings-patch-tool (closes v15-16 Story B — `.*` matcher narrowed) | 3 | 3 | 0 | **CLOSED (100%)** — `tools/aegis-settings-patch.sh` bash CLI (list/dry-run/apply/revert) + `tools/aegis-settings-patches/narrow-posttooluse-matcher.jq`. jq-driven atomic edits + timestamped backups + restart-required warning. Bypasses guard-write by running as bash (not Edit/Write tool). 6/6 regression test. Applied to AEGIS-Team's own settings.json — Story B closed for meta repo. Establishes pattern for future between-session settings migrations: no maintainer-grant ceremony. Suite 62→63 (after brain-graph-query test updated for new matcher). |
-| **v15 net deliverable** | **64 selected** | **64 done** | **0** | **CC 2.1.139 + 2.1.141 full alignment + installer robustness + manifest drift killed + modern-schema PreToolUse + perf/leak fix + diagram-first reflex + skill autodiscover + settings patch migration tool** — v15-02 HYBRID /goal wiring, v15-03 NON-APPLICABLE, v15-04/05 audits NO-OP, v15-06 transparent skill model, v15-07 sprint-plan-chain gate, v15-08 terminalSequence, v15-09 approval-gate schema (initial dual-path), v15-10 multi-tenant cwd, v15-12 hook error classifier, v15-13 install glob fix, v15-14 install manifest (tool packages), v15-15 modern-only PreToolUse, v15-16 perf/leak fix (Story B closed retroactively via v15-18B), v15-17 diagram-first reflex, v15-18A skill autodiscover, v15-18B settings patch tool. |
+| sprint-v15-19-coverage-screen (tool-boundary coverage screen — Contra-Thai F-A) | 4 | 4 | 0 | **CLOSED (100%)** — `tools/aegis-coverage-screen.sh` (detect/screen/show/ack/list-stacks, 25 known stack IDs), `skills/aegis-coverage-screen.md`, wired into `/super-spec` Phase 0 + `/aegis-start` Step 2.3. Retroactive Contra-Thai screen (60%, 4 gaps). 14/14 tests. PR #191. Suite 63→65. |
+| sprint-v15-20-verified-not-produced (close Contra-Thai F-B/F-C/F-E) | 5 | 5 | 0 | **CLOSED (100%)** — Sub-agent return tagging (`[VERIFIED]/[PRODUCED]`, `aegis-return-validator.sh`), sprint-close playtest gate (`aegis-sprint-close-gate.sh`), research probe gate (`aegis-research-probe.sh`). Three habits closing the "produced ≠ verified" bug class. PR #192. Suite 65→67. |
+| sprint-v15-21-auto-fire-probe-gate (PostToolUse hook for research writes) | 2 | 2 | 0 | **CLOSED (100%)** — Auto-fires `aegis-research-probe.sh apply` on `_aegis-output/research/` writes via PostToolUse hook. PR #194. |
+| sprint-v15-22-claude-agents-integration (cross-session awareness via `claude agents` CLI) | 5 | 5 | 0 | **CLOSED (100%)** — `tools/aegis-claude-agents.sh` wrapper, `/aegis-start` Step 2.7 cross-session awareness, race-risk detection, idle-session surfacing. PR #196. |
+| sprint-v15-23-mt-registry-hygiene (`mt unregister` + `mt prune` subcommands) | 2 | 2 | 0 | **CLOSED (100%)** — `mt unregister <name>` + `mt prune` (auto-remove stale entries), 6/6 tests. PR #197. |
+| sprint-v15-24-lean-pass (AEGIS_VS_NATIVE_CC.md + archive obsolete planning docs) | 3 | 3 | 0 | **CLOSED (100%)** — Strategic lean analysis doc, archived 6 obsolete planning docs to `docs/_archived/`. PR #198. |
+| sprint-v15-25-confident-lean (actually delete what's safely redundant) | 3 | 3 | 0 | **CLOSED (100%)** — Deleted safely-redundant files identified in v15-24 lean analysis. PR #199. |
+| sprint-v15-26-install-upgrade-sweep (kill stale-file accumulation on downstream projects) | 2 | 2 | 0 | **CLOSED (100%)** — `install.sh --upgrade` now removes known-stale files from downstream projects. PR #200. |
+| sprint-v15-27-cross-session-skill (persona-level discoverability of cross-session awareness) | 1 | 1 | 0 | **CLOSED (100%)** — `skills/aegis-cross-session-awareness.md` + persona updates (Nick Fury/Spider-Man/Beast gain cross-session sections). Skills 39→40. PR #203. |
+| sprint-v15-28-autopilot (aegis-autopilot.sh + MBP Round 4 unnecessary-confirmation block) | 3 | 3 | 0 | **CLOSED (100%)** — `tools/aegis-autopilot.sh` multi-iteration CC session runner (iteration budget, context-floor, timeout, --verbose, --dry-run, --no-budget). MBP Round 4 `on-stop.sh` unnecessary-confirmation patterns (commit/push/build/deploy). `_hook-utils` installer fix. Commits fc1f5f8 + PR #204. |
+| **v15.1.0 release** | — | — | — | **RELEASED 2026-05-23** — honesty contracts (coverage screen, verified-vs-produced), cross-session awareness, strategic lean, upgrade-sweep. 4/5 Contra-Thai gaps closed. PR #201 + #202. |
+| **v15 net deliverable** | **94 selected** | **94 done** | **0** | **v15-01..18B (64pt) + v15-19..28 (30pt) = 94pt total.** Phase 1: CC 2.1.139/141 alignment + installer robustness + manifest drift killed + modern PreToolUse + perf/leak fix + diagram-first + skill autodiscover + settings patch. Phase 2: honesty contracts (coverage screen + verified-not-produced + probe gate) + cross-session awareness + lean pass + upgrade-sweep + autopilot. Released as v15.1.0. |
 
 ## v12 Plan Reference
 
@@ -136,16 +147,22 @@ All 5 items shipped in sprint-v9-06 (2026-04-24):
 ## Grand Total Math
 
 ```
-Denominator = selected points across open/closed v9 sprints
-Numerator   = delivered points (DONE across closed sprints)
+Denominator = selected points across all closed sprints (v9..v15)
+Numerator   = delivered points (DONE)
 Remaining   = denominator − numerator
 
-Current:
-  Denominator = 13 + 11 + 11 + 10 + 13 + 11 = 69 pt
-  Numerator   = 13 + 11 + 11 + 14 + 13 + 11 = 73 pt (incl. 4pt stretch in v9-04)
-  Effective   = min(73, 69) = 69 / 69 = 100%
+Current (2026-05-27):
+  v9:  69 selected / 73 delivered (4pt stretch) = 100%
+  v10: 47 selected / 47 delivered              = 100% (v10-08 SCOPED-DEFERRED)
+  v11: 63 selected / 63 delivered              = 100%
+  v12: 39 selected / 39 delivered              = 100%
+  v13: 30 selected / 30 delivered              = 100%
+  v14: 47 selected / 47 delivered              = 100%
+  v15: 94 selected / 94 delivered              = 100%
 
-  Grand total = 100% (v9 in-repo scope, 6 sprints closed)
+  Grand total = 389 pt delivered across 47 closed sprints
+  Remaining   = 0 pt (v10-08 deferred, not in denominator)
+  Framework status: COMPLETE
 ```
 
 > Computed live by `tools/aegis-progress.sh` — this table is a human-readable
