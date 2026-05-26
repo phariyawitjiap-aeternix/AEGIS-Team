@@ -58,6 +58,7 @@ die() {
 
 # ── Defaults ─────────────────────────────────────────────────────────────────
 BUDGET="5.00"
+NO_BUDGET=false
 MAX_ITERATIONS=10
 MAX_FAILURES=3
 COOLDOWN=10
@@ -85,6 +86,7 @@ ${BOLD}USAGE${NC}
 
 ${BOLD}FLAGS${NC}
   --budget <float>         Max cumulative USD spend (default: 5.00, max: 1000)
+  --no-budget              Disable budget gate (for subscription plans)
   --max-iterations <int>   Max session loops (default: 10, max: 100)
   --max-failures <int>     Consecutive failures before abort (default: 3)
   --cooldown <int>         Seconds between sessions 0-300 (default: 10)
@@ -124,6 +126,7 @@ EOF
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --budget)           BUDGET="$2";           shift 2 ;;
+        --no-budget)        NO_BUDGET=true;        shift ;;
         --max-iterations)   MAX_ITERATIONS="$2";   shift 2 ;;
         --max-failures)     MAX_FAILURES="$2";     shift 2 ;;
         --cooldown)         COOLDOWN="$2";         shift 2 ;;
@@ -436,7 +439,11 @@ print_banner() {
     printf '\n'
     printf "${BOLD}${BLUE}╔══════════════════════════════════════════════════════╗${NC}\n"
     printf "${BOLD}${BLUE}║  AEGIS Autopilot v%-34s║${NC}\n" "${SCRIPT_VERSION}                   "
-    printf "${BOLD}${BLUE}║  Budget: \$%-10s | Max iterations: %-13s║${NC}\n" "$budget_fmt" "$MAX_ITERATIONS      "
+    if [[ "$NO_BUDGET" == "true" ]]; then
+        printf "${BOLD}${BLUE}║  Budget: %-11s | Max iterations: %-13s║${NC}\n" "unlimited" "$MAX_ITERATIONS      "
+    else
+        printf "${BOLD}${BLUE}║  Budget: \$%-10s | Max iterations: %-13s║${NC}\n" "$budget_fmt" "$MAX_ITERATIONS      "
+    fi
     printf "${BOLD}${BLUE}║  Project: %-43s║${NC}\n" "$(basename "$PROJECT_DIR")                            "
     printf "${BOLD}${BLUE}║  Permission: %-40s║${NC}\n" "$PERMISSION_MODE                               "
     printf "${BOLD}${BLUE}║  Press Ctrl+C to interrupt                           ║${NC}\n"
@@ -648,8 +655,12 @@ while true; do
     printf "   Finished: %s (%s)\n" "$SESSION_END_TIME" "$SESSION_DUR_FMT"
     printf "   Cost: \$%s | Turns: %d | Reason: %s\n" \
         "$SESSION_COST" "$NUM_TURNS" "$TERMINAL_REASON"
-    printf "   Cumulative: \$%s / \$%s (%s%%)\n" \
-        "$CUMULATIVE_COST" "$BUDGET" "$BUDGET_PCT"
+    if [[ "$NO_BUDGET" == "true" ]]; then
+        printf "   Cumulative: \$%s (no budget limit)\n" "$CUMULATIVE_COST"
+    else
+        printf "   Cumulative: \$%s / \$%s (%s%%)\n" \
+            "$CUMULATIVE_COST" "$BUDGET" "$BUDGET_PCT"
+    fi
     printf '\n'
 
     log "SESSION $ITERATION END — cost=\$$SESSION_COST cumulative=\$$CUMULATIVE_COST turns=$NUM_TURNS reason=$TERMINAL_REASON duration=${SESSION_DURATION}s"
@@ -718,8 +729,8 @@ while true; do
         break
     fi
 
-    # P2: Budget exhausted
-    if [[ "$(float_ge "$CUMULATIVE_COST" "$BUDGET")" == "true" ]]; then
+    # P2: Budget exhausted (skipped with --no-budget)
+    if [[ "$NO_BUDGET" == "false" ]] && [[ "$(float_ge "$CUMULATIVE_COST" "$BUDGET")" == "true" ]]; then
         FINAL_REASON="Budget exhausted: \$$CUMULATIVE_COST / \$$BUDGET"
         FINAL_EXIT_CODE=2
         printf "${YELLOW}Budget exhausted: \$%s / \$%s. Stopping.${NC}\n" \
