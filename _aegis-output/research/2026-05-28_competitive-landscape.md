@@ -209,3 +209,80 @@ Unified code-review + test-run + spec-compliance check before DONE. MetaGPT has 
 - [AI Coding Agents Comparison 2026](https://fungies.io/best-ai-coding-agents-2026-comparison-benchmarks/ [PROBED ✓ HTTP 200])
 - [Agent Runtime Growth Faros](https://www.faros.ai/blog/harness-engineering [PROBED ✓ HTTP 200])
 - [Best AI Coding Agents Tembo](https://www.tembo.io/blog/top-coding-agent-tools [PROBED ✓ HTTP 200])
+
+---
+
+## Appendix A: Deep Dive — SWE-Bench, Checkpoints, Agent SDK (Wave 3)
+
+*Research date: 2026-05-28, appended to main doc*
+
+### A1. Running SWE-Bench on AEGIS
+
+**Setup:** SWE-bench Verified = 500 human-validated Python OSS issues. Afternoon setup, few hundred dollars compute. Custom agent frameworks submit to the standard harness.
+
+**Path for AEGIS:**
+1. Prototype on 50-100 issues first (validate cost + methodology)
+2. Wrap AEGIS workflow (aegis-autopilot + quality-gate) as SWE-bench agent
+3. Key risk: Verified is Python-heavy — AEGIS (polyglot, bash-first) may score lower than actual capability
+4. A 55% Verified score ≈ 30% on proprietary codebases with domain-specific patterns
+
+**Current SOTA:**
+- Claude Opus 4.5: 80.9% Verified
+- SWE-Agent 1.0 (Claude 3.7): 40%+ Verified
+- mini-swe-agent (Gemini 3 Pro): 74% Verified
+
+**Sources:**
+- [SWE-bench Verified — Epoch AI](https://epoch.ai/benchmarks/swe-bench-verified [PROBED ✓ HTTP 200])
+- [SWE-Bench in 2026: How to Evaluate](https://callsphere.ai/blog/swe-bench-evaluating-agentic-coding-agents [PROBED ✓ HTTP 200])
+
+### A2. Structured Checkpointing vs Handoff
+
+**Three approaches compared:**
+
+| Aspect | LangGraph Checkpoint | Anthropic Agent SDK SessionStore | AEGIS Handoff |
+|--------|---------------------|--------------------------------|---------------|
+| Model | Full state snapshot at every node | Transcript-append-only | Markdown summary + state file |
+| Fidelity | Lossless — resume from any node | Lossy — reconstruct from chat history | Lossy — summary by LLM |
+| Storage | Postgres / DynamoDB / RAM | S3 (JSONL) / Redis / Postgres | Filesystem (.md files) |
+| Resume | `graph.invoke(state)` from checkpoint | Re-read transcript | Re-read summary + re-init |
+| Time-travel | ✅ Any historical state | ❌ | ❌ |
+| Human-in-loop | ✅ Pause at checkpoint | ✅ Via append | ✅ Via human-queue |
+
+**LangGraph detail:** Checkpointer saves at every super-step boundary. Node-level pending-writes enable partial recovery. 5 implementations: MemorySaver, PostgresSaver, DynamoDBSaver, etc.
+
+**Agent SDK detail:** SessionStore has 5 methods: `append`, `load`, `list_sessions`, `delete`, `list_subkeys`. Reference implementations in memory, S3, Redis, Postgres.
+
+**AEGIS implication:** Current handoff is closer to SessionStore semantics (lossy) than LangGraph (lossless). Full checkpoint would require serializing brain state — higher fidelity but significant engineering.
+
+**Recommended path:** Keep handoff for cross-session continuity (it works), add structured `.aegis/brain/state/checkpoint.json` for critical state (current task, sprint position, pending decisions) — hybrid approach.
+
+**Sources:**
+- [LangGraph Persistence Docs](https://docs.langchain.com/oss/javascript/langgraph/persistence [PROBED ✓ HTTP 200])
+- [LangGraph Production: Persistence & Memory](https://medium.com/@puttt.spl/langgraph-from-zero-to-production-part-2-persistence-memory-f28b851b66f5)
+- [Checkpoints Are Not Durable Execution](https://www.diagrid.io/blog/checkpoints-are-not-durable-execution-why-langgraph-crewai-google-adk-and-others-fall-short-for-production-agent-workflows [PROBED ✓ HTTP 200])
+
+### A3. Anthropic Agent SDK — Adopt or Not?
+
+**What it is:** Managed tool loop — Claude with built-in file ops, shell, web search, MCP. Unlike `claude -p` (you manage everything), Agent SDK abstracts the loop.
+
+**Key diff vs `claude -p`:**
+
+| | `claude -p` (current AEGIS) | Agent SDK |
+|--|---------------------------|-----------|
+| Tool loop | Manual (AEGIS manages) | Built-in, automatic |
+| Retry | Manual | Automatic on transient failures |
+| Session resume | Handoff files | SessionStore protocol |
+| Multi-agent | Agent tool spawning | Agents-as-tools native |
+| Customization | Full control | Opinionated (limited loop override) |
+
+**Verdict for AEGIS: Partial adoption, not migration.**
+
+- ✅ **Adopt SessionStore** — replace handoff-file-based resume with structured session persistence
+- ✅ **Adopt retry semantics** — reduce manual error handling in autopilot
+- ❌ **Don't adopt managed tool loop** — AEGIS needs custom loop for MBP enforcement, honesty contracts, decision logging, coverage gates
+- ⚠️ **June 15, 2026** — Agent SDK billing separates from interactive Claude API → dedicated credits
+
+**Sources:**
+- [Agent SDK Overview — Claude Code Docs](https://code.claude.com/docs/en/agent-sdk/overview)
+- [Building Agents with Claude Agent SDK](https://www.anthropic.com/engineering/building-agents-with-the-claude-agent-sdk [PROBED ✓ HTTP 308])
+- [What Agent SDK Ships vs What You Build](https://www.augmentcode.com/guides/anthropic-agent-sdk-what-ships-vs-what-you-build [PROBED ✓ HTTP 200])
