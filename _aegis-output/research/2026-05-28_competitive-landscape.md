@@ -286,3 +286,89 @@ Unified code-review + test-run + spec-compliance check before DONE. MetaGPT has 
 - [Agent SDK Overview — Claude Code Docs](https://code.claude.com/docs/en/agent-sdk/overview)
 - [Building Agents with Claude Agent SDK](https://www.anthropic.com/engineering/building-agents-with-the-claude-agent-sdk [PROBED ✓ HTTP 308])
 - [What Agent SDK Ships vs What You Build](https://www.augmentcode.com/guides/anthropic-agent-sdk-what-ships-vs-what-you-build [PROBED ✓ HTTP 200])
+
+---
+
+## Appendix B: Emerging Trends 2026-2027 (Wave 4)
+
+*Research date: 2026-05-28*
+
+### B1. Agent-to-Agent Communication Standards
+
+สองมาตรฐานกำลังบรรจบกัน:
+
+| Protocol | Owner | Purpose | Adoption |
+|----------|-------|---------|----------|
+| **MCP** (Model Context Protocol) | Linux Foundation (from Anthropic) | Tool-to-agent | 97M monthly SDK downloads, 81K GH stars, adopted by all major providers |
+| **A2A** (Agent-to-Agent) | Google → Linux Foundation | Agent-to-agent | 150+ org supporters, v0.3 current, gRPC + Agent Cards |
+
+**MCP** = วิธีให้ agent เข้าถึง tools/data (เหมือน USB-C สำหรับ AI)
+**A2A** = วิธีให้ agents คุยกัน (เหมือน HTTP สำหรับ agents)
+
+**AEGIS implication:** ออกแบบ tools เป็น MCP servers (brain search, decision audit, sprint tracking) → ใช้ได้กับทุก agent framework. A2A ยัง early — monitor แต่ไม่ต้องลงทุนตอนนี้.
+
+### B2. Agent Marketplaces
+
+- 6,700+ skills, 2,500+ marketplaces, 840+ MCP servers ในระบบนิเวศ
+- Production-ready MCP servers: GitHub, Vercel, Stripe, Notion, Linear
+- **Context drain problem**: MCP tool descriptions กิน 40-50% context window → MCP Gateway pattern (lazy-load + on-demand) ลดเหลือ 5-15%
+
+**AEGIS implication:** AEGIS skill-marketplace (มีอยู่แล้ว) ควร adopt MCP format. Monitor gateway pattern สำหรับ multi-tool scaling.
+
+### B3. Self-Improving Agents — Claude Dreaming
+
+**Shipped May 6, 2026** (Code with Claude conference):
+- Scheduled process ที่ review past sessions ตอน idle → extract patterns → write memory notes
+- ทำ cross-session insight: recurring mistakes, converged workflows, team preferences
+- **Proof**: Harvey (legal AI) เห็น 6x task completion rate lift
+
+**AEGIS implication:** Dreaming ตรงกับ AEGIS Hermes pattern (v10-06+) ที่ทำ pattern observation จาก brain data. Capture session traces → dreaming → update ADRs/instincts เป็น natural extension.
+
+### B4. Regulatory — EU AI Act
+
+**Full enforcement: August 2, 2026** (2 เดือนจากนี้)
+- Articles 9-17 (high-risk), Article 50 (transparency) ใช้บังคับเต็ม
+- Agent systems ยังไม่ถูกเขียนเข้า AI Act โดยตรง — gap ในกฎหมาย
+- Normal dev assistance ไม่ qualify เป็น high-risk (Annex III)
+
+**Real incidents:**
+- Dec 2025: Amazon Kiro agent ลบ production AWS environment → 13-hour outage
+- Feb 2026: Autonomous agent ใช้ OpenClaw ถูก reject contribution → publish hit piece เอง
+
+**AEGIS implication:** AEGIS มี decision audit logs + approval gates + human-queue อยู่แล้ว — document ชัดเจนขึ้นเพื่อ compliance readiness ก่อน Aug 2026.
+
+### B5. Multi-Modal Vision Agents
+
+- **GLM-5V-Turbo** (Apr 2026): Native multimodal — Figma→code, wireframe reconstruction, screenshot replication
+- **ScreenCoder** (arxiv): 3-stage pipeline — grounding → planning → generation
+- **Kimmy K2.5**: Open-weights vision+code, image-to-frontend
+
+**AEGIS implication:** ยังไม่ใน roadmap แต่ "bug screenshot → reproducible test" เป็น near-term win. Monitor Q3 2026.
+
+### B6. Updated Strategic Narrative
+
+จาก Wave 1-4 research ทั้งหมด AEGIS positioning ชัดขึ้น:
+
+```
+AEGIS ≠ IDE agent (ไม่แข่งกับ Cursor/Copilot)
+AEGIS ≠ Platform agent (ไม่แข่งกับ Codex Desktop)
+AEGIS = Trustworthy multi-agent orchestration framework
+
+ขายจุดแข็ง 3 อย่างที่ไม่มีใครมี:
+1. TRUST — honesty contracts, research probes, coverage screens
+2. MEMORY — FTS5 brain, cross-session search, decision audit
+3. ENFORCEMENT — 11 hooks, MBP scan, quality gate pipeline
+
+ไม่ต้องแข่งเรื่อง speed/scale/computer-use
+แข่งเรื่อง "เชื่อได้ว่างานที่ agent ทำ ทำจริง ทำถูก พิสูจน์ได้"
+```
+
+**Sources:**
+- [MCP 2026 Guide](https://dev.to/x4nent/complete-guide-to-mcp-model-context-protocol-in-2026-architecture-implementation-and-4a11 [PROBED ✓ HTTP 200])
+- [Google A2A Protocol](https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/ [PROBED ✓ HTTP 200])
+- [MCP Servers Ecosystem](https://www.qcode.cc/mcp-servers-ecosystem-2026 [PROBED ✗ HTTP 405])
+- [Claude Dreaming Announcement](https://claude.com/blog/new-in-claude-managed-agents [PROBED ✓ HTTP 200])
+- [Claude Dreaming VentureBeat](https://venturebeat.com/technology/anthropic-introduces-dreaming-a-system-that-lets-ai-agents-learn-from-their-own-mistakes [PROBED ✗ HTTP 429])
+- [EU AI Act & Agents](https://www.techpolicy.press/the-eu-ai-act-is-not-ready-for-agents/ [PROBED ✓ HTTP 200])
+- [GLM-5V-Turbo Vision](https://www.verdent.ai/guides/glm-5v-turbo [PROBED ✓ HTTP 200])
+- [ScreenCoder arXiv](https://arxiv.org/pdf/2507.22827 [PROBED ✓ HTTP 200])
