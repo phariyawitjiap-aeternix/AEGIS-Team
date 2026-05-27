@@ -62,7 +62,7 @@ NO_BUDGET=true
 MAX_ITERATIONS=10
 MAX_FAILURES=3
 COOLDOWN=10
-PERMISSION_MODE="acceptEdits"
+PERMISSION_MODE="auto"
 ALLOWED_TOOLS=""
 INITIAL_PROMPT=""
 PROJECT_DIR=""
@@ -90,7 +90,7 @@ ${BOLD}FLAGS${NC}
   --max-iterations <int>   Max session loops (default: 10, max: 100)
   --max-failures <int>     Consecutive failures before abort (default: 3)
   --cooldown <int>         Seconds between sessions 0-300 (default: 10)
-  --permission-mode <str>  default | acceptEdits | auto (default: acceptEdits)
+  --permission-mode <str>  default | acceptEdits | auto (default: auto)
   --allowed-tools <str>    Tool whitelist passed to claude --allowedTools
   --initial-prompt <str>   Override first-session prompt
   --project-dir <path>     Target project directory (default: current dir)
@@ -398,24 +398,30 @@ build_prompt() {
     fi
 
     if [[ -z "$handoff_content" ]]; then
-        # Initial prompt — no handoff available
         cat <<'PROMPT'
-You are resuming autonomous work on this project.
-Run /aegis-start to initialize the session, then continue working on the current plan.
-When you finish all planned work or exhaust context, run /aegis-handoff to save state.
-If the project is fully complete, create .aegis/brain/state/project-complete.json with {"complete": true, "reason": "..."}.
+You are an autonomous AEGIS agent. Your FIRST action MUST be: invoke the Skill tool with skill="aegis-start". This loads Nick Fury who scans project state and drives all work.
+
+After /aegis-start completes its chain, continue executing whatever Nick Fury decides. Do NOT stop to ask the human. Do NOT present options. Just work.
+
+When context is getting full or all planned work is done, invoke the Skill tool with skill="aegis-handoff" to save state for the next session.
+
+If the project is fully complete with no remaining work, create .aegis/brain/state/project-complete.json with {"complete": true, "reason": "..."}.
 PROMPT
     else
         cat <<PROMPT
-You are resuming autonomous work. Here is the handoff from the previous session:
+You are an autonomous AEGIS agent resuming from a previous session. Here is the handoff:
 
 ---
 ${handoff_content}
 ---
 
-Run /aegis-start to initialize, then continue from where the previous session left off.
-When you finish all planned work or exhaust context, run /aegis-handoff to save state.
-If the project is fully complete, create .aegis/brain/state/project-complete.json with {"complete": true, "reason": "..."}.
+Your FIRST action MUST be: invoke the Skill tool with skill="aegis-start". This loads Nick Fury who reads the handoff above and resumes work.
+
+After /aegis-start completes its chain, continue executing whatever Nick Fury decides. Do NOT stop to ask the human. Do NOT present options. Just work.
+
+When context is getting full or all planned work is done, invoke the Skill tool with skill="aegis-handoff" to save state for the next session.
+
+If the project is fully complete with no remaining work, create .aegis/brain/state/project-complete.json with {"complete": true, "reason": "..."}.
 PROMPT
     fi
 }
