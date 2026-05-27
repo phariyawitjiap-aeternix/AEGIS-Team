@@ -798,7 +798,11 @@ print_summary "$FINAL_REASON" "$FINAL_EXIT_CODE"
 
 if (( FINAL_EXIT_CODE == 130 )); then
     printf "${YELLOW}Interrupted. State saved. Resume with:${NC}\n"
-    printf "  %s\n\n" "tools/aegis-autopilot.sh --budget $BUDGET --max-iterations $MAX_ITERATIONS"
+    if [[ "$NO_BUDGET" == "true" ]]; then
+        printf "  tools/aegis-autopilot.sh --max-iterations %d\n\n" "$MAX_ITERATIONS"
+    else
+        printf "  tools/aegis-autopilot.sh --budget %s --max-iterations %d\n\n" "$BUDGET" "$MAX_ITERATIONS"
+    fi
 fi
 
 exit "$FINAL_EXIT_CODE"
