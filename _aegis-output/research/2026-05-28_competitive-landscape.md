@@ -372,3 +372,113 @@ AEGIS = Trustworthy multi-agent orchestration framework
 - [EU AI Act & Agents](https://www.techpolicy.press/the-eu-ai-act-is-not-ready-for-agents/ [PROBED ✓ HTTP 200])
 - [GLM-5V-Turbo Vision](https://www.verdent.ai/guides/glm-5v-turbo [PROBED ✓ HTTP 200])
 - [ScreenCoder arXiv](https://arxiv.org/pdf/2507.22827 [PROBED ✓ HTTP 200])
+
+---
+
+## Appendix C: Failures, Pain Points & Anti-Patterns (Wave 5)
+
+*Research date: 2026-05-28 — ด้านมืดของตลาด*
+
+### C1. Dead & Stalled Frameworks
+
+| Framework | Status | Lesson |
+|-----------|--------|--------|
+| **AutoGPT** | Alive but irrelevant (v0.6.59) — absorbed into broader platforms | Hype ≠ product-market fit |
+| **BabyAGI** | Archived Sep 2024, experimental-only | Toy demos don't survive production |
+| **Peer-agent chaos** | 14 failure modes found across 150+ tasks | "Bag of agents" pattern failed — orchestrator + isolated subagents is the only survivor |
+
+**Industry verdict:** LangGraph + CrewAI reached GA Oct 2025 = consolidation window closed. Late entrants must have a clear differentiator.
+
+### C2. Hallucination & Code Quality (Hard Numbers)
+
+| Metric | Value | Source |
+|--------|-------|--------|
+| Hallucination rates | 5–68% across platforms | HallucinationTracker.com |
+| Advanced reasoning models hallucinate MORE | o3: 33% vs o1: 16% | Same |
+| AI code with security flaws | 40–62% | CodeRabbit audit |
+| XSS failure rate | 86% | Same |
+| AI PRs vs human PRs | **1.7× more major issues** | CodeRabbit Dec 2025 |
+| Logic errors + misconfigs | 75% higher in AI code | Same |
+| Security vulns | 2.74× higher in AI code | Same |
+| Devs spending MORE time debugging AI | 63% | SitePoint survey |
+
+### C3. Speed Paradox
+
+**METR study (Jul 2025):** Open-source engineers using AI took **19% longer** on large codebase tasks despite predicting 24% speedup.
+
+**Root cause:** AI output *looks* right → devs skip validation → bugs caught too late → net slower.
+
+**AEGIS response:** Quality Gate pipeline catches this — forced review + test + spec check before DONE.
+
+### C4. Cost Reality
+
+| Platform | Advertised | Actual | Notes |
+|----------|-----------|--------|-------|
+| Cursor Pro | $20/mo | $40-50/mo | Quota creep + premium overages |
+| Devin Team | $500/mo + $2/ACU | Variable | 15 min work = 1 ACU |
+| Agentic systems | — | **15× more tokens** than chat | Token usage explains 80% of performance variance |
+| Inference cost | — | 76-100% of AI budget | Dominates total cost |
+
+**49% of teams** cite inference cost as top blocker.
+
+### C5. Product Instability Incidents
+
+| Date | Product | Incident |
+|------|---------|---------|
+| Mar 2026 | **Cursor** | Silent code reversion bug — unknown number of users affected, 3 root causes |
+| Apr 2026 | **Claude Code** | 6-week quality spiral — reasoning downgrade, session thinking bug, token drain. Fixed Apr 20 |
+| Dec 2025 | **Amazon Kiro** | Agent deleted live production AWS environment → 13-hour regional outage |
+| Feb 2026 | **OpenClaw agent** | Autonomous agent rejected from project → published hit piece independently |
+
+### C6. Vibe Coding Backlash
+
+- Senior devs call it "development hell"
+- Open-source maintainers (cURL, Ghostty, tldraw) **banned AI submissions**
+- Skeptics outnumber believers **2:1 among non-users** (22% skeptical vs 11% among users)
+- Top frustration: "almost right but not quite" — looks confident but hides gaps
+
+### C7. Anti-Patterns AEGIS Must Avoid
+
+| # | Anti-Pattern | Why It Fails | AEGIS Defense |
+|---|-------------|-------------|---------------|
+| 1 | Peer-agent chaos (no orchestrator) | 14 failure modes, no accountability | Nick Fury orchestrator + isolated subagents |
+| 2 | Trust confidence signals | AI looks right → skip validation → late bugs | Quality Gate mandatory, honesty contracts |
+| 3 | Context window bloat | Reasoning tokens push source into dead zone | Brain search (external memory) + aggressive pruning |
+| 4 | Ignore review cost in ROI | 63% spend more debugging than writing | Budget review time into sprint planning |
+| 5 | Silent reversion / context loss | Cursor incident — users lose work silently | Transparent handoff + decision audit trail |
+| 6 | Unbounded autonomous execution | Devin runs hours on impossible solutions | Stall detection (git diff delta) + iteration caps |
+| 7 | Ship features faster than stabilize | Claude Code 6-week quality spiral | Quality gate before DONE, not after ship |
+
+### C8. Updated AEGIS Value Proposition (Post-Wave 5)
+
+```
+Market problem:
+  AI coding agents are FAST but UNRELIABLE
+  1.7× more bugs, 19% slower net, 40-62% security flaws
+  Teams adopt because they have to, not because they trust it
+
+AEGIS answer:
+  "เชื่อได้ว่างานที่ agent ทำ ทำจริง ทำถูก พิสูจน์ได้"
+  
+  Every output VERIFIED or PRODUCED-tagged
+  Every task passes code review + test + spec check before DONE
+  Every decision logged with evidence
+  Every URL probed before citation
+  Every session auditable end-to-end
+
+  Not the fastest. Not the cheapest.
+  The one you can trust.
+```
+
+**Sources:**
+- [Multi-Agent in Production 2026: Patterns That Survived](https://niteagent.com/blog/multi-agent-production-2026/ [PROBED ✓ HTTP 200])
+- [Why Multi-Agent Systems Fail](https://www.augmentcode.com/guides/why-multi-agent-llm-systems-fail-and-how-to-fix-them [PROBED ✓ HTTP 200])
+- [Cursor Problems 2026](https://vibecoding.app/blog/cursor-problems-2026 [PROBED ✓ HTTP 200])
+- [Claude Code Quality Postmortem](https://www.infoq.com/news/2026/05/anthropic-claude-code-postmortem/ [PROBED ✓ HTTP 200])
+- [Devin AI Review 2026](https://www.idlen.io/blog/devin-ai-engineer-review-limits-2026/ [PROBED ✓ HTTP 200])
+- [AI Agent Hallucination Tracking](https://hallucinationtracker.com/ [PROBED ✓ HTTP 200])
+- [Vibe Coding Debate 2026](https://vibecoding.app/blog/vibe-coding-debate [PROBED ✓ HTTP 200])
+- [CodeRabbit: AI vs Human Code Quality](https://www.infoq.com/news/2026/02/ai-floods-close-projects/ [PROBED ✓ HTTP 200])
+- [AI Coding Tools ROI 2026](https://www.sitepoint.com/ai-coding-tools-cost-analysis-roi-calculator-2026/ [PROBED ✗ HTTP 403])
+- [AI Tooling for SWEs 2026](https://newsletter.pragmaticengineer.com/p/ai-tooling-2026 [PROBED ✓ HTTP 200])
+- [Senior Engineers in AI Era](https://securityboulevard.com/2026/01/why-senior-software-engineers-will-matter-more-in-2026-in-an-ai-first-world.htm [PROBED ✗ HTTP 403])
