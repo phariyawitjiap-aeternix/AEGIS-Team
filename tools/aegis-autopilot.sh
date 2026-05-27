@@ -600,11 +600,10 @@ while true; do
 
     TMPOUT="$(mktemp)"
     if [[ "$VERBOSE" == "true" ]]; then
-        $TIMEOUT_CMD "$SESSION_TIMEOUT" claude "${CLAUDE_ARGS[@]}" 2>>"$LOG_FILE" | tee "$TMPOUT"
+        $TIMEOUT_CMD "$SESSION_TIMEOUT" claude "${CLAUDE_ARGS[@]}" 2>>"$LOG_FILE" | tee "$TMPOUT" || true
         SESSION_EXIT=${PIPESTATUS[0]}
     else
-        $TIMEOUT_CMD "$SESSION_TIMEOUT" claude "${CLAUDE_ARGS[@]}" >"$TMPOUT" 2>>"$LOG_FILE"
-        SESSION_EXIT=$?
+        $TIMEOUT_CMD "$SESSION_TIMEOUT" claude "${CLAUDE_ARGS[@]}" >"$TMPOUT" 2>>"$LOG_FILE" || SESSION_EXIT=$?
     fi
     SESSION_JSON="$(cat "$TMPOUT" 2>/dev/null || true)"
     rm -f "$TMPOUT"
