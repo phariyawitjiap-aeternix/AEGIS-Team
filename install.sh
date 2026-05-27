@@ -679,6 +679,8 @@ runtime_helpers=(
     "aegis-research-probe.sh"  # v15-20 — URL probe-gate for research docs (F-E)
     "aegis-claude-agents.sh"   # v15-22 — wrapper for `claude agents` CLI (cross-session awareness)
     "aegis-autopilot.sh"       # v15-28 — non-stop headless session loop (Ralph Loop pattern)
+    "aegis-daemon.sh"          # v15-28 — auto-restart Claude Code TUI sessions
+    "aegis-quality-gate.sh"    # v15-28 — unified quality gate (review + test + spec compliance)
 )
 delivered_tools=0
 for tool in "${upgrade_toolkit[@]}" "${runtime_helpers[@]}"; do
