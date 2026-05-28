@@ -1,24 +1,32 @@
 #!/usr/bin/env python3
-"""AEGIS agent bridge for SWE-bench.
+"""AEGIS agent bridge for SWE-bench (fresh-clone-per-issue variant).
 
 For each instance in subset.jsonl:
-  1. Clone (cached) the repo, checkout base_commit in a clean state
+  1. Fresh-clone the repo into a per-instance work dir, checkout base_commit
   2. Run `claude -p` with the problem statement (acceptEdits, bounded turns)
   3. `git diff` the working tree -> the model_patch
-  4. Append {instance_id, model_name_or_path, model_patch} to predictions.jsonl
+  4. Remove the work dir (Python shutil.rmtree — not a shell command)
+  5. Append {instance_id, model_name_or_path, model_patch} to predictions.jsonl
+
+Design note: deliberately avoids `git reset --hard` / `git clean -fd` / `rm -rf`
+(denied inside AEGIS sessions). A fresh clone has no prior state to reset and
+no stray untracked files, and cleanup uses Python's shutil so no denied bash
+pattern is ever invoked. Trade-off: re-clones per issue (slower, more network)
+but runs safely inside a session.
 
 Runs against the user's Claude subscription via `claude -p` (no API key, no
-extra cost — draws from the same quota as autopilot).
+extra cost — same quota as autopilot).
 
 Usage:
   python run_agent.py --instance astropy__astropy-12907   # one (smoke test)
   python run_agent.py --limit 50                          # first 50
-  python run_agent.py --limit 50 --max-turns 60           # tune budget/turns
+  python run_agent.py --limit 50 --keep-clones            # don't delete work dirs
 
 Idempotent-ish: skips instances already present in predictions.jsonl.
 """
 import argparse
 import json
+import shutil
 import subprocess
 import sys
 import time
@@ -26,7 +34,7 @@ from pathlib import Path
 
 HERE = Path(__file__).parent
 SUBSET = HERE / "subset.jsonl"
-CLONES = HERE / "clones"
+WORK = HERE / "clones" / "work"
 PREDICTIONS = HERE / "predictions.jsonl"
 MODEL_NAME = "aegis-claude-opus-4-7"
 
@@ -43,10 +51,17 @@ Do not touch unrelated files. Edit only what the fix requires.
 Work directly in the current directory. When done, stop — your file edits
 are the deliverable. Do not commit; the harness captures your diff."""
 
+# Resolve the claude binary ONCE at startup. Using a bare "claude" in subprocess
+# broke mid-run (issue 27/50) when claude-code auto-updated and briefly removed
+# the symlink, raising FileNotFoundError that crashed the whole loop. An absolute
+# path + a retry on transient FileNotFoundError makes the run survive updates.
+import shutil  # noqa: E402
+CLAUDE_BIN = shutil.which("claude") or "/opt/homebrew/bin/claude"
 
-def run(cmd, cwd=None, timeout=None, check=False):
+
+def run(cmd, cwd=None, timeout=None):
     return subprocess.run(
-        cmd, cwd=cwd, timeout=timeout, check=check,
+        cmd, cwd=cwd, timeout=timeout,
         capture_output=True, text=True,
     )
 
@@ -66,57 +81,61 @@ def already_done():
     return done
 
 
-def ensure_clone(repo):
-    """Clone repo once into CLONES/<org__name>, return path."""
-    safe = repo.replace("/", "__")
-    dest = CLONES / safe
-    if not dest.exists():
-        CLONES.mkdir(parents=True, exist_ok=True)
-        print(f"  cloning {repo} ...", file=sys.stderr)
-        r = run(["git", "clone", "--quiet", f"https://github.com/{repo}.git", str(dest)], timeout=600)
-        if r.returncode != 0:
-            print(f"  clone failed: {r.stderr[:200]}", file=sys.stderr)
-            return None
-    return dest
+def fresh_clone_at(repo, base_commit, dest):
+    """Clone repo into dest and checkout base_commit. Returns True on success.
 
-
-def reset_repo(repo_dir, base_commit):
-    run(["git", "reset", "--hard", "--quiet"], cwd=repo_dir)
-    run(["git", "clean", "-fdq"], cwd=repo_dir)
-    r = run(["git", "checkout", "--quiet", base_commit], cwd=repo_dir)
+    Uses only `git clone` + `git checkout` (both allowed). No reset, no clean —
+    a fresh clone has nothing to reset and no stray files.
+    """
+    if dest.exists():
+        shutil.rmtree(dest)  # Python, not `rm -rf`
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    print(f"  cloning {repo} ...", file=sys.stderr)
+    r = run(["git", "clone", "--quiet", f"https://github.com/{repo}.git", str(dest)], timeout=900)
     if r.returncode != 0:
-        # fetch the specific commit then retry
-        run(["git", "fetch", "--quiet", "origin", base_commit], cwd=repo_dir, timeout=300)
-        r = run(["git", "checkout", "--quiet", base_commit], cwd=repo_dir)
-    return r.returncode == 0
+        print(f"  clone failed: {r.stderr[:200]}", file=sys.stderr)
+        return False
+    r = run(["git", "checkout", "--quiet", base_commit], cwd=dest)
+    if r.returncode != 0:
+        run(["git", "fetch", "--quiet", "origin", base_commit], cwd=dest, timeout=300)
+        r = run(["git", "checkout", "--quiet", base_commit], cwd=dest)
+    if r.returncode != 0:
+        print(f"  checkout {base_commit[:8]} failed: {r.stderr[:160]}", file=sys.stderr)
+        return False
+    return True
 
 
-def run_agent_on(inst, max_turns, session_timeout):
+def run_agent_on(inst, max_turns, session_timeout, keep):
     repo = inst["repo"]
-    repo_dir = ensure_clone(repo)
-    if not repo_dir:
-        return None
-    if not reset_repo(repo_dir, inst["base_commit"]):
-        print(f"  checkout {inst['base_commit'][:8]} failed", file=sys.stderr)
+    safe = inst["instance_id"]
+    dest = WORK / safe
+
+    if not fresh_clone_at(repo, inst["base_commit"], dest):
         return None
 
     prompt = PROMPT_TEMPLATE.format(repo=repo, problem=inst["problem_statement"])
     cmd = [
-        "claude", "-p", prompt,
+        CLAUDE_BIN, "-p", prompt,
         "--permission-mode", "acceptEdits",
         "--max-turns", str(max_turns),
         "--output-format", "json",
     ]
     t0 = time.time()
-    try:
-        r = run(cmd, cwd=repo_dir, timeout=session_timeout)
-    except subprocess.TimeoutExpired:
-        print(f"  claude timed out after {session_timeout}s", file=sys.stderr)
-        # still capture whatever diff exists
-        r = None
+    r = None
+    for attempt in range(3):
+        try:
+            r = run(cmd, cwd=dest, timeout=session_timeout)
+            break
+        except subprocess.TimeoutExpired:
+            print(f"  claude timed out after {session_timeout}s", file=sys.stderr)
+            break
+        except FileNotFoundError:
+            # claude binary briefly gone (auto-update window) — wait + retry
+            print(f"  claude not found (attempt {attempt+1}/3) — retrying in 15s", file=sys.stderr)
+            time.sleep(15)
     dt = time.time() - t0
 
-    diff = run(["git", "diff"], cwd=repo_dir).stdout
+    diff = run(["git", "diff"], cwd=dest).stdout
     cost = "?"
     if r and r.stdout:
         try:
@@ -124,6 +143,9 @@ def run_agent_on(inst, max_turns, session_timeout):
         except Exception:
             pass
     print(f"  done in {dt:.0f}s | diff {len(diff)} bytes | cost(metered) ${cost}", file=sys.stderr)
+
+    if not keep:
+        shutil.rmtree(dest, ignore_errors=True)  # Python cleanup, not `rm -rf`
     return diff
 
 
@@ -133,6 +155,7 @@ def main():
     ap.add_argument("--limit", type=int, default=50)
     ap.add_argument("--max-turns", type=int, default=60)
     ap.add_argument("--session-timeout", type=int, default=1200)
+    ap.add_argument("--keep-clones", action="store_true", help="don't delete work dirs")
     args = ap.parse_args()
 
     subset = load_subset()
@@ -154,7 +177,7 @@ def main():
             print(f"[skip] {iid} (already in predictions)", file=sys.stderr)
             continue
         print(f"[run] {iid}", file=sys.stderr)
-        diff = run_agent_on(inst, args.max_turns, args.session_timeout)
+        diff = run_agent_on(inst, args.max_turns, args.session_timeout, args.keep_clones)
         if diff is None:
             diff = ""
         with PREDICTIONS.open("a") as f:
