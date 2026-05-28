@@ -22,6 +22,7 @@ SUITES=(
     "maintainer-mode:tests/aegis-maintainer-test.sh"
     "distill-counter:tests/aegis-distill-counter-test.sh"
     "block0-mode:tests/aegis-block0-mode-test.sh"
+    "v15-28-tools:tests/aegis-v15-28-tools-test.sh"
 )
 
 GREEN='\033[0;32m'
