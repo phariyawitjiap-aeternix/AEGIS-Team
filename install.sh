@@ -1037,17 +1037,47 @@ echo ""
 if [[ "$UPGRADE" == true ]]; then
     SWEPT_DIR="${BACKUP_DIR}/swept"
     swept_count=0
+    # ── Manifest guard (v15-28) ───────────────────────────────────────────────
+    # Bug fixed: sweep used to remove ANY skills/*.md not in source — including
+    # PROJECT-OWNED skills (e.g. OT-Wiki's onetrust-wiki-query). The sweep can't
+    # tell a framework skill from a project skill by path alone.
+    #
+    # Fix: AEGIS writes .aegis/.framework-manifest listing every file IT ships.
+    # The sweep only removes a file that was in the OLD manifest but is gone from
+    # the NEW source. Project files are never in the manifest → never swept.
+    #
+    # Bootstrap: installs predating the manifest have none. For those, the
+    # shared-surface `skills/` is NOT swept at all (project content lives there).
+    # The framework-convention surfaces (tools/aegis-*.sh, agents, commands,
+    # references, hooks) are namespaced/owned, so they sweep safely even without
+    # a manifest.
+    # NOTE: macOS ships bash 3.2 — NO associative arrays (declare -A). The
+    # manifest is matched with `grep -qxF` against the file directly, which is
+    # portable to bash 3.2+.
+    MANIFEST_FILE="${TARGET_DIR}/.aegis/.framework-manifest"
+    HAVE_MANIFEST=false
+    [[ -f "$MANIFEST_FILE" ]] && HAVE_MANIFEST=true
     sweep_one() {
         # $1 = relative path (e.g., tools/aegis-foo.sh)
+        # $2 = surface class: "namespaced" (safe w/o manifest) | "shared" (manifest-only)
         local rel="$1"
+        local surface="${2:-namespaced}"
         local tgt="${TARGET_DIR}/${rel}"
         local src="${SCRIPT_DIR}/${rel}"
-        if [[ -f "$tgt" ]] && [[ ! -f "$src" ]]; then
-            mkdir -p "$(dirname "${SWEPT_DIR}/${rel}")"
-            mv "$tgt" "${SWEPT_DIR}/${rel}"
-            swept_count=$((swept_count + 1))
-            echo "  swept: ${rel}"
+        [[ -f "$tgt" ]] || return 0
+        [[ -f "$src" ]] && return 0   # still shipped by source — keep
+        # Source no longer ships it. Decide if AEGIS owns it.
+        if [[ "$HAVE_MANIFEST" == true ]]; then
+            # Only sweep if it was a previously-shipped framework file.
+            grep -qxF "$rel" "$MANIFEST_FILE" || return 0
+        else
+            # No manifest: never sweep shared surfaces (project content lives there).
+            [[ "$surface" == "shared" ]] && return 0
         fi
+        mkdir -p "$(dirname "${SWEPT_DIR}/${rel}")"
+        mv "$tgt" "${SWEPT_DIR}/${rel}"
+        swept_count=$((swept_count + 1))
+        echo "  swept: ${rel}"
     }
     # Walk each managed surface
     if [[ -d "${TARGET_DIR}/tools" ]]; then
@@ -1059,7 +1089,7 @@ if [[ "$UPGRADE" == true ]]; then
     if [[ -d "${TARGET_DIR}/skills" ]]; then
         for f in "${TARGET_DIR}/skills/"*.md; do
             [[ -f "$f" ]] || continue
-            sweep_one "skills/$(basename "$f")"
+            sweep_one "skills/$(basename "$f")" "shared"
         done
     fi
     for subdir in agents commands references; do
@@ -1080,6 +1110,36 @@ if [[ "$UPGRADE" == true ]]; then
         success "Swept ${swept_count} stale framework file(s) → ${SWEPT_DIR}"
     fi
 fi
+
+# ── Write framework manifest (v15-28) ─────────────────────────────────────
+# Records every file AEGIS ships from the managed surfaces, so the next
+# upgrade's sweep can tell framework files from project-owned files. Written
+# on BOTH fresh install and upgrade (a fresh install must seed it too).
+write_manifest() {
+    local mf="${TARGET_DIR}/.aegis/.framework-manifest"
+    mkdir -p "$(dirname "$mf")"
+    : > "$mf"
+    # tools/aegis-*.sh (top-level, namespaced)
+    for f in "${SCRIPT_DIR}/tools/"aegis-*.sh; do
+        [[ -f "$f" ]] && echo "tools/$(basename "$f")" >> "$mf"
+    done
+    # skills/*.md
+    for f in "${SCRIPT_DIR}/skills/"*.md; do
+        [[ -f "$f" ]] && echo "skills/$(basename "$f")" >> "$mf"
+    done
+    # .claude/{agents,commands,references}/*.md
+    for subdir in agents commands references; do
+        for f in "${SCRIPT_DIR}/.claude/${subdir}/"*.md; do
+            [[ -f "$f" ]] && echo ".claude/${subdir}/$(basename "$f")" >> "$mf"
+        done
+    done
+    # .claude/hooks/*.sh + *.mjs
+    for f in "${SCRIPT_DIR}/.claude/hooks/"*.sh "${SCRIPT_DIR}/.claude/hooks/"*.mjs; do
+        [[ -f "$f" ]] && echo ".claude/hooks/$(basename "$f")" >> "$mf"
+    done
+    sort -u -o "$mf" "$mf"
+}
+write_manifest
 
 # ── Post-copy verification: run aegis-doctor.sh on the target install ──────
 # Catches the "wired-but-missing" bug class where a hook orchestrator was
