@@ -1,0 +1,8 @@
+# Heavy / transient — do not commit
+.venv/
+.venv313/
+clones/
+predictions.jsonl
+*.json
+logs/
+__pycache__/
