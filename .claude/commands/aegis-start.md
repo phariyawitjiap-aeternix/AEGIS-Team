@@ -188,6 +188,38 @@ fi
 Soft gate: this never blocks. It surfaces a class of "session debt" that
 previously was completely invisible.
 
+### Step 2.8: Credential Discovery (NEW v15-28)
+
+Implements the "ask the human ONCE, never mid-work" rule. On the FIRST
+/aegis-start of a project, scan for every credential the project needs and
+surface the missing ones in one batch — so the team never stops mid-task to
+ask for a key.
+
+```bash
+CRED_SCAN="${CLAUDE_PROJECT_DIR:-$(pwd)}/tools/aegis-credential-scan.sh"
+CRED_ACK=".aegis/brain/state/credentials-acked"
+if [[ -x "$CRED_SCAN" ]] && [[ ! -f "$CRED_ACK" ]]; then
+    if ! bash "$CRED_SCAN" check 2>/dev/null; then
+        # Missing credentials found — surface them ONCE, batched.
+        echo ""
+        echo "🔑 Credential discovery: the project needs keys that aren't set yet."
+        bash "$CRED_SCAN" check 2>&1 | sed -n '/Missing credentials/,$p'
+        echo ""
+        echo "  → This is the ONE time AEGIS asks for credentials. Set them in .env"
+        echo "    (or .aegis/brain/state/credentials.json), then they persist for all"
+        echo "    future sessions — autopilot/daemon will never ask again."
+        echo "  → To silence this check: touch $CRED_ACK"
+    fi
+fi
+```
+
+**This is the ONE sanctioned credential ask** (per the credential-upfront rule).
+Nick Fury surfaces all missing keys in a single batch at intake. Once set, the
+check passes silently. Daemon/autopilot sessions skip the ask entirely because
+credentials are already on disk. Soft gate: never blocks — Nick Fury proceeds
+with whatever work doesn't need the missing keys, and queues credential-blocked
+work to `.aegis/brain/human-queue.md` (External Access category).
+
 ### Step 3: Display Dashboard (brief, 5 seconds max)
 
 ```
