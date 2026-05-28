@@ -126,6 +126,14 @@ try:
         r'\b[Ss]hall\s+I\s+(commit|push|deploy|build|create|proceed|continue|run|merge)',
         r'\b[Rr]eady\s+to\s+(commit|push|deploy|build|create|merge|ship|proceed)',
         r'\b[Dd]o\s+you\s+want\s+me\s+to\s+(commit|push|deploy|build|create|run|merge|proceed)',
+        # Round 5 — 2026-05-28 "recap + Next: <doable actions>" handoff. The
+        # agent lists work it can do RIGHT NOW (review/test/merge/deploy) under
+        # a "Next:" / "recap:" header, then stops instead of doing it. Past-tense
+        # reports ("reviewed X then deployed") stay clean — \b after the verb
+        # excludes "-ed" forms.
+        r'\b[Nn]ext:\s+.{0,80}\b(review|run|test|merge|deploy|fix|implement|build|create|add|update|check)\b',
+        r'\bthen\s+(merge|deploy|run|review|test|build|ship|push)\b',
+        r'^\s*recap:',
     ]
     has_option = any(re.search(p, tail, re.IGNORECASE|re.MULTILINE) for p in option_patterns)
     has_open = any(re.search(p, tail.strip(), re.IGNORECASE|re.MULTILINE) for p in open_patterns)

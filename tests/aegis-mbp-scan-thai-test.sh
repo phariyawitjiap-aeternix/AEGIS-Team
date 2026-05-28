@@ -44,98 +44,28 @@ with open(out, "w") as f:
 PYEOF
 }
 
-# Run the scanner against a fixture. Returns "violation" / "clean" / "no_text" via stdout.
-# We bypass the bash wrapper — call the python block directly the way mbp_scan does.
+# Run the scanner against a fixture. Returns "violation" / "clean" / "no_text".
+# Calls the REAL mbp_scan from lib/mbp-scan.sh — NOT a duplicated copy. This
+# is deliberate: a prior duplicated python block drifted out of sync (it never
+# got Round 4/5 patterns), so fixtures passed against stale logic. Sourcing the
+# real hook makes the test track the shipped patterns forever.
+SCAN_LIB="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")/.." && pwd)/.claude/hooks/lib/mbp-scan.sh"
+# shellcheck disable=SC1090
+source "$SCAN_LIB"
 run_scan() {
     local fixture_text="$1"
     local transcript="$TEST_DIR/transcript.jsonl"
     mk_transcript "$transcript" "$fixture_text"
-    # Mirror the mbp-scan internals exactly to test the python block in isolation.
-    python3 - "$transcript" <<'PYEOF' 2>/dev/null
-import sys, json, re
-try:
-    with open(sys.argv[1]) as f:
-        lines = f.readlines()
-    last_text = ''
-    for line in reversed(lines):
-        try:
-            e = json.loads(line)
-        except Exception:
-            continue
-        if e.get('type') == 'assistant' or (e.get('message', {}).get('role') == 'assistant'):
-            msg = e.get('message', {})
-            content = msg.get('content', [])
-            if isinstance(content, list):
-                for block in content:
-                    if isinstance(block, dict) and block.get('type') == 'text':
-                        last_text = block.get('text', '')
-                        break
-            elif isinstance(content, str):
-                last_text = content
-            if last_text:
-                break
-    if not last_text:
-        print('no_text'); sys.exit(0)
-    tail = last_text[-2000:]
-    closing = last_text[-400:]
-    option_patterns = [
-        r'Options?:\s*\n\s*[-\*]\s*["\x27]',
-        r'Options?:\s*\n\s*A\s*[\)\.]',
-        r'\n\s*A\)\s*.+?\n\s*B\)',
-        r'\n\s*1\.\s*.+?\n\s*2\.\s*.+?\n\s*3\.',
-        r'\S+\s+หรือ\s+\S+\s+หรือ\s+\S+',
-        r'\S+\s*[·•/]\s*\S+\s*[·•/]\s*\S+\s*\?',
-    ]
-    open_patterns = [
-        r'\?\s*$',
-        r'(what|which|how).{0,40}(do you|would you|should).{0,60}\?',
-        r'(let me know|tell me|your call)',
-    ]
-    soft_ask_patterns = [
-        r'recommend\s+(running\s+)?[\\\/]?aegis-',
-        r'recommend\s+\w+\s+after\s+you',
-        r'natural\s+(continuation|next\s+step|next\s+sprint)',
-        r'next\s+chain\s+step\s*:',
-        r'(sprint\s+\d+\s+planning|planning\s+(is|would\s+be))\s+the\s+natural',
-        r'after\s+you\s+(decide|confirm|approve|review)\s+(on\s+)?the',
-        r'what\s+(would\s+you\s+like|do\s+you\s+want|should\s+(i|we)\s+do)\s+(to\s+do\s+)?next\s*\??',
-        r"(what's|whats)\s+next\s*\??",
-        r'next\s+action\s*\??',
-        r'pick\s+(by\s+name|one|any)',
-        r'anything\s+else',
-        r'your\s+call\s*[—\-:]',
-        r'let\s+me\s+know\s+(if|when|what)',
-        r'ต้องการ.{0,20}อะไร.{0,5}ต่อ',
-        r'(ต่อไป|ทำ).{0,5}(จะ)?\s*ทำ\s*อะไร\s*(ต่อ|ดี)?',
-        r'อยาก.{0,15}(ทำ|ให้ทำ).{0,15}อะไร',
-        r'(ทำ|จัดการ|ไป).{0,5}อันไหน.{0,20}(ก่อน|ดี)',
-        r'(เลือก|pick).{0,15}(ตาม|by).{0,5}(ใจ|name|อารมณ์)',
-        r'หรือ.{0,5}มี.{0,15}อย่างอื่น',
-        r'พิมพ์.{0,30}(imperative|by-name|ตรง.?ๆ)',
-        r'จะให้ผม.{0,15}ทำ\s*(อะไร|อันไหน)',
-        r'บอก\s*ผม',
-        r'ถ้า.{0,30}เจอ.{0,40}(บอก|พิมพ์|ส่ง)',
-        r'→\s*ผม.{0,30}จะ',
-        r'ถ้า.{0,40}(อยากให้|ต้องการให้)\s*ผม',
-        # Round 3 — 2026-05-08 dual-window screenshots
-        r'\bSay\s+the\s+word\b',
-        r'\b[Nn]ext:\s+\w[^.\n]{1,80},\s+or\s+(run|use|do|invoke)\b',
-        r',\s+or\s+run\s+[/\\][a-z][a-z0-9-]*',
-        r'\b(can|could|may)\s+also\s+(end|stop|pause|run|do)\b',
-        r'queued\s+for\s+you\s*\([^)]{0,60}decisions?\b',
-    ]
-    has_option = any(re.search(p, tail, re.IGNORECASE|re.MULTILINE) for p in option_patterns)
-    has_open = any(re.search(p, tail.strip(), re.IGNORECASE|re.MULTILINE) for p in open_patterns)
-    has_soft_ask = any(re.search(p, tail, re.IGNORECASE|re.MULTILINE) for p in soft_ask_patterns)
-    closing_open = any(re.search(p, closing.strip(), re.IGNORECASE|re.MULTILINE) for p in open_patterns)
-    closing_soft = any(re.search(p, closing, re.IGNORECASE|re.MULTILINE) for p in soft_ask_patterns)
-    if (has_option and has_open) or has_soft_ask or (closing_open and closing_soft):
-        print('violation')
-    else:
-        print('clean')
-except Exception as ex:
-    print('error:' + str(ex)[:80])
-PYEOF
+    # Force the real block decision: clear the disable/active gates so mbp_scan
+    # emits the block JSON + returns 1 on a genuine violation.
+    local out rc
+    out=$(AEGIS_MBP_BLOCK_DISABLE=0 STOP_HOOK_ACTIVE=False mbp_scan "$transcript" "" 2>/dev/null)
+    rc=$?
+    if [[ "$rc" -eq 1 ]] || echo "$out" | grep -q '"decision": "block"'; then
+        echo "violation"
+    else
+        echo "clean"
+    fi
 }
 
 assert_violation() {
@@ -255,6 +185,30 @@ assert_violation \
 assert_violation \
     "Round3 V4 — 'Still queued for you (separate decisions)' soft TODO menu" \
     "Sprint closed. Still queued for you (separate decisions): HQ-006 and HQ-004."
+
+# Round 5 — 2026-05-28 "recap + Next: <doable actions>" handoff. The agent
+# lists work it can do RIGHT NOW under a recap/Next: header, then stops.
+echo
+echo "Violations expected — Round 5 (recap + Next: doable actions):"
+assert_violation \
+    "Round5 V1 — recap + Next: review/test/merge/deploy" \
+    "recap: Goal: upgrade ATN-Bot's data pipeline. P0/P2 fixes are shipped and live (revision 00040); a background agent is implementing the bigger P1-D items on branch feat/pipeline-p1d. Next: review its diff, run tests, then merge and deploy."
+assert_violation \
+    "Round5 V2 — Next: review the PR and merge it" \
+    "Background agent done. Next: review the PR and merge it."
+assert_violation \
+    "Round5 V3 — Next steps: run tests, then deploy" \
+    "Summary done. Next steps: run tests, then deploy."
+
+# Round 5 CLEAN — past-tense reports of completed work must NOT trigger.
+echo
+echo "Clean expected — Round 5 past-tense reports (must NOT trigger):"
+assert_clean \
+    "Round5 CLEAN 1 — reviewed/ran/deployed (past tense)" \
+    "I reviewed the diff, ran tests, then deployed it. All green."
+assert_clean \
+    "Round5 CLEAN 2 — merged and deployed (past tense)" \
+    "Merged PR #21 and deployed to production successfully."
 
 # Round 3 CLEAN — the CORRECT declarative-pending phrasing for External
 # Access gates must NOT trigger. This is the rewrite the agent should use:
