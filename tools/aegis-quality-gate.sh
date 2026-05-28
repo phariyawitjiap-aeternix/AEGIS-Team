@@ -82,6 +82,7 @@ OPT_SKIP_SPEC=false
 OPT_FIX=false
 OPT_JSON=false
 OPT_QUIET=false
+OPT_PARALLEL=false
 
 usage() {
     cat <<EOF
@@ -106,6 +107,7 @@ ${BOLD}OPTIONS${NC}
   --fix              Auto-fix findings where possible
   --json             Output verdict as JSON
   --quiet            Only print final verdict line
+  --parallel         Run gates concurrently (faster; interleaved live output)
 
 ${BOLD}EXIT CODES${NC}
   0   All gates PASS
@@ -157,6 +159,7 @@ parse_args() {
             --fix)          OPT_FIX=true;          shift ;;
             --json)         OPT_JSON=true;         shift ;;
             --quiet)        OPT_QUIET=true;        shift ;;
+            --parallel)     OPT_PARALLEL=true;     shift ;;
             --help|-h)
                 usage
                 exit 0
@@ -1001,6 +1004,50 @@ run_check() {
         printf '%s\n' "═════════════════════════════════════"
     fi
 
+    # Helper: extract status field from a gate's JSON result
+    gate_status_of() {
+        printf '%s' "$1" | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d.get("status","FAIL"))' 2>/dev/null || echo "FAIL"
+    }
+
+    if [[ "$OPT_PARALLEL" == "true" ]]; then
+        # ── Parallel mode: launch all non-skipped gates to temp files ───────
+        # Gates are independent — review (claude -p) + tests + spec can run
+        # concurrently, cutting wall-clock to roughly the slowest single gate.
+        # Live stderr output interleaves; the final VERDICT block is ordered.
+        local tmp_g1 tmp_g2 tmp_g3
+        tmp_g1=$(mktemp); tmp_g2=$(mktemp); tmp_g3=$(mktemp)
+
+        if [[ "$OPT_SKIP_REVIEW" == "true" ]]; then
+            printf '{"status":"SKIP","skip_reason":"--skip-review flag"}' > "$tmp_g1"
+        else
+            run_gate1_review "$branch" > "$tmp_g1" 2>&1 &
+        fi
+        if [[ "$OPT_SKIP_TESTS" == "true" ]]; then
+            printf '{"status":"SKIP","skip_reason":"--skip-tests flag"}' > "$tmp_g2"
+        else
+            run_gate2_tests > "$tmp_g2" 2>&1 &
+        fi
+        if [[ "$OPT_SKIP_SPEC" == "true" ]]; then
+            printf '{"status":"SKIP","skip_reason":"--skip-spec flag"}' > "$tmp_g3"
+        else
+            run_gate3_spec "$task_id" "$branch" > "$tmp_g3" 2>&1 &
+        fi
+        wait
+
+        # Gate functions emit human output (stderr) + JSON (stdout) mixed in the
+        # temp file here — extract the last JSON object (the result line).
+        extract_json() {
+            grep -E '^\{.*"status"' "$1" 2>/dev/null | tail -1 || cat "$1"
+        }
+        g1_result=$(extract_json "$tmp_g1"); g1_status=$(gate_status_of "$g1_result")
+        g2_result=$(extract_json "$tmp_g2"); g2_status=$(gate_status_of "$g2_result")
+        g3_result=$(extract_json "$tmp_g3"); g3_status=$(gate_status_of "$g3_result")
+        rm -f "$tmp_g1" "$tmp_g2" "$tmp_g3"
+
+        [[ "$g1_status" == "FAIL" ]] && overall_status="FAIL"
+        [[ "$g2_status" == "FAIL" ]] && overall_status="FAIL"
+        [[ "$g3_status" == "FAIL" ]] && overall_status="FAIL"
+    else
     # ── Gate 1: Code Review ─────────────────────────────────────────────
     if [[ "$OPT_SKIP_REVIEW" == "true" ]]; then
         if [[ "$OPT_QUIET" != "true" ]]; then
@@ -1012,7 +1059,7 @@ run_check() {
     else
         local g1_rc=0
         g1_result=$(run_gate1_review "$branch") || g1_rc=$?
-        g1_status=$(printf '%s' "$g1_result" | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d.get("status","FAIL"))' 2>/dev/null || echo "FAIL")
+        g1_status=$(gate_status_of "$g1_result")
         if [[ "$g1_status" == "FAIL" ]]; then
             overall_status="FAIL"
         fi
@@ -1029,7 +1076,7 @@ run_check() {
     else
         local g2_rc=0
         g2_result=$(run_gate2_tests) || g2_rc=$?
-        g2_status=$(printf '%s' "$g2_result" | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d.get("status","FAIL"))' 2>/dev/null || echo "FAIL")
+        g2_status=$(gate_status_of "$g2_result")
         if [[ "$g2_status" == "FAIL" ]]; then
             overall_status="FAIL"
         fi
@@ -1046,10 +1093,11 @@ run_check() {
     else
         local g3_rc=0
         g3_result=$(run_gate3_spec "$task_id" "$branch") || g3_rc=$?
-        g3_status=$(printf '%s' "$g3_result" | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d.get("status","FAIL"))' 2>/dev/null || echo "FAIL")
+        g3_status=$(gate_status_of "$g3_result")
         if [[ "$g3_status" == "FAIL" ]]; then
             overall_status="FAIL"
         fi
+    fi
     fi
 
     # ── Verdict ─────────────────────────────────────────────────────────
