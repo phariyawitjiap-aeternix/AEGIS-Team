@@ -681,6 +681,7 @@ runtime_helpers=(
     "aegis-autopilot.sh"       # v15-28 — non-stop headless session loop (Ralph Loop pattern)
     "aegis-daemon.sh"          # v15-28 — auto-restart Claude Code TUI sessions
     "aegis-quality-gate.sh"    # v15-28 — unified quality gate (review + test + spec compliance)
+    "aegis-checkpoint.sh"      # v15-28 — structured state checkpoint (lossless resume, hybrid w/ handoff)
 )
 delivered_tools=0
 for tool in "${upgrade_toolkit[@]}" "${runtime_helpers[@]}"; do
