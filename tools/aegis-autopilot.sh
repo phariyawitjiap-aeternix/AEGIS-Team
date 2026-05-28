@@ -61,7 +61,7 @@ BUDGET=""
 NO_BUDGET=true
 MAX_ITERATIONS=10
 MAX_FAILURES=3
-COOLDOWN=10
+COOLDOWN=3
 PERMISSION_MODE="auto"
 ALLOWED_TOOLS=""
 INITIAL_PROMPT=""
@@ -89,7 +89,7 @@ ${BOLD}FLAGS${NC}
   --no-budget              Disable budget gate (default — for subscription plans)
   --max-iterations <int>   Max session loops (default: 10, max: 100)
   --max-failures <int>     Consecutive failures before abort (default: 3)
-  --cooldown <int>         Seconds between sessions 0-300 (default: 10)
+  --cooldown <int>         Seconds between sessions 0-300 (default: 3)
   --permission-mode <str>  default | acceptEdits | auto (default: auto)
   --allowed-tools <str>    Tool whitelist passed to claude --allowedTools
   --initial-prompt <str>   Override first-session prompt
@@ -397,32 +397,21 @@ build_prompt() {
         return
     fi
 
+    # Shared non-stop rules — the #1 thing that breaks autonomy is the agent
+    # stopping to "report" remaining work instead of doing it.
+    local RULES='NON-STOP RULES (critical):
+- Your FIRST action MUST be: invoke the Skill tool with skill="aegis-start". This loads Nick Fury who scans state and drives all work.
+- After EACH unit of work completes, Nick Fury IMMEDIATELY re-scans and dispatches the next task. Do NOT pause between tasks. Do NOT wait.
+- NEVER end your turn saying "there are remaining items" / "next steps:" / "you could..." and then stop. If there are remaining items, DO THEM. Listing remaining work instead of doing it is a failure.
+- NEVER ask "should I continue?" / "ทำต่อมั้ย?" / "want me to...?". The answer is always YES — just continue.
+- Do NOT present options or menus to the human. Decide via the Decision Matrix and execute.
+- The ONLY reasons to stop a turn: (a) context is genuinely full -> invoke skill="aegis-handoff" then stop, (b) a hard blocker that ONLY the human can clear (credentials, external access, irreversible approval) -> write it to .aegis/brain/human-queue.md and CONTINUE with everything else, (c) the project is fully complete -> create .aegis/brain/state/project-complete.json with {"complete": true, "reason": "..."}.
+- Keep working until one of those three is genuinely true. Burn the whole turn doing real work.'
+
     if [[ -z "$handoff_content" ]]; then
-        cat <<'PROMPT'
-You are an autonomous AEGIS agent. Your FIRST action MUST be: invoke the Skill tool with skill="aegis-start". This loads Nick Fury who scans project state and drives all work.
-
-After /aegis-start completes its chain, continue executing whatever Nick Fury decides. Do NOT stop to ask the human. Do NOT present options. Just work.
-
-When context is getting full or all planned work is done, invoke the Skill tool with skill="aegis-handoff" to save state for the next session.
-
-If the project is fully complete with no remaining work, create .aegis/brain/state/project-complete.json with {"complete": true, "reason": "..."}.
-PROMPT
+        printf '%s\n\nThis is a fresh session. Begin now.\n' "$RULES"
     else
-        cat <<PROMPT
-You are an autonomous AEGIS agent resuming from a previous session. Here is the handoff:
-
----
-${handoff_content}
----
-
-Your FIRST action MUST be: invoke the Skill tool with skill="aegis-start". This loads Nick Fury who reads the handoff above and resumes work.
-
-After /aegis-start completes its chain, continue executing whatever Nick Fury decides. Do NOT stop to ask the human. Do NOT present options. Just work.
-
-When context is getting full or all planned work is done, invoke the Skill tool with skill="aegis-handoff" to save state for the next session.
-
-If the project is fully complete with no remaining work, create .aegis/brain/state/project-complete.json with {"complete": true, "reason": "..."}.
-PROMPT
+        printf '%s\n\nYou are resuming from a previous session. Handoff below — /aegis-start will read it and continue from where the last session left off.\n\n---\n%s\n---\n\nBegin now.\n' "$RULES" "$handoff_content"
     fi
 }
 
