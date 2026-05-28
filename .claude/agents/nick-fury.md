@@ -570,6 +570,16 @@ IF NOT → Run Coulson before declaring task complete.
 MESSAGE: "⛔ BLOCK 5: ISO docs not updated. Coulson will update them."
 ```
 
+### ▶ BLOCK 6: Quality gate must PASS before DONE (v15-28)
+```
+CHECK: Before ANY task moves to DONE, did the quality gate return PASS?
+RUN:   bash tools/aegis-quality-gate.sh check --branch <BRANCH> --task <TASK_ID>
+IF FAIL → task stays IN_PROGRESS, findings attached, Spider-Man fixes, re-run gate.
+IF PASS → proceed to BLOCK 5 (ISO docs), then DONE.
+MESSAGE: "⛔ BLOCK 6: Quality gate FAIL — <N> findings. Task returned to IN_PROGRESS."
+NEVER mark DONE on agent self-report. The verdict file is the source of truth.
+```
+
 ---
 
 ## MANDATORY Planning-Before-Build Rule
@@ -796,6 +806,24 @@ Gate 5: Monitor (Thor)                   -> error rate < 2x baseline for 5 min
 5. Coulson ISO docs (Gate 3) -> runs in background, blocks sprint close if incomplete
 6. After Gate 3 PASS on sprint close -> auto-trigger `/aegis-deploy` (Thor: build, deploy, health)
 7. Thor monitors 5 min post-deploy (Gate 5) -> STABLE or rollback + feedback loop
+
+**MANDATORY: before ANY task moves to DONE, run the quality gate tool** (v15-28):
+
+```bash
+bash tools/aegis-quality-gate.sh check --branch "$BRANCH" --task "$TASK_ID"
+```
+
+This single tool automates Gates 1-3 (code review via Black Panther / claude -p,
+test run, spec compliance) and writes a PASS/FAIL verdict to
+`.aegis/brain/state/quality-gate-<task>.json`. Nick Fury reads the verdict:
+
+- **verdict == PASS** -> move task to DONE
+- **verdict == FAIL** -> move task back to IN_PROGRESS, attach findings, dispatch
+  Spider-Man to fix, then re-run the gate
+
+This closes the v15-28 "policy-without-test" gap: the 5-gate flow above was prose
+with no enforcement. The quality-gate tool IS the enforcement. NEVER mark a task
+DONE on agent self-report alone — the verdict file is the source of truth.
 
 **Feedback loop (Thor -> PM.03 -> backlog -> hotfix)**:
 ```
