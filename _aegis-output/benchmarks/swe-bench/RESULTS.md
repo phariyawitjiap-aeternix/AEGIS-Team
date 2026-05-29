@@ -1,8 +1,22 @@
 # SWE-bench Verified 50-issue Prototype — Results
 
-**Date:** 2026-05-28
+**Date:** 2026-05-28 (agent run) / 2026-05-29 (x86 eval scored)
 **Agent:** AEGIS workflow via `claude -p` (Claude Opus 4.7, subscription)
 **Subset:** first 50 of SWE-bench Verified (astropy 22 + django 28)
+
+## Headline (VERIFIED)
+
+**37 / 50 resolved (74%)** on the first-50 subset.
+Eval ran green on an x86_64 GitHub Actions runner (run 26620456284),
+0 errors, 0 empty patches. Report: `reports/full-50-report.json`.
+
+- astropy: 16 / 22 resolved (73%)
+- django:  21 / 28 resolved (75%)
+
+⚠️ **Scope honesty:** this is the FIRST 50 of 500 (alphabetical → only astropy +
+django). It is NOT a random sample of the full benchmark. So "37/50 on the
+first-50 subset" is the honest claim — NOT "74% on SWE-bench Verified." A
+full-benchmark number requires running all 500 across ~12 repos.
 
 ## Outcome
 
@@ -10,7 +24,8 @@
 |------|--------|----------|
 | Agent generated patches | ✅ **VERIFIED** | 50/50 instances, 0 empty patches — `predictions.jsonl` |
 | Patch quality (surgical, on-target) | ✅ **VERIFIED by inspection** | django-10999 (negative-duration regex), astropy-7336 (None return annotation), django-11292 (--skip-checks across code + docs) match known gold-fix shapes |
-| Resolved/unresolved score | ❌ **BLOCKED** | Docker eval hung at 0/50 on Apple Silicon (see below) |
+| Resolved/unresolved score | ✅ **VERIFIED** | 37/50 resolved — x86 GH Actions eval, `reports/full-50-report.json` |
+| ~~Local arm64 eval~~ | ❌ superseded | Docker eval hung at 0/50 on Apple Silicon; moved to x86 GH Actions (`.github/workflows/swe-bench-eval.yml`) — that scored fine |
 
 ## Agent run stats
 
