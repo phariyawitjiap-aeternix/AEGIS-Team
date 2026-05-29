@@ -91,14 +91,28 @@ def fresh_clone_at(repo, base_commit, dest):
         shutil.rmtree(dest)  # Python, not `rm -rf`
     dest.parent.mkdir(parents=True, exist_ok=True)
     print(f"  cloning {repo} ...", file=sys.stderr)
-    r = run(["git", "clone", "--quiet", f"https://github.com/{repo}.git", str(dest)], timeout=900)
+    # A slow clone (large repo + saturated bandwidth) used to raise an UNCAUGHT
+    # TimeoutExpired that crashed the whole 500-run. Catch it (and any error)
+    # and return False -> instance left unrecorded -> retried on resume.
+    try:
+        r = run(["git", "clone", "--quiet", f"https://github.com/{repo}.git", str(dest)], timeout=1800)
+    except subprocess.TimeoutExpired:
+        print(f"  clone timed out — left for resume", file=sys.stderr)
+        return False
+    except Exception as e:
+        print(f"  clone error: {str(e)[:160]} — left for resume", file=sys.stderr)
+        return False
     if r.returncode != 0:
         print(f"  clone failed: {r.stderr[:200]}", file=sys.stderr)
         return False
-    r = run(["git", "checkout", "--quiet", base_commit], cwd=dest)
-    if r.returncode != 0:
-        run(["git", "fetch", "--quiet", "origin", base_commit], cwd=dest, timeout=300)
+    try:
         r = run(["git", "checkout", "--quiet", base_commit], cwd=dest)
+        if r.returncode != 0:
+            run(["git", "fetch", "--quiet", "origin", base_commit], cwd=dest, timeout=600)
+            r = run(["git", "checkout", "--quiet", base_commit], cwd=dest)
+    except subprocess.TimeoutExpired:
+        print(f"  checkout/fetch timed out — left for resume", file=sys.stderr)
+        return False
     if r.returncode != 0:
         print(f"  checkout {base_commit[:8]} failed: {r.stderr[:160]}", file=sys.stderr)
         return False
