@@ -13,17 +13,13 @@
 //
 // Storage: ~/.aegis-plus/projects.yaml
 //
-// CC 2.1.141 integration (v15-10):
-// Claude Code 2.1.141 added `claude agents --cwd <path>` so a session can
-// run in a specific working directory without `cd`. `mt cwd <name>` outputs
-// the registered project path; `mt run <name>` wraps the `claude` invocation
-// with the right `--cwd`, dropping any args after `--` straight through.
+// CC 2.1.141 integration (v15-10) — REMOVED in v15-25:
+// `mt cwd <name>` and `mt run <name>` were removed (confident-lean). They now
+// exit 2 with a hint to use native `claude --cwd <path>` directly. Look up a
+// registered project path with `mt where <name>` and pass it to `claude --cwd`.
 //
 // Examples:
-//   $ claude --cwd "$(node tools/aegis-multi-tenant/mt.mjs cwd alpha)"
-//   $ node tools/aegis-multi-tenant/mt.mjs run alpha -- agents list
-//   $ node tools/aegis-multi-tenant/mt.mjs run alpha --dry-run -- agents list
-//     claude --cwd /Users/.../alpha agents list
+//   $ claude --cwd "$(node tools/aegis-multi-tenant/mt.mjs where alpha)" agents list
 
 import fs from "node:fs";
 import path from "node:path";

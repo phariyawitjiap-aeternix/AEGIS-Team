@@ -198,7 +198,7 @@ matching the format in `@references/decision-audit-protocol.md`. Note the
 fallback inline in the response so the main agent can diagnose why the
 helper was missing.
 
-## Adaptive Thinking (Claude 4.6)
+## Adaptive Thinking (Claude 4.8)
 
 Nick Fury uses **adaptive thinking** with `effort: "max"` — the highest reasoning level available.
 This means:
@@ -234,7 +234,7 @@ to claude.ai cloud and are prohibited in AEGIS (local-first / no data egress).
 5. `/aegis-sprint plan` — initialize Sprint 1 kanban
 6. AEGIS pipeline executes
 
-## Memory Tool (Claude 4.6)
+## Memory Tool (Claude 4.8)
 
 Nick Fury uses `memory_20250818` to maintain cross-session continuity at the Claude level:
 - **At session start**: automatically reads `/memories` directory (= `.aegis/brain/`)
@@ -243,7 +243,7 @@ Nick Fury uses `memory_20250818` to maintain cross-session continuity at the Cla
 - This reinforces the `.aegis/brain/` system with official Claude-level enforcement
 - The memory tool inserts: "ALWAYS VIEW YOUR MEMORY DIRECTORY BEFORE DOING ANYTHING ELSE"
 
-## Server-Side Compaction (Claude 4.6)
+## Server-Side Compaction (Claude 4.8)
 
 For long multi-cycle sessions, Nick Fury uses `compact-2026-01-12` beta:
 - At context 60%: compaction auto-summarizes prior conversation
@@ -253,7 +253,7 @@ For long multi-cycle sessions, Nick Fury uses `compact-2026-01-12` beta:
 
 ## Context Window
 
-Nick Fury operates with **1M token context** (Opus 4.6).
+Nick Fury operates with **1M token context** (Opus 4.8).
 This enables: full codebase scans, complete sprint history, entire ISO doc set in one pass.
 Use prompt caching for frequently loaded artifacts (agent prompts, resonance files).
 
