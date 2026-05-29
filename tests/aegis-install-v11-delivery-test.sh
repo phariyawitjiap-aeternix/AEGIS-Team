@@ -72,7 +72,7 @@ fi
 # ── Group 1: v11 skills ─────────────────────────────────────────────────
 echo ""
 echo "--- Group 1: v11 skills landed ---"
-for s in aegis-live-tail aegis-activity-logger aegis-issue-thread aegis-parallel-dispatch aegis-approval-gate aegis-router aegis-run-logger aegis-trace-export aegis-multi-tenant aegis-resume; do
+for s in aegis-live-tail aegis-activity-logger aegis-issue-thread aegis-parallel-dispatch aegis-approval-gate aegis-run-logger aegis-trace-export aegis-multi-tenant aegis-resume; do
     if [[ -f "$PILOT/skills/${s}.md" ]]; then
         pass "skill: ${s}.md present"
     else
@@ -99,7 +99,6 @@ declare -a expected_files=(
     "aegis-approval-gate/list.mjs"
     "aegis-approval-gate/revoke.mjs"
     "aegis-approval-gate/lib.mjs"
-    "aegis-router/route.mjs"
     "aegis-run-logger/archive.mjs"
     "aegis-run-logger/replay.mjs"
     "aegis-run-logger/list.mjs"
@@ -161,11 +160,6 @@ if [[ -f "$PILOT/.aegis/brain/gate-rules.yaml" ]]; then
     pass "gate-rules.yaml seeded under .aegis/brain/"
 else
     fail "gate-rules.yaml" "not seeded"
-fi
-if [[ -f "$PILOT/.aegis/brain/routing/policy.yaml" ]]; then
-    pass "routing/policy.yaml seeded under .aegis/brain/"
-else
-    fail "routing/policy.yaml" "not seeded"
 fi
 if [[ -f "$PILOT/.aegis/brain/redaction/patterns.yaml" ]]; then
     pass "redaction/patterns.yaml seeded under .aegis/brain/"

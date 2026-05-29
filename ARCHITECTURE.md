@@ -87,7 +87,6 @@ If you're changing **<concern>**, edit **<file/dir>**.
 | **Adding an agent persona** | `.claude/agents/<name>.md` + roster in `CLAUDE_agents.md` |
 | **Wiring a new hook** | `.claude/settings.json` `hooks` section + script in `.claude/hooks/` or `tools/<pkg>/` |
 | **Approval gate rules** | `.aegis/brain/gate-rules.yaml` (consumed by `tools/aegis-approval-gate/check.mjs`) |
-| **Model routing policy** | `.aegis/brain/routing/policy.yaml` (consumed by `tools/aegis-router/`) |
 | **PII redaction patterns** | `.aegis/brain/redaction/patterns.yaml` (consumed by `tools/aegis-trace-export`) |
 | **Brain content threat scan** (v14-01) | `tools/aegis-brain-threat-patterns.yaml` (consumed by `tools/aegis-brain-write.sh:_aegis_threat_scan`) |
 | **Brain mutation rollback** (v14-02) | `tools/aegis-brain-checkpoint/{store,snapshot,rollback}.sh` → `.aegis/.brain-checkpoints/store/` (real git repo) |
@@ -237,7 +236,6 @@ Single-file tools live directly under `tools/` as `<name>.sh` or `<name>.mjs`.
 - `tools/aegis-issue-thread/` — v11-03 — YAML tickets
 - `tools/aegis-parallel-dispatch/` — v11-04 — Agent fan-out
 - `tools/aegis-approval-gate/` — v11-05 — PreToolUse blocker
-- `tools/aegis-router/` — v11-06 — model-tier picker
 - `tools/aegis-run-logger/` — v11-07 — Stop archive
 - `tools/aegis-trace-export/` — v11-08 — PII-redacted export (under `tools/` per package)
 - `tools/aegis-multi-tenant/` — v11-09 — cross-project ops

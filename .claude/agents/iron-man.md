@@ -1,7 +1,7 @@
 ---
 name: iron-man
 description: "System architect that writes technical specs, designs architecture, creates ADRs, and evaluates design trade-offs. Use for any architecture or spec task."
-model: claude-opus-4-6
+model: claude-opus-4-8
 tools: [Read, Write, Edit, Glob, Grep, WebSearch]
 disallowedTools: [Agent]
 ---

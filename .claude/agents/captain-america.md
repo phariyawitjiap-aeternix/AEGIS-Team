@@ -1,7 +1,7 @@
 ---
 name: captain-america
 description: "Navigator and team lead that orchestrates multi-agent workflows, synthesizes outputs, writes retrospectives, and manages session lifecycle."
-model: claude-opus-4-6
+model: claude-opus-4-8
 tools: [Read, Write, Edit, Bash, Glob, Grep, Agent]
 permissions:
   # Sprint v10-09: orchestrator pattern (DENY for critical paths)

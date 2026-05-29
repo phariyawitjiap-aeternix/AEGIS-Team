@@ -83,7 +83,6 @@ Full v12 plan: `~/Documents/AEGIS-KNOWLEDGE-MEGA-PLAN.md`
 - [`aegis-issue-thread`](skills/aegis-issue-thread.md) — YAML ticket layer
 - [`aegis-parallel-dispatch`](skills/aegis-parallel-dispatch.md) — Agent fan-out skill
 - [`aegis-approval-gate`](skills/aegis-approval-gate.md) — PreToolUse destructive-op blocker
-- [`aegis-router`](skills/aegis-router.md) — model-tier picker (quality fit)
 - [`aegis-run-logger`](skills/aegis-run-logger.md) — Stop hook session archiver
 - [`aegis-trace-export`](skills/aegis-trace-export.md) — PII-redacted activity export
 - [`aegis-multi-tenant`](skills/aegis-multi-tenant.md) — cross-project registry + aggregator
@@ -511,7 +510,7 @@ your-project/
 │   ├── aegis-brain-graph/       # 🆕 v12-04..06 — NDJSON knowledge graph
 │   ├── aegis-doc-canon/         # 🆕 v12-01..03 — governance lints + manifest
 │   ├── aegis-{live-tail,activity-logger,issue-thread,parallel-dispatch}/  # v11 P1
-│   ├── aegis-{approval-gate,router,run-logger,trace-export}/              # v11 P2
+│   ├── aegis-{approval-gate,run-logger,trace-export}/                     # v11 P2
 │   ├── aegis-{multi-tenant,resume}/                                       # v11 P3
 │   └── aegis-plus-pilot/        # bootstrap/daily-eod/gate-check/remediate
 ├── _aegis-output/wiki/          # 🆕 v12-06 — auto-generated per-skill / per-sprint pages

@@ -707,7 +707,6 @@ tool_packages=(
     "aegis-issue-thread"       # v11-03 — YAML ticket layer
     "aegis-parallel-dispatch"  # v11-04 — Agent fan-out skill
     "aegis-approval-gate"      # v11-05 — PreToolUse destructive-op blocker
-    "aegis-router"             # v11-06 — model-tier picker (quality fit)
     "aegis-run-logger"         # v11-07 — Stop hook session archiver
     "aegis-trace-export"       # v11-08 — PII-redacted activity export
     "aegis-multi-tenant"       # v11-09 — cross-project registry + aggregator

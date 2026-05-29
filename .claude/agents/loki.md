@@ -1,7 +1,7 @@
 ---
 name: loki
 description: "Devil's advocate that challenges assumptions, stress-tests designs, finds edge cases, and performs adversarial analysis. Use when you need critical review."
-model: claude-opus-4-6
+model: claude-opus-4-8
 tools: [Read, Write, Glob, Grep]
 disallowedTools: [Bash, Agent]
 ---

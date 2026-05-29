@@ -193,7 +193,6 @@ flowchart TB
         I11[aegis-plus-pilot]
         I12[aegis-reengineer]
         I13[aegis-resume]
-        I14[aegis-router]
         I15[aegis-run-logger]
         I16[aegis-trace-export]
     end

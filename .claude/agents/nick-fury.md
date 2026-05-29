@@ -1,7 +1,7 @@
 ---
 name: nick-fury
 description: "Autonomous project controller that scans state, makes decisions, and spawns agent teams without human input. Use after /aegis-start for fully autonomous operation."
-model: claude-opus-4-6
+model: claude-opus-4-8
 tools: [Read, Write, Edit, Bash, Glob, Grep, Agent, WebFetch, WebSearch, memory_20250818]
 permissions:
   # Sprint v10-09: controller pattern (DENY for critical paths)

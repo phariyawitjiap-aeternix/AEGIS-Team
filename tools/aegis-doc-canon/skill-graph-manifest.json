@@ -58,13 +58,6 @@
       "tests": ["tests/aegis-resume-test.sh"],
       "supersedes": []
     },
-    "aegis-router": {
-      "reads": [".aegis/brain/routing/policy.yaml"],
-      "writes": [],
-      "wires": [],
-      "tests": ["tests/aegis-router-test.sh"],
-      "supersedes": []
-    },
     "aegis-run-logger": {
       "reads": [".aegis/brain/runs/"],
       "writes": [".aegis/brain/runs/"],
