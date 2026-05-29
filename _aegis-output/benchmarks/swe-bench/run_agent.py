@@ -192,6 +192,8 @@ def main():
     PREDICTIONS.parent.mkdir(parents=True, exist_ok=True)
     n_run = 0
     n_skip = 0
+    consec_fail = 0
+    ABORT_AFTER = 8  # consecutive failures => likely systemic (network/DNS down)
     for inst in subset:
         iid = inst["instance_id"]
         if iid in done:
@@ -208,7 +210,17 @@ def main():
         if failed and not diff.strip():
             print(f"  [skip-record] {iid}: claude failed w/ empty diff — left for resume", file=sys.stderr)
             n_skip += 1
+            consec_fail += 1
+            # A sustained outage (DNS down) makes every clone fail instantly and
+            # would otherwise burn through the WHOLE remaining list in seconds.
+            # Abort cleanly so a later resume retries from here when the network
+            # is back, instead of marking 400 bogus skips.
+            if consec_fail >= ABORT_AFTER:
+                print(f"\nABORT: {consec_fail} consecutive failures — likely network/systemic outage. "
+                      f"Stopping cleanly; rerun the same command to resume from here.", file=sys.stderr)
+                break
             continue
+        consec_fail = 0
         with PREDICTIONS.open("a") as f:
             f.write(json.dumps({
                 "instance_id": iid,
