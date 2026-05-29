@@ -137,16 +137,22 @@ def run_agent_on(inst, max_turns, session_timeout, keep):
 
     diff = run(["git", "diff"], cwd=dest).stdout
     cost = "?"
+    rc = r.returncode if r else None
     if r and r.stdout:
         try:
             cost = json.loads(r.stdout.strip().splitlines()[-1]).get("total_cost_usd", "?")
         except Exception:
             pass
-    print(f"  done in {dt:.0f}s | diff {len(diff)} bytes | cost(metered) ${cost}", file=sys.stderr)
+    # "failed" = claude did NOT complete cleanly (timeout/not-found = r is None,
+    # or non-zero exit = likely rate-limit/API error). Used by main() to AVOID
+    # recording a bogus empty patch during a rate-limit window on the long
+    # full-500 run — those instances are left unrecorded so a resume retries them.
+    failed = (r is None) or (rc is not None and rc != 0)
+    print(f"  done in {dt:.0f}s | diff {len(diff)} bytes | rc={rc} | cost(metered) ${cost}", file=sys.stderr)
 
     if not keep:
         shutil.rmtree(dest, ignore_errors=True)  # Python cleanup, not `rm -rf`
-    return diff
+    return diff, failed
 
 
 def main():
@@ -171,15 +177,24 @@ def main():
 
     PREDICTIONS.parent.mkdir(parents=True, exist_ok=True)
     n_run = 0
+    n_skip = 0
     for inst in subset:
         iid = inst["instance_id"]
         if iid in done:
             print(f"[skip] {iid} (already in predictions)", file=sys.stderr)
             continue
         print(f"[run] {iid}", file=sys.stderr)
-        diff = run_agent_on(inst, args.max_turns, args.session_timeout, args.keep_clones)
+        result = run_agent_on(inst, args.max_turns, args.session_timeout, args.keep_clones)
+        diff, failed = (result if result is not None else ("", True))
         if diff is None:
             diff = ""
+        # Skip recording when claude failed AND produced no edits — likely a
+        # rate-limit/transient error. Leaving it unrecorded means a later resume
+        # retries it instead of locking in a bogus empty patch.
+        if failed and not diff.strip():
+            print(f"  [skip-record] {iid}: claude failed w/ empty diff — left for resume", file=sys.stderr)
+            n_skip += 1
+            continue
         with PREDICTIONS.open("a") as f:
             f.write(json.dumps({
                 "instance_id": iid,
@@ -188,7 +203,7 @@ def main():
             }) + "\n")
         n_run += 1
 
-    print(f"Ran {n_run} instance(s). Predictions -> {PREDICTIONS}", file=sys.stderr)
+    print(f"Ran {n_run} instance(s), skipped {n_skip} (failed+empty, retry on resume). Predictions -> {PREDICTIONS}", file=sys.stderr)
 
 
 if __name__ == "__main__":
