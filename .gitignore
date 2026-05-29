@@ -110,3 +110,4 @@ dashboard/node_modules/
 
 # v11-07 run logger archives — per-session transcripts
 .aegis/brain/runs/
+.claude/scheduled_tasks.lock
