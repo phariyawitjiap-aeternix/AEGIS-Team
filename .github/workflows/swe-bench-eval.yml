@@ -1,0 +1,99 @@
+name: SWE-bench Eval (x86)
+
+# Scores the AEGIS prototype predictions on a real x86_64 Linux runner —
+# the eval that hung on the local arm64 Mac (swebench images are x86_64).
+# Manual trigger only. Start with a small `count` (5) to validate the pipeline
+# produces a score at all, then scale up.
+#
+# Honest framing: this turns "50 patches PRODUCED, 0 VERIFIED" into an actual
+# resolved/unresolved count. No pass-rate is real until this runs green.
+
+on:
+  workflow_dispatch:
+    inputs:
+      count:
+        description: "How many of the 50 predictions to evaluate (validation batch)"
+        required: true
+        default: "5"
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest   # x86_64
+    timeout-minutes: 330      # under the 6h hard cap
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show runner arch + disk
+        run: |
+          uname -m
+          df -h /
+          docker info --format '{{.Architecture}}' || true
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install swebench
+        run: |
+          python -m pip install --quiet --upgrade pip
+          python -m pip install --quiet swebench datasets
+
+      - name: Slice predictions to N
+        working-directory: _aegis-output/benchmarks/swe-bench
+        run: |
+          N="${{ github.event.inputs.count }}"
+          head -n "$N" predictions-50.jsonl.txt > predictions-batch.jsonl
+          echo "Evaluating $(wc -l < predictions-batch.jsonl) predictions"
+          # show which instances
+          python - <<'PY'
+          import json
+          for line in open("predictions-batch.jsonl"):
+              r = json.loads(line)
+              print(" ", r["instance_id"], f'{len(r["model_patch"])}b')
+          PY
+
+      - name: Run SWE-bench evaluation
+        working-directory: _aegis-output/benchmarks/swe-bench
+        run: |
+          python -m swebench.harness.run_evaluation \
+            --dataset_name princeton-nlp/SWE-bench_Verified \
+            --predictions_path predictions-batch.jsonl \
+            --max_workers 2 \
+            --run_id aegis-ci-batch \
+            --cache_level instance
+
+      - name: Summarize result
+        if: always()
+        working-directory: _aegis-output/benchmarks/swe-bench
+        run: |
+          echo "=== result files ==="
+          ls -1 *.json 2>/dev/null || echo "(none)"
+          REPORT=$(ls -1 *aegis-ci-batch*.json 2>/dev/null | head -1 || true)
+          if [ -n "$REPORT" ]; then
+            echo "=== $REPORT ==="
+            cat "$REPORT"
+            echo ""
+            python - "$REPORT" <<'PY'
+          import json, sys
+          d = json.load(open(sys.argv[1]))
+          tot = d.get("total_instances", "?")
+          res = d.get("resolved_instances", "?")
+          comp = d.get("completed_instances", "?")
+          print(f"::notice title=SWE-bench result::resolved {res} / completed {comp} / total {tot}")
+          PY
+          else
+            echo "::warning::no report json produced — eval did not score"
+          fi
+
+      - name: Upload logs + report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: swe-bench-eval-results
+          path: |
+            _aegis-output/benchmarks/swe-bench/*aegis-ci-batch*.json
+            _aegis-output/benchmarks/swe-bench/logs/**
+          retention-days: 14
+          if-no-files-found: warn
