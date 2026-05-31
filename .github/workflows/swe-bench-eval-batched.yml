@@ -1,0 +1,120 @@
+name: SWE-bench Eval Batched (x86)
+
+# Scores the full-500 AEGIS predictions on x86_64 runners, SPLIT into 10 chunks
+# of 50 — because a single count=500 job would blow the GitHub Actions free
+# runner's ~14GB disk and 6h cap. The first-50 eval proved 50/job fits in
+# ~22min/14GB; this fans that out across 10 parallel matrix jobs, each on its
+# own fresh runner, then aggregates resolved/completed into one number.
+#
+# Reads _aegis-output/benchmarks/swe-bench/predictions-500.jsonl.txt (committed
+# snapshot of the full run). Manual trigger.
+
+on:
+  workflow_dispatch:
+    inputs:
+      chunk_size:
+        description: "Instances per chunk (10 chunks total)"
+        required: true
+        default: "50"
+
+jobs:
+  eval:
+    strategy:
+      fail-fast: false
+      matrix:
+        chunk: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Reclaim disk (~25GB) for heavy env images
+        run: |
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /opt/hostedtoolcache/CodeQL || true
+          sudo docker image prune --all --force || true
+          df -h /
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install swebench
+        run: python -m pip install --quiet --upgrade pip && python -m pip install --quiet swebench datasets
+
+      - name: Slice chunk ${{ matrix.chunk }}
+        working-directory: _aegis-output/benchmarks/swe-bench
+        run: |
+          SIZE="${{ github.event.inputs.chunk_size }}"
+          IDX="${{ matrix.chunk }}"
+          START=$(( IDX * SIZE + 1 ))
+          END=$(( (IDX + 1) * SIZE ))
+          sed -n "${START},${END}p" predictions-500.jsonl.txt > chunk.jsonl
+          echo "chunk $IDX: lines $START-$END -> $(wc -l < chunk.jsonl) predictions"
+          # empty chunk (fewer than 500 preds) — emit a stub report and skip eval
+          if [ ! -s chunk.jsonl ]; then echo "EMPTY=1" >> "$GITHUB_ENV"; fi
+
+      - name: Run eval (chunk ${{ matrix.chunk }})
+        if: env.EMPTY != '1'
+        working-directory: _aegis-output/benchmarks/swe-bench
+        run: |
+          python -m swebench.harness.run_evaluation \
+            --dataset_name princeton-nlp/SWE-bench_Verified \
+            --predictions_path chunk.jsonl \
+            --max_workers 2 \
+            --run_id aegis-batch-${{ matrix.chunk }} \
+            --cache_level instance
+
+      - name: Collect chunk report
+        if: always()
+        working-directory: _aegis-output/benchmarks/swe-bench
+        run: |
+          REPORT=$(ls -1 *aegis-batch-${{ matrix.chunk }}*.json 2>/dev/null | head -1 || true)
+          mkdir -p chunk-out
+          if [ -n "$REPORT" ]; then
+            cp "$REPORT" "chunk-out/chunk-${{ matrix.chunk }}.json"
+            python - "$REPORT" <<'PY'
+          import json, sys
+          d = json.load(open(sys.argv[1]))
+          print(f"::notice title=chunk ${{ matrix.chunk }}::resolved {d.get('resolved_instances')} / completed {d.get('completed_instances')}")
+          PY
+          else
+            echo '{"resolved_instances":0,"completed_instances":0,"submitted_instances":0}' > "chunk-out/chunk-${{ matrix.chunk }}.json"
+            echo "::warning::chunk ${{ matrix.chunk }} produced no report"
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chunk-report-${{ matrix.chunk }}
+          path: _aegis-output/benchmarks/swe-bench/chunk-out/chunk-${{ matrix.chunk }}.json
+          retention-days: 14
+
+  aggregate:
+    needs: eval
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: chunk-report-*
+          path: reports
+          merge-multiple: true
+      - name: Sum resolved / completed across chunks
+        run: |
+          python - <<'PY'
+          import json, glob
+          tot_r = tot_c = tot_s = 0
+          for f in sorted(glob.glob("reports/chunk-*.json")):
+              d = json.load(open(f))
+              tot_r += d.get("resolved_instances", 0)
+              tot_c += d.get("completed_instances", 0)
+              tot_s += d.get("submitted_instances", 0)
+              print(f"  {f}: resolved {d.get('resolved_instances')} / completed {d.get('completed_instances')}")
+          print(f"\n=== FULL-500 TOTAL: resolved {tot_r} / completed {tot_c} / submitted {tot_s} ===")
+          print(f"::notice title=SWE-bench full-500::resolved {tot_r} / completed {tot_c} / submitted {tot_s}")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: full-500-aggregate
+          path: reports/
+          retention-days: 30
