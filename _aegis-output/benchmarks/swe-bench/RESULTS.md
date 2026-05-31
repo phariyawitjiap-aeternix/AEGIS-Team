@@ -1,22 +1,43 @@
-# SWE-bench Verified 50-issue Prototype — Results
+# SWE-bench Verified — Results
 
-**Date:** 2026-05-28 (agent run) / 2026-05-29 (x86 eval scored)
-**Agent:** AEGIS workflow via `claude -p` (Claude Opus 4.7, subscription)
-**Subset:** first 50 of SWE-bench Verified (astropy 22 + django 28)
+**Agent run:** `claude -p` (Claude Opus 4.8, subscription) via the minimal
+`run_agent.py` harness. **Eval:** official swebench harness on x86_64 GitHub
+Actions. Dates: agent run 2026-05-28→31, full-500 eval scored 2026-05-31.
 
-## Headline (VERIFIED)
+## Headline — FULL 500 (VERIFIED)
 
-**37 / 50 resolved (74%)** on the first-50 subset.
-Eval ran green on an x86_64 GitHub Actions runner (run 26620456284),
-0 errors, 0 empty patches. Report: `reports/full-50-report.json`.
+**429 / 500 resolved = 85.8%** on the complete SWE-bench Verified set.
+Scored by the official harness across 10 parallel x86 jobs (batched eval,
+run 26701402710); verified by summing all 10 chunk reports.
 
-- astropy: 16 / 22 resolved (73%)
-- django:  21 / 28 resolved (75%)
+- resolved 429 / completed 485 / submitted 500
+- 15 instances did not complete the eval (env-build/harness errors) and are
+  counted as UNRESOLVED in the 429/500 figure (conservative denominator).
+- Consistency check: chunk-0 (first 50) scored 37/50 — exactly reproducing the
+  earlier standalone first-50 eval. The harness is behaving correctly.
 
-⚠️ **Scope honesty:** this is the FIRST 50 of 500 (alphabetical → only astropy +
-django). It is NOT a random sample of the full benchmark. So "37/50 on the
-first-50 subset" is the honest claim — NOT "74% on SWE-bench Verified." A
-full-benchmark number requires running all 500 across ~12 repos.
+### ⚠️ What this number actually measures (read before quoting it)
+
+- **It is Opus 4.8's raw coding capability through a THIN harness — not AEGIS
+  orchestration.** `run_agent.py` is just "make the minimal fix, don't write
+  tests" + `claude -p`. It does NOT use the AEGIS personas, quality gate, MBP,
+  brain, or decision audit. So 85.8% reflects the MODEL via a simple wrapper,
+  not AEGIS's multi-agent value-add.
+- AEGIS's actual differentiation (trust / enforcement / audit) is about
+  *reliability and verifiability*, not raw solve rate. This benchmark does not
+  measure that.
+- 85.8% sits at/above the SOTA references in our research (Opus 4.5 ~80.9%,
+  Claude Code 80.8%) — plausible since this runs the newer Opus 4.8, but treat
+  the gap cautiously: different model generation, and 15 eval-incompletes were
+  counted against us (a stricter denominator than some leaderboards use).
+- The 15 incomplete instances could be re-run to firm up the denominator;
+  429/500 is the conservative number recorded without that.
+
+## Earlier milestone — first-50 subset (VERIFIED)
+
+37 / 50 resolved on the first 50 (astropy 16/22, django 21/28) — the
+validation run before scaling to 500. Report: `reports/full-50-report.json`.
+This is chunk-0 of the full run and reproduced exactly in the batched eval.
 
 ## Outcome
 
