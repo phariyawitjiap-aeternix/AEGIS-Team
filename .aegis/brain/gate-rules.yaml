@@ -13,10 +13,12 @@
 # Add rules incrementally as real incidents surface.
 
 rules:
-  - name: rm-rf
-    regex: '(?:^|[\s|;&])rm\s+(?:-[A-Za-z]*r[A-Za-z]*f|-[A-Za-z]*f[A-Za-z]*r|--recursive\s+--force|--force\s+--recursive|-fr|-rf)\b'
-    severity: high
-    note: "rm -rf / rm --recursive --force"
+  # rm-rf rule removed 2026-06-02 (user request). It matched ANY `rm -rf`
+  # anywhere in the command string — including safe `rm -rf /tmp/...` cleanups
+  # and even the literal text inside echo/grep/commit messages — causing
+  # constant false blocks. Catastrophic targets (`rm -rf /`, `~`, `.`, `..`)
+  # are STILL blocked at the CC permission layer via settings.json deny list,
+  # so disaster protection remains; only the over-broad approval-gate match is gone.
 
   - name: git-force-push
     regex: '(?:^|[\s|;&])git\s+push\s+(?:.*\s)?(?:--force\b|--force-with-lease\b|-f\b)'
