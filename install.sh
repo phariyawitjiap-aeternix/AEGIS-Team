@@ -25,6 +25,7 @@ fi
 PROFILE="standard"
 PROJECT_NAME=""
 UPGRADE=false
+CLEAN_UPGRADE=false
 TARGET_DIR="$(pwd)"
 
 # --------------------------------------------------------------------------
@@ -57,6 +58,10 @@ Options:
   --project-name "Name"               Project name for branding
   --target-dir /path/to/project       Target directory (default: current dir)
   --upgrade                           Upgrade existing installation
+  --clean                             With --upgrade: first remove ALL old
+                                      framework files (per .framework-manifest),
+                                      then reinstall fresh. Brain + project files
+                                      are never touched. Eliminates orphans.
   -h, --help                          Show this help message
 
 Examples:
@@ -90,6 +95,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --upgrade)
             UPGRADE=true
+            shift
+            ;;
+        --clean)
+            CLEAN_UPGRADE=true
             shift
             ;;
         -h|--help)
@@ -256,6 +265,36 @@ if [[ "$UPGRADE" == true ]]; then
         cp "${TARGET_DIR}/.claude/settings.json" "${BACKUP_DIR}/settings.json.v8"
     fi
     success "Existing files backed up to ${BACKUP_DIR}"
+
+    # ── Clean upgrade (--clean) ────────────────────────────────────────────
+    # Remove ALL old framework files (per .framework-manifest) BEFORE the copy
+    # phase, so files the new version renamed/dropped leave no orphan. ONLY the
+    # manifest's framework files are removed — the manifest never lists
+    # .aegis/brain/, .git/, or project-owned files, so memory + project content
+    # are structurally safe. Falls back to a normal upgrade (manifest gets seeded
+    # at the end) when no manifest exists yet — the NEXT --clean is fully clean.
+    if [[ "$CLEAN_UPGRADE" == true ]]; then
+        CLEAN_MANIFEST="${TARGET_DIR}/.aegis/.framework-manifest"
+        if [[ -f "$CLEAN_MANIFEST" ]]; then
+            info "Clean upgrade: removing old framework files (brain + project files untouched)..."
+            cleaned=0
+            while IFS= read -r rel; do
+                [[ -z "$rel" ]] && continue
+                # hard guard: never touch brain / git even if a bad manifest line slips in
+                case "$rel" in
+                    .aegis/brain/*|.git/*|..*|/*) continue ;;
+                esac
+                tgt="${TARGET_DIR}/${rel}"
+                if [[ -f "$tgt" ]]; then
+                    rm -f "$tgt" && cleaned=$((cleaned + 1))
+                fi
+            done < "$CLEAN_MANIFEST"
+            success "Clean upgrade: removed ${cleaned} old framework file(s) — reinstalling fresh"
+        else
+            warn "--clean requested but no .framework-manifest yet — doing a normal upgrade this round."
+            warn "The manifest is seeded now; the NEXT '--upgrade --clean' will be fully clean."
+        fi
+    fi
 fi
 
 # --------------------------------------------------------------------------
@@ -662,6 +701,8 @@ upgrade_toolkit=(
     "aegis-upgrade.sh"
     "aegis-fix-hook-paths.sh"
     "aegis-fix-task-list-id.sh"
+    "aegis-doctor.sh"          # post-install verifier — referenced by install.sh's
+                               # own post-copy check + README; was never delivered
 )
 runtime_helpers=(
     "aegis-team-chat.sh"      # Inter-agent dialogue logging (DISPATCH/REPORT/VERDICT)

@@ -43,7 +43,7 @@ rm -rf /tmp/aegis-installer /tmp/aegis.tgz
 
 - **Profiles:** `minimal` (small/throwaway) · `standard` (default) · `full` (enterprise SDLC + ISO).
 - **Prereqs:** `node` + `@anthropic-ai/claude-code` on PATH; the project should be a git repo (`git init && git commit --allow-empty -m init` if not).
-- **Upgrade an existing install:** same command with `--upgrade` instead of `--project-name/--profile`. It backs up `.aegis/brain/`, sweeps stale framework files (manifest-guarded — never deletes project-owned files), and re-verifies.
+- **Upgrade an existing install:** same command with `--upgrade` instead of `--project-name/--profile`. It backs up `.aegis/brain/`, sweeps stale framework files (manifest-guarded — never deletes project-owned files), and re-verifies. Add `--clean` for a clean-slate upgrade: it removes ALL old framework files (per `.aegis/.framework-manifest`) before reinstalling, so renamed/dropped files leave no orphan. `.aegis/brain/` and project-owned files are never touched.
 - **After install:** the hooks in `.claude/settings.json` load at **session start**. Tell the human to restart the Claude Code session, then run `/aegis-start`.
 - **Honesty gate:** if `install.sh` or `aegis-doctor.sh` errors, show the real output. Do **not** claim a working install unless `aegis-doctor.sh` is green.
 
