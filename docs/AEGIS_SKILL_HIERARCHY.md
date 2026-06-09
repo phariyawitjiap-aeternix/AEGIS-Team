@@ -226,9 +226,8 @@ flowchart TB
         D5[retrospective]
     end
 
-    subgraph Lifecycle[" Lifecycle (5) "]
+    subgraph Lifecycle[" Lifecycle (4) "]
         direction LR
-        L1[ai-personas]
         L2[course-correction]
         L3[bug-lifecycle]
         L4[git-workflow]

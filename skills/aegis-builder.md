@@ -212,6 +212,6 @@ Modules are reusable components that extend AEGIS capabilities:
 ### Output
 
 - Skills: `skills/<name>.md`
-- Personas: Update `skills/ai-personas.md` (add to registry)
+- Personas: add a persona prompt file under `.claude/agents/<name>.md` (the canonical roster) + list it in `CLAUDE_agents.md`
 - Teams: `.claude/teams/<team-name>.md`
 - Modules: Varies by type (see Module Types table)

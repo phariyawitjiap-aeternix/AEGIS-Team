@@ -45,7 +45,7 @@ Sequential execution within a single session. Best for:
 
 **Protocol:**
 1. Parse task into subtasks
-2. Assign persona to each subtask (see ai-personas.md)
+2. Assign persona to each subtask (see `.claude/agents/` — the canonical 11-persona roster + `CLAUDE_agents.md`)
 3. Execute sequentially, passing context between steps
 4. Apply review gate after each phase
 5. Aggregate results and report

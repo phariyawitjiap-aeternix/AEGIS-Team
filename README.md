@@ -164,7 +164,7 @@ solve rate." AEGIS's value is trust/enforcement/audit, which this does not score
 │   ├── hooks/             # guard-bash, guard-write, guard-ask-user, on-stop(mbp-scan), session-start, ...
 │   ├── agents/            # 11 personas (model pins: opus-4-8 / sonnet-4-6 / haiku-4-5)
 │   └── commands/          # 16 canonical slash commands
-├── skills/                # 39 skill definitions
+├── skills/                # 38 skill definitions
 ├── tools/                 # 60+ helper scripts (aegis-*.sh) + tool packages
 └── .aegis/brain/          # persistent memory — NEVER overwritten by upgrade
     ├── resonance/ learnings/ retrospectives/ handoffs/ sprints/ instincts/
