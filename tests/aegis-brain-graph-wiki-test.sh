@@ -200,12 +200,15 @@ fi
 
 # ─── T12: live tree wiki passes lint (markdown well-formed) ────────────────
 echo
-echo "T12: PROJECT_INDEX.md mentions all 39 skills"
+# Count derived from the filesystem — never hardcode (was "39"/"≥36" while the
+# tree held 38, a silent drift waiting to break).
+EXPECTED_SKILLS=$(ls -1 "${REPO_ROOT}"/skills/*.md 2>/dev/null | wc -l | tr -d ' ')
+echo "T12: PROJECT_INDEX.md mentions all ${EXPECTED_SKILLS} skills"
 SKILL_LINKS=$(grep -cE "_aegis-output/wiki/skill-" "$INDEX")
-if [[ $SKILL_LINKS -ge 36 ]]; then
-    pass "PROJECT_INDEX links to ≥ 39 skill pages (actual: $SKILL_LINKS)"
+if [[ $SKILL_LINKS -ge $EXPECTED_SKILLS ]]; then
+    pass "PROJECT_INDEX links to ≥ ${EXPECTED_SKILLS} skill pages (actual: $SKILL_LINKS)"
 else
-    fail "PROJECT_INDEX links to ≥ 39 skill pages" "actual: $SKILL_LINKS"
+    fail "PROJECT_INDEX links to ≥ ${EXPECTED_SKILLS} skill pages" "actual: $SKILL_LINKS"
 fi
 
 # ─── Summary ───────────────────────────────────────────────────────────────

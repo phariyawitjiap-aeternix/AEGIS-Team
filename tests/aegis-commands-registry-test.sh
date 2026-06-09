@@ -4,10 +4,10 @@
 # Test suite for v14-01 S14-01-01: CommandDef registry.
 #
 # Verifies:
-#   1. registry.mjs exports COMMAND_REGISTRY with 14 entries
+#   1. registry.mjs exports COMMAND_REGISTRY with one entry per command (count derived)
 #   2. render-help.mjs validate exits 0 (registry ⊇ filesystem, frontmatter OK)
-#   3. render-help.mjs list outputs 14 names matching .claude/commands/*.md
-#   4. render-help.mjs help --json is valid JSON with 14 commands
+#   3. render-help.mjs list outputs names matching .claude/commands/*.md (count derived)
+#   4. render-help.mjs help --json is valid JSON whose .commands length == filesystem count
 #   5. resolveCommand() handles aliases (test via inline node script)
 #
 # Sprint: v14-01 (S14-01-01)
@@ -23,6 +23,11 @@ cd "$REPO_ROOT"
 
 REGISTRY="tools/aegis-commands/registry.mjs"
 RENDER="tools/aegis-commands/render-help.mjs"
+
+# Canonical command count derived from the filesystem (the source of truth) —
+# never hardcode it (was pinned to "16"; would silently break the moment a
+# command is added/removed). Every source below must AGREE with this number.
+EXPECTED_CMDS=$(ls .claude/commands/*.md 2>/dev/null | wc -l | tr -d ' ')
 
 PASS=0
 FAIL=0
@@ -45,27 +50,29 @@ else
   fail "TC2" "render-help.mjs not found at $RENDER"
 fi
 
-# ─── TC3: Registry has exactly 14 entries via list command ───────────────────
+# ─── TC3: Registry list count == filesystem command count (EXPECTED_CMDS) ────
 LIST_OUTPUT=$(node "$RENDER" list 2>&1) || {
   fail "TC3" "render-help list failed: $LIST_OUTPUT"
   LIST_OUTPUT=""
 }
 if [ -n "$LIST_OUTPUT" ]; then
   COUNT=$(echo "$LIST_OUTPUT" | wc -l | tr -d ' ')
-  if [ "$COUNT" = "16" ]; then
-    pass "TC3 list shows 16 commands"
+  if [ "$COUNT" = "$EXPECTED_CMDS" ]; then
+    pass "TC3 list shows $EXPECTED_CMDS commands (matches filesystem)"
   else
-    fail "TC3" "expected 16, got $COUNT"
+    fail "TC3" "registry list shows $COUNT, filesystem has $EXPECTED_CMDS"
   fi
 fi
 
-# ─── TC4: Filesystem has 14 .md files matching registry ──────────────────────
+# ─── TC4: Filesystem command count (the source of truth; sanity floor) ───────
 FS_NAMES=$(ls .claude/commands/*.md 2>/dev/null | xargs -n1 basename | sed 's/\.md$//' | sort)
 FS_COUNT=$(echo "$FS_NAMES" | wc -l | tr -d ' ')
-if [ "$FS_COUNT" = "16" ]; then
-  pass "TC4 filesystem has 16 command files"
+# Sanity floor (catches an empty/broken commands dir) — exact agreement between
+# sources is enforced by TC3/TC6/TC7 against EXPECTED_CMDS, not by a pinned literal.
+if [ "$FS_COUNT" -ge 12 ]; then
+  pass "TC4 filesystem has $FS_COUNT command files (≥12 floor)"
 else
-  fail "TC4" "filesystem has $FS_COUNT .md files (expected 16)"
+  fail "TC4" "filesystem has only $FS_COUNT .md files (expected ≥12)"
 fi
 
 # ─── TC5: Validate command exits 0 (registry ⊇ filesystem, frontmatter OK) ──
@@ -85,12 +92,13 @@ else
   fail "TC6" "registry/filesystem name mismatch:\nregistry: $REG_NAMES\nfilesystem: $FS_NAMES"
 fi
 
-# ─── TC7: help --json is valid JSON with .commands array of length 14 ────────
+# ─── TC7: help --json .commands length == filesystem count (EXPECTED_CMDS) ───
 JSON_OUTPUT=$(node "$RENDER" help --json 2>&1)
-if echo "$JSON_OUTPUT" | node -e "
+if echo "$JSON_OUTPUT" | EXPECTED_CMDS="$EXPECTED_CMDS" node -e "
 const d = JSON.parse(require('fs').readFileSync(0, 'utf-8'));
-if (!Array.isArray(d.commands) || d.commands.length !== 16) {
-  console.error('expected commands array of length 16, got', d.commands?.length);
+const expected = Number(process.env.EXPECTED_CMDS);
+if (!Array.isArray(d.commands) || d.commands.length !== expected) {
+  console.error('expected commands array of length', expected, 'got', d.commands?.length);
   process.exit(1);
 }
 if (!Array.isArray(d.categories) || d.categories.length === 0) {
@@ -98,7 +106,7 @@ if (!Array.isArray(d.categories) || d.categories.length === 0) {
   process.exit(1);
 }
 " 2>&1; then
-  pass "TC7 help --json valid + 16 commands"
+  pass "TC7 help --json valid + $EXPECTED_CMDS commands (matches filesystem)"
 else
   fail "TC7" "JSON parse or shape check failed"
 fi
