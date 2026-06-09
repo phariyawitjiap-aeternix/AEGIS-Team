@@ -672,12 +672,12 @@
     "description": "Agent nick-fury capability: 5-Gate Quality System"
   },
   {
-    "id": "FUNC-46B46D",
-    "name": "nick-fury::Adaptive Thinking (Claude 4.6)",
+    "id": "FUNC-600107",
+    "name": "nick-fury::Adaptive Thinking (Claude 4.8)",
     "source_file": ".claude/agents/nick-fury.md",
     "type": "agent-capability",
     "module": "MOD-AGENTS",
-    "description": "Agent nick-fury capability: Adaptive Thinking (Claude 4.6)"
+    "description": "Agent nick-fury capability: Adaptive Thinking (Claude 4.8)"
   },
   {
     "id": "FUNC-05D129",
@@ -808,12 +808,12 @@
     "description": "Agent nick-fury capability: Master Workflow Reference"
   },
   {
-    "id": "FUNC-5FB76B",
-    "name": "nick-fury::Memory Tool (Claude 4.6)",
+    "id": "FUNC-A336A4",
+    "name": "nick-fury::Memory Tool (Claude 4.8)",
     "source_file": ".claude/agents/nick-fury.md",
     "type": "agent-capability",
     "module": "MOD-AGENTS",
-    "description": "Agent nick-fury capability: Memory Tool (Claude 4.6)"
+    "description": "Agent nick-fury capability: Memory Tool (Claude 4.8)"
   },
   {
     "id": "FUNC-140F6B",
@@ -864,12 +864,12 @@
     "description": "Agent nick-fury capability: Self-Evolving Intelligence (v8.1)"
   },
   {
-    "id": "FUNC-87CE2C",
-    "name": "nick-fury::Server-Side Compaction (Claude 4.6)",
+    "id": "FUNC-DD2720",
+    "name": "nick-fury::Server-Side Compaction (Claude 4.8)",
     "source_file": ".claude/agents/nick-fury.md",
     "type": "agent-capability",
     "module": "MOD-AGENTS",
-    "description": "Agent nick-fury capability: Server-Side Compaction (Claude 4.6)"
+    "description": "Agent nick-fury capability: Server-Side Compaction (Claude 4.8)"
   },
   {
     "id": "FUNC-BBB464",
@@ -1672,6 +1672,14 @@
     "description": "AEGIS Brain Write -- Write to brain with automatic MEMORY.md regeneration"
   },
   {
+    "id": "FUNC-97F46B",
+    "name": "aegis-checkpoint",
+    "source_file": "tools/aegis-checkpoint.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-checkpoint.sh — Structured state checkpoint for precise session resume."
+  },
+  {
     "id": "FUNC-CE9F05",
     "name": "aegis-claude-agents",
     "source_file": "tools/aegis-claude-agents.sh",
@@ -1694,6 +1702,22 @@
     "type": "bash",
     "module": "MOD-TOOLS",
     "description": "aegis-coverage-screen.sh — sprint v15-19."
+  },
+  {
+    "id": "FUNC-685C78",
+    "name": "aegis-credential-scan",
+    "source_file": "tools/aegis-credential-scan.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-credential-scan.sh — Discover required credentials at intake."
+  },
+  {
+    "id": "FUNC-80E28C",
+    "name": "aegis-daemon",
+    "source_file": "tools/aegis-daemon.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-daemon.sh — Auto-restart Claude Code interactive sessions."
   },
   {
     "id": "FUNC-CFA3E1",
@@ -1878,6 +1902,14 @@
     "type": "bash",
     "module": "MOD-TOOLS",
     "description": "aegis-progress.sh — compute grand-total progress % across all known work."
+  },
+  {
+    "id": "FUNC-198AD9",
+    "name": "aegis-quality-gate",
+    "source_file": "tools/aegis-quality-gate.sh",
+    "type": "bash",
+    "module": "MOD-TOOLS",
+    "description": "aegis-quality-gate.sh — AEGIS Quality Gate (v1.0.0)"
   },
   {
     "id": "FUNC-699DBF",
@@ -2078,6 +2110,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-coverage-screen"
+  },
+  {
+    "id": "FUNC-211FA2",
+    "name": "bold",
+    "source_file": "tools/aegis-quality-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-quality-gate"
   },
   {
     "id": "FUNC-BD760F",
@@ -2400,6 +2440,14 @@
     "description": "Internal function in aegis-claude-agents"
   },
   {
+    "id": "FUNC-27786F",
+    "name": "cmd_statu",
+    "source_file": "tools/aegis-quality-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-quality-gate"
+  },
+  {
     "id": "FUNC-544320",
     "name": "cmd_test",
     "source_file": "tools/aegis-linear-setup.sh",
@@ -2422,6 +2470,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-claude-agents"
+  },
+  {
+    "id": "FUNC-378687",
+    "name": "collect_key",
+    "source_file": "tools/aegis-credential-scan.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-credential-scan"
   },
   {
     "id": "FUNC-C986FC",
@@ -2470,6 +2526,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-coverage-screen"
+  },
+  {
+    "id": "FUNC-979FCF",
+    "name": "detect_test_runner",
+    "source_file": "tools/aegis-quality-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-quality-gate"
   },
   {
     "id": "FUNC-2AD360",
@@ -2576,6 +2640,14 @@
     "description": "Internal function in aegis-coverage-screen"
   },
   {
+    "id": "FUNC-7231D7",
+    "name": "err",
+    "source_file": "tools/aegis-quality-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-quality-gate"
+  },
+  {
     "id": "FUNC-53CD85",
     "name": "err",
     "source_file": "tools/aegis-settings-patch.sh",
@@ -2606,6 +2678,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-token-profile"
+  },
+  {
+    "id": "FUNC-E5F9B1",
+    "name": "extract_ac_for_task",
+    "source_file": "tools/aegis-quality-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-quality-gate"
   },
   {
     "id": "FUNC-98F8FF",
@@ -2688,6 +2768,14 @@
     "description": "Internal function in aegis-linear-sync"
   },
   {
+    "id": "FUNC-734D8E",
+    "name": "fail",
+    "source_file": "tools/aegis-quality-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-quality-gate"
+  },
+  {
     "id": "FUNC-95CC3E",
     "name": "fetch_raw",
     "source_file": "tools/aegis-claude-agents.sh",
@@ -2734,6 +2822,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-linear-sync"
+  },
+  {
+    "id": "FUNC-4C50F6",
+    "name": "find_kanban",
+    "source_file": "tools/aegis-quality-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-quality-gate"
   },
   {
     "id": "FUNC-25BCE3",
@@ -2784,6 +2880,14 @@
     "description": "Internal function in aegis-autopilot"
   },
   {
+    "id": "FUNC-94F711",
+    "name": "gather",
+    "source_file": "tools/aegis-checkpoint.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-checkpoint"
+  },
+  {
     "id": "FUNC-C188BC",
     "name": "generate_func_id",
     "source_file": "tools/aegis-func-catalog.sh",
@@ -2798,6 +2902,22 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-autopilot"
+  },
+  {
+    "id": "FUNC-38CC78",
+    "name": "get_current_branch",
+    "source_file": "tools/aegis-quality-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-quality-gate"
+  },
+  {
+    "id": "FUNC-D2372D",
+    "name": "get_diff",
+    "source_file": "tools/aegis-quality-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-quality-gate"
   },
   {
     "id": "FUNC-F578B3",
@@ -2952,6 +3072,14 @@
     "description": "Internal function in aegis-claude-agents"
   },
   {
+    "id": "FUNC-70E42F",
+    "name": "hline",
+    "source_file": "tools/aegis-quality-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-quality-gate"
+  },
+  {
     "id": "FUNC-C40193",
     "name": "in_allowlist",
     "source_file": "tools/aegis-shell-lint.sh",
@@ -2992,12 +3120,36 @@
     "description": "Internal function in aegis-autopilot"
   },
   {
+    "id": "FUNC-93D3EA",
+    "name": "info",
+    "source_file": "tools/aegis-checkpoint.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-checkpoint"
+  },
+  {
     "id": "FUNC-F4A5F0",
     "name": "info",
     "source_file": "tools/aegis-coverage-screen.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-coverage-screen"
+  },
+  {
+    "id": "FUNC-43DD38",
+    "name": "info",
+    "source_file": "tools/aegis-credential-scan.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-credential-scan"
+  },
+  {
+    "id": "FUNC-55509A",
+    "name": "info",
+    "source_file": "tools/aegis-quality-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-quality-gate"
   },
   {
     "id": "FUNC-285CFF",
@@ -3062,6 +3214,22 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-func-catalog"
+  },
+  {
+    "id": "FUNC-6C444C",
+    "name": "json_escape",
+    "source_file": "tools/aegis-quality-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-quality-gate"
+  },
+  {
+    "id": "FUNC-20DE3E",
+    "name": "key_is_set",
+    "source_file": "tools/aegis-credential-scan.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-credential-scan"
   },
   {
     "id": "FUNC-AB6C45",
@@ -3272,6 +3440,14 @@
     "description": "Internal function in aegis-instinct-promote"
   },
   {
+    "id": "FUNC-1A3826",
+    "name": "now_iso",
+    "source_file": "tools/aegis-quality-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-quality-gate"
+  },
+  {
     "id": "FUNC-D5CD1C",
     "name": "ok",
     "source_file": "tools/aegis-linear-bootstrap.sh",
@@ -3294,6 +3470,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-linear-sync"
+  },
+  {
+    "id": "FUNC-BC9A70",
+    "name": "parse_arg",
+    "source_file": "tools/aegis-quality-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-quality-gate"
   },
   {
     "id": "FUNC-F3ED19",
@@ -3440,6 +3624,14 @@
     "description": "Internal function in aegis-sprint-close-gate"
   },
   {
+    "id": "FUNC-E83E86",
+    "name": "require_cmd",
+    "source_file": "tools/aegis-quality-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-quality-gate"
+  },
+  {
     "id": "FUNC-DC6331",
     "name": "require_curl",
     "source_file": "tools/aegis-linear-setup.sh",
@@ -3512,12 +3704,44 @@
     "description": "Internal function in aegis-s204-override"
   },
   {
+    "id": "FUNC-311744",
+    "name": "run_check",
+    "source_file": "tools/aegis-quality-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-quality-gate"
+  },
+  {
     "id": "FUNC-9F6E6C",
     "name": "run_check",
     "source_file": "tools/aegis-sprint-close-gate.sh",
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-sprint-close-gate"
+  },
+  {
+    "id": "FUNC-598362",
+    "name": "run_gate1_review",
+    "source_file": "tools/aegis-quality-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-quality-gate"
+  },
+  {
+    "id": "FUNC-95EB2F",
+    "name": "run_gate2_test",
+    "source_file": "tools/aegis-quality-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-quality-gate"
+  },
+  {
+    "id": "FUNC-AA9CA7",
+    "name": "run_gate3_spec",
+    "source_file": "tools/aegis-quality-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-quality-gate"
   },
   {
     "id": "FUNC-4C9C42",
@@ -3560,6 +3784,14 @@
     "description": "Internal function in aegis-brain-benchmark"
   },
   {
+    "id": "FUNC-B81FB5",
+    "name": "sep",
+    "source_file": "tools/aegis-quality-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-quality-gate"
+  },
+  {
     "id": "FUNC-197CE3",
     "name": "set_yaml_field",
     "source_file": "tools/aegis-instinct-promote.sh",
@@ -3590,6 +3822,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-linear-bootstrap"
+  },
+  {
+    "id": "FUNC-084848",
+    "name": "succe",
+    "source_file": "tools/aegis-quality-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-quality-gate"
   },
   {
     "id": "FUNC-593895",
@@ -3688,6 +3928,14 @@
     "description": "Internal function in aegis-pin"
   },
   {
+    "id": "FUNC-B02479",
+    "name": "usage",
+    "source_file": "tools/aegis-quality-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-quality-gate"
+  },
+  {
     "id": "FUNC-628BD1",
     "name": "usage",
     "source_file": "tools/aegis-s204-override.sh",
@@ -3744,6 +3992,14 @@
     "description": "Internal function in aegis-autopilot"
   },
   {
+    "id": "FUNC-440476",
+    "name": "warn",
+    "source_file": "tools/aegis-checkpoint.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-checkpoint"
+  },
+  {
     "id": "FUNC-294D72",
     "name": "warn",
     "source_file": "tools/aegis-linear-bootstrap.sh",
@@ -3766,6 +4022,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-linear-sync"
+  },
+  {
+    "id": "FUNC-05C1D6",
+    "name": "warn",
+    "source_file": "tools/aegis-quality-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-quality-gate"
   },
   {
     "id": "FUNC-017037",
@@ -3814,6 +4078,14 @@
     "type": "bash-function",
     "module": "MOD-TOOLS",
     "description": "Internal function in aegis-pin"
+  },
+  {
+    "id": "FUNC-CE9D70",
+    "name": "write_verdict",
+    "source_file": "tools/aegis-quality-gate.sh",
+    "type": "bash-function",
+    "module": "MOD-TOOLS",
+    "description": "Internal function in aegis-quality-gate"
   },
   {
     "id": "FUNC-89206C",

@@ -63,6 +63,23 @@ EOF
 exit 0
 EOF
     chmod +x "$d/.claude/hooks/zzz-stale-hook.sh"
+    # v15-28 manifest guard: a real prior AEGIS install always leaves a
+    # .aegis/.framework-manifest listing every file IT shipped. The sweep only
+    # removes a manifest-listed file that has disappeared from the new source —
+    # that is exactly what lets it sweep a stale FRAMEWORK skill (shared surface)
+    # without ever touching a PROJECT skill (the OT-Wiki guard). Without this
+    # manifest, "shared" surfaces like skills/ are deliberately NOT swept, so the
+    # stale skill would (correctly) survive and T2 could not fire. Listing all
+    # six stale paths here simulates the realistic upgrade path. write_manifest
+    # runs AFTER the sweep (install.sh:1183), so this manifest is intact during it.
+    cat > "$d/.aegis/.framework-manifest" <<'EOF'
+tools/aegis-ZZZ-stale-tool.sh
+skills/zzz-stale-skill.md
+.claude/agents/zzz-stale-agent.md
+.claude/commands/zzz-stale-command.md
+.claude/references/zzz-stale-ref.md
+.claude/hooks/zzz-stale-hook.sh
+EOF
     # User content (must NOT be swept)
     cat > "$d/.aegis/brain/resonance/user-project-identity.md" <<'EOF'
 user project content

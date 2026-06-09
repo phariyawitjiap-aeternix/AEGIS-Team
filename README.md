@@ -1,5 +1,7 @@
 # AEGIS-Team — Agent Operating Manual
 
+<!-- AEGIS v15.1.0 — AI Agent Team Framework (version banner — governance-enforced by aegis-version-consistency-test) -->
+
 > This README is written for an AI agent (Claude Code) that will **install** or
 > **operate** AEGIS. It is optimized for machine comprehension, not human
 > marketing. Every fact below is current as of the repo HEAD; if a number here

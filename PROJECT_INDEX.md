@@ -1,6 +1,6 @@
 <!-- Auto-generated from .aegis/brain/graph/ — edit topic pages under _aegis-output/wiki/ -->
-<!-- built_at: 2026-05-26T20:54:39.689Z -->
-<!-- node_count: 404 edge_count: 566 -->
+<!-- built_at: 2026-06-09T12:29:58.543Z -->
+<!-- node_count: 404 edge_count: 564 -->
 
 # AEGIS Project Index
 
@@ -16,7 +16,7 @@
 - [GUARDRAILS.md](GUARDRAILS.md) — recurring failure-mode catalog
 - [CLAUDE_safety.md](CLAUDE_safety.md), [CLAUDE_agents.md](CLAUDE_agents.md), [CLAUDE_skills.md](CLAUDE_skills.md), [CLAUDE_lessons.md](CLAUDE_lessons.md)
 
-## Skills (40)
+## Skills (38)
 
 - [adversarial-review](_aegis-output/wiki/skill-adversarial-review.md) — _full_
 - [aegis-activity-logger](_aegis-output/wiki/skill-aegis-activity-logger.md) — _standard_
@@ -32,10 +32,8 @@
 - [aegis-reengineer](_aegis-output/wiki/skill-aegis-reengineer.md) — _full_
 - [aegis-resume](_aegis-output/wiki/skill-aegis-resume.md) — _standard_
 - [aegis-return-format](_aegis-output/wiki/skill-aegis-return-format.md) — _minimal|standard|full_
-- [aegis-router](_aegis-output/wiki/skill-aegis-router.md) — _standard_
 - [aegis-run-logger](_aegis-output/wiki/skill-aegis-run-logger.md) — _standard_
 - [aegis-trace-export](_aegis-output/wiki/skill-aegis-trace-export.md) — _standard_
-- [ai-personas](_aegis-output/wiki/skill-ai-personas.md) — _minimal_
 - [api-docs](_aegis-output/wiki/skill-api-docs.md) — _standard_
 - [bug-lifecycle](_aegis-output/wiki/skill-bug-lifecycle.md) — _minimal_
 - [code-coverage](_aegis-output/wiki/skill-code-coverage.md) — _full_
@@ -114,7 +112,7 @@
 - [v9-05](_aegis-output/wiki/sprint-v9-05.md) — CLOSED · 46pt
 - [v9-06](_aegis-output/wiki/sprint-v9-06.md) — CLOSED
 
-## Tools (19 packages, 106 files)
+## Tools (18 packages, 109 files)
 
 - **_archived** (7 files)
 - **_hook-utils** (1 files)
@@ -131,10 +129,9 @@
 - **aegis-parallel-dispatch** (1 files)
 - **aegis-pattern-mine** (3 files)
 - **aegis-resume** (4 files)
-- **aegis-router** (1 files)
 - **aegis-run-logger** (3 files)
 - **aegis-trace-export** (3 files)
-- **misc** (53 files)
+- **misc** (57 files)
 
 ## Hooks (17)
 
