@@ -156,7 +156,10 @@ if ! command -v jq &>/dev/null; then
     exit 1
 fi
 
-if ! command -v claude &>/dev/null; then
+# --dry-run only prints config + the first prompt; it never invokes claude, so
+# it must not require the binary (CI runners have no claude on PATH — this check
+# ran before the dry-run early-exit and broke aegis-v15-28-tools-test on CI).
+if [[ "$DRY_RUN" != true ]] && ! command -v claude &>/dev/null; then
     err "claude CLI not found. Install: https://claude.ai/download"
     exit 1
 fi

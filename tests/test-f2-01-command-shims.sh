@@ -15,7 +15,9 @@ CHAIN_MD="${SCRIPT_DIR}/../.claude/references/command-chain.md"
 echo "=== F2-01: Command Consolidation 29→12 (v10-05: shims removed) ==="
 echo ""
 
-# TC-01: All 12 canonical command files exist and are non-empty
+# TC-01: All 16 canonical command files exist and are non-empty.
+# (Was 12; goal/decisions/linear added post-v10-05, upgrade promoted into the
+# user-facing surface — see CLAUDE.md "## Quick Commands" 5 user + 11 team = 16.)
 CANONICALS=(
     "aegis-start"
     "aegis-status"
@@ -29,6 +31,10 @@ CANONICALS=(
     "aegis-deploy"
     "aegis-memory"
     "aegis-mode"
+    "aegis-upgrade"
+    "aegis-goal"
+    "aegis-decisions"
+    "aegis-linear"
 )
 
 MISSING_CANONICAL=0
@@ -82,8 +88,8 @@ fi
 
 # TC-03: Only canonical command files remain in commands dir
 TOTAL_CMD_FILES=$(find "$CMD_DIR" -name "aegis-*.md" -type f | wc -l | tr -d ' ')
-# aegis-upgrade.md is also canonical (not in the 12 Quick Commands but is a real command)
-EXPECTED_MAX=$((${#CANONICALS[@]} + 1))
+# CANONICALS now lists all 16 (incl. aegis-upgrade) — no +1 fudge needed.
+EXPECTED_MAX=${#CANONICALS[@]}
 if [[ "$TOTAL_CMD_FILES" -le "$EXPECTED_MAX" ]]; then
     PASS "TC-03 commands dir has only canonical files (${TOTAL_CMD_FILES} found, max ${EXPECTED_MAX})"
 else
@@ -114,12 +120,16 @@ else
     FAIL "TC-05 command-chain.md does not document shim removal"
 fi
 
-# TC-06: CLAUDE.md Quick Commands table has exactly 12 entries
+# TC-06: CLAUDE.md "## Quick Commands" section lists exactly 16 commands.
+# (Restructured into "### User-facing (5)" + "### Team-facing (11)" subsections.
+# The section-capture lookahead must stop at the next LEVEL-2 heading "\n## "
+# — NOT at the "### " subsections, or it would capture only the intro blockquote
+# and count 0.)
 TABLE_COUNT=$(python3 - "$CLAUDE_MD" <<'PYEOF' 2>/dev/null
 import sys, re
 with open(sys.argv[1]) as f:
     content = f.read()
-m = re.search(r'## Quick Commands\n(.*?)(?=\n##|\Z)', content, re.DOTALL)
+m = re.search(r'## Quick Commands\n(.*?)(?=\n## |\Z)', content, re.DOTALL)
 if not m:
     print(0)
     sys.exit(0)
@@ -132,7 +142,7 @@ for line in table.split('\n'):
 print(count)
 PYEOF
 )
-assert_eq "$TABLE_COUNT" "12" "TC-06 CLAUDE.md Quick Commands has exactly 12 entries"
+assert_eq "$TABLE_COUNT" "16" "TC-06 CLAUDE.md Quick Commands has exactly 16 entries (5 user + 11 team)"
 
 # TC-07: CLAUDE.md no longer references "17 legacy aliases"
 if grep -q "17 legacy aliases" "$CLAUDE_MD" 2>/dev/null; then

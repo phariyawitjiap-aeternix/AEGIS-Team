@@ -80,14 +80,15 @@ run_check() {
 echo ""
 echo "--- Group 1: block destructive ops without approval ---"
 
-# 1.a — rm -rf is blocked
-RESULT=$(run_check 'rm -rf /tmp/foo')
+# 1.a — sudo rm is blocked (rm-rf rule was removed 2026-06-02; sudo-rm is the
+# current canonical destructive fixture — see gate-rules.yaml)
+RESULT=$(run_check 'sudo rm -rf /tmp/foo')
 RC=$(echo "$RESULT" | head -1)
 ERR=$(echo "$RESULT" | tail -n +2)
-if [[ "$RC" == "2" ]] && echo "$ERR" | grep -q "BLOCKED" && echo "$ERR" | grep -q "rm-rf"; then
-  pass "1.a rm -rf without approval → exit 2 + helpful message"
+if [[ "$RC" == "2" ]] && echo "$ERR" | grep -q "BLOCKED" && echo "$ERR" | grep -q "sudo-rm"; then
+  pass "1.a sudo rm without approval → exit 2 + helpful message"
 else
-  fail "1.a rm -rf block" "rc=$RC err=$ERR"
+  fail "1.a sudo rm block" "rc=$RC err=$ERR"
 fi
 
 # 1.b — git push --force is blocked
@@ -140,14 +141,14 @@ fi
 echo ""
 echo "--- Group 2: granted approvals allow ---"
 
-# 2.a — grant rule:rm-rf, retry rm -rf — passes
-node "$GRANT" --task KAM-1 --action wipe --scope rule:rm-rf --ttl 1h --by tester >/dev/null
-RESULT=$(run_check 'rm -rf /tmp/foo')
+# 2.a — grant rule:sudo-rm, retry sudo rm — passes
+node "$GRANT" --task KAM-1 --action wipe --scope rule:sudo-rm --ttl 1h --by tester >/dev/null
+RESULT=$(run_check 'sudo rm -rf /tmp/foo')
 RC=$(echo "$RESULT" | head -1)
 if [[ "$RC" == "0" ]]; then
-  pass "2.a rm -rf with rule:rm-rf approval → exit 0"
+  pass "2.a sudo rm with rule:sudo-rm approval → exit 0"
 else
-  fail "2.a granted-rm-rf pass" "rc=$RC err=$(echo "$RESULT" | tail -n +2)"
+  fail "2.a granted-sudo-rm pass" "rc=$RC err=$(echo "$RESULT" | tail -n +2)"
 fi
 
 # 2.b — git push --force still blocked (different scope)
@@ -177,12 +178,12 @@ echo ""
 echo "--- Group 3: expiry + revoke ---"
 
 # 3.a — grant 1 second TTL, sleep, observe block returns
-node "$GRANT" --task KAM-3 --action quick --scope rule:rm-rf --ttl 1s --by tester >/dev/null
+node "$GRANT" --task KAM-3 --action quick --scope rule:sudo-rm --ttl 1s --by tester >/dev/null
 sleep 1.2
 # At this point KAM-3 expired AND KAM-1 is still active (1h). Revoke KAM-1
 # so we can observe the expired-only state.
 node "$REVOKE" KAM-1-wipe >/dev/null
-RESULT=$(run_check 'rm -rf /tmp/foo')
+RESULT=$(run_check 'sudo rm -rf /tmp/foo')
 RC=$(echo "$RESULT" | head -1)
 if [[ "$RC" == "2" ]]; then
   pass "3.a expired approval no longer covers — block returns"
@@ -220,7 +221,7 @@ echo "--- Group 4: AEGIS_BYPASS + audit log ---"
 
 # 4.a — AEGIS_BYPASS=1 lets destructive op through
 RC=0
-PAYLOAD='{"tool_name":"Bash","tool_input":{"command":"rm -rf /tmp/y"}}'
+PAYLOAD='{"tool_name":"Bash","tool_input":{"command":"sudo rm -rf /tmp/y"}}'
 printf '%s' "$PAYLOAD" | AEGIS_BYPASS=1 node "$CHECK" >/dev/null 2>&1 || RC=$?
 if [[ "$RC" == "0" ]]; then
   pass "4.a AEGIS_BYPASS=1 → exit 0 (override always wins)"
@@ -271,7 +272,7 @@ echo "--- Group 6: CLI shape ---"
 
 # 6.a — grant requires --task
 RC=0
-node "$GRANT" --action x --scope rule:rm-rf >/dev/null 2>&1 || RC=$?
+node "$GRANT" --action x --scope rule:sudo-rm >/dev/null 2>&1 || RC=$?
 if [[ "$RC" == "2" ]]; then
   pass "6.a grant rejects missing --task"
 else
@@ -288,7 +289,7 @@ else
 fi
 
 # 6.c — list --json produces valid JSON
-node "$GRANT" --task KAM-9 --action smoke --scope rule:rm-rf --ttl 1h --by tester >/dev/null
+node "$GRANT" --task KAM-9 --action smoke --scope rule:sudo-rm --ttl 1h --by tester >/dev/null
 JSON=$(node "$LIST" --json)
 if echo "$JSON" | node -e 'const a=JSON.parse(require("fs").readFileSync(0,"utf8")); if(!Array.isArray(a)) process.exit(1); if(a.length<1) process.exit(1); console.log("ok")' 2>/dev/null; then
   pass "6.c list --json valid array"
@@ -309,7 +310,7 @@ fi
 echo ""
 echo "--- Group 7: CC 2.1.141 permission-dialog JSON ---"
 
-# Earlier groups left active approvals in TEST_DIR (KAM-9 covers rule:rm-rf).
+# Earlier groups left active approvals in TEST_DIR (KAM-9 covers rule:sudo-rm).
 # Wipe them so the v15-09 JSON-emission assertions see a clean block path.
 # Approvals are YAML files per .aegis/brain/approvals/<TASK>-<ACTION>.yaml.
 find "$TEST_DIR/.aegis/brain/approvals" -maxdepth 1 -type f -name '*.yaml' -delete 2>/dev/null
@@ -323,7 +324,7 @@ capture_check_stdout() {
 }
 
 # 7.a — block emits hookSpecificOutput JSON to stdout (default mode)
-JSON_OUT=$(capture_check_stdout 'rm -rf /tmp/cc141-test')
+JSON_OUT=$(capture_check_stdout 'sudo rm -rf /tmp/cc141-test')
 if echo "$JSON_OUT" | node -e '
   const d = JSON.parse(require("fs").readFileSync(0,"utf8"));
   if (!d.hookSpecificOutput) process.exit(1);
@@ -340,11 +341,11 @@ fi
 # 7.b — v15-15: AEGIS_APPROVAL_GATE_LEGACY=1 ALSO writes stderr + exits 2
 # (dual-path for older CC); stdout JSON is still emitted alongside.
 LEGACY_STDOUT=$(
-  payload="$(node -e "process.stdout.write(JSON.stringify({tool_name:'Bash',tool_input:{command:'rm -rf /tmp/legacy'}}))")"
+  payload="$(node -e "process.stdout.write(JSON.stringify({tool_name:'Bash',tool_input:{command:'sudo rm -rf /tmp/legacy'}}))")"
   printf '%s' "$payload" | AEGIS_APPROVAL_GATE_LEGACY=1 node "$CHECK" 2>/dev/null
 )
 LEGACY_RC=0
-payload="$(node -e "process.stdout.write(JSON.stringify({tool_name:'Bash',tool_input:{command:'rm -rf /tmp/legacy'}}))")"
+payload="$(node -e "process.stdout.write(JSON.stringify({tool_name:'Bash',tool_input:{command:'sudo rm -rf /tmp/legacy'}}))")"
 printf '%s' "$payload" | AEGIS_APPROVAL_GATE_LEGACY=1 node "$CHECK" >/dev/null 2>&1 || LEGACY_RC=$?
 if echo "$LEGACY_STDOUT" | grep -q '"permissionDecision":"deny"' && [[ "$LEGACY_RC" == "2" ]]; then
   pass "7.b AEGIS_APPROVAL_GATE_LEGACY=1 → JSON on stdout + exit 2 (dual path)"
@@ -377,7 +378,7 @@ fi
 # (no more stderr+exit-2 dual signal that CC interpreted as "Bash hook
 # error"). Legacy mode still exits 2 for older CC compatibility.
 RC=0
-payload='{"tool_name":"Bash","tool_input":{"command":"rm -rf /tmp/rc"}}'
+payload='{"tool_name":"Bash","tool_input":{"command":"sudo rm -rf /tmp/rc"}}'
 printf '%s' "$payload" | node "$CHECK" >/dev/null 2>&1 || RC=$?
 RC_LEGACY=0
 printf '%s' "$payload" | AEGIS_APPROVAL_GATE_LEGACY=1 node "$CHECK" >/dev/null 2>&1 || RC_LEGACY=$?
@@ -390,7 +391,7 @@ fi
 # 7.f — v15-15: default modern block emits NO stderr (the key fix —
 # stderr+exit-2 was what made CC label the block as "Bash hook error").
 STDERR_OUT=$(
-  payload="$(node -e "process.stdout.write(JSON.stringify({tool_name:'Bash',tool_input:{command:'rm -rf /tmp/no-stderr'}}))")"
+  payload="$(node -e "process.stdout.write(JSON.stringify({tool_name:'Bash',tool_input:{command:'sudo rm -rf /tmp/no-stderr'}}))")"
   printf '%s' "$payload" | node "$CHECK" 2>&1 >/dev/null
 )
 if [[ -z "$STDERR_OUT" ]]; then

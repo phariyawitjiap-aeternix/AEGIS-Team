@@ -6,25 +6,27 @@ set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/aegis-test-harness-template.sh"
+# aegis-policy-audit.sh lives in tools/, not next to this test (tests/).
+TOOLS_DIR="$(cd "${SCRIPT_DIR}/../tools" && pwd)"
 
 echo "=== S2-10: Policy-Without-Test Audit Tool ==="
 echo ""
 
 # TC-01: Tool exists and is executable
-assert_file_exists "$SCRIPT_DIR/aegis-policy-audit.sh" "TC-01 aegis-policy-audit.sh exists"
+assert_file_exists "$TOOLS_DIR/aegis-policy-audit.sh" "TC-01 aegis-policy-audit.sh exists"
 
 # TC-02: --help exits 0 and prints usage
 _help_exit=0
-bash "$SCRIPT_DIR/aegis-policy-audit.sh" --help >/dev/null 2>&1 || _help_exit=$?
+bash "$TOOLS_DIR/aegis-policy-audit.sh" --help >/dev/null 2>&1 || _help_exit=$?
 assert_eq "$_help_exit" "0" "TC-02 --help exits 0"
 
 # TC-03: Bad argument exits 2
 _bad_exit=0
-bash "$SCRIPT_DIR/aegis-policy-audit.sh" --nonexistent >/dev/null 2>&1 || _bad_exit=$?
+bash "$TOOLS_DIR/aegis-policy-audit.sh" --nonexistent >/dev/null 2>&1 || _bad_exit=$?
 assert_eq "$_bad_exit" "2" "TC-03 unknown arg exits 2"
 
 # TC-04: Default run produces claim count output
-_output=$(bash "$SCRIPT_DIR/aegis-policy-audit.sh" 2>/dev/null || true)
+_output=$(bash "$TOOLS_DIR/aegis-policy-audit.sh" 2>/dev/null || true)
 if echo "$_output" | grep -q "Claims scanned:"; then
     PASS "TC-04 default output contains Claims scanned"
 else
@@ -32,7 +34,7 @@ else
 fi
 
 # TC-05: --json mode produces valid JSON with required keys
-_json_output=$(bash "$SCRIPT_DIR/aegis-policy-audit.sh" --json 2>/dev/null || true)
+_json_output=$(bash "$TOOLS_DIR/aegis-policy-audit.sh" --json 2>/dev/null || true)
 if echo "$_json_output" | python3 -c "import json,sys; d=json.load(sys.stdin); assert 'total_claims' in d and 'matched' in d and 'unmatched' in d and 'coverage_pct' in d" 2>/dev/null; then
     PASS "TC-05 --json output is valid JSON with required keys"
 else
@@ -40,7 +42,7 @@ else
 fi
 
 # TC-06: --verbose mode shows unmatched details (at least one Keyword: line)
-_verbose_output=$(bash "$SCRIPT_DIR/aegis-policy-audit.sh" --verbose 2>/dev/null || true)
+_verbose_output=$(bash "$TOOLS_DIR/aegis-policy-audit.sh" --verbose 2>/dev/null || true)
 if echo "$_verbose_output" | grep -q "Keyword:"; then
     PASS "TC-06 --verbose output shows Keyword details"
 else
