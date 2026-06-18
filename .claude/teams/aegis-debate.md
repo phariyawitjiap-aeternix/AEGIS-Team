@@ -3,8 +3,8 @@ name: aegis-debate
 description: "Architecture decision debate team"
 lead: captain-america
 members: [iron-man, spider-man, loki]
-mode: tmux
-requires: tmux
+mode: agent-tool
+requires: agent-tool
 ---
 
 ## Team Purpose

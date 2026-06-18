@@ -60,13 +60,14 @@ Each persona has a "default diagram type" — what they reach for first when in 
 
 ## Style rules
 
-1. **Render in Markdown fences** — ` ```mermaid ... ``` `. Works in GitHub, Linear, Notion, IDE preview, brain-graph wiki.
+1. **Render in Markdown fences** — ` ```mermaid ... ``` `. Renders in **committed markdown only**: GitHub, Linear, Notion, IDE preview, brain-graph wiki. It does **NOT** render in Claude Desktop or VSCode **chat** (see rule 8).
 2. **Label every edge** that isn't trivially obvious — use `-->|action|` syntax. Unlabeled edges = lazy thinking.
 3. **Name every node descriptively** — no `A`, `B`, `C`. Use `IronMan["🦾 Iron Man<br/>architect"]` style.
 4. **Direction matters** — `TB` (top-bottom) for hierarchies, `LR` (left-right) for sequences/pipelines.
 5. **Emoji prefixes for persona nodes** — keep visual identity (🧬 Nick, 🛡 Cap, 🦾 Iron, etc.).
 6. **Color when meaningful** — `classDef warning fill:#fee2e2,stroke:#dc2626` for hot paths, `classDef brain fill:#fce7f3,stroke:#be185d` for Nick Fury.
 7. **Keep mid-density** — 5-15 nodes is the sweet spot. > 20 nodes = split into multiple diagrams (lifecycle, dispatch, state).
+8. **Channel guard (v15-28) — chat does NOT render mermaid.** Claude Desktop and VSCode chat show a ```mermaid fence as raw DSL, not a picture (verified 2026-05-25). So this whole reflex applies to content destined for a **renderer** (PRs, kanbans, ADRs, brain wiki, files opened in IDE preview). When the output is a **chat reply**, do NOT lead with a mermaid fence — express the structure as a table + nested list + prose, and (optionally) write the mermaid into a committed file you then link.
 
 ## When you find yourself doing this — DON'T
 

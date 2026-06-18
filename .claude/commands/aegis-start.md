@@ -11,7 +11,8 @@ triggers:
 ## Quick Reference
 Initialize AEGIS and hand control to Nick Fury. Nick Fury scans the project,
 decides what to do, and starts executing — NO human input needed. The human
-watches via tmux and can interrupt anytime.
+watches Nick Fury's decisions narrate inline in chat and can interrupt anytime
+(Ctrl+C in a terminal; the Stop button on Claude Desktop).
 
 ## Flags
 | Flag | Effect |
@@ -253,7 +254,7 @@ Then begin the autonomous cycle.
 
 See [`.claude/references/command-audience.md`](../references/command-audience.md) for the user-vs-team command split principle and [`.claude/references/aegis-start-loop-substrate.md`](../references/aegis-start-loop-substrate.md) for substrate-selection logic + the exact `/goal` text used in CC 2.1.139+ and the subagent-spawn fallback for older CC versions.
 
-In short: the team uses whichever loop primitive is available (CC 2.1.139 `/goal` if present, else legacy subagent + SendMessage heartbeat). Both run Nick Fury's persona-defined Decision Cycle inside each turn. The user-facing experience is identical: type `/aegis-start`, watch Nick Fury work.
+In short: the team uses whichever loop primitive is available (CC 2.1.139 `/goal` if present, else a legacy subagent fallback — a spawned controller re-invoked per turn, run-to-completion, no heartbeat daemon). Both run Nick Fury's persona-defined Decision Cycle inside each turn. The user-facing experience is identical: type `/aegis-start`, watch Nick Fury narrate his work in chat.
 
 #### 4b. Check Planning Artifacts — BLOCK 0 (MANDATORY)
 
@@ -377,8 +378,16 @@ Ask/Analyze → /super-spec → /aegis-breakdown → /aegis-sprint plan → buil
   `iron-man`, `run_in_background=true`), one per workstream, per
   `.claude/references/aegis-start-loop-substrate.md`. Do NOT use tmux — the
   Agent tool is the single spawn mechanism.
+- **Cap: max 5 concurrent Agent calls per message** (Claude Code limit; see
+  `skills/aegis-parallel-dispatch.md`). More work than that → split into waves.
+- **Cold start:** each subagent has NO shared session context. Every Agent prompt
+  MUST embed the full context it needs (file paths, spec section, success
+  criteria) or the subagent hallucinates missing project state.
 - Each subagent reads its persona from `.claude/agents/{name}.md`.
-- Monitor via SendMessage / heartbeat, apply quality gates.
+- Backgrounded Agent calls are **run-to-completion** (ADR-008): there is no live
+  heartbeat / nudge / respawn daemon. Verify each subagent's returned
+  `tool_result` against its success criteria; re-dispatch failures next turn.
+  `SendMessage` can continue a specific spawned agent by id when needed.
 - When all subagents return (`tool_result` present for each), report results and
   loop back to scan. Never claim the team finished while any dispatch is unmatched.
 
@@ -413,7 +422,9 @@ After that single answer, she takes over completely.
 - If Nick Fury spawn fails: fall back to inline mode with warning
 - If brain directory missing: create it, then scan
 - If 2+ consecutive failures: downgrade to L1, ask human for guidance
-- If agent unresponsive > 300s: Nick Fury auto-respawns it
+- If a subagent returns an error or fails its success criteria: re-dispatch it in a
+  later turn (Agent calls are run-to-completion per ADR-008 — there is no live
+  timeout/auto-respawn timer)
 
 ### Step 2.4: Check Human Queue (surface pending before Nick Fury loop)
 

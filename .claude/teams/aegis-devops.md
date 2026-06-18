@@ -3,8 +3,8 @@ name: aegis-devops
 description: "DevOps team: build verification, deployment, health checks, monitoring, rollback"
 lead: thor
 members: [spider-man]
-mode: tmux
-requires: tmux
+mode: agent-tool
+requires: agent-tool
 ---
 
 ## Team Purpose

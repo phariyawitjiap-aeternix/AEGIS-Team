@@ -3,8 +3,8 @@ name: aegis-qa
 description: "QA team: test planning, execution, and verdict (War Machine absorbed Vision in v9 consolidation)"
 lead: war-machine
 members: []
-mode: tmux
-requires: tmux
+mode: agent-tool
+requires: agent-tool
 ---
 
 ## Team Purpose

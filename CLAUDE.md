@@ -53,8 +53,8 @@ After /aegis-start, Nick Fury takes full control:
 - Decides what to do next (Decision Matrix P0-P10)
 - Spawns the right team automatically (in-process agents)
 - Does NOT ask human -- analyzes, decides, executes
-- Human watches via Shift+Down to view agent detail
-- Human can interrupt anytime (Ctrl+C) or downgrade: /aegis-mode --autonomy L1
+- Human watches the inline decision narration as it streams in chat — that IS the observability surface on Claude Desktop (terminal builds also expose Shift+Down for agent detail; the Desktop GUI has no such pane)
+- Human can interrupt anytime (Ctrl+C in a terminal; the Stop button on Claude Desktop) or downgrade: /aegis-mode --autonomy L1
 
 Default autonomy: L3 (Autonomous) with Nick Fury active
 
@@ -93,7 +93,9 @@ Default autonomy: L3 (Autonomous) with Nick Fury active
 
 ## Diagram-First Reflex (v15-17)
 
-When the thought is **structural** — flow > 3 steps, decision > 2 branches, multi-actor sequence, state machine, hierarchy > 5 nodes — lead with a Mermaid diagram BEFORE the prose. Each persona has a default diagram type (Nick Fury → decision tree, Captain America → sequenceDiagram, Iron Man → architecture flowchart, Loki → attack paths with `:::warning` class, Coulson → traceability flow).
+When the thought is **structural** — flow > 3 steps, decision > 2 branches, multi-actor sequence, state machine, hierarchy > 5 nodes — and the output goes to a **renderer** (committed markdown: PRs, kanbans, ADRs, brain wiki), lead with a Mermaid diagram BEFORE the prose. (For **chat** replies, the diagram does NOT render — see the channel guard below.) Each persona has a default diagram type (Nick Fury → decision tree, Captain America → sequenceDiagram, Iron Man → architecture flowchart, Loki → attack paths with `:::warning` class, Coulson → traceability flow).
+
+**Channel guard (v15-28):** Mermaid renders only in **committed markdown** (PRs, kanbans, ADRs, brain wiki). It does **NOT** render in Claude Desktop or VSCode chat — there a ```mermaid fence shows as raw DSL. So in chat replies use tables + nested lists + prose, never a raw mermaid fence; reserve diagrams for files that will be opened in a renderer.
 
 Anti-triggers (use PROSE instead): single facts, retros, post-mortems, apologies, code review feedback, 1-2 step instructions. See [`skills/diagram-first-reflex.md`](skills/diagram-first-reflex.md) for the full trigger / anti-trigger matrix.
 

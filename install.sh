@@ -159,7 +159,7 @@ success "git found: $(git --version)"
 
 if ! command -v tmux &>/dev/null; then
     warn "tmux not found. Agent team split-pane view won't be available."
-    warn "Teams still work in in-process mode (Shift+Down to see agents)."
+    warn "Teams still work via the Agent tool (in-process). On Claude Desktop, agent actions appear inline in chat; terminal builds also offer Shift+Down for detail."
     warn "Install with: brew install tmux (macOS) or apt install tmux (Linux)"
 else
     success "tmux found: $(tmux -V)"

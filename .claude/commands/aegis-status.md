@@ -51,7 +51,7 @@ of what AEGIS is doing.
   ║  AEGIS Team Status                              v8.2.1         ║
   ╠══════════════════════════════════════════════════════════════════╣
   ║                                                                 ║
-  ║  💓 Nick Fury: ALIVE (last pulse: 12s ago)                   ║
+  ║  🧬 Nick Fury: ACTIVE (last action: 12s ago)                 ║
   ║     Cycle: #7 | Agents spawned: 3 | Tasks done: 2              ║
   ║                                                                 ║
   ║  Agent          Task                    Status      Progress    ║

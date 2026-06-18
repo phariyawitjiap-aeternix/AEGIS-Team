@@ -3,8 +3,8 @@ name: aegis-build
 description: "Spec-to-implementation build team with explicit input/output contracts"
 lead: spider-man
 members: [iron-man, black-panther]
-mode: tmux
-requires: tmux
+mode: agent-tool
+requires: agent-tool
 ---
 
 ## Team Purpose
