@@ -10,6 +10,7 @@ writes: [".aegis/brain/live/current.fifo"]
 wires: ["PostToolUse:.*:tools/aegis-live-tail/emit.mjs"]
 tests: ["tests/aegis-live-tail-test.sh"]
 supersedes: []
+terminal_only: true
 ---
 
 ## Quick Reference
