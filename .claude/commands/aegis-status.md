@@ -34,8 +34,9 @@ of what AEGIS is doing.
 ### Step 2: Check Active Agents
 - Determine which agents/teammates are currently active in this session.
 - Check for:
-  - tmux sessions with AEGIS agent names
-  - Subagent tasks in progress
+  - In-process subagent (Agent tool) tasks in progress this turn — the single
+    spawn mechanism per ADR-008. (There are no tmux sessions to scan: agents are
+    not separate processes, and the Claude Desktop GUI has no tmux at all.)
   - The main orchestrator (Captain America) status
 - For each agent, determine:
   - Name and role emoji
@@ -51,7 +52,7 @@ of what AEGIS is doing.
   ║  AEGIS Team Status                              v8.2.1         ║
   ╠══════════════════════════════════════════════════════════════════╣
   ║                                                                 ║
-  ║  💓 Nick Fury: ALIVE (last pulse: 12s ago)                   ║
+  ║  🧬 Nick Fury: ACTIVE (last action: 12s ago)                 ║
   ║     Cycle: #7 | Agents spawned: 3 | Tasks done: 2              ║
   ║                                                                 ║
   ║  Agent          Task                    Status      Progress    ║

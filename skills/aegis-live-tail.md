@@ -10,9 +10,17 @@ writes: [".aegis/brain/live/current.fifo"]
 wires: ["PostToolUse:.*:tools/aegis-live-tail/emit.mjs"]
 tests: ["tests/aegis-live-tail-test.sh"]
 supersedes: []
+terminal_only: true
 ---
 
 ## Quick Reference
+
+> **⚠️ Terminal-only — NOT available on Claude Desktop.** This skill renders into a
+> tmux split / second terminal pane, which the Claude Desktop GUI app does not have.
+> On Desktop the real-time view is **Nick Fury's inline narration in chat**; the
+> after-the-fact audit trail is `.aegis/brain/logs/activity.log` and
+> `tools/aegis-team-chat.sh`. Use the optional dashboard (`/aegis-start --dashboard`,
+> localhost:4321) for a GUI-compatible live view.
 
 `aegis-live-tail` ships an always-on terminal pane that shows every Edit / Write / Bash / Skill / Agent event in real time. It is the v11-01 deliverable from the AEGIS-Plus Mega Plan and the foundation for every later v11 skill.
 

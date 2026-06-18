@@ -146,6 +146,9 @@ function parseSkill(filePath, root) {
     meta: {
       profile: fm.profile || 'standard',
       triggers: fm.triggers || { en: [], th: [] },
+      // terminal_only: skill needs a real terminal (tmux / second shell) and is
+      // unavailable in the Claude Desktop GUI — wiki.mjs renders a banner for it.
+      ...(fm.terminal_only ? { terminal_only: true } : {}),
     },
   }];
   const edges = [];

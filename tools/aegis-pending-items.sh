@@ -61,6 +61,10 @@ YELLOW='\033[1;33m'
 BOLD='\033[1m'
 DIM='\033[2m'
 NC='\033[0m'
+# Disable color when stdout is not a real terminal (Claude Code Bash tool /
+# Claude Desktop GUI / VS Code chat) so raw ANSI escapes never leak into chat
+# as literal `[1m`. Matches repo convention. Test-safe: plain-text assertions pass.
+[ -t 1 ] || { GREEN=''; YELLOW=''; BOLD=''; DIM=''; NC=''; }
 
 case "$MODE" in
     plain)

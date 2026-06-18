@@ -97,7 +97,7 @@ When autonomy is L3 or L4, Nick Fury (`🧬`) takes control:
 - Applies Decision Matrix (P0-P10) to pick highest-priority action
 - Spawns sub-agents in background without asking (Agent tool, run_in_background=true)
 - Reports decisions with rationale (transparent, not secretive)
-- Human watches via **Shift+Down** (agent detail) and interrupts if needed
+- Human watches the inline decision narration in chat (the observability surface on Claude Desktop); terminal builds also expose **Shift+Down** for per-agent detail — the Desktop GUI has no such pane
 - Only asks human for P10 (completely empty project with no identity)
 - If no Agent dispatch in last 5 turns, main agent acts as router (natural fallback per ADR-008)
 

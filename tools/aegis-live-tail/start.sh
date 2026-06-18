@@ -36,9 +36,11 @@ ensure_fifo() {
 
 cmd_start() {
     if [[ -z "${TMUX:-}" ]]; then
-        echo "Not in tmux. Run one of:"
-        echo "  tmux new-session -s aegis"
-        echo "  bash $0 watch         # foreground tailer (no tmux)"
+        echo "Not in tmux. The split-pane live-tail is terminal-only and cannot run in the"
+        echo "Claude Desktop GUI / VS Code chat (no tmux there). Options:"
+        echo "  tmux new-session -s aegis   # terminal users: open tmux, then re-run"
+        echo "  bash $0 watch               # foreground tailer (no tmux)"
+        echo "In Desktop, skip live-tail — /aegis-status gives the same state on demand."
         exit 1
     fi
     ensure_fifo

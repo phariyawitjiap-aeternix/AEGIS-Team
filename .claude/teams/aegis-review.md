@@ -3,8 +3,8 @@ name: aegis-review
 description: "Deep multi-perspective code review team"
 lead: black-panther
 members: [loki, beast]
-mode: tmux
-requires: tmux
+mode: agent-tool
+requires: agent-tool
 ---
 
 ## Team Purpose

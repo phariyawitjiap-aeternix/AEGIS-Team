@@ -103,6 +103,14 @@ function buildSkillPage(node, graph) {
     '',
     `# Skill: ${node.name}`,
     '',
+  ];
+  if (node.meta?.terminal_only) {
+    lines.push(
+      '> ⚠️ **Terminal-only — not available in the Claude Desktop GUI.** This skill renders into a tmux / second-terminal pane, which the Claude Desktop app and VS Code chat do not have. On Desktop, use `/aegis-status` for the same state on demand.',
+      '',
+    );
+  }
+  lines.push(
     `**Profile:** ${node.meta?.profile || 'standard'}`,
     `**Source:** \`${node.source_path}\``,
     '',
@@ -110,7 +118,7 @@ function buildSkillPage(node, graph) {
     '',
     '- **EN:** ' + ((triggers.en || []).map((t) => `\`${t}\``).join(', ') || '_(none)_'),
     '- **TH:** ' + ((triggers.th || []).map((t) => `\`${t}\``).join(', ') || '_(none)_'),
-  ];
+  );
   appendListSection(lines, 'Wires (hooks that fire this skill)', wires);
   appendListSection(lines, 'Implemented in (sprints)', implementsBy);
   appendListSection(lines, 'Tests', tests);

@@ -118,8 +118,8 @@ These are not suggestions. The Stop and PreToolUse hooks block violations.
 
 | Tool | Behavior |
 |---|---|
-| `tools/aegis-autopilot.sh` | Headless loop: repeats `claude -p` sessions, resumes from handoff, stops on project-complete / stall (git-diff delta) / iteration cap / interrupt. Default: no budget cap (subscription), `--max-iterations N`, `--verbose` to watch. |
-| `tools/aegis-daemon.sh` | Opens the Claude Code TUI in a loop, auto-restarts when a session ends (watch it work live). |
+| `tools/aegis-autopilot.sh` | Headless loop: repeats `claude -p` sessions, resumes from handoff, stops on project-complete / stall (git-diff delta) / iteration cap / interrupt. Default: no budget cap (subscription), `--max-iterations N`, `--verbose` for stdout logs. **Terminal-only** — needs the `claude` CLI; not runnable from inside the Claude Desktop GUI. |
+| `tools/aegis-daemon.sh` | Opens the Claude Code TUI in a loop, auto-restarts when a session ends. **Terminal-only** — runs the CLI binary; not available inside the Claude Desktop GUI. |
 | `tools/aegis-quality-gate.sh` | review + test + spec-compliance → PASS/FAIL verdict before a task is marked DONE (`--parallel`). |
 | `tools/aegis-checkpoint.sh` | Structured state snapshot (lossless resume, complements the markdown handoff). |
 

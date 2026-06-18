@@ -11,7 +11,8 @@ triggers:
 ## Quick Reference
 Initialize AEGIS and hand control to Nick Fury. Nick Fury scans the project,
 decides what to do, and starts executing — NO human input needed. The human
-watches via tmux and can interrupt anytime.
+watches Nick Fury's decisions narrate inline in chat and can interrupt anytime
+(Ctrl+C in a terminal; the Stop button on Claude Desktop).
 
 ## Flags
 | Flag | Effect |
@@ -92,9 +93,22 @@ if [ "$WANT_DASHBOARD" = "true" ]; then
         echo "🖥️  Dashboard: RUNNING on http://localhost:4321 ✅"
       else
         echo "🖥️  Starting dashboard on http://localhost:4321 ..."
-        (cd dashboard && nohup npx next dev -p 4321 >/dev/null 2>&1 &)
-        sleep 5
-        echo "✅ Dashboard started"
+        (cd dashboard && nohup npx next dev -p 4321 >/tmp/aegis-dashboard.log 2>&1 &)
+        # Poll for actual readiness — do NOT claim "started" on a blind sleep.
+        # next dev cold-compile can exceed 5s, and a port conflict / build error
+        # would die silently (its stderr is captured in /tmp/aegis-dashboard.log).
+        UP=false
+        for _ in $(seq 1 20); do
+          sleep 1
+          CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 1 http://localhost:4321 2>/dev/null || echo "000")
+          if [ "$CODE" = "200" ]; then UP=true; break; fi
+        done
+        if [ "$UP" = "true" ]; then
+          echo "🖥️  Dashboard: RUNNING on http://localhost:4321 ✅"
+        else
+          echo "⚠️  Dashboard did not come up within 20s. See /tmp/aegis-dashboard.log."
+          echo "   (On the Claude Desktop GUI, open http://localhost:4321 in a browser to check.)"
+        fi
       fi
     fi
   fi
@@ -253,7 +267,7 @@ Then begin the autonomous cycle.
 
 See [`.claude/references/command-audience.md`](../references/command-audience.md) for the user-vs-team command split principle and [`.claude/references/aegis-start-loop-substrate.md`](../references/aegis-start-loop-substrate.md) for substrate-selection logic + the exact `/goal` text used in CC 2.1.139+ and the subagent-spawn fallback for older CC versions.
 
-In short: the team uses whichever loop primitive is available (CC 2.1.139 `/goal` if present, else legacy subagent + SendMessage heartbeat). Both run Nick Fury's persona-defined Decision Cycle inside each turn. The user-facing experience is identical: type `/aegis-start`, watch Nick Fury work.
+In short: the team uses whichever loop primitive is available (CC 2.1.139 `/goal` if present, else a legacy subagent fallback — a spawned controller re-invoked per turn, run-to-completion, no heartbeat daemon). Both run Nick Fury's persona-defined Decision Cycle inside each turn. The user-facing experience is identical: type `/aegis-start`, watch Nick Fury narrate his work in chat.
 
 #### 4b. Check Planning Artifacts — BLOCK 0 (MANDATORY)
 
@@ -353,20 +367,42 @@ Ask/Analyze → /super-spec → /aegis-breakdown → /aegis-sprint plan → buil
 🎯 Decision: P[N] — [description]
    Rationale: [why this is the highest priority]
 
+⚙️ Mode: dispatch (real Agent subagents) | inline (Nick Fury role-plays in-session)
 ⚡ Action: [what will happen next]
    → [Agent 1]: [task]
    → [Agent 2]: [task]
    → [Agent 3]: [task]
 
-🖥️ Spawning team in tmux...
+🖥️ Spawning team (Agent tool, run_in_background=true)...
 ```
 
-#### 4d. Execute
-- Spawn the appropriate team via tmux (see team configs in `.claude/teams/`)
-- Use `tmux new-session -d -s aegis-team` with split panes per agent
-- Each pane runs a Claude agent with the persona loaded
-- Monitor progress, apply quality gates
-- When complete, report results and loop back to scan
+> **Mode honesty (v15-28):** the `⚙️ Mode:` line is mandatory and must state the
+> truth. Emit `🖥️ Spawning team` / `dispatch` language **only** when you actually
+> fire the `Agent` tool this turn. For 1–2 step work that Nick Fury handles inline,
+> say `Mode: inline (role-play as <persona>)` and DROP the spawn banner. The
+> `false-ready` on-stop hook flags any turn that announces a spawn (`🖥️`,
+> "Spawning team", "dispatches <persona>") with **no** `Agent` tool_use in the
+> transcript — claiming a team you never spawned is a Golden-Rule-#4 false-ready.
+
+#### 4d. Execute (real dispatch path)
+- Decide mode from the orchestrator rule (see `skills/orchestrator.md`): ≤2 agents
+  or linear work → **inline**; 3+ independent/parallel workstreams → **dispatch**.
+- **Dispatch** = emit `Agent` tool calls (`subagent_type` = persona name, e.g.
+  `iron-man`, `run_in_background=true`), one per workstream, per
+  `.claude/references/aegis-start-loop-substrate.md`. Do NOT use tmux — the
+  Agent tool is the single spawn mechanism.
+- **Cap: max 5 concurrent Agent calls per message** (Claude Code limit; see
+  `skills/aegis-parallel-dispatch.md`). More work than that → split into waves.
+- **Cold start:** each subagent has NO shared session context. Every Agent prompt
+  MUST embed the full context it needs (file paths, spec section, success
+  criteria) or the subagent hallucinates missing project state.
+- Each subagent reads its persona from `.claude/agents/{name}.md`.
+- Backgrounded Agent calls are **run-to-completion** (ADR-008): there is no live
+  heartbeat / nudge / respawn daemon. Verify each subagent's returned
+  `tool_result` against its success criteria; re-dispatch failures next turn.
+  `SendMessage` can continue a specific spawned agent by id when needed.
+- When all subagents return (`tool_result` present for each), report results and
+  loop back to scan. Never claim the team finished while any dispatch is unmatched.
 
 ### Step 5: Log Session
 Nick Fury logs automatically, but the main session should also log:
@@ -399,7 +435,9 @@ After that single answer, she takes over completely.
 - If Nick Fury spawn fails: fall back to inline mode with warning
 - If brain directory missing: create it, then scan
 - If 2+ consecutive failures: downgrade to L1, ask human for guidance
-- If agent unresponsive > 300s: Nick Fury auto-respawns it
+- If a subagent returns an error or fails its success criteria: re-dispatch it in a
+  later turn (Agent calls are run-to-completion per ADR-008 — there is no live
+  timeout/auto-respawn timer)
 
 ### Step 2.4: Check Human Queue (surface pending before Nick Fury loop)
 

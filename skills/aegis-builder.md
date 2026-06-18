@@ -134,8 +134,8 @@ name: <team-name>
 description: "<team purpose>"
 lead: <persona name>
 members: [<persona>, <persona>]
-mode: in-process
-requires: agent-teams
+mode: agent-tool      # real subagents via the Agent tool (run-to-completion, ADR-008)
+requires: agent-tool  # NOT tmux/in-process daemon — the Claude Desktop GUI has neither
 ---
 
 ## Team Purpose

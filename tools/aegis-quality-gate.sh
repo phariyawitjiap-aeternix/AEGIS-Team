@@ -236,8 +236,11 @@ run_gate1_review() {
         if [[ "$OPT_QUIET" != "true" ]]; then
             warn "Install claude CLI to enable code review gate"
         fi
-        # Return SKIP (treated as PASS for gate sequencing)
-        printf '%s\n' '{"status":"SKIP","skip_reason":"claude CLI not available","findings":[],"critical":0,"high":0,"medium":0,"low":0,"reviewer":"black-panther"}'
+        # SKIP is NON-BLOCKING (does not flip the gate to FAIL) but it is NOT a
+        # PASS — the review never ran. run_check records it as PASS_WITH_SKIPS /
+        # unverified. On the Claude Desktop GUI there is no `claude` CLI, so this
+        # gate ALWAYS skips there; a SKIP must never be read as a green pass.
+        printf '%s\n' '{"status":"SKIP","skip_reason":"claude CLI not available","desktop_note":"claude CLI absent (e.g. Claude Desktop GUI) — code review could NOT run; SKIP != PASS","findings":[],"critical":0,"high":0,"medium":0,"low":0,"reviewer":"black-panther"}'
         return 0
     fi
 
@@ -677,7 +680,7 @@ run_gate3_spec() {
     if ! command -v claude &>/dev/null; then
         warn "claude CLI not found — skipping Gate 3"
         skip_reason="claude CLI not available"
-        printf '%s\n' '{"status":"SKIP","skip_reason":"claude CLI not available","ac_total":0,"ac_met":0,"ac_unmet":0}'
+        printf '%s\n' '{"status":"SKIP","skip_reason":"claude CLI not available","desktop_note":"claude CLI absent (e.g. Claude Desktop GUI) — spec compliance could NOT run; SKIP != PASS","ac_total":0,"ac_met":0,"ac_unmet":0}'
         return 0
     fi
 
@@ -837,6 +840,21 @@ write_verdict() {
     local gate1_json="$4"
     local gate2_json="$5"
     local gate3_json="$6"
+    local skipped_gates_str="${7:-}"
+
+    # SKIP != PASS: record which gates were skipped + an `unverified` flag so no
+    # downstream consumer (Nick Fury auto-DONE, sprint-close, checkpoint) can read
+    # a skipped gate as a green pass.
+    local unverified="false"
+    local skipped_gates_json=""
+    if [[ -n "$skipped_gates_str" ]]; then
+        unverified="true"
+        local _g
+        for _g in $skipped_gates_str; do
+            skipped_gates_json="${skipped_gates_json}\"${_g}\","
+        done
+        skipped_gates_json="${skipped_gates_json%,}"
+    fi
 
     mkdir -p "$STATE_DIR" "$LOGS_DIR"
 
@@ -857,6 +875,8 @@ write_verdict() {
   "branch": $(json_escape "$branch"),
   "timestamp": "${timestamp}",
   "verdict": "${overall_verdict}",
+  "unverified": ${unverified},
+  "skipped_gates": [${skipped_gates_json}],
   "gates": {
     "code_review": ${gate1_json},
     "tests": ${gate2_json},
@@ -901,6 +921,7 @@ cmd_status() {
                     case "$verdict" in
                         PASS) printf "${GREEN}PASS${NC}  %-20s  %s\n" "$task_from_file" "$ts" ;;
                         FAIL) printf "${RED}FAIL${NC}  %-20s  %s\n" "$task_from_file" "$ts" ;;
+                        PASS_WITH_SKIPS) printf "${YELLOW}PASS*${NC} %-20s  %s  (gates skipped — unverified)\n" "$task_from_file" "$ts" ;;
                         *)    printf "${YELLOW}?${NC}     %-20s  %s\n" "$task_from_file" "$ts" ;;
                     esac
                 else
@@ -1101,14 +1122,29 @@ run_check() {
     fi
 
     # ── Verdict ─────────────────────────────────────────────────────────
+    # SKIP is non-blocking but NOT a pass. If nothing FAILed yet a gate was
+    # skipped (e.g. no `claude` CLI on Claude Desktop), the honest verdict is
+    # PASS_WITH_SKIPS — never a clean PASS. overall_status stays PASS/FAIL for the
+    # exit code + sequencing; verdict_label is what gets recorded/reported.
+    local skipped_gates=""
+    [[ "$g1_status" == "SKIP" ]] && skipped_gates="${skipped_gates}code_review "
+    [[ "$g2_status" == "SKIP" ]] && skipped_gates="${skipped_gates}tests "
+    [[ "$g3_status" == "SKIP" ]] && skipped_gates="${skipped_gates}spec_compliance "
+    skipped_gates="${skipped_gates% }"
+    local verdict_label="$overall_status"
+    if [[ "$overall_status" == "PASS" && -n "$skipped_gates" ]]; then
+        verdict_label="PASS_WITH_SKIPS"
+    fi
+
     local verdict_file
     verdict_file=$(write_verdict \
         "${task_id:-no-task}" \
         "$branch" \
-        "$overall_status" \
+        "$verdict_label" \
         "$g1_result" \
         "$g2_result" \
-        "$g3_result")
+        "$g3_result" \
+        "$skipped_gates")
 
     if [[ "$OPT_QUIET" != "true" ]]; then
         printf '\n'
@@ -1138,10 +1174,15 @@ run_check() {
         esac
         printf '%s\n' "─────────────────────────────────────"
         printf "Overall:                "
-        case "$overall_status" in
+        case "$verdict_label" in
             PASS) printf "${GREEN}${BOLD}PASS${NC}\n" ;;
             FAIL) printf "${RED}${BOLD}FAIL${NC}\n" ;;
+            PASS_WITH_SKIPS) printf "${YELLOW}${BOLD}PASS_WITH_SKIPS${NC}\n" ;;
+            *) printf "%s\n" "$verdict_label" ;;
         esac
+        if [[ -n "$skipped_gates" ]]; then
+            warn "Unverified: ${skipped_gates// /, } SKIPPED — a SKIP is NOT a pass (usual cause: no \`claude\` CLI, e.g. the Claude Desktop GUI). Re-run in a terminal to verify before marking DONE."
+        fi
         printf '\n'
         info "Verdict written: ${verdict_file}"
     fi

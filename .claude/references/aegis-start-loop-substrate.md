@@ -9,7 +9,7 @@
 When `/aegis-start` reaches Step 4 (Activate Nick Fury), the team has a choice of loop primitive:
 
 1. **CC 2.1.139+ `/goal`** — native cross-turn continuation
-2. **Subagent + SendMessage heartbeat** — legacy fallback for older CC versions
+2. **Subagent fallback** — a spawned controller re-invoked turn by turn (run-to-completion; no heartbeat daemon) for older CC versions
 
 Detection is automatic. The user never sees the choice.
 
@@ -65,10 +65,11 @@ Agent tool call:
     2. Apply Decision Matrix — pick highest-priority action
     3. Announce your decision
     4. DISPATCH sub-agents to execute (use Agent tool, run_in_background=true)
-    5. Enter HEARTBEAT LOOP:
-       - Monitor spawned agents via SendMessage
-       - Nudge agents idle > 120s
-       - Re-spawn agents that timeout > 300s
+    5. VERIFY + ITERATE (run-to-completion, ADR-008 — NO heartbeat daemon):
+       - Each Agent call returns ONE tool_result; there is no live nudge/respawn
+       - When a subagent returns: verify its result vs success criteria, log it
+       - On failure: re-dispatch next turn (SendMessage can continue a specific
+         agent by id); never claim done while any dispatch is unmatched
        - After each task completes: verify gates, log results, pick next task
        - Check context budget each cycle
        - Continue until context >= 80% or all tasks done
@@ -79,11 +80,13 @@ Agent tool call:
     - ALWAYS announce decisions with rationale before acting
     - ALWAYS spawn sub-agents with run_in_background=true
     - ALWAYS include SUCCESS CRITERIA in sub-agent prompts
-    - ALWAYS instruct sub-agents to SendMessage back when done
+    - ALWAYS embed full cold-start context (no shared session); a subagent's final
+      message IS its return — no SendMessage-back needed for run-to-completion
+    - Max 5 concurrent Agent calls per message (Claude Code cap) — split into waves
     - Log every decision to .aegis/brain/logs/activity.log
 ```
 
-The subagent runs the same Decision Cycle as Path A. The only difference is who drives the loop: CC (`/goal`) vs the subagent itself (manual SendMessage polling).
+The subagent runs the same Decision Cycle as Path A. The only difference is who drives the loop: CC (`/goal`) vs the spawned controller, re-invoked turn by turn (run-to-completion — there is no polling daemon).
 
 ## Detection logic
 

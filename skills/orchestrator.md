@@ -19,7 +19,7 @@ Dual-mode multi-agent orchestration engine for AEGIS.
 - **Auto-select**: Simple tasks → Subagent; Complex/parallel → Agent Team
 - **Review gates**: Phase transitions require quality checks before proceeding
 - **Context budget**: Monitor token usage, compress when approaching limits
-- **Agent Teams**: Run as in-process background agents with Mother Brain heartbeat monitoring
+- **Agent Teams**: Run as in-process subagents via the Agent tool — run-to-completion (ADR-008), no live heartbeat daemon; verify each returned result
 - **Output**: Task status logged to `.aegis/brain/logs/activity.log`
 
 ## Full Instructions
@@ -35,6 +35,22 @@ ELSE:
     mode = "subagent"  # fallback
     log_warning("agent teams unavailable, falling back to subagent mode")
 ```
+
+> **Two distinct things, do not conflate them:**
+> - **`subagent` mode** = Nick Fury / the persona runs **inline in the current
+>   session** (role-play overlay). NO `Agent` tool is fired. Cheap, fast, shared
+>   context — correct for 1–2 step / linear work.
+> - **`agent-team` mode** = real concurrent subagents via the **`Agent` tool**
+>   (`run_in_background=true`, `subagent_type` = persona). Isolated cold-start
+>   context, capped at 5 concurrent. Correct for 3+ independent workstreams.
+>
+> **Mode honesty (v15-28, enforced):** announce the chosen mode every time —
+> `⚙️ Mode: inline (role-play as <persona>)` or `⚙️ Mode: dispatch (Agent tool)`.
+> Use spawn language ("Spawning team", "dispatches <persona>", 🖥️) **only** when
+> `agent-team` mode actually fires the `Agent` tool this turn. The `false-ready`
+> on-stop hook ([`.claude/hooks/lib/false-ready.sh`](../.claude/hooks/lib/false-ready.sh))
+> flags any spawn announcement with no matching `Agent` tool_use — claiming a
+> team you role-played inline is a false-ready. Test: `tests/test-false-ready-dispatch-claim.sh`.
 
 ### Subagent Mode
 
@@ -62,8 +78,8 @@ Parallel execution via background agents. Best for:
 2. Load team config from `.claude/teams/` if applicable
 3. Spawn agents via Agent tool (run_in_background=true, named)
 4. Each agent reads its persona from `.claude/agents/{name}.md`
-5. Mother Brain monitors health via heartbeat loop (nudge idle > 120s, respawn > 300s)
-6. Agents communicate via SendMessage at synchronization points
+5. Agent calls are run-to-completion (ADR-008) — no live nudge/respawn daemon exists. Verify each subagent's returned `tool_result` against success criteria when it returns; re-dispatch failures in a later turn
+6. `SendMessage` continues a specific spawned agent by id when a follow-up is needed (it is NOT a polling heartbeat)
 7. Apply review gates before phase transitions
 8. Synthesize final output
 
@@ -134,10 +150,10 @@ Agents communicate via structured message types:
 
 ### Error Handling
 
-1. **Agent timeout** (>10 min no response): Log warning, reassign task
+1. **Subagent error / missed success criteria**: re-dispatch in a later turn (Agent calls are run-to-completion — no live timeout monitor to "reassign")
 2. **Gate failure** (3 consecutive): Escalate to human with summary
 3. **Context overflow**: Archive and restart with summary
-4. **tmux crash**: Fall back to subagent, resume from last gate
+4. **Dispatch failure** (Agent spawn fails): fall back to inline mode, resume from last gate
 5. **Conflicting outputs**: Invoke Captain America for resolution
 
 ### Logging
