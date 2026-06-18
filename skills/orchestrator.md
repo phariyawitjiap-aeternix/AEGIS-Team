@@ -36,6 +36,22 @@ ELSE:
     log_warning("agent teams unavailable, falling back to subagent mode")
 ```
 
+> **Two distinct things, do not conflate them:**
+> - **`subagent` mode** = Nick Fury / the persona runs **inline in the current
+>   session** (role-play overlay). NO `Agent` tool is fired. Cheap, fast, shared
+>   context — correct for 1–2 step / linear work.
+> - **`agent-team` mode** = real concurrent subagents via the **`Agent` tool**
+>   (`run_in_background=true`, `subagent_type` = persona). Isolated cold-start
+>   context, capped at 5 concurrent. Correct for 3+ independent workstreams.
+>
+> **Mode honesty (v15-28, enforced):** announce the chosen mode every time —
+> `⚙️ Mode: inline (role-play as <persona>)` or `⚙️ Mode: dispatch (Agent tool)`.
+> Use spawn language ("Spawning team", "dispatches <persona>", 🖥️) **only** when
+> `agent-team` mode actually fires the `Agent` tool this turn. The `false-ready`
+> on-stop hook ([`.claude/hooks/lib/false-ready.sh`](../.claude/hooks/lib/false-ready.sh))
+> flags any spawn announcement with no matching `Agent` tool_use — claiming a
+> team you role-played inline is a false-ready. Test: `tests/test-false-ready-dispatch-claim.sh`.
+
 ### Subagent Mode
 
 Sequential execution within a single session. Best for:

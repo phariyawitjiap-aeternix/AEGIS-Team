@@ -353,20 +353,34 @@ Ask/Analyze → /super-spec → /aegis-breakdown → /aegis-sprint plan → buil
 🎯 Decision: P[N] — [description]
    Rationale: [why this is the highest priority]
 
+⚙️ Mode: dispatch (real Agent subagents) | inline (Nick Fury role-plays in-session)
 ⚡ Action: [what will happen next]
    → [Agent 1]: [task]
    → [Agent 2]: [task]
    → [Agent 3]: [task]
 
-🖥️ Spawning team in tmux...
+🖥️ Spawning team (Agent tool, run_in_background=true)...
 ```
 
-#### 4d. Execute
-- Spawn the appropriate team via tmux (see team configs in `.claude/teams/`)
-- Use `tmux new-session -d -s aegis-team` with split panes per agent
-- Each pane runs a Claude agent with the persona loaded
-- Monitor progress, apply quality gates
-- When complete, report results and loop back to scan
+> **Mode honesty (v15-28):** the `⚙️ Mode:` line is mandatory and must state the
+> truth. Emit `🖥️ Spawning team` / `dispatch` language **only** when you actually
+> fire the `Agent` tool this turn. For 1–2 step work that Nick Fury handles inline,
+> say `Mode: inline (role-play as <persona>)` and DROP the spawn banner. The
+> `false-ready` on-stop hook flags any turn that announces a spawn (`🖥️`,
+> "Spawning team", "dispatches <persona>") with **no** `Agent` tool_use in the
+> transcript — claiming a team you never spawned is a Golden-Rule-#4 false-ready.
+
+#### 4d. Execute (real dispatch path)
+- Decide mode from the orchestrator rule (see `skills/orchestrator.md`): ≤2 agents
+  or linear work → **inline**; 3+ independent/parallel workstreams → **dispatch**.
+- **Dispatch** = emit `Agent` tool calls (`subagent_type` = persona name, e.g.
+  `iron-man`, `run_in_background=true`), one per workstream, per
+  `.claude/references/aegis-start-loop-substrate.md`. Do NOT use tmux — the
+  Agent tool is the single spawn mechanism.
+- Each subagent reads its persona from `.claude/agents/{name}.md`.
+- Monitor via SendMessage / heartbeat, apply quality gates.
+- When all subagents return (`tool_result` present for each), report results and
+  loop back to scan. Never claim the team finished while any dispatch is unmatched.
 
 ### Step 5: Log Session
 Nick Fury logs automatically, but the main session should also log:
