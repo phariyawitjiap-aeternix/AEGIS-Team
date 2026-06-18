@@ -818,6 +818,11 @@ test run, spec compliance) and writes a PASS/FAIL verdict to
 `.aegis/brain/state/quality-gate-<task>.json`. Nick Fury reads the verdict:
 
 - **verdict == PASS** -> move task to DONE
+- **verdict == PASS_WITH_SKIPS** -> one or more gates SKIPPED (unverified — e.g. no
+  `claude` CLI on the Claude Desktop GUI, so the code-review / spec gates could not
+  run). A SKIP is **NOT** a pass: do **NOT** auto-DONE. Re-run the gate in a terminal,
+  or escalate for human verification. Inspect the `unverified` / `skipped_gates`
+  fields in the verdict file.
 - **verdict == FAIL** -> move task back to IN_PROGRESS, attach findings, dispatch
   Spider-Man to fix, then re-run the gate
 

@@ -39,8 +39,23 @@ Recommendation: [what to change]
 | 0 critical findings | PASS | Approved |
 | 0 critical + warnings | CONDITIONAL | Approved with follow-up |
 | 1+ critical findings | FAIL | Blocked |
+| Gate could not run (e.g. no `claude` CLI on Claude Desktop) | SKIP | **NOT approved** — see below |
 
 Consensus: at least 2 agents agree on PASS. Captain America arbitrates disagreements.
+
+### SKIP ≠ PASS (honesty rule — CLAUDE.md Rule 1)
+
+A **SKIP** means the gate **did not run** — it is **not** a pass and must never be
+counted as one. `tools/aegis-quality-gate.sh` Gate 1 (code review) and Gate 3 (spec
+compliance) call `claude -p`, which does not exist inside the Claude Desktop GUI, so
+on Desktop they **always SKIP**. The tool now records this honestly:
+
+- A skipped gate emits `"status":"SKIP"` with a `desktop_note` explaining it could not run.
+- When no gate FAILed but ≥1 SKIPped, the overall verdict is **`PASS_WITH_SKIPS`** (with
+  `"unverified": true` and a `skipped_gates` list) — **never** a clean `PASS`.
+- A `PASS_WITH_SKIPS` verdict must **NOT** auto-advance a task to DONE, and must **NOT** be
+  counted as a passed gate in sprint-close or coverage reporting. Re-run the skipped gates
+  in a terminal (where `claude` exists) or escalate for human verification.
 
 ---
 
