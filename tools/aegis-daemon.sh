@@ -35,6 +35,22 @@ if [[ -n "$PROJECT_DIR" ]]; then
     cd "$PROJECT_DIR" || exit 1
 fi
 
+# ── Terminal-only guard ────────────────────────────────────────────────────
+# This daemon launches the interactive `claude` TUI in a loop. That only works
+# in a real terminal: the Claude Desktop GUI (and VS Code chat) ships NO `claude`
+# CLI binary and has no interactive stdin, so the loop below would spin failing
+# every cooldown. Detect that case up front and exit cleanly with guidance.
+# Guard is test-safe: it runs only when this file is EXECUTED (the --help path
+# above already exited), never when sourced, and prints to stderr + exit 0 so a
+# CI runner without `claude` doesn't register a failure.
+if ! command -v claude >/dev/null 2>&1 || [[ ! -t 0 ]]; then
+    echo "aegis-daemon.sh is terminal-only: it loops the interactive Claude Code TUI." >&2
+    echo "The Claude Desktop GUI / VS Code chat has no \`claude\` CLI and no interactive" >&2
+    echo "stdin, so this daemon cannot run there. Inside Desktop, just run /aegis-start —" >&2
+    echo "the team takes over for the session without a restart loop." >&2
+    exit 0
+fi
+
 PROJECT_NAME="$(basename "$(pwd)")"
 
 echo ""

@@ -215,7 +215,7 @@ node_modules/
 ### Recovery Procedures
 1. **Secret exposure**: Rotate secret -> Remove from git history -> Scan all branches -> Notify human
 2. **Branch corruption**: `git reflog` to find safe point -> `git checkout -b recovery <safe-hash>` -> Notify human
-3. **Agent deadlock**: Mother Brain detects via heartbeat -> Respawn stuck agents -> Log state -> Restart from last checkpoint
+3. **Agent failure / no-return**: detected when a subagent's returned `tool_result` is missing, errored, or fails verification (ADR-008: Agent calls run to completion -- no heartbeat detection, no auto-respawn daemon) -> Log the failed return + last good checkpoint -> Nick Fury re-dispatches the work in a later turn from that checkpoint
 4. **Context overflow**: Write emergency retro -> Archive conversation -> Start fresh session with brain reload
 
 ---

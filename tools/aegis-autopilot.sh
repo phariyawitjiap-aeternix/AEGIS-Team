@@ -160,7 +160,10 @@ fi
 # it must not require the binary (CI runners have no claude on PATH — this check
 # ran before the dry-run early-exit and broke aegis-v15-28-tools-test on CI).
 if [[ "$DRY_RUN" != true ]] && ! command -v claude &>/dev/null; then
-    err "claude CLI not found. Install: https://claude.ai/download"
+    err "aegis-autopilot.sh is terminal-only: it loops headless 'claude -p' sessions."
+    err "No 'claude' CLI on PATH — the Claude Desktop GUI app ships none and cannot run this."
+    err "Inside Desktop, just type /aegis-start (the team runs for the session, no headless loop)."
+    err "To use autopilot from a terminal, install the CLI: https://claude.ai/download"
     exit 1
 fi
 

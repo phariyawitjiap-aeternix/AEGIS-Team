@@ -352,7 +352,7 @@ cp "${TMP_DIR}/.claude/hooks/"*.sh "${TARGET_DIR}/.claude/hooks/" 2>/dev/null ||
 cp "${TMP_DIR}/.claude/hooks/profiles.json" "${TARGET_DIR}/.claude/hooks/" 2>/dev/null || true
 chmod +x "${TARGET_DIR}/.claude/hooks/"*.sh 2>/dev/null || true
 HOOK_COUNT=$(ls "${TARGET_DIR}/.claude/hooks/"*.sh 2>/dev/null | wc -l | tr -d ' ' || echo 0)
-success "${HOOK_COUNT} hooks installed (guard-bash, guard-write, session-start, aegis-version-check, post-tool-use, post-edit-accumulate, on-stop, run-with-flags, tinman-heartbeat)"
+success "${HOOK_COUNT} hooks installed (guard-bash, guard-write, session-start, aegis-version-check, post-tool-use, post-edit-accumulate, on-stop, run-with-flags)"
 
 # v15-14 (issue #182): hook library modules — quality-check, mbp-scan,
 # false-ready, queue-banner. on-stop.sh sources these at session end; if

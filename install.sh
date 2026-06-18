@@ -165,30 +165,41 @@ else
     success "tmux found: $(tmux -V)"
 fi
 
-# Check if claude CLI is available
+# Check if claude CLI is available.
+# This installer only copies files + wires settings.json; it does NOT need the
+# `claude` binary to install. The binary is required only for the terminal-only
+# extras (tools/aegis-autopilot.sh, tools/aegis-daemon.sh) and headless `claude -p`
+# verification. The primary AEGIS runtime — Claude Code inside the Claude Desktop
+# GUI app — has no `claude` CLI on PATH and does not need one (you just type
+# /aegis-start in the app). So a missing CLI is a WARNING, not a hard failure.
 if ! command -v claude &>/dev/null; then
-    # CI test fixtures pass AEGIS_INSTALL_SKIP_CLAUDE_CHECK=1 since GitHub
-    # Actions runners don't have claude CLI by default. The fixture is testing
-    # delivery (file copy + settings.json wiring), not runtime usage. Real
-    # users still hit this hard error.
+    # CI test fixtures pass AEGIS_INSTALL_SKIP_CLAUDE_CHECK=1; same warning path.
     if [[ "${AEGIS_INSTALL_SKIP_CLAUDE_CHECK:-}" = "1" ]]; then
         warn "claude CLI check skipped (AEGIS_INSTALL_SKIP_CLAUDE_CHECK=1, CI/test mode)"
     else
-        error "Claude Code CLI is REQUIRED but not found."
-        echo "  Install with: npm install -g @anthropic-ai/claude-code"
-        echo "  Requires Node.js 18+: brew install node"
-        exit 1
+        warn "claude CLI not found — that's fine if you use AEGIS inside the Claude Desktop GUI app."
+        echo "  The GUI runtime needs NO CLI: install finishes, then type /aegis-start in the app."
+        echo "  Install the CLI only for terminal-only extras (autopilot/daemon, headless runs):"
+        echo "    npm install -g @anthropic-ai/claude-code   (requires Node.js 18+: brew install node)"
     fi
 else
     success "claude CLI found: $(claude --version 2>&1 | head -1)"
 fi
 
-# Check CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS env var
+# Check CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS env var.
+# NOTE: AEGIS's own .claude/settings.json (installed below) already sets this in
+# its "env" block, and that block is read by BOTH the terminal CLI and the Claude
+# Desktop GUI app — so the GUI runtime gets it automatically once settings.json
+# lands. The shell-rc export below is a convenience for the TERMINAL CLI only; the
+# Desktop GUI does NOT inherit your shell's .zshrc/.bashrc, so that export is inert
+# there (and unnecessary, because settings.json covers it).
 if [[ "${CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS:-}" != "1" ]]; then
-    warn "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS is NOT set."
+    warn "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS is NOT set in this shell."
     echo ""
-    echo "  This env var is REQUIRED for AEGIS Agent Teams to work."
-    echo "  Without it, team commands (/aegis-team-*) won't spawn agents."
+    echo "  AEGIS's .claude/settings.json (installed below) sets it for both the"
+    echo "  terminal CLI and the Claude Desktop GUI — restart Claude Code after install."
+    echo "  The shell export below is an extra convenience for the terminal CLI only;"
+    echo "  the Desktop GUI does not read your shell rc, so it doesn't need it."
     echo ""
 
     # Detect shell config file

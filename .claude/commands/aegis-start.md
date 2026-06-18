@@ -93,9 +93,22 @@ if [ "$WANT_DASHBOARD" = "true" ]; then
         echo "🖥️  Dashboard: RUNNING on http://localhost:4321 ✅"
       else
         echo "🖥️  Starting dashboard on http://localhost:4321 ..."
-        (cd dashboard && nohup npx next dev -p 4321 >/dev/null 2>&1 &)
-        sleep 5
-        echo "✅ Dashboard started"
+        (cd dashboard && nohup npx next dev -p 4321 >/tmp/aegis-dashboard.log 2>&1 &)
+        # Poll for actual readiness — do NOT claim "started" on a blind sleep.
+        # next dev cold-compile can exceed 5s, and a port conflict / build error
+        # would die silently (its stderr is captured in /tmp/aegis-dashboard.log).
+        UP=false
+        for _ in $(seq 1 20); do
+          sleep 1
+          CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 1 http://localhost:4321 2>/dev/null || echo "000")
+          if [ "$CODE" = "200" ]; then UP=true; break; fi
+        done
+        if [ "$UP" = "true" ]; then
+          echo "🖥️  Dashboard: RUNNING on http://localhost:4321 ✅"
+        else
+          echo "⚠️  Dashboard did not come up within 20s. See /tmp/aegis-dashboard.log."
+          echo "   (On the Claude Desktop GUI, open http://localhost:4321 in a browser to check.)"
+        fi
       fi
     fi
   fi

@@ -17,6 +17,11 @@ YELLOW='\033[1;33m'
 BOLD='\033[1m'
 DIM='\033[2m'
 NC='\033[0m'
+# Disable color when stdout is not a real terminal (Claude Code Bash tool /
+# Claude Desktop GUI / VS Code chat), so raw ANSI escapes never leak into chat
+# as literal `[1m` garbage. Matches repo convention (aegis-shell-footgun-scan.sh).
+# Test-safe: captured (non-TTY) output becomes plain text, assertions still match.
+[ -t 1 ] || { GREEN=''; RED=''; YELLOW=''; BOLD=''; DIM=''; NC=''; }
 
 echo -e "${BOLD}AEGIS status${NC}"
 echo "─────────────────────────────────────"

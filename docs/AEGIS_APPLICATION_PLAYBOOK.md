@@ -455,7 +455,7 @@ After full setup, your project should have:
 your-project/
   .aegis/
     brain/
-      logs/              # activity.log, heartbeat.log, decision-audit.log
+      logs/              # activity.log, decision-audit.log
       metrics/           # judgment-fallback-counter.json
       resonance/         # project-identity.md, architecture-decisions.md, team-conventions.md
       learnings/         # session learnings (auto-generated)
