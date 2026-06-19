@@ -22,7 +22,9 @@ mkdir -p "$(dirname "$LOCK")" 2>/dev/null
 # If flock is not available (macOS without coreutils), skip — fail-OPEN.
 if ! command -v flock >/dev/null 2>&1; then
     # Run synchronously with the cheap incremental gate; exit 0 regardless.
-    node "$BUILD" --incremental --quiet >/dev/null 2>&1
+    # --root "$REPO" anchors the build to the project root even if this hook
+    # runs from a drifted cwd (2026-06-19 cwd-drift bug, P-012).
+    node "$BUILD" --incremental --quiet --root "$REPO" >/dev/null 2>&1
     exit 0
 fi
 
@@ -40,7 +42,7 @@ DEBOUNCE_S="${AEGIS_BRAIN_GRAPH_DEBOUNCE_S:-10}"
     exec 9>"$LOCK" 2>/dev/null
     if flock -n 9 2>/dev/null; then
         sleep "$DEBOUNCE_S"
-        node "$BUILD" --incremental --quiet 2>/dev/null
+        node "$BUILD" --incremental --quiet --root "$REPO" 2>/dev/null
         flock -u 9 2>/dev/null
     fi
 } >/dev/null 2>&1 </dev/null & disown 2>/dev/null

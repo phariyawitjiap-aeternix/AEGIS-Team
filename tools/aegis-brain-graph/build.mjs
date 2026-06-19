@@ -19,6 +19,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
+import { execSync } from 'node:child_process';
 import {
   BUILDER_VERSION,
   writeGraphAtomic,
@@ -33,10 +34,31 @@ import {
 
 // ─── CLI ───────────────────────────────────────────────────────────────────
 
+// Resolve the repo root WITHOUT trusting the current working directory.
+// Driver (2026-06-19 cwd-drift bug, P-012): a hook ran build.mjs while cwd had
+// drifted to `.aegis/brain/learnings/`, so a cwd-relative default scanned the
+// wrong tree (0 sources) and wrote a stray empty graph under the subdir.
+// Priority: explicit --root (handled by caller) > $CLAUDE_PROJECT_DIR > git
+// toplevel > cwd. The first two anchor hook/agent callers; git-root anchors
+// humans running from a subdirectory; cwd is the last-resort fallback.
+function defaultRoot() {
+  const envRoot = process.env.CLAUDE_PROJECT_DIR;
+  if (envRoot && fs.existsSync(envRoot)) return path.resolve(envRoot);
+  try {
+    const top = execSync('git rev-parse --show-toplevel', {
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).toString().trim();
+    if (top && fs.existsSync(top)) return top;
+  } catch {
+    // not a git repo / git unavailable — fall through
+  }
+  return process.cwd();
+}
+
 function parseArgs(argv) {
   const args = {
     mode: 'incremental',
-    root: process.cwd(),
+    root: defaultRoot(),
     quiet: false,
     json: false,
   };
@@ -483,6 +505,14 @@ function build({ root, mode }) {
 
   const finalNodes = [...nodeMap.values()];
 
+  // Empty-graph guard (2026-06-19 cwd-drift bug). A real AEGIS repo always has
+  // skills/ + tools/, so 0 discovered nodes means we are scanning the wrong
+  // root (drifted cwd / bad --root), not a legitimately empty brain. Refuse to
+  // write so we neither create a stray empty graph nor clobber a good one.
+  if (finalNodes.length === 0) {
+    return { refused: true, reason: 'no-sources', root, graphDir };
+  }
+
   // Dedupe edges (key: src|kind|dst)
   const edgeMap = new Map();
   for (const e of allEdges) {
@@ -517,6 +547,20 @@ function main() {
   } catch (e) {
     if (!args.quiet) console.error(`graph build failed: ${e.message}`);
     process.exit(args.json ? 1 : 1);
+  }
+  if (result.refused) {
+    // Always warn (even with --quiet / --json) — this signals a misconfigured
+    // root, which is exactly the failure we must not swallow silently.
+    console.error(
+      `graph: refusing to write — 0 sources discovered under ${result.root}. ` +
+      `This usually means the wrong root (drifted cwd or bad --root); ` +
+      `existing graph at ${result.graphDir} left untouched. ` +
+      `Pass --root <repo> or set CLAUDE_PROJECT_DIR.`
+    );
+    if (args.json) process.stdout.write(JSON.stringify(result) + '\n');
+    // Fail-OPEN: hooks must not break the session. Exit 0 so the warning is
+    // advisory, not fatal.
+    process.exit(0);
   }
   if (args.json) {
     process.stdout.write(JSON.stringify(result) + '\n');
