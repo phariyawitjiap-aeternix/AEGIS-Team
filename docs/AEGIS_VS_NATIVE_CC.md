@@ -72,6 +72,27 @@ win:
 → **P2 is blocked on a precursor**: retire/relax these internal consumers
 first, *then* strip frontmatter. Effort/risk are higher than the vote assumed.
 
+#### Deeper finding (2026-06-19, D-009) — P2 is downstream of P4, not standalone
+
+A second check overturned the premise entirely: **AEGIS skills are not native
+skills at all.** There is no `.claude/skills/` directory; `install.sh` copies
+`skills/*.md` to `TARGET/skills/` (a plain folder), so native Claude Code never
+loads them, never reads their `description`, and never auto-triggers them. They
+are AEGIS-internal docs invoked via `/aegis-*` commands, the router, and
+personas. The `triggers.en[]/th[]` arrays are therefore the *actual* matching
+mechanism for AEGIS's own routing/help — not redundant carryover.
+
+Consequence: the "native reads `description`, delete the arrays" rationale only
+becomes true **after P4** repackages AEGIS as a native plugin and moves skills
+into `.claude/skills/<name>/SKILL.md`. Only then does description-based
+triggering apply and the arrays become migratable (triggers → description),
+*and* the brain-graph/doc-canon consumers must be ported in the same pass.
+
+**Re-scope: P2 is no longer an independent Wave-1 quick win. It is a sub-step of
+P4** (migrate triggers→description while converting to native plugin format).
+Do not execute P2 in isolation — it breaks brain-graph/doc-canon/router for
+zero native benefit.
+
 ## Surface-by-surface comparison
 
 ### Subagent dispatch
