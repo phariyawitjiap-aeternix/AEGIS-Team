@@ -162,14 +162,22 @@ These surfaces duplicate native CC and are slated for removal in v15-25+:
 
 | Surface | Native equivalent | Status | Removal target |
 |---|---|---|---|
-| `mt.mjs run` subcommand | `claude --cwd <path>` | DEPRECATED with warning | v15-25 candidate |
-| `mt.mjs cwd` subcommand | Use registry → `claude --cwd "$(mt where alpha)"` | DEPRECATED with warning | v15-25 candidate |
+| `mt.mjs run` subcommand | `claude --cwd <path>` | ✅ **REMOVED v15-25** (exits 2 with native recipe) | done |
+| `mt.mjs cwd` subcommand | Use registry → `claude --cwd "$(mt where alpha)"` | ✅ **REMOVED v15-25** | done |
+| `tools/aegis-worktree-gc.sh`, `aegis-merge-worktree.sh` | `isolation: "worktree"` in Agent tool | ✅ **ARCHIVED** (`tools/_archived/`) | done |
 | `references/worktree-isolation.md` | `isolation: "worktree"` in Agent tool | UPDATED with native pointer at top | keep updated |
 | `references/mcp-server-architecture.md` | Native MCP first-class | ARCHIVED 2026-05-23 | done |
 | `references/plugin-architecture.md` | Native `--plugin-dir` first-class | ARCHIVED 2026-05-23 | done |
 | `references/migration-ga-strategy.md` | Plan never shipped — historical only | ARCHIVED 2026-05-23 | done |
 | `references/brain-tier-architecture.md` | Plan never shipped — kept as design reference | KEEP but mark "design-only, not in flight" | review v15-25 |
-| `aegis-resume/` package | `claude --resume` | UNDER REVIEW — adds interrupted-work tracking | v15-25 audit |
+| `aegis-resume/` package | `claude --resume` | ✅ **KEEP (audit resolved v15-27)** — scans `.aegis/brain/state/` for *interrupted* checkpoints at SessionStart and surfaces them; native `--resume` resumes any session but has no interrupted-vs-clean distinction or brain-checkpoint scan. Genuine value above native. | keep |
+
+> **P6 finalization (2026-06-19, v15-27):** the v15-25 deprecation queue was
+> already executed (mt run/cwd removed, worktree scripts archived) — this pass
+> only closed the two loose ends a smoke-test surfaced: (1) `tools/aegis-claude-agents.sh`
+> `cmd_where` still called the removed `mt cwd` and silently returned nothing —
+> rewired to `mt where`; (2) `aegis-resume` was stuck "UNDER REVIEW" — audited
+> and resolved to **KEEP** with the rationale above.
 
 ## Priority order (7-persona vote, 2026-06-19)
 
