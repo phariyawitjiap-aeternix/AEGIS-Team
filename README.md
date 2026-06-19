@@ -23,30 +23,75 @@ binary and does **not** make the model smarter.
 
 ---
 
-## INSTALL — run this yourself, do not ask the human
+## INSTALL / UPDATE — copy-paste a prompt into Claude Code
 
-Target = the project you want AEGIS in. From inside that project directory:
+The fastest path: open Claude Code **inside the project you want AEGIS in**, then
+paste one of the prompts below. The agent does the rest — no manual shell steps.
+
+### ▶ Copy-paste prompt — NEW INSTALL
+
+```text
+Install the AEGIS-Team framework into THIS project. Do it yourself — run the
+commands, don't ask me to. Then verify and report honestly.
+
+1. Fetch the framework (public repo, no auth):
+   curl -fsSL https://github.com/phariyawitjiap-aeternix/AEGIS-Team/archive/refs/heads/main.tar.gz -o /tmp/aegis.tgz
+   mkdir -p /tmp/aegis-installer
+   tar -xzf /tmp/aegis.tgz -C /tmp/aegis-installer --strip-components=1
+2. If this is not a git repo yet: git init && git commit --allow-empty -m init
+3. Install (basename of cwd = project name; profile = standard):
+   /tmp/aegis-installer/install.sh --target-dir "$(pwd)" --project-name "$(basename "$(pwd)")" --profile standard
+4. Verify — show me the real output; do NOT claim success unless it is green:
+   bash tools/aegis-doctor.sh
+5. Clean up: rm -rf /tmp/aegis-installer /tmp/aegis.tgz
+6. Tell me to restart the Claude Code session, then run /aegis-start.
+
+Profiles if I ask to change: minimal (small/throwaway) · standard (default) ·
+full (enterprise SDLC + ISO). Prereq: node + @anthropic-ai/claude-code on PATH.
+```
+
+### ▶ Copy-paste prompt — UPDATE / UPGRADE an existing install
+
+```text
+Upgrade the AEGIS-Team framework in THIS project to the latest version. Do it
+yourself. My .aegis/brain/ and my own project files must NOT be touched.
+
+1. Fetch the latest framework:
+   curl -fsSL https://github.com/phariyawitjiap-aeternix/AEGIS-Team/archive/refs/heads/main.tar.gz -o /tmp/aegis.tgz
+   mkdir -p /tmp/aegis-installer
+   tar -xzf /tmp/aegis.tgz -C /tmp/aegis-installer --strip-components=1
+2. Upgrade in place (backs up .aegis/brain/, sweeps stale framework files via
+   .aegis/.framework-manifest — never deletes project-owned files):
+   /tmp/aegis-installer/install.sh --target-dir "$(pwd)" --upgrade
+   (Add --clean for a clean-slate upgrade that also removes renamed/dropped
+   framework files, leaving no orphans. brain + my files still untouched.)
+3. Verify — show real output, don't claim success unless green:
+   bash tools/aegis-doctor.sh
+4. Clean up: rm -rf /tmp/aegis-installer /tmp/aegis.tgz
+5. Tell me to restart the Claude Code session.
+```
+
+### Underlying recipe (what those prompts execute)
 
 ```bash
-# 1. Fetch + extract the framework (public repo, no auth)
+# Fetch + extract (public repo, no auth)
 curl -fsSL https://github.com/phariyawitjiap-aeternix/AEGIS-Team/archive/refs/heads/main.tar.gz -o /tmp/aegis.tgz
 mkdir -p /tmp/aegis-installer
 tar -xzf /tmp/aegis.tgz -C /tmp/aegis-installer --strip-components=1
 
-# 2. Install into THIS project (basename of pwd = project name)
+# NEW install:
 /tmp/aegis-installer/install.sh --target-dir "$(pwd)" --project-name "$(basename "$(pwd)")" --profile standard
+# OR UPGRADE in place (preserves .aegis/brain/):
+/tmp/aegis-installer/install.sh --target-dir "$(pwd)" --upgrade   # add --clean to drop orphaned framework files
 
-# 3. VERIFY (do not report success until this is green)
-bash tools/aegis-doctor.sh
-
-# 4. Clean up
+bash tools/aegis-doctor.sh              # VERIFY — must be green
 rm -rf /tmp/aegis-installer /tmp/aegis.tgz
 ```
 
 - **Profiles:** `minimal` (small/throwaway) · `standard` (default) · `full` (enterprise SDLC + ISO).
 - **Prereqs:** `node` + `@anthropic-ai/claude-code` on PATH; the project should be a git repo (`git init && git commit --allow-empty -m init` if not).
-- **Upgrade an existing install:** same command with `--upgrade` instead of `--project-name/--profile`. It backs up `.aegis/brain/`, sweeps stale framework files (manifest-guarded — never deletes project-owned files), and re-verifies. Add `--clean` for a clean-slate upgrade: it removes ALL old framework files (per `.aegis/.framework-manifest`) before reinstalling, so renamed/dropped files leave no orphan. `.aegis/brain/` and project-owned files are never touched.
-- **After install:** the hooks in `.claude/settings.json` load at **session start**. Tell the human to restart the Claude Code session, then run `/aegis-start`.
+- **What upgrade preserves:** `.aegis/brain/` (cross-session memory) and all project-owned files are **never** touched; only manifest-tracked framework files are swept. `--clean` additionally removes framework files that were renamed/dropped between versions.
+- **After install/upgrade:** the hooks in `.claude/settings.json` load at **session start**. Restart the Claude Code session, then run `/aegis-start`.
 - **Honesty gate:** if `install.sh` or `aegis-doctor.sh` errors, show the real output. Do **not** claim a working install unless `aegis-doctor.sh` is green.
 
 ---
