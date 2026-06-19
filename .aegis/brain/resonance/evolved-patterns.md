@@ -230,3 +230,34 @@
 **Rationale**: Treating CONDITIONAL as "soft approval" would have shipped a shell-injection vulnerability in v9-04 and a non-functional integration in v9-05. The discipline pays for all the rounds where it catches nothing.
 
 **Application**: All AEGIS review flows. The temptation to skip round-2 is highest when Spider-Man says "I fixed it" -- that is precisely when round-2 is most valuable.
+
+---
+
+## P-016: GitHub API/PR State is the Source of Truth, Not the Git/CLI Surface
+
+**Evidence**: 3 occurrences in one session (2026-05-08, all confidence high)
+- `git branch --merged origin/main` false-negatived 10 squash-merged branches as "risky to delete"; the PR `mergedAt` field was authoritative (`2026-05-08_squash-merge-detection-via-pr-state.md`)
+- `gh pr create` returned `must be a collaborator` despite `viewerPermission: ADMIN` — a CLI repo-resolution quirk, not a token-scope problem; direct GraphQL `createPullRequest` with explicit repo node ID succeeded on the same token (`2026-05-08_gh-pr-create-graphql-fallback.md`)
+- `gh api` write/delete returned `404` on branches that demonstrably existed — active account silently drifted between two logged-in accounts; GitHub returns 404 (not 403) to avoid leaking existence (`2026-05-08_gh-auth-account-drift.md`)
+
+**Pattern**: For "did this ship / can I act on this repo" questions, trust GitHub's API record (PR `state`/`mergedAt`, repo node ID, `viewerPermission`) over git lineage or the `gh` convenience wrappers. The CLI surface adds a resolution/identity layer that fails where the raw API succeeds.
+
+**Rationale**: git lineage breaks under squash-merge (new SHA on main); `gh pr create` adds repo-resolution that can wrongly report permission failure; multi-account auth drifts silently and returns misleading 404s. Each looks like a different bug but the fix is the same — drop to the API with explicit IDs and verify against PR state.
+
+**Application**: branch-cleanup fuses `git --merged` + PR-state before proposing deletion; PR creation falls back to the GraphQL mutation with repo node ID; prefix repo-owner-dependent writes with `gh auth switch -u <owner>`. When a `gh` command fails counter to verified permissions, re-check via `gh api`/GraphQL before concluding "blocked".
+
+---
+
+## P-017: Measure "Verified," Not "Done" (Produced ≠ Verified)
+
+**Evidence**: 3+ occurrences, cross-sprint (confidence high)
+- Contra-Thai: 3,400 LOC + 73 unit tests + 36 commits + a "100% velocity" Sprint 3 close — and the product never compiled in Unity Editor (`2026-05-21_verified-not-produced-bug-class.md`)
+- Sub-agent returns across sprint reports conflated "artifact exists" with "command passed"
+- Research docs cited URLs without probing them → 5 fabricated API bugs propagated downstream
+- Closed via enforced code in v15-19/v15-20 (4/5 framework gaps): `aegis-coverage-screen.sh`, `aegis-sprint-close-gate.sh`, `aegis-return-validator.sh`, `aegis-research-probe.sh`
+
+**Pattern**: Every status claim (counts, status booleans, DONE/SHIPPED/closures) separates `[PRODUCED]` (artifact exists) from `[VERIFIED]` (an executed command's output proves it). Default to the weaker true claim; never put success ornamentation (✅/done/complete) on unverified work.
+
+**Rationale**: "done" framing on unverified output creates a false belief identical to a lie, regardless of intent. The harm only surfaces when something downstream depends on the unverified claim — by which point the false "100%" has already been trusted. Reinforces global honesty Rule 1 and the project Verified-vs-Produced contract.
+
+**Application**: sub-agent return tagging (`aegis-return-validator.sh`), sprint-close playtest gate, research probe-gate, day-1 coverage contract. When asked "is it done?", answer about verification, not effort.
