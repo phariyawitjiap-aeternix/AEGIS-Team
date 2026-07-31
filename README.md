@@ -28,6 +28,16 @@ binary and does **not** make the model smarter.
 The fastest path: open Claude Code **inside the project you want AEGIS in**, then
 paste one of the prompts below. The agent does the rest — no manual shell steps.
 
+> **Brand-new Mac (no Node/Claude Code yet)?** The prompts below assume the
+> prerequisites are installed. On a fresh machine, first run the bootstrap in
+> **Terminal** — it installs Xcode CLT + Homebrew + Node.js + the Claude Code
+> CLI (idempotent), then optionally chains straight into the AEGIS install:
+> ```bash
+> bash <(curl -sL https://raw.githubusercontent.com/phariyawitjiap-aeternix/AEGIS-Team/main/bootstrap-macos.sh) --new my-project
+> ```
+> Prereqs only (no project yet): drop the `--new my-project`. See
+> [`bootstrap-macos.sh`](bootstrap-macos.sh).
+
 ### ▶ Copy-paste prompt — NEW INSTALL
 
 ```text
