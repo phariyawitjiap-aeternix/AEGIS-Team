@@ -1,12 +1,20 @@
-# AEGIS vs Native Claude Code — Strategic Positioning (v15-24)
+# AEGIS vs Native Claude Code — Strategic Positioning (v15-27)
 
 > Authoritative breakdown of what AEGIS still adds on top of native Claude
-> Code (CC 2.1.148 as of 2026-05-23), what duplicates native facilities,
-> and what's deprecated.
+> Code, what duplicates native facilities, and what's deprecated.
 >
-> Driver: user question 2026-05-22 — "AEGIS-Team ตอนนี้ยังจำเป็นมั้ย?"
-> Honest answer: yes, but the value proposition has narrowed since v9. This
-> doc draws the line.
+> **2026-06-19 re-baseline:** the prior pass (v15-24) was pinned to CC 2.1.148
+> (2026-05-23) and never evaluated the surfaces that shipped right after it —
+> the **Workflow tool**, **Agent Teams**, **native cron / ScheduleWakeup**, the
+> **plugin marketplace**, and **MCP Tool Search**. This revision adds them (see
+> the new section below). Net effect: the earlier "~80% redundant / 20% unique"
+> split has slipped to **~88% redundant-or-thin-wrapper / ~12% defensible** —
+> native now also covers orchestration, scheduling, packaging, and skill-routing.
+>
+> Driver: user question 2026-05-22 — "AEGIS-Team ตอนนี้ยังจำเป็นมั้ย?" +
+> 2026-06-19 capability-refresh + 7-persona priority vote.
+> Honest answer: yes, but the value proposition has narrowed again. This doc
+> draws the current line.
 
 ## Executive verdict
 
@@ -26,6 +34,64 @@
 - Hook framework (native PreToolUse/PostToolUse/Stop/SessionStart with `permissionDecision` + `terminalSequence` are first-class)
 - MCP server integration (first-class native)
 - Plugin loading (`--plugin-dir` is first-class native)
+
+## 2026-06 re-baseline — surfaces that went native after CC 2.1.148
+
+These shipped *after* the v15-24 pass and each subsumes a layer AEGIS still
+simulates. Verdict on all five: **native is enough for the mechanism; AEGIS
+keeps only the policy/content on top.**
+
+> Verification note: surface *existence* is verified in-session (the Workflow
+> tool is in active use here; `claude --help` confirms `--worktree` / `--resume`
+> / `--continue`; `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` is set in
+> `.claude/settings.json`; `ScheduleWakeup` / `CronCreate` are live tools).
+> Exact version/date stamps below are research-sourced (capability-refresh
+> agent), not all independently re-verified — treat as approximate.
+
+| Surface | Native CC (≈ when) | What AEGIS simulates today | Verdict |
+|---|---|---|---|
+| **Multi-agent orchestration** | **Workflow tool** (≈ CC 2.1.154, late May 2026) — deterministic JS control flow, schema validation, parallel fan-out | Nick Fury role-play + `orchestrator.md` + BLOCK 0 / 5-gate hand-coded dispatch | ⚠️ **Native is enough for the wiring** — port the gate sequence onto Workflow; keep Nick Fury as the *judgment + decision-audit* layer only |
+| **Peer agent coordination** | **Agent Teams** (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`, ≈ Feb 2026) — `SendMessage` mailbox, `Task*` shared queue, per-agent context | Star-topology routing through Nick Fury + `aegis-team-chat.sh` flat log | ⚠️ **Native primitive is richer** — AEGIS lists it `adopted` but still keeps the central-dispatch mental model |
+| **Parallel scale** | Workflow parallel (~1,000 agents, state via script vars / shared FS) | `aegis-parallel-dispatch` skill (hard cap 5, state via chat context) | ⚠️ **Native is higher-capacity and less context-wasteful** |
+| **Scheduling / recurring** | `CronCreate` / `CronList` / `ScheduleWakeup` + scheduled-tasks MCP (≈ CC 2.1.72+) | `aegis-daemon.sh` restart loop + `/loop` + heartbeat assumptions | ⚠️ **Native is durable + restart-surviving** — external loop already contradicts verified Desktop assumptions (no heartbeat) |
+| **Skill auto-trigger + packaging** | `description`-based SKILL.md auto-trigger + progressive disclosure; plugin marketplace (`.claude-plugin/`, version pinning, GitHub/npm sources) | `triggers.en[]/th[]` + `profile:` frontmatter; `install.sh` glob + `skill-marketplace` skill | ⚠️ **Native reads `description`, not the arrays** — but see the P2 caveat below: those fields are NOT free to delete in this repo |
+
+### P2 caveat — dead-to-native ≠ dead-to-AEGIS (verified 2026-06-19)
+
+The capability audit flagged `triggers.en[]/triggers.th[]` and `profile:` as
+"dead metadata native never reads." A grep-gate before deletion found that
+**AEGIS's own tooling still consumes them**, so stripping is NOT a free quick
+win:
+
+| Consumer | Reads | Breakage if stripped |
+|---|---|---|
+| `tools/aegis-doc-canon/skill-frontmatter.mjs` | `BASE_KEYS = [name, description, profile, triggers]` | canon/lint **fails** |
+| `tools/aegis-brain-graph/build.mjs` + `wiki.mjs` | `fm.profile`, `fm.triggers.en/th` | brain wiki rendering loses data |
+| `tools/aegis-upgrade.sh` + `/aegis-mode` | `profile:` tier | profile switching degrades |
+
+→ **P2 is blocked on a precursor**: retire/relax these internal consumers
+first, *then* strip frontmatter. Effort/risk are higher than the vote assumed.
+
+#### Deeper finding (2026-06-19, D-009) — P2 is downstream of P4, not standalone
+
+A second check overturned the premise entirely: **AEGIS skills are not native
+skills at all.** There is no `.claude/skills/` directory; `install.sh` copies
+`skills/*.md` to `TARGET/skills/` (a plain folder), so native Claude Code never
+loads them, never reads their `description`, and never auto-triggers them. They
+are AEGIS-internal docs invoked via `/aegis-*` commands, the router, and
+personas. The `triggers.en[]/th[]` arrays are therefore the *actual* matching
+mechanism for AEGIS's own routing/help — not redundant carryover.
+
+Consequence: the "native reads `description`, delete the arrays" rationale only
+becomes true **after P4** repackages AEGIS as a native plugin and moves skills
+into `.claude/skills/<name>/SKILL.md`. Only then does description-based
+triggering apply and the arrays become migratable (triggers → description),
+*and* the brain-graph/doc-canon consumers must be ported in the same pass.
+
+**Re-scope: P2 is no longer an independent Wave-1 quick win. It is a sub-step of
+P4** (migrate triggers→description while converting to native plugin format).
+Do not execute P2 in isolation — it breaks brain-graph/doc-canon/router for
+zero native benefit.
 
 ## Surface-by-surface comparison
 
@@ -117,14 +183,43 @@ These surfaces duplicate native CC and are slated for removal in v15-25+:
 
 | Surface | Native equivalent | Status | Removal target |
 |---|---|---|---|
-| `mt.mjs run` subcommand | `claude --cwd <path>` | DEPRECATED with warning | v15-25 candidate |
-| `mt.mjs cwd` subcommand | Use registry → `claude --cwd "$(mt where alpha)"` | DEPRECATED with warning | v15-25 candidate |
+| `mt.mjs run` subcommand | `claude --cwd <path>` | ✅ **REMOVED v15-25** (exits 2 with native recipe) | done |
+| `mt.mjs cwd` subcommand | Use registry → `claude --cwd "$(mt where alpha)"` | ✅ **REMOVED v15-25** | done |
+| `tools/aegis-worktree-gc.sh`, `aegis-merge-worktree.sh` | `isolation: "worktree"` in Agent tool | ✅ **ARCHIVED** (`tools/_archived/`) | done |
 | `references/worktree-isolation.md` | `isolation: "worktree"` in Agent tool | UPDATED with native pointer at top | keep updated |
 | `references/mcp-server-architecture.md` | Native MCP first-class | ARCHIVED 2026-05-23 | done |
 | `references/plugin-architecture.md` | Native `--plugin-dir` first-class | ARCHIVED 2026-05-23 | done |
 | `references/migration-ga-strategy.md` | Plan never shipped — historical only | ARCHIVED 2026-05-23 | done |
 | `references/brain-tier-architecture.md` | Plan never shipped — kept as design reference | KEEP but mark "design-only, not in flight" | review v15-25 |
-| `aegis-resume/` package | `claude --resume` | UNDER REVIEW — adds interrupted-work tracking | v15-25 audit |
+| `aegis-resume/` package | `claude --resume` | ✅ **KEEP (audit resolved v15-27)** — scans `.aegis/brain/state/` for *interrupted* checkpoints at SessionStart and surfaces them; native `--resume` resumes any session but has no interrupted-vs-clean distinction or brain-checkpoint scan. Genuine value above native. | keep |
+
+> **P6 finalization (2026-06-19, v15-27):** the v15-25 deprecation queue was
+> already executed (mt run/cwd removed, worktree scripts archived) — this pass
+> only closed the two loose ends a smoke-test surfaced: (1) `tools/aegis-claude-agents.sh`
+> `cmd_where` still called the removed `mt cwd` and silently returned nothing —
+> rewired to `mt where`; (2) `aegis-resume` was stuck "UNDER REVIEW" — audited
+> and resolved to **KEEP** with the rationale above.
+
+## Priority order (7-persona vote, 2026-06-19)
+
+The capability-refresh produced six native-alignment moves. The AEGIS persona
+team (Nick Fury, Captain America, Iron Man, Loki, Spider-Man, War Machine,
+Coulson) voted; deterministic Borda tally (rank-1 = 6 pts):
+
+| Rank | Move | Borda | Avg rank | Impact / Effort / Risk | Wave |
+|---|---|:---:|:---:|:---:|:---:|
+| 1 | **P1** Re-baseline this doc | 37 | 1.71 | 2.6 / 1.0 / 1.0 | 1 ✅ done |
+| 2 | **P6** Finalize v15-25 deprecation queue | 36 | 1.86 | 2.9 / 2.0 / 1.9 | 1 |
+| 3 | **P2** Strip dead frontmatter (~30 skills) | 30 | 2.71 | 2.1 / 2.0 / 1.7 | 1 ⛔ blocked (see P2 caveat) |
+| 4 | **P5** Migrate flat brain → native auto-memory | 22 | 3.86 | 3.9 / 3.3 / 3.0 | 2 |
+| 5 | **P4** Repackage AEGIS as native plugin | 12 | 5.29 | 3.7 / 4.3 / 4.0 | 3 |
+| 6 | **P3** Port Nick Fury → Workflow tool | 10 | 5.57 | **5.0** / 5.0 / 4.7 | 3 |
+
+Consensus: do the safe quick wins first (P1/P6/P2), defer the deep
+re-architecture. **P3 has the highest impact but 5/7 named it the biggest
+risk** — sequence it last, behind a shadow run, never touching MBP/honesty
+enforcement until the Workflow path is proven equivalent. This
+"enforcement-before-belief" ordering matches AEGIS's own DNA.
 
 ## What this means for users
 
@@ -172,5 +267,6 @@ Everything else either matches native or sits in a deprecation queue.
 
 ---
 
-**Last updated:** 2026-05-23 (sprint v15-24 lean pass)
-**Driver:** [feedback_aegis_coverage_contract](.aegis/brain/learnings/2026-05-21_verified-not-produced-bug-class.md) + 2026-05-22 user question on native CC vs AEGIS
+**Last updated:** 2026-06-19 (v15-27 re-baseline — Workflow/Agent Teams/cron/marketplace/MCP-Tool-Search added; 7-persona priority vote)
+**Prior pass:** 2026-05-23 (sprint v15-24 lean pass, pinned to CC 2.1.148)
+**Driver:** [feedback_aegis_coverage_contract](.aegis/brain/learnings/2026-05-21_verified-not-produced-bug-class.md) + 2026-05-22 user question on native CC vs AEGIS + 2026-06-19 capability-refresh & priority vote

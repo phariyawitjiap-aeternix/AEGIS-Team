@@ -93,9 +93,11 @@ cmd_where() {
     local name="${1:-}"
     [[ -z "$name" ]] && { echo "ERROR: where requires <project-name>" >&2; exit 0; }
     local mt_path
-    # Use multi-tenant registry to map name → path
+    # Use multi-tenant registry to map name → path.
+    # v15-27: `mt cwd` was removed in v15-25; `mt where` is the native-recipe
+    # replacement (prints the registered path for <name>).
     if [[ -x "$(dirname "$0")/aegis-multi-tenant/mt.mjs" ]] || [[ -f "$(dirname "$0")/aegis-multi-tenant/mt.mjs" ]]; then
-        mt_path=$(node "$(dirname "$0")/aegis-multi-tenant/mt.mjs" cwd "$name" 2>/dev/null || true)
+        mt_path=$(node "$(dirname "$0")/aegis-multi-tenant/mt.mjs" where "$name" 2>/dev/null || true)
     fi
     [[ -z "$mt_path" ]] && return 0  # name not in registry → silent
     local raw
