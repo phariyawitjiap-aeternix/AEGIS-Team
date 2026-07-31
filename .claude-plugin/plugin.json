@@ -1,0 +1,57 @@
+{
+  "name": "aegis-team",
+  "version": "15.1.0",
+  "description": "AEGIS — multi-agent SDLC framework: 11 Marvel personas, honesty/verification gates, decision-audit + FTS5 brain, ISO 29110 work products, and Master Brain Protocol enforcement, layered on native Claude Code.",
+  "author": {
+    "name": "Jiap Phariyawit"
+  },
+  "keywords": [
+    "aegis",
+    "multi-agent",
+    "sdlc",
+    "iso-29110",
+    "orchestration",
+    "honesty-contracts",
+    "brain",
+    "personas"
+  ],
+  "license": "MIT",
+  "commands": [
+    "./.claude/commands/aegis-breakdown.md",
+    "./.claude/commands/aegis-decisions.md",
+    "./.claude/commands/aegis-deploy.md",
+    "./.claude/commands/aegis-goal.md",
+    "./.claude/commands/aegis-handoff.md",
+    "./.claude/commands/aegis-linear.md",
+    "./.claude/commands/aegis-memory.md",
+    "./.claude/commands/aegis-mode.md",
+    "./.claude/commands/aegis-pipeline.md",
+    "./.claude/commands/aegis-retro.md",
+    "./.claude/commands/aegis-sprint.md",
+    "./.claude/commands/aegis-start.md",
+    "./.claude/commands/aegis-status.md",
+    "./.claude/commands/aegis-team.md",
+    "./.claude/commands/aegis-upgrade.md",
+    "./.claude/commands/aegis-verify.md"
+  ],
+  "agents": [
+    "./.claude/agents/beast.md",
+    "./.claude/agents/black-panther.md",
+    "./.claude/agents/captain-america.md",
+    "./.claude/agents/coulson.md",
+    "./.claude/agents/iron-man.md",
+    "./.claude/agents/loki.md",
+    "./.claude/agents/nick-fury.md",
+    "./.claude/agents/spider-man.md",
+    "./.claude/agents/thor.md",
+    "./.claude/agents/war-machine.md",
+    "./.claude/agents/wasp.md"
+  ],
+  "hooks": "./.claude-plugin/hooks.json",
+  "_migration_pending": {
+    "skills": "skills/*.md (39) → skills/<name>/SKILL.md native format; migrate triggers[]→description (absorbs P2). NOT YET MOVED.",
+    "hooks": "hooks.json paths use ${CLAUDE_PLUGIN_ROOT}; current settings.json uses ${CLAUDE_PROJECT_DIR}. Parallel-run until validated.",
+    "mcpServers": "none wired yet; add if AEGIS ships brain tools as MCP.",
+    "install_sh": "kept as-is during parallel-run window (Loki gate); retire only after plugin load verified."
+  }
+}
